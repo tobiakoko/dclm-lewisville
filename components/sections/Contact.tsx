@@ -18,7 +18,7 @@ export default function Contact() {
         <div className="grid lg:grid-cols-2 gap-12 max-w-5xl mx-auto">
           {/* Contact Info */}
           <div>
-            <div className="bg-white rounded-lg shadow-md p-8 mb-6">
+            <div className="bg-white  shadow-md p-8 mb-6">
               <h3 className="font-heading text-2xl font-bold mb-6">
                 Visit Us
               </h3>
@@ -57,7 +57,7 @@ export default function Contact() {
               </div>
             </div>
 
-            <div className="bg-white rounded-lg shadow-md p-8">
+            <div className="bg-white  shadow-md p-8">
               <h3 className="font-heading text-2xl font-bold mb-6">
                 Service Times
               </h3>
@@ -78,7 +78,7 @@ export default function Contact() {
           </div>
 
           {/* Contact Form */}
-          <div className="bg-white rounded-lg shadow-md p-8">
+          <div className="bg-white  shadow-md p-8">
             <h3 className="font-heading text-2xl font-bold mb-6">
               Send Us a Message
             </h3>

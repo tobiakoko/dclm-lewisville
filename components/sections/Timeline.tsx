@@ -28,7 +28,7 @@ export default function Timeline({ events }: TimelineProps) {
                 idx % 2 === 0 ? 'text-right pr-8' : 'text-left pl-8'
               }`}
             >
-              <div className="bg-white p-6 rounded-lg shadow-md">
+              <div className="bg-white p-6  shadow-md">
                 <div className="text-3xl font-bold text-blue-600 mb-2">
                   {event.year}
                 </div>
@@ -40,7 +40,7 @@ export default function Timeline({ events }: TimelineProps) {
             </div>
 
             {/* Timeline dot */}
-            <div className="absolute left-1/2 transform -translate-x-1/2 w-4 h-4 bg-blue-600 rounded-full border-4 border-white shadow-lg" />
+            <div className="absolute left-1/2 transform -translate-x-1/2 w-4 h-4 bg-blue-600  border-4 border-white shadow-lg" />
           </div>
         ))}
       </div>

@@ -15,7 +15,7 @@ export default function Team({ members }: TeamProps) {
       {members.map((member) => (
         <div
           key={member._id}
-          className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow"
+          className="bg-white  shadow-md overflow-hidden hover:shadow-xl transition-shadow"
         >
           <div className="aspect-square relative bg-gray-200">
             {member.photo && (

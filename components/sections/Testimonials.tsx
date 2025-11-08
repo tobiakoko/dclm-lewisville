@@ -37,7 +37,7 @@ export default function Testimonials({ testimonials }: TestimonialsProps) {
           </p>
         </div>
 
-        <div className="relative bg-white rounded-lg shadow-xl p-8 md:p-12">
+        <div className="relative bg-white  shadow-xl p-8 md:p-12">
           <Quote className="absolute top-4 left-4 text-blue-200" size={48} />
           
           <div className="relative z-10">
@@ -52,7 +52,7 @@ export default function Testimonials({ testimonials }: TestimonialsProps) {
                   alt={current.author}
                   width={60}
                   height={60}
-                  className="rounded-full"
+                  className=""
                 />
               )}
               <div>
@@ -66,13 +66,13 @@ export default function Testimonials({ testimonials }: TestimonialsProps) {
             <div className="flex justify-center space-x-4 mt-8">
               <button
                 onClick={prev}
-                className="w-10 h-10 rounded-full bg-blue-100 hover:bg-blue-200 flex items-center justify-center transition-colors"
+                className="w-10 h-10  bg-blue-100 hover:bg-blue-200 flex items-center justify-center transition-colors"
               >
                 <ChevronLeft className="text-blue-600" size={20} />
               </button>
               <button
                 onClick={next}
-                className="w-10 h-10 rounded-full bg-blue-100 hover:bg-blue-200 flex items-center justify-center transition-colors"
+                className="w-10 h-10  bg-blue-100 hover:bg-blue-200 flex items-center justify-center transition-colors"
               >
                 <ChevronRight className="text-blue-600" size={20} />
               </button>
@@ -86,7 +86,7 @@ export default function Testimonials({ testimonials }: TestimonialsProps) {
                 <button
                   key={idx}
                   onClick={() => setCurrentIndex(idx)}
-                  className={`w-2 h-2 rounded-full transition-colors ${
+                  className={`w-2 h-2  transition-colors ${
                     idx === currentIndex ? 'bg-blue-600' : 'bg-gray-300'
                   }`}
                 />

@@ -24,9 +24,42 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      name: 'sections',
+      title: 'Page Sections',
+      type: 'array',
+      of: [
+        { type: 'hero' },
+        { type: 'featuresList' },
+        { type: 'benefitsSection' },
+        { type: 'aboutSection' },
+        { type: 'ctaSection' },
+        { type: 'ctaFormSection' },
+        { type: 'faqSection' },
+        {
+          type: 'reference',
+          name: 'ministriesRef',
+          title: 'Ministries Section',
+          to: [{ type: 'ministry' }],
+        },
+        {
+          type: 'reference',
+          name: 'testimonialsRef',
+          title: 'Testimonials Section',
+          to: [{ type: 'testimonial' }],
+        },
+        {
+          type: 'reference',
+          name: 'teamRef',
+          title: 'Team Section',
+          to: [{ type: 'person' }],
+        },
+      ],
+    }),
+    defineField({
       name: 'content',
-      title: 'Page Content',
+      title: 'Page Content (Legacy)',
       type: 'blockContent',
+      description: 'Use "Page Sections" above for the new flexible layout builder',
     }),
     defineField({
       name: 'seo',

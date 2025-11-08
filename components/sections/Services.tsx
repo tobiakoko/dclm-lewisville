@@ -28,9 +28,9 @@ export default function Services({ times }: ServicesProps) {
           {times.map((service) => (
             <div
               key={service.name}
-              className="bg-gray-50 rounded-lg p-6 text-center hover:shadow-lg transition-shadow"
+              className="bg-gray-50  p-6 text-center hover:shadow-lg transition-shadow"
             >
-              <div className="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <div className="w-16 h-16 bg-primary-100  flex items-center justify-center mx-auto mb-4">
                 <Clock className="text-primary-600" size={32} />
               </div>
               <h3 className="font-heading text-xl font-bold mb-2">
@@ -85,9 +85,9 @@ export default function ServiceSchedule({ times }: ServiceScheduleProps) {
           {times.map((service) => (
             <div
               key={service.name}
-              className="bg-gradient-to-br from-blue-50 to-purple-50 rounded-lg p-8 text-center hover:shadow-lg transition-shadow border border-blue-100"
+              className="bg-gradient-to-br from-blue-50 to-purple-50  p-8 text-center hover:shadow-lg transition-shadow border border-blue-100"
             >
-              <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
+              <div className="w-16 h-16 bg-blue-600  flex items-center justify-center mx-auto mb-4">
                 <Clock className="text-white" size={32} />
               </div>
               <h3 className="font-heading text-2xl font-bold mb-3 text-gray-900">

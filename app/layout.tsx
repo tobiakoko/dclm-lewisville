@@ -3,6 +3,8 @@ import { Geist, Geist_Mono, Inter, Poppins } from "next/font/google";
 import "./globals.css";
 import { SITE_CONFIG } from '@/lib/constants'
 import GoogleAnalytics from "@/components/GoogleAnalytics";
+import Header from '@/components/layout/Header'
+import Footer from '@/components/layout/Footer'
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -103,10 +105,12 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <Header />
         {process.env.NEXT_PUBLIC_GA_ID && (
           <GoogleAnalytics ga_id={process.env.NEXT_PUBLIC_GA_ID} />
         )}
         {children}
+        <Footer />
       </body>
     </html>
   );

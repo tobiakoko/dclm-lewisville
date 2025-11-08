@@ -1,4 +1,4 @@
-import Header from '@/components/layout/Header'
+import ModernNavigation from '@/components/layout/ModernNavigation'
 import Footer from '@/components/layout/Footer'
 
 export default function SiteLayout({
@@ -7,8 +7,8 @@ export default function SiteLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="flex min-h-screen flex-col">
-      <Header />
+    <div className="min-h-screen flex flex-col">
+      <ModernNavigation />
       <main className="flex-1">{children}</main>
       <Footer />
     </div>

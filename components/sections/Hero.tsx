@@ -6,18 +6,18 @@ export default function Hero() {
   return (
     <section className="relative min-h-[calc(100vh-4rem)] flex items-center justify-center overflow-hidden">
       {/* Animated gradient background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-primary via-secondary to-accent">
+      <div className="absolute inset-0 bg-linear-to-br from-primary via-secondary to-accent">
         <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PHBhdGggZD0iTTM2IDEzNGg4djg2aC04eiIvPjwvZz48L2c+PC9zdmc+')] opacity-20" />
       </div>
 
       {/* Overlay gradient */}
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/20 to-black/40" />
+      <div className="absolute inset-0 bg-linear-to-b from-transparent via-black/20 to-black/40" />
 
       {/* Content */}
       <div className="container relative z-10 text-center text-white px-4 py-20">
         <div className="max-w-5xl mx-auto">
           {/* Badge */}
-          <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm rounded-full px-6 py-2 mb-8 animate-fade-in">
+          <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm  px-6 py-2 mb-8 animate-fade-in">
             <Heart className="w-4 h-4" />
             <span className="text-sm font-medium">Welcome Home</span>
           </div>
@@ -25,7 +25,7 @@ export default function Hero() {
           {/* Main heading with animation */}
           <h1 className="font-heading text-5xl md:text-7xl lg:text-8xl font-bold mb-6 animate-fade-in-up animate-delay-100">
             <span className="block mb-2">Welcome to</span>
-            <span className="block bg-gradient-to-r from-white via-blue-100 to-purple-100 bg-clip-text text-transparent">
+            <span className="block bg-linear-to-r from-white via-blue-100 to-purple-100 bg-clip-text text-transparent">
               DCLM Lewisville
             </span>
           </h1>
@@ -67,24 +67,24 @@ export default function Hero() {
 
           {/* Feature highlights */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto animate-fade-in animate-delay-500">
-            <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 hover:bg-white/15 transition-all duration-300 hover:scale-105">
-              <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4">
+            <div className="bg-white/10 backdrop-blur-sm  p-6 border border-white/20 hover:bg-white/15 transition-all duration-300 hover:scale-105">
+              <div className="w-12 h-12 bg-white/20  flex items-center justify-center mx-auto mb-4">
                 <Heart className="w-6 h-6 text-white" />
               </div>
               <h3 className="font-semibold text-lg mb-2">Welcoming Community</h3>
               <p className="text-sm text-white/80">Experience genuine fellowship and lasting friendships</p>
             </div>
 
-            <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 hover:bg-white/15 transition-all duration-300 hover:scale-105">
-              <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4">
+            <div className="bg-white/10 backdrop-blur-sm  p-6 border border-white/20 hover:bg-white/15 transition-all duration-300 hover:scale-105">
+              <div className="w-12 h-12 bg-white/20  flex items-center justify-center mx-auto mb-4">
                 <Book className="w-6 h-6 text-white" />
               </div>
               <h3 className="font-semibold text-lg mb-2">Biblical Teaching</h3>
               <p className="text-sm text-white/80">Grow deeper in your faith through God's Word</p>
             </div>
 
-            <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 hover:bg-white/15 transition-all duration-300 hover:scale-105">
-              <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4">
+            <div className="bg-white/10 backdrop-blur-sm  p-6 border border-white/20 hover:bg-white/15 transition-all duration-300 hover:scale-105">
+              <div className="w-12 h-12 bg-white/20  flex items-center justify-center mx-auto mb-4">
                 <Users className="w-6 h-6 text-white" />
               </div>
               <h3 className="font-semibold text-lg mb-2">Life-Changing Ministry</h3>

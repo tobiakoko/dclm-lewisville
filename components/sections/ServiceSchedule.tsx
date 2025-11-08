@@ -16,17 +16,17 @@ export default function ServiceSchedule({ times }: ServiceScheduleProps) {
     <section className="py-24 bg-gradient-to-b from-white via-muted/30 to-white relative overflow-hidden">
       {/* Decorative background elements */}
       <div className="absolute top-0 left-0 w-full h-full opacity-30">
-        <div className="absolute top-10 left-10 w-72 h-72 bg-primary/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-10 right-10 w-96 h-96 bg-secondary/10 rounded-full blur-3xl" />
+        <div className="absolute top-10 left-10 w-72 h-72 bg-primary/10  blur-3xl" />
+        <div className="absolute bottom-10 right-10 w-96 h-96 bg-secondary/10  blur-3xl" />
       </div>
 
       <div className="container relative z-10">
         <div className="text-center mb-16 animate-fade-in-up">
-          <div className="inline-flex items-center gap-2 bg-gradient-to-r from-primary/10 to-secondary/10 rounded-full px-4 py-2 mb-6">
+          <div className="inline-flex items-center gap-2 bg-gradient-to-r from-primary/10 to-secondary/10  px-4 py-2 mb-6">
             <Sparkles className="w-4 h-4 text-primary" />
             <span className="text-sm font-semibold text-primary">Service Times</span>
           </div>
-          <h2 className="font-heading text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+          <h2 className="font-heading text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-primary to-primary bg-clip-text text-transparent">
             Join Us for Worship
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
@@ -38,16 +38,16 @@ export default function ServiceSchedule({ times }: ServiceScheduleProps) {
           {times.map((service, index) => (
             <div
               key={service.name}
-              className="group relative bg-white rounded-2xl p-8 text-center hover:shadow-2xl transition-all duration-500 border-2 border-border hover:border-primary/50 animate-fade-in-up"
+              className="group relative bg-white  p-8 text-center hover:shadow-2xl transition-all duration-500 border-2 border-border hover:border-primary/50 animate-fade-in-up"
               style={{ animationDelay: `${index * 150}ms` }}
             >
               {/* Gradient overlay on hover */}
-              <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-secondary/5 to-accent/5 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-secondary/5 to-accent/5  opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
               {/* Content */}
               <div className="relative z-10">
                 {/* Icon with gradient background */}
-                <div className="w-20 h-20 bg-gradient-to-br from-primary via-secondary to-accent rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg group-hover:shadow-xl group-hover:scale-110 transition-all duration-500 group-hover:rotate-6">
+                <div className="w-20 h-20 bg-gradient-to-br from-primary via-secondary to-accent  flex items-center justify-center mx-auto mb-6 shadow-lg group-hover:shadow-xl group-hover:scale-110 transition-all duration-500 group-hover:rotate-6">
                   <Clock className="text-white" size={36} />
                 </div>
 
@@ -58,8 +58,8 @@ export default function ServiceSchedule({ times }: ServiceScheduleProps) {
 
                 {/* Time details with modern design */}
                 <div className="space-y-4 mb-6">
-                  <div className="flex items-center justify-center gap-3 bg-muted/50 rounded-xl p-4 group-hover:bg-primary/10 transition-colors duration-300">
-                    <div className="w-10 h-10 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center shadow-md">
+                  <div className="flex items-center justify-center gap-3 bg-muted/50  p-4 group-hover:bg-primary/10 transition-colors duration-300">
+                    <div className="w-10 h-10 bg-gradient-to-br from-primary to-primary  flex items-center justify-center shadow-md">
                       <Calendar size={20} className="text-white" />
                     </div>
                     <div className="text-left">
@@ -68,8 +68,8 @@ export default function ServiceSchedule({ times }: ServiceScheduleProps) {
                     </div>
                   </div>
 
-                  <div className="flex items-center justify-center gap-3 bg-muted/50 rounded-xl p-4 group-hover:bg-secondary/10 transition-colors duration-300">
-                    <div className="w-10 h-10 bg-gradient-to-br from-secondary to-accent rounded-lg flex items-center justify-center shadow-md">
+                  <div className="flex items-center justify-center gap-3 bg-muted/50  p-4 group-hover:bg-secondary/10 transition-colors duration-300">
+                    <div className="w-10 h-10 bg-gradient-to-br from-secondary to-secondary  flex items-center justify-center shadow-md">
                       <Clock size={20} className="text-white" />
                     </div>
                     <div className="text-left">
@@ -94,7 +94,7 @@ export default function ServiceSchedule({ times }: ServiceScheduleProps) {
               </div>
 
               {/* Hover effect border */}
-              <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-primary via-secondary to-accent opacity-0 group-hover:opacity-20 transition-opacity duration-500 -z-10 blur-xl" />
+              <div className="absolute inset-0  bg-gradient-to-br from-primary via-secondary to-accent opacity-0 group-hover:opacity-20 transition-opacity duration-500 -z-10 blur-xl" />
             </div>
           ))}
         </div>
@@ -148,9 +148,9 @@ export default function ServiceSchedule({ times }: ServiceScheduleProps) {
           {times.map((service) => (
             <div
               key={service.name}
-              className="bg-gradient-to-br from-blue-50 to-purple-50 rounded-lg p-8 text-center hover:shadow-lg transition-shadow border border-blue-100"
+              className="bg-gradient-to-br from-blue-50 to-purple-50  p-8 text-center hover:shadow-lg transition-shadow border border-blue-100"
             >
-              <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
+              <div className="w-16 h-16 bg-blue-600  flex items-center justify-center mx-auto mb-4">
                 <Clock className="text-white" size={32} />
               </div>
               <h3 className="font-heading text-2xl font-bold mb-3 text-gray-900">

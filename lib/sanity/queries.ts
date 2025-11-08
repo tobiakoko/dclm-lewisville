@@ -34,6 +34,17 @@ export const homePageQuery = groq`
       author,
       photo,
       ministry
+    },
+    "team": *[_type == "person"] | order(order asc)[0...4] {
+      _id,
+      name,
+      title,
+      role,
+      bio,
+      photo,
+      email,
+      phone,
+      socialMedia
     }
   }
 `

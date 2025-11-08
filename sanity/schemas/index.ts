@@ -14,6 +14,13 @@ import socialMedia from './objects/socialMedia'
 import seo from './objects/seo'
 import activity from './objects/activity'
 import milestone from './objects/milestone'
+import hero from './objects/hero'
+import featuresList from './objects/featuresList'
+import benefitsSection from './objects/benefitsSection'
+import ctaSection from './objects/ctaSection'
+import ctaFormSection from './objects/ctaFormSection'
+import aboutSection from './objects/aboutSection'
+import faqSection from './objects/faqSection'
 
 export const schemaTypes = [
   // Documents
@@ -26,11 +33,18 @@ export const schemaTypes = [
   series,
   category,
   siteSettings,
-  
+
   // Objects
   blockContent,
   socialMedia,
   seo,
   activity,
   milestone,
+  hero,
+  featuresList,
+  benefitsSection,
+  ctaSection,
+  ctaFormSection,
+  aboutSection,
+  faqSection,
 ]
