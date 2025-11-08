@@ -45,38 +45,41 @@
 
 :root {
   --radius: 0.75rem;
-  --background: oklch(0.99 0.002 264);
-  --foreground: oklch(0.15 0.04 264);
+  --background: oklch(0.99 0.002 0);
+  --foreground: oklch(0.15 0.02 0);
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.15 0.04 264);
+  --card-foreground: oklch(0.15 0.02 0);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.15 0.04 264);
-  /* Modern vibrant blue-purple gradient colors */
-  --primary: oklch(0.55 0.22 264);
-  --primary-foreground: oklch(0.99 0.002 264);
-  --secondary: oklch(0.65 0.18 290);
-  --secondary-foreground: oklch(0.99 0.002 264);
-  --muted: oklch(0.96 0.008 264);
-  --muted-foreground: oklch(0.50 0.05 264);
-  --accent: oklch(0.60 0.20 280);
-  --accent-foreground: oklch(0.99 0.002 264);
+  --popover-foreground: oklch(0.15 0.02 0);
+  /* Elegant DCLM colors - Maroon and Gold */
+  --primary: oklch(0.35 0.15 15);
+  /* Deep Maroon/Burgundy */
+  --primary-foreground: oklch(0.99 0.002 0);
+  --secondary: oklch(0.68 0.12 75);
+  /* Elegant Gold */
+  --secondary-foreground: oklch(0.15 0.02 0);
+  --muted: oklch(0.96 0.005 0);
+  --muted-foreground: oklch(0.50 0.02 0);
+  --accent: oklch(0.65 0.10 75);
+  /* Warm Accent */
+  --accent-foreground: oklch(0.15 0.02 0);
   --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.92 0.015 264);
-  --input: oklch(0.94 0.012 264);
-  --ring: oklch(0.55 0.22 264);
-  --chart-1: oklch(0.55 0.22 264);
-  --chart-2: oklch(0.65 0.18 290);
-  --chart-3: oklch(0.60 0.20 280);
-  --chart-4: oklch(0.70 0.15 310);
-  --chart-5: oklch(0.75 0.18 250);
+  --border: oklch(0.92 0.01 0);
+  --input: oklch(0.94 0.008 0);
+  --ring: oklch(0.35 0.15 15);
+  --chart-1: oklch(0.35 0.15 15);
+  --chart-2: oklch(0.68 0.12 75);
+  --chart-3: oklch(0.45 0.12 30);
+  --chart-4: oklch(0.75 0.08 60);
+  --chart-5: oklch(0.55 0.10 45);
   --sidebar: oklch(1 0 0);
-  --sidebar-foreground: oklch(0.15 0.04 264);
-  --sidebar-primary: oklch(0.55 0.22 264);
-  --sidebar-primary-foreground: oklch(0.99 0.002 264);
-  --sidebar-accent: oklch(0.96 0.008 264);
-  --sidebar-accent-foreground: oklch(0.15 0.04 264);
-  --sidebar-border: oklch(0.92 0.015 264);
-  --sidebar-ring: oklch(0.55 0.22 264);
+  --sidebar-foreground: oklch(0.15 0.02 0);
+  --sidebar-primary: oklch(0.35 0.15 15);
+  --sidebar-primary-foreground: oklch(0.99 0.002 0);
+  --sidebar-accent: oklch(0.96 0.005 0);
+  --sidebar-accent-foreground: oklch(0.15 0.02 0);
+  --sidebar-border: oklch(0.92 0.01 0);
+  --sidebar-ring: oklch(0.35 0.15 15);
 }
 
 .dark {
@@ -276,4 +279,19 @@
 
 .animate-delay-500 {
   animation-delay: 0.5s;
+}
+
+/* Shimmer animation for gradient text */
+@keyframes shimmer {
+  0% {
+    background-position: -200% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
+.animate-shimmer {
+  background-size: 200% auto;
+  animation: shimmer 3s linear infinite;
 }

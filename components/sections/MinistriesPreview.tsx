@@ -1,4 +1,7 @@
+'use client'
+
 import Link from 'next/link'
+import { motion } from 'framer-motion'
 import * as Icons from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Ministry } from '@/lib/types'
@@ -6,6 +9,38 @@ import { Sparkles, ArrowRight } from 'lucide-react'
 
 interface MinistriesPreviewProps {
   ministries: Ministry[]
+}
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.12
+    }
+  }
+}
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.6
+    }
+  }
+}
+
+const cardVariants = {
+  hidden: { opacity: 0, scale: 0.95 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    transition: {
+      duration: 0.5
+    }
+  }
 }
 
 export default function MinistriesPreview({ ministries }: MinistriesPreviewProps) {
@@ -18,76 +53,115 @@ export default function MinistriesPreview({ ministries }: MinistriesPreviewProps
       </div>
 
       <div className="container relative z-10">
-        <div className="text-center mb-16 animate-fade-in-up">
-          <div className="inline-flex items-center gap-2 bg-gradient-to-r from-primary/10 to-secondary/10 rounded-full px-4 py-2 mb-6">
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-16"
+        >
+          <motion.div
+            initial={{ scale: 0 }}
+            whileInView={{ scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, type: 'spring' }}
+            className="inline-flex items-center gap-2 bg-gradient-to-r from-primary/10 to-secondary/10 rounded-full px-4 py-2 mb-6"
+          >
             <Sparkles className="w-4 h-4 text-primary" />
             <span className="text-sm font-semibold text-primary">Get Involved</span>
-          </div>
+          </motion.div>
           <h2 className="font-heading text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
             Our Ministries
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
             Find your place to serve, connect, and grow in community with others
           </p>
-        </div>
+        </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.1 }}
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12"
+        >
           {ministries.map((ministry, index) => {
             const IconComponent = (Icons[ministry.icon as keyof typeof Icons] as Icons.LucideIcon) || Icons.Users
 
             return (
-              <Link
+              <motion.div
                 key={ministry._id}
-                href={`/ministries/${ministry.slug.current}`}
-                className="group relative bg-gradient-to-br from-white to-muted/30 rounded-2xl p-8 hover:shadow-2xl transition-all duration-500 border-2 border-border hover:border-primary/50 animate-fade-in-up hover:-translate-y-2"
-                style={{ animationDelay: `${index * 100}ms` }}
+                variants={cardVariants}
               >
-                {/* Gradient overlay on hover */}
-                <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-secondary/5 to-accent/5 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                <Link
+                  href={`/ministries/${ministry.slug.current}`}
+                  className="group relative bg-gradient-to-br from-white to-muted/30 rounded-2xl p-8 hover:shadow-2xl transition-all duration-500 border-2 border-border hover:border-primary/50 block h-full"
+                >
+                  <motion.div
+                    whileHover={{ y: -8, scale: 1.02 }}
+                    transition={{ type: 'spring', stiffness: 300 }}
+                    className="h-full flex flex-col"
+                  >
+                    {/* Gradient overlay on hover */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-secondary/5 to-accent/5 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
-                {/* Content */}
-                <div className="relative z-10">
-                  {/* Icon */}
-                  <div className="w-20 h-20 bg-gradient-to-br from-primary via-secondary to-accent rounded-2xl flex items-center justify-center mb-6 shadow-lg group-hover:shadow-xl group-hover:scale-110 transition-all duration-500 group-hover:rotate-6">
-                    <IconComponent className="text-white" size={36} />
-                  </div>
+                    {/* Content */}
+                    <div className="relative z-10 flex-1">
+                      {/* Icon */}
+                      <motion.div
+                        whileHover={{ scale: 1.15, rotate: 12 }}
+                        transition={{ type: 'spring', stiffness: 300 }}
+                        className="w-20 h-20 bg-gradient-to-br from-primary via-secondary to-accent rounded-2xl flex items-center justify-center mb-6 shadow-lg group-hover:shadow-xl"
+                      >
+                        <IconComponent className="text-white" size={36} />
+                      </motion.div>
 
-                  {/* Title */}
-                  <h3 className="font-heading text-2xl font-bold mb-3 text-foreground group-hover:text-primary transition-colors">
-                    {ministry.name}
-                  </h3>
+                      {/* Title */}
+                      <h3 className="font-heading text-2xl font-bold mb-3 text-foreground group-hover:text-primary transition-colors">
+                        {ministry.name}
+                      </h3>
 
-                  {/* Description */}
-                  <p className="text-muted-foreground text-sm leading-relaxed line-clamp-3 mb-4">
-                    {ministry.description}
-                  </p>
+                      {/* Description */}
+                      <p className="text-muted-foreground text-sm leading-relaxed line-clamp-3 mb-4">
+                        {ministry.description}
+                      </p>
 
-                  {/* Learn more link */}
-                  <div className="inline-flex items-center gap-2 text-sm font-semibold text-primary group-hover:gap-3 transition-all">
-                    <span>Learn More</span>
-                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                  </div>
-                </div>
+                      {/* Learn more link */}
+                      <div className="inline-flex items-center gap-2 text-sm font-semibold text-primary group-hover:gap-3 transition-all">
+                        <span>Learn More</span>
+                        <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                      </div>
+                    </div>
 
-                {/* Decorative corner accent */}
-                <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-primary/10 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-              </Link>
+                    {/* Decorative corner accent */}
+                    <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-primary/10 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  </motion.div>
+                </Link>
+              </motion.div>
             )
           })}
-        </div>
+        </motion.div>
 
-        <div className="text-center animate-fade-in-up animate-delay-500">
-          <Button
-            asChild
-            size="lg"
-            className="bg-gradient-to-r from-primary to-secondary hover:shadow-lg transition-all duration-300 hover:scale-105 group text-lg px-8 py-6 h-auto"
-          >
-            <Link href="/ministries" className="flex items-center gap-2">
-              View All Ministries
-              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-            </Link>
-          </Button>
-        </div>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.5 }}
+          className="text-center"
+        >
+          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+            <Button
+              asChild
+              size="lg"
+              className="bg-gradient-to-r from-primary to-secondary hover:shadow-lg transition-all duration-300 group text-lg px-8 py-6 h-auto"
+            >
+              <Link href="/ministries" className="flex items-center gap-2">
+                View All Ministries
+                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              </Link>
+            </Button>
+          </motion.div>
+        </motion.div>
       </div>
     </section>
   )
