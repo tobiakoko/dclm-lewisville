@@ -38,7 +38,7 @@ export const NAV_LINKS = [
   { name: 'Home', href: '/' },
   { name: 'About', href: '/about' },
   { name: 'Ministries', href: '/ministries' },
-  { name: 'Sermons', href: '/sermons' },
+  { name: 'Ministers', href: '/ministers' },
   { name: 'Events', href: '/events' },
   { name: 'Contact', href: '/contact' },
   { name: 'Give', href: '/give', highlight: true },

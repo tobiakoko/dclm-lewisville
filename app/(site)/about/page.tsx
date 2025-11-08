@@ -6,6 +6,9 @@ import Timeline from '@/components/sections/Timeline'
 import Team from '@/components/sections/Team'
 import { PortableText } from '@portabletext/react'
 import CTA from '@/components/sections/CTA'
+import PageHero from '@/components/sections/PageHero'
+import UpcomingEvents from '@/components/sections/UpcomingEvents'
+import { eventsQuery } from '@/lib/sanity/queries'
 
 export const metadata = {
   title: 'About Us',
@@ -27,6 +30,17 @@ async function getAboutData() {
       "history": *[_type == "page" && slug.current == "about"][0] {
         title,
         content
+      },
+      "events": *[_type == "event" && date >= now()] | order(date asc)[0...3] {
+        _id,
+        title,
+        slug,
+        date,
+        endDate,
+        location,
+        description,
+        image,
+        featured
       }
     }
   `)
@@ -36,16 +50,13 @@ export default async function AboutPage() {
   const data = await getAboutData()
 
   return (
-    <div className="py-16">
+    <div>
       {/* Hero Section */}
-      <section className="bg-linear-to-r from-blue-600 to-purple-700 text-white py-20">
-        <div className="container text-center">
-          <h1 className="font-heading text-5xl font-bold mb-4">About Us</h1>
-          <p className="text-xl max-w-2xl mx-auto">
-            Growing in Christ, Serving Together, Reaching the World
-          </p>
-        </div>
-      </section>
+      <PageHero
+        title="About Us"
+        subtitle="Growing in Christ, Serving Together, Reaching the World"
+        variant="simple"
+      />
 
       {/* Mission & Vision */}
       <section className="py-16 bg-white">
@@ -252,6 +263,9 @@ export default async function AboutPage() {
           />
         </div>
       </section>
+
+      {/* Upcoming Events Section */}
+      <UpcomingEvents events={data.events || []} limit={3} showViewAll={true} />
 
       {/* CTA */}
       <CTA
