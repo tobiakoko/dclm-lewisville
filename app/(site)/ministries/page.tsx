@@ -1,37 +1,66 @@
 import { client } from '@/lib/sanity/client'
 import { ministriesQuery } from '@/lib/sanity/queries'
+import { groq } from 'next-sanity'
 import Link from 'next/link'
 import Image from 'next/image'
 import { urlFor } from '@/lib/sanity/client'
 import * as Icons from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import PageHero from '@/components/sections/PageHero'
+import UpcomingEvents from '@/components/sections/UpcomingEvents'
 
 export const metadata = {
   title: 'Ministries',
   description: 'Explore the various ministries at DCLM Lewisville and find your place to serve.',
 }
 
+async function getMinistriesData() {
+  return client.fetch(groq`
+    {
+      "ministries": *[_type == "ministry"] | order(order asc) {
+        _id,
+        name,
+        slug,
+        description,
+        icon,
+        leader->{name, photo},
+        meetingTime,
+        meetingDay
+      },
+      "events": *[_type == "event" && date >= now()] | order(date asc)[0...3] {
+        _id,
+        title,
+        slug,
+        date,
+        endDate,
+        location,
+        description,
+        image,
+        featured
+      }
+    }
+  `)
+}
+
 export default async function MinistriesPage() {
-  const ministries = await client.fetch(ministriesQuery)
+  const data = await getMinistriesData()
+  const ministries = data.ministries
 
   return (
-    <div className="py-16">
+    <div>
       {/* Hero */}
-      <section className="bg-linear-to-r from-blue-600 to-purple-700 text-white py-20">
-        <div className="container text-center">
-          <h1 className="font-heading text-5xl font-bold mb-4">Our Ministries</h1>
-          <p className="text-xl max-w-2xl mx-auto">
-            Find your place to serve, grow, and connect with others in faith
-          </p>
-        </div>
-      </section>
+      <PageHero
+        title="Our Ministries"
+        subtitle="Find your place to serve, grow, and connect with others in faith"
+        variant="simple"
+      />
 
       {/* Ministries Grid */}
       <section className="py-16 bg-gray-50">
         <div className="container">
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {ministries.map((ministry) => {
-              const IconComponent = Icons[ministry.icon as keyof typeof Icons] || Icons.Users
+            {ministries.map((ministry: any) => {
+              const IconComponent = (Icons[ministry.icon as keyof typeof Icons] as any) || Icons.Users
               
               return (
                 <Link
@@ -80,6 +109,9 @@ export default async function MinistriesPage() {
         </div>
       </section>
 
+      {/* Upcoming Events Section */}
+      <UpcomingEvents events={data.events || []} limit={3} showViewAll={true} />
+
       {/* Get Involved CTA */}
       <section className="py-16 bg-white">
         <div className="container max-w-3xl text-center">
@@ -87,7 +119,7 @@ export default async function MinistriesPage() {
             Ready to Get Involved?
           </h2>
           <p className="text-gray-600 mb-8">
-            We&apos;d love to help you find the perfect place to serve and grow in your faith. 
+            We&apos;d love to help you find the perfect place to serve and grow in your faith.
             Contact us to learn more about any of our ministries.
           </p>
           <Button asChild size="lg">

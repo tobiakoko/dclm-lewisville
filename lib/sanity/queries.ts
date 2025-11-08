@@ -18,8 +18,11 @@ export const homePageQuery = groq`
       title,
       slug,
       date,
+      endDate,
       location,
-      image
+      description,
+      image,
+      featured
     },
     "ministries": *[_type == "ministry"] | order(order asc)[0...6] {
       _id,
@@ -27,6 +30,15 @@ export const homePageQuery = groq`
       slug,
       description,
       icon
+    },
+    "team": *[_type == "person" && active == true] | order(order asc) {
+      _id,
+      name,
+      title,
+      role,
+      shortBio,
+      photo,
+      email
     },
     "testimonials": *[_type == "testimonial" && featured == true] | order(_createdAt desc)[0...3] {
       _id,

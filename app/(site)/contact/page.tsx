@@ -1,6 +1,7 @@
 import { MapPin, Phone, Mail, Clock } from 'lucide-react'
 import { SITE_CONFIG, SERVICE_TIMES } from '@/lib/constants'
 import ContactForm from '@/components/ContactForm'
+import PageHero from '@/components/sections/PageHero'
 
 export const metadata = {
   title: 'Contact Us',
@@ -9,16 +10,13 @@ export const metadata = {
 
 export default function ContactPage() {
   return (
-    <div className="py-16">
+    <div>
       {/* Hero */}
-      <section className="bg-linear-to-r from-blue-600 to-purple-700 text-white py-20">
-        <div className="container text-center">
-          <h1 className="font-heading text-5xl font-bold mb-4">Contact Us</h1>
-          <p className="text-xl max-w-2xl mx-auto">
-            We&apos;d love to hear from you! Reach out with any questions or to plan your visit.
-          </p>
-        </div>
-      </section>
+      <PageHero
+        title="Contact Us"
+        subtitle="We'd love to hear from you! Reach out with any questions or to plan your visit."
+        variant="simple"
+      />
 
       {/* Contact Info & Form */}
       <section className="py-16 bg-white">
