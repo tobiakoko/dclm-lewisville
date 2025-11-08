@@ -1,6 +1,41 @@
+'use client'
+
 import Link from 'next/link'
+import { motion } from 'framer-motion'
 import { Heart, DollarSign, Users, Building, ArrowRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.15
+    }
+  }
+}
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.6
+    }
+  }
+}
+
+const cardVariants = {
+  hidden: { opacity: 0, scale: 0.9 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    transition: {
+      duration: 0.5
+    }
+  }
+}
 
 export default function GiveSection() {
   return (
@@ -10,9 +45,15 @@ export default function GiveSection() {
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/10 to-black/20" />
 
       <div className="container relative z-10">
-        <div className="max-w-5xl mx-auto">
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}
+          className="max-w-5xl mx-auto"
+        >
           {/* Header */}
-          <div className="text-center mb-12 animate-fade-in-up">
+          <motion.div variants={itemVariants} className="text-center mb-12">
             <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm rounded-full px-4 py-2 mb-6">
               <Heart className="w-4 h-4" fill="currentColor" />
               <span className="text-sm font-semibold">Give</span>
@@ -25,10 +66,13 @@ export default function GiveSection() {
               Your generous giving helps us spread the Gospel, support our community,
               and advance God&apos;s kingdom here in Lewisville and around the world.
             </p>
-          </div>
+          </motion.div>
 
           {/* Impact Grid */}
-          <div className="grid md:grid-cols-3 gap-6 mb-12 animate-fade-in-up animate-delay-200">
+          <motion.div
+            variants={itemVariants}
+            className="grid md:grid-cols-3 gap-6 mb-12"
+          >
             {[
               {
                 icon: <Users className="w-8 h-8" />,
@@ -46,64 +90,88 @@ export default function GiveSection() {
                 description: 'Reaching our community and supporting global missions'
               }
             ].map((item, index) => (
-              <div
+              <motion.div
                 key={index}
-                className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 hover:bg-white/15 transition-all duration-300 hover:scale-105"
-                style={{ animationDelay: `${index * 100}ms` }}
+                variants={cardVariants}
+                whileHover={{ scale: 1.05, y: -5 }}
+                className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 hover:bg-white/15 transition-all duration-300"
               >
-                <div className="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center mb-4 mx-auto">
+                <motion.div
+                  whileHover={{ scale: 1.1, rotate: 5 }}
+                  transition={{ type: 'spring', stiffness: 300 }}
+                  className="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center mb-4 mx-auto"
+                >
                   {item.icon}
-                </div>
+                </motion.div>
                 <h3 className="font-heading text-xl font-bold mb-2 text-center">
                   {item.title}
                 </h3>
                 <p className="text-sm text-white/80 text-center leading-relaxed">
                   {item.description}
                 </p>
-              </div>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
 
           {/* Scripture Quote */}
-          <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20 mb-12 animate-fade-in-up animate-delay-300">
+          <motion.div
+            variants={itemVariants}
+            whileHover={{ scale: 1.02 }}
+            className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20 mb-12"
+          >
             <div className="text-center">
-              <DollarSign className="w-12 h-12 mx-auto mb-4 opacity-50" />
+              <motion.div
+                animate={{ scale: [1, 1.1, 1] }}
+                transition={{ repeat: Infinity, duration: 3, ease: 'easeInOut' }}
+              >
+                <DollarSign className="w-12 h-12 mx-auto mb-4 opacity-50" />
+              </motion.div>
               <blockquote className="text-xl md:text-2xl font-medium italic mb-4">
                 &quot;Each of you should give what you have decided in your heart to give,
                 not reluctantly or under compulsion, for God loves a cheerful giver.&quot;
               </blockquote>
               <cite className="text-white/80 text-sm">— 2 Corinthians 9:7 (NIV)</cite>
             </div>
-          </div>
+          </motion.div>
 
           {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in-up animate-delay-400">
-            <Button
-              asChild
-              size="lg"
-              className="bg-white text-primary hover:bg-white/90 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 text-lg px-8 py-6 h-auto group"
-            >
-              <Link href="/give" className="flex items-center gap-2">
-                <Heart className="w-5 h-5" fill="currentColor" />
-                Give Now
-                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </Link>
-            </Button>
-            <Button
-              asChild
-              size="lg"
-              variant="outline"
-              className="bg-white/10 backdrop-blur-sm border-2 border-white text-white hover:bg-white hover:text-primary shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 text-lg px-8 py-6 h-auto"
-            >
-              <Link href="/give">Learn About Giving</Link>
-            </Button>
-          </div>
+          <motion.div
+            variants={itemVariants}
+            className="flex flex-col sm:flex-row gap-4 justify-center"
+          >
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+              <Button
+                asChild
+                size="lg"
+                className="bg-white text-primary hover:bg-white/90 shadow-xl hover:shadow-2xl transition-all duration-300 text-lg px-8 py-6 h-auto group"
+              >
+                <Link href="/give" className="flex items-center gap-2">
+                  <Heart className="w-5 h-5" fill="currentColor" />
+                  Give Now
+                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                </Link>
+              </Button>
+            </motion.div>
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+              <Button
+                asChild
+                size="lg"
+                variant="outline"
+                className="bg-white/10 backdrop-blur-sm border-2 border-white text-white hover:bg-white hover:text-primary shadow-xl hover:shadow-2xl transition-all duration-300 text-lg px-8 py-6 h-auto"
+              >
+                <Link href="/give">Learn About Giving</Link>
+              </Button>
+            </motion.div>
+          </motion.div>
 
           {/* Additional Info */}
-          <p className="text-center text-sm text-white/70 mt-8 animate-fade-in-up animate-delay-500">
+          <motion.p
+            variants={itemVariants}
+            className="text-center text-sm text-white/70 mt-8"
+          >
             We are a 501(c)(3) non-profit organization. All donations are tax-deductible.
-          </p>
-        </div>
+          </motion.p>
+        </motion.div>
       </div>
     </section>
   )

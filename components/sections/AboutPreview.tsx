@@ -1,6 +1,41 @@
+'use client'
+
 import Link from 'next/link'
+import { motion } from 'framer-motion'
 import { Book, Heart, Users, ArrowRight, Church } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.15
+    }
+  }
+}
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.6
+    }
+  }
+}
+
+const cardVariants = {
+  hidden: { opacity: 0, scale: 0.9 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    transition: {
+      duration: 0.5
+    }
+  }
+}
 
 export default function AboutPreview() {
   return (
@@ -12,9 +47,15 @@ export default function AboutPreview() {
       </div>
 
       <div className="container relative z-10">
-        <div className="grid lg:grid-cols-2 gap-16 items-center">
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}
+          className="grid lg:grid-cols-2 gap-16 items-center"
+        >
           {/* Left Side - Content */}
-          <div className="animate-fade-in-up">
+          <motion.div variants={itemVariants}>
             <div className="inline-flex items-center gap-2 bg-gradient-to-r from-primary/10 to-secondary/10 rounded-full px-4 py-2 mb-6">
               <Church className="w-4 h-4 text-primary" />
               <span className="text-sm font-semibold text-primary">About Us</span>
@@ -38,29 +79,36 @@ export default function AboutPreview() {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 mb-8">
-              <Button
-                asChild
-                size="lg"
-                className="bg-gradient-to-r from-primary to-secondary hover:shadow-lg transition-all duration-300 hover:scale-105 group"
-              >
-                <Link href="/about" className="flex items-center gap-2">
-                  Learn More About Us
-                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                </Link>
-              </Button>
-              <Button
-                asChild
-                size="lg"
-                variant="outline"
-                className="border-2 hover:bg-primary/5 transition-all duration-300 hover:scale-105"
-              >
-                <Link href="/contact">Plan Your Visit</Link>
-              </Button>
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <Button
+                  asChild
+                  size="lg"
+                  className="bg-gradient-to-r from-primary to-secondary hover:shadow-lg transition-all duration-300 group"
+                >
+                  <Link href="/about" className="flex items-center gap-2">
+                    Learn More About Us
+                    <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                  </Link>
+                </Button>
+              </motion.div>
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <Button
+                  asChild
+                  size="lg"
+                  variant="outline"
+                  className="border-2 hover:bg-primary/5 transition-all duration-300"
+                >
+                  <Link href="/contact">Plan Your Visit</Link>
+                </Button>
+              </motion.div>
             </div>
-          </div>
+          </motion.div>
 
           {/* Right Side - Features */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 animate-fade-in-up animate-delay-200">
+          <motion.div
+            variants={itemVariants}
+            className="grid grid-cols-1 sm:grid-cols-2 gap-6"
+          >
             {[
               {
                 icon: <Book className="w-6 h-6 text-white" />,
@@ -83,53 +131,76 @@ export default function AboutPreview() {
                 description: 'Part of a worldwide ministry reaching over 70 countries with the Gospel'
               }
             ].map((feature, index) => (
-              <div
+              <motion.div
                 key={index}
-                className="bg-gradient-to-br from-white to-gray-50 rounded-2xl p-6 border-2 border-gray-100 hover:border-primary/50 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 group"
-                style={{ animationDelay: `${index * 100}ms` }}
+                variants={cardVariants}
+                whileHover={{ y: -8, scale: 1.03 }}
+                className="bg-gradient-to-br from-white to-gray-50 rounded-2xl p-6 border-2 border-gray-100 hover:border-primary/50 hover:shadow-xl transition-all duration-300 group"
               >
-                <div className="w-14 h-14 bg-gradient-to-br from-primary via-secondary to-accent rounded-xl flex items-center justify-center mb-4 shadow-lg group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
+                <motion.div
+                  whileHover={{ scale: 1.15, rotate: 12 }}
+                  transition={{ type: 'spring', stiffness: 300 }}
+                  className="w-14 h-14 bg-gradient-to-br from-primary via-secondary to-accent rounded-xl flex items-center justify-center mb-4 shadow-lg"
+                >
                   {feature.icon}
-                </div>
+                </motion.div>
                 <h3 className="font-heading text-lg font-bold mb-2 group-hover:text-primary transition-colors">
                   {feature.title}
                 </h3>
                 <p className="text-sm text-gray-600 leading-relaxed">
                   {feature.description}
                 </p>
-              </div>
+              </motion.div>
             ))}
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
 
         {/* Mission & Vision Preview */}
-        <div className="grid md:grid-cols-2 gap-8 mt-16 animate-fade-in-up animate-delay-400">
-          <div className="bg-gradient-to-br from-blue-50 to-blue-100/50 p-8 rounded-2xl border-2 border-blue-200/50 hover:shadow-xl transition-all duration-300">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.4, duration: 0.6 }}
+          className="grid md:grid-cols-2 gap-8 mt-16"
+        >
+          <motion.div
+            whileHover={{ y: -8, scale: 1.02 }}
+            className="bg-gradient-to-br from-primary/5 to-primary/10 p-8 rounded-2xl border-2 border-primary/20 hover:shadow-xl transition-all duration-300"
+          >
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center shadow-lg">
+              <motion.div
+                whileHover={{ scale: 1.1, rotate: 5 }}
+                className="w-12 h-12 bg-gradient-to-br from-primary to-secondary rounded-xl flex items-center justify-center shadow-lg"
+              >
                 <Heart className="w-6 h-6 text-white" />
-              </div>
-              <h3 className="font-heading text-2xl font-bold text-blue-900">Our Mission</h3>
+              </motion.div>
+              <h3 className="font-heading text-2xl font-bold text-primary">Our Mission</h3>
             </div>
             <p className="text-gray-700 leading-relaxed">
               To bring people to Christ and build them up in the faith through biblical teaching,
               passionate worship, fervent prayer, and dedicated service.
             </p>
-          </div>
+          </motion.div>
 
-          <div className="bg-gradient-to-br from-purple-50 to-purple-100/50 p-8 rounded-2xl border-2 border-purple-200/50 hover:shadow-xl transition-all duration-300">
+          <motion.div
+            whileHover={{ y: -8, scale: 1.02 }}
+            className="bg-gradient-to-br from-secondary/5 to-secondary/10 p-8 rounded-2xl border-2 border-secondary/20 hover:shadow-xl transition-all duration-300"
+          >
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
+              <motion.div
+                whileHover={{ scale: 1.1, rotate: 5 }}
+                className="w-12 h-12 bg-gradient-to-br from-secondary to-accent rounded-xl flex items-center justify-center shadow-lg"
+              >
                 <Book className="w-6 h-6 text-white" />
-              </div>
-              <h3 className="font-heading text-2xl font-bold text-purple-900">Our Vision</h3>
+              </motion.div>
+              <h3 className="font-heading text-2xl font-bold text-secondary">Our Vision</h3>
             </div>
             <p className="text-gray-700 leading-relaxed">
               To be a Christ-centered church that transforms lives through God&apos;s Word, equipping
               believers to live holy lives and fulfill the Great Commission.
             </p>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       </div>
     </section>
   )
