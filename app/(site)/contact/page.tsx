@@ -33,9 +33,14 @@ export default function ContactPage() {
                     </div>
                     <div>
                       <h3 className="font-bold mb-2">Address</h3>
-                      <p className="text-gray-600">{SITE_CONFIG.address}</p>
+                      <p className="text-gray-600">
+                        {SITE_CONFIG.address.street}<br />
+                        {SITE_CONFIG.address.city}, {SITE_CONFIG.address.state} {SITE_CONFIG.address.zip}
+                      </p>
                       <a
-                        href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(SITE_CONFIG.address)}`}
+                        href={`https://maps.google.com/?q=${encodeURIComponent(
+                          `${SITE_CONFIG.address.street}, ${SITE_CONFIG.address.city}, ${SITE_CONFIG.address.state} ${SITE_CONFIG.address.zip}`
+                        )}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-blue-600 hover:underline text-sm mt-1 inline-block"
@@ -140,7 +145,9 @@ export default function ContactPage() {
         <div className="container">
           <div className="rounded-lg overflow-hidden shadow-lg" style={{ height: '450px' }}>
             <iframe
-              src={`https://www.google.com/maps/embed/v1/place?key=YOUR_GOOGLE_MAPS_API_KEY&q=${encodeURIComponent(SITE_CONFIG.address)}`}
+              src={`https://maps.google.com/?q=${encodeURIComponent(
+                    `${SITE_CONFIG.address.street}, ${SITE_CONFIG.address.city}, ${SITE_CONFIG.address.state} ${SITE_CONFIG.address.zip}`
+              )}`}
               width="100%"
               height="100%"
               style={{ border: 0 }}

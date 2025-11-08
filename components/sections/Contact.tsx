@@ -88,7 +88,10 @@ export default function Contact() {
                     </div>
                     <div>
                       <div className="font-semibold mb-1 text-sm text-muted-foreground">Address</div>
-                      <div className="text-foreground">{SITE_CONFIG.address}</div>
+                      <div className="text-foreground">
+                        {SITE_CONFIG.address.street}<br />
+                        {SITE_CONFIG.address.city}, {SITE_CONFIG.address.state} {SITE_CONFIG.address.zip}
+                      </div>
                     </div>
                   </div>
                 </div>
