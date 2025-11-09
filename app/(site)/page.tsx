@@ -14,7 +14,13 @@ import Contact from '@/components/sections/Contact'
 export const revalidate = 3600 // Revalidate every hour
 
 export default async function HomePage() {
-  const data = await client.fetch(homePageQuery)
+  let data = { ministries: [], team: [], upcomingEvents: [] }
+
+  try {
+    data = await client.fetch(homePageQuery)
+  } catch (error) {
+    console.warn('Failed to fetch home page data (this is expected during build without Sanity credentials)', error)
+  }
 
   return (
     <>

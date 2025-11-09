@@ -15,31 +15,36 @@ export const metadata = {
 }
 
 async function getMinistriesData() {
-  return client.fetch(groq`
-    {
-      "ministries": *[_type == "ministry"] | order(order asc) {
-        _id,
-        name,
-        slug,
-        description,
-        icon,
-        leader->{name, photo},
-        meetingTime,
-        meetingDay
-      },
-      "events": *[_type == "event" && date >= now()] | order(date asc)[0...3] {
-        _id,
-        title,
-        slug,
-        date,
-        endDate,
-        location,
-        description,
-        image,
-        featured
+  try {
+    return await client.fetch(groq`
+      {
+        "ministries": *[_type == "ministry"] | order(order asc) {
+          _id,
+          name,
+          slug,
+          description,
+          icon,
+          leader->{name, photo},
+          meetingTime,
+          meetingDay
+        },
+        "events": *[_type == "event" && date >= now()] | order(date asc)[0...3] {
+          _id,
+          title,
+          slug,
+          date,
+          endDate,
+          location,
+          description,
+          image,
+          featured
+        }
       }
-    }
-  `)
+    `)
+  } catch (error) {
+    console.warn('Failed to fetch ministries data (this is expected during build without Sanity credentials)', error)
+    return { ministries: [], events: [] }
+  }
 }
 
 export default async function MinistriesPage() {
