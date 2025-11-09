@@ -42,16 +42,16 @@ export interface SiteConfig {
 export const SITE_CONFIG: SiteConfig = {
   name: 'Deeper Life Bible Church Lewisville',
   shortName: 'DCLM Lewisville',
-  description: 'A Christ-centered church in Lewisville, TX, dedicated to biblical teaching and spiritual growth.',
+  description: 'Part of the global Deeper Christian Life Ministry, committed to biblical teaching, holy living, and fervent evangelism in Lewisville, Texas.',
   url: process.env.NEXT_PUBLIC_SITE_URL || 'https://dclmlewisville.org',
   address: {
-    street: '123 Church Street',
+    street: '1500 W Main Street',
     city: 'Lewisville',
     state: 'TX',
     zip: '75067',
     country: 'USA',
   },
-  phone: '(123) 456-7890',
+  phone: '(972) 123-4567',
   email: 'info@dclmlewisville.org',
   socialMedia: {
     facebook: 'https://facebook.com/dclmlewisville',
@@ -66,19 +66,19 @@ export const SERVICE_TIMES: ServiceTime[] = [
     name: 'Sunday Service',
     day: 'Sunday',
     time: '9:30 AM',
-    description: 'Main worship service',
+    description: 'Worship, biblical teaching, and fellowship',
   },
   {
     name: 'Bible Study',
     day: 'Tuesday',
     time: '7:00 PM',
-    description: 'Systematic and expository study of the Word',
+    description: 'Systematic study of God\'s Word and doctrine',
   },
   {
     name: 'Revival Service',
     day: 'Friday',
     time: '7:00 PM',
-    description: 'Revival, Prayer, and Evangelism Training',
+    description: 'Prayer, evangelism, and spiritual renewal',
   },
 ]
 

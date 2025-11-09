@@ -36,26 +36,28 @@ export default function AboutPreview() {
               </p>
 
               <p>
-                Whether you&apos;re visiting us online or considering joining us in person,
-                we are thrilled that you&apos;re here. At DCLM Lewisville, we are a family committed
-                to growing deeper in our relationship with God through biblical teaching, passionate
-                worship, and genuine fellowship.
+                Welcome to Deeper Life Bible Church Lewisville! Whether you&apos;re visiting us online
+                or considering joining us in person, we are delighted that the Lord has led you here.
+                As part of the global Deeper Christian Life Ministry founded by Pastor W.F. Kumuyi,
+                we are committed to systematic Bible study, holy living, and fervent evangelism.
               </p>
 
               <p>
-                Our mission is simple yet powerful: to bring people to Christ and build them up in
-                the faith. We believe that every person who walks through our doors—or joins us
-                online—has been divinely appointed for such a time as this.
+                Our mission is clear: to bring souls to Christ and build them up in the faith through
+                sound biblical doctrine, passionate worship, and dedicated prayer. We believe in the
+                authority of Scripture and the transforming power of God&apos;s Word when faithfully taught
+                and applied to daily living.
               </p>
 
               <p>
-                We invite you to explore who we are, what we believe, and the vibrant ministries
-                that make up our church community. Whether you&apos;re seeking a church home, looking
-                to grow spiritually, or simply curious about faith, you are welcome here.
+                Here in Lewisville, we are more than just a congregation—we are a spiritual family united
+                by our love for God&apos;s Word and our desire to see lives transformed by the Gospel.
+                Whether you are seeking salvation, spiritual growth, or a church home where holiness
+                and righteousness are cherished, you will find a welcoming community here.
               </p>
 
               <p className="font-medium text-foreground">
-                We look forward to worshiping with you!
+                We invite you to join us as we pursue deeper life in Christ together!
               </p>
             </div>
 
