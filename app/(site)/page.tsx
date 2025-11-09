@@ -8,6 +8,7 @@ import ServiceSchedule from '@/components/sections/ServiceSchedule'
 import MinistriesPreview from '@/components/sections/MinistriesPreview'
 import Team from '@/components/sections/Team'
 import UpcomingEvents from '@/components/sections/UpcomingEvents'
+import CtaSection from '@/components/sections/CtaSection'
 import Contact from '@/components/sections/Contact'
 
 export const revalidate = 3600 // Revalidate every hour
@@ -49,6 +50,9 @@ export default async function HomePage() {
 
       {/* Events Section */}
       <UpcomingEvents events={data.upcomingEvents || []} limit={3} showViewAll={true} />
+
+      {/* CTA Section */}
+      <CtaSection />
 
       {/* Contact Section */}
       <Contact />
