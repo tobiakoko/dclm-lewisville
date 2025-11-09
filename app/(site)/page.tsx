@@ -1,7 +1,7 @@
 import { client } from '@/lib/sanity/client'
 import { homePageQuery } from '@/lib/sanity/queries'
 import { SERVICE_TIMES } from '@/lib/constants'
-import Hero from '@/components/sections/Hero'
+import HeroCarousel from '@/components/sections/HeroCarousel'
 import GiveSection from '@/components/sections/GiveSection'
 import AboutPreview from '@/components/sections/AboutPreview'
 import ServiceSchedule from '@/components/sections/ServiceSchedule'
@@ -18,8 +18,8 @@ export default async function HomePage() {
 
   return (
     <>
-      {/* Main Hero Section */}
-      <Hero />
+      {/* Hero Carousel Section */}
+      <HeroCarousel />
 
       {/* Give Section */}
       <GiveSection />
