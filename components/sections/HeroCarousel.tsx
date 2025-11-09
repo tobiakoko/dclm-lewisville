@@ -158,8 +158,11 @@ export default function HeroCarousel() {
 
   return (
     <section
+      id="hero-carousel"
       className="relative overflow-hidden h-screen min-h-[600px]"
       aria-labelledby="hero-heading"
+      aria-roledescription="carousel"
+      aria-live="polite"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >
@@ -273,35 +276,47 @@ export default function HeroCarousel() {
         <div className="container h-full mx-auto px-4 flex items-center justify-between">
           <button
             onClick={() => paginate(-1)}
-            className="pointer-events-auto group bg-white/10 hover:bg-white/20 backdrop-blur-sm border border-white/20 rounded-full p-3 transition-all duration-300 hover:scale-110"
+            className="pointer-events-auto group bg-white/10 hover:bg-white/20 backdrop-blur-sm border border-white/20 rounded-full p-3 transition-all duration-300 hover:scale-110 min-h-[44px] min-w-[44px] flex items-center justify-center"
             aria-label="Previous slide"
+            aria-controls="hero-carousel"
           >
-            <ChevronLeft className="w-6 h-6 text-white" />
+            <ChevronLeft className="w-6 h-6 text-white" aria-hidden="true" />
           </button>
           <button
             onClick={() => paginate(1)}
-            className="pointer-events-auto group bg-white/10 hover:bg-white/20 backdrop-blur-sm border border-white/20 rounded-full p-3 transition-all duration-300 hover:scale-110"
+            className="pointer-events-auto group bg-white/10 hover:bg-white/20 backdrop-blur-sm border border-white/20 rounded-full p-3 transition-all duration-300 hover:scale-110 min-h-[44px] min-w-[44px] flex items-center justify-center"
             aria-label="Next slide"
+            aria-controls="hero-carousel"
           >
-            <ChevronRight className="w-6 h-6 text-white" />
+            <ChevronRight className="w-6 h-6 text-white" aria-hidden="true" />
           </button>
         </div>
       </div>
 
       {/* Navigation Dots */}
-      <div className="absolute bottom-8 left-0 right-0 z-20 flex justify-center gap-2">
+      <div
+        className="absolute bottom-8 left-0 right-0 z-20 flex justify-center gap-2"
+        role="group"
+        aria-label="Carousel navigation"
+      >
         {slides.map((slide, index) => (
           <button
             key={slide.id}
             onClick={() => goToSlide(index)}
-            className={`transition-all duration-300 rounded-full ${
+            className={`transition-all duration-300 rounded-full min-h-[44px] min-w-[44px] flex items-center justify-center ${
+              index === slideIndex
+                ? 'bg-white/20 px-2'
+                : 'bg-white/10 hover:bg-white/20'
+            }`}
+            aria-label={`Go to slide ${index + 1}: ${slide.title}`}
+            aria-current={index === slideIndex}
+          >
+            <span className={`block rounded-full transition-all ${
               index === slideIndex
                 ? 'bg-white w-8 h-2'
-                : 'bg-white/40 hover:bg-white/60 w-2 h-2'
-            }`}
-            aria-label={`Go to slide ${index + 1}`}
-            aria-current={index === slideIndex ? 'true' : 'false'}
-          />
+                : 'bg-white/60 w-2 h-2'
+            }`} />
+          </button>
         ))}
       </div>
     </section>
