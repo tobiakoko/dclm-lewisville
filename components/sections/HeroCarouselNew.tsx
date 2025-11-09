@@ -109,7 +109,7 @@ export default function HeroCarousel() {
   return (
     <section
       className="relative overflow-hidden bg-primary text-primary-foreground"
-      style={{ minHeight: 'clamp(500px, 70vh, 800px)' }}
+      style={{ height: 'calc(100vh - 3.5rem)' }}
       aria-label="Hero carousel"
     >
       <div className="overflow-hidden h-full" ref={emblaRef}>
@@ -123,33 +123,33 @@ export default function HeroCarousel() {
               />
 
               {/* Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-black/40" />
+              <div className="absolute inset-0 bg-gradient-to-r from-black/75 via-black/50 to-transparent" />
 
               {/* Content */}
               <div className="relative h-full container mx-auto px-4 sm:px-6 lg:px-8 flex items-center">
-                <div className="max-w-2xl space-y-6">
-                  <div className="inline-block px-3 py-1 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full">
-                    <span className="text-sm font-medium text-white">{slide.subtitle}</span>
+                <div className="max-w-3xl space-y-8">
+                  <div className="inline-block px-4 py-1.5 bg-white/10 backdrop-blur-md border border-white/20 rounded-full">
+                    <span className="text-sm font-semibold text-white tracking-wide">{slide.subtitle}</span>
                   </div>
 
-                  <h1 className="text-4xl sm:text-5xl lg:text-6xl font-heading font-semibold leading-tight text-white">
+                  <h1 className="text-5xl sm:text-6xl lg:text-7xl font-heading font-bold leading-[1.1] text-white tracking-tight">
                     {slide.title}
                   </h1>
 
-                  <p className="text-lg text-white/90 max-w-xl">
+                  <p className="text-xl text-white/90 max-w-2xl leading-relaxed font-light">
                     {slide.description}
                   </p>
 
-                  <div className="flex gap-3 pt-2">
+                  <div className="flex flex-col sm:flex-row gap-4 pt-4">
                     <Button
                       asChild
                       variant="accent"
                       size="lg"
-                      className="shadow-lg"
+                      className="elevation-3 text-base h-12 px-8"
                     >
                       <Link href={slide.cta.href}>
                         {slide.cta.text}
-                        <ArrowRight className="w-4 h-4" />
+                        <ArrowRight className="w-5 h-5 ml-1" />
                       </Link>
                     </Button>
 
@@ -158,7 +158,7 @@ export default function HeroCarousel() {
                         asChild
                         variant="outline"
                         size="lg"
-                        className="bg-white/10 backdrop-blur-sm border-white/20 text-white hover:bg-white/20"
+                        className="bg-white/10 backdrop-blur-md border-white/30 text-white hover:bg-white/20 hover:border-white/40 text-base h-12 px-8"
                       >
                         <Link href="/about">
                           Learn More
@@ -169,17 +169,17 @@ export default function HeroCarousel() {
 
                   {/* Service Times - Only on first slide */}
                   {index === 0 && (
-                    <div className="flex flex-wrap gap-4 pt-4 text-sm text-white/80">
-                      <div className="flex items-center gap-2">
-                        <div className="w-1.5 h-1.5 bg-accent rounded-full" />
+                    <div className="flex flex-wrap gap-6 pt-6 text-sm text-white/75 font-medium">
+                      <div className="flex items-center gap-2.5">
+                        <div className="w-2 h-2 bg-accent rounded-full animate-pulse" />
                         <span>Sunday 10:00 AM</span>
                       </div>
-                      <div className="flex items-center gap-2">
-                        <div className="w-1.5 h-1.5 bg-accent rounded-full" />
+                      <div className="flex items-center gap-2.5">
+                        <div className="w-2 h-2 bg-accent rounded-full animate-pulse" />
                         <span>Tuesday 6:30 PM</span>
                       </div>
-                      <div className="flex items-center gap-2">
-                        <div className="w-1.5 h-1.5 bg-accent rounded-full" />
+                      <div className="flex items-center gap-2.5">
+                        <div className="w-2 h-2 bg-accent rounded-full animate-pulse" />
                         <span>Friday 6:30 PM</span>
                       </div>
                     </div>
@@ -192,18 +192,18 @@ export default function HeroCarousel() {
       </div>
 
       {/* Navigation Dots */}
-      <div className="absolute bottom-6 left-0 right-0 z-10">
+      <div className="absolute bottom-8 left-0 right-0 z-10">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between">
-            <div className="flex gap-2">
+            <div className="flex gap-2.5">
               {slides.map((_, index) => (
                 <button
                   key={index}
                   onClick={() => scrollTo(index)}
-                  className={`h-1 rounded-full transition-all ${
+                  className={`h-1.5 rounded-full transition-all duration-300 ${
                     currentIndex === index
-                      ? 'w-8 bg-white'
-                      : 'w-1 bg-white/40 hover:bg-white/60'
+                      ? 'w-10 bg-white elevation-1'
+                      : 'w-1.5 bg-white/40 hover:bg-white/70'
                   }`}
                   aria-label={`Go to slide ${index + 1}`}
                   aria-current={currentIndex === index}
@@ -211,23 +211,23 @@ export default function HeroCarousel() {
               ))}
             </div>
 
-            <div className="hidden sm:flex gap-2">
+            <div className="hidden sm:flex gap-3">
               <button
                 onClick={scrollPrev}
-                className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 transition-colors flex items-center justify-center text-white"
+                className="w-11 h-11 rounded-full bg-white/15 backdrop-blur-md border border-white/20 hover:bg-white/25 hover:border-white/30 transition-all duration-200 flex items-center justify-center text-white elevation-2"
                 aria-label="Previous slide"
               >
                 <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15 19l-7-7 7-7" />
                 </svg>
               </button>
               <button
                 onClick={scrollNext}
-                className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 transition-colors flex items-center justify-center text-white"
+                className="w-11 h-11 rounded-full bg-white/15 backdrop-blur-md border border-white/20 hover:bg-white/25 hover:border-white/30 transition-all duration-200 flex items-center justify-center text-white elevation-2"
                 aria-label="Next slide"
               >
                 <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
                 </svg>
               </button>
             </div>
