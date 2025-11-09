@@ -57,7 +57,7 @@ interface StaggerButtonProps
   staggerDelay?: number;
   staggerDuration?: number;
   direction?: "up" | "down" | "alternate-even" | "alternate-odd";
-  easing?: number[];
+  easing?: [number, number, number, number];
   disableStagger?: boolean;
 }
 
@@ -179,6 +179,9 @@ const StaggerButton = React.forwardRef<HTMLButtonElement, StaggerButtonProps>(
 
     const Comp = asChild ? Slot : motion.button;
 
+    // Filter out conflicting props when using motion.button
+    const { onDrag, onDragStart, onDragEnd, ...safeProps } = props as any;
+
     return (
       <Comp
         className={cn(
@@ -190,7 +193,7 @@ const StaggerButton = React.forwardRef<HTMLButtonElement, StaggerButtonProps>(
         onMouseEnter={() => !isTouchDevice && setIsHovered(true)}
         onMouseLeave={() => !isTouchDevice && setIsHovered(false)}
         onTouchStart={handleTouchStart}
-        {...props}
+        {...(asChild ? props : safeProps)}
       >
         <AnimatePresence mode="wait">
           <motion.span

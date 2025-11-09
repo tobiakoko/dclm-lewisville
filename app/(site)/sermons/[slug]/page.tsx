@@ -11,18 +11,23 @@ import SermonPlayer from '@/components/SermonPlayer'
 import Link from 'next/link'
 
 export async function generateMetadata({ params }: { params: { slug: string } }) {
-  const sermon = await client.fetch(sermonQuery, { slug: params.slug })
-  
-  if (!sermon) return {}
+  try {
+    const sermon = await client.fetch(sermonQuery, { slug: params.slug })
 
-  return {
-    title: sermon.title,
-    description: sermon.description || `Listen to "${sermon.title}" by ${sermon.speaker.name}`,
-    openGraph: {
+    if (!sermon) return {}
+
+    return {
       title: sermon.title,
-      description: sermon.description,
-      images: sermon.thumbnail ? [urlFor(sermon.thumbnail).width(1200).height(630).url()] : [],
-    },
+      description: sermon.description || `Listen to "${sermon.title}" by ${sermon.speaker.name}`,
+      openGraph: {
+        title: sermon.title,
+        description: sermon.description,
+        images: sermon.thumbnail ? [urlFor(sermon.thumbnail).width(1200).height(630).url()] : [],
+      },
+    }
+  } catch (error) {
+    console.warn('Failed to fetch sermon metadata (this is expected during build without Sanity credentials)', error)
+    return {}
   }
 }
 
@@ -31,7 +36,13 @@ export default async function SermonDetailPage({
 }: {
   params: { slug: string }
 }) {
-  const sermon = await client.fetch(sermonQuery, { slug: params.slug })
+  let sermon = null
+
+  try {
+    sermon = await client.fetch(sermonQuery, { slug: params.slug })
+  } catch (error) {
+    console.warn('Failed to fetch sermon (this is expected during build without Sanity credentials)', error)
+  }
 
   if (!sermon) {
     notFound()
@@ -145,7 +156,7 @@ export default async function SermonDetailPage({
                 <div className="mb-8">
                   <h3 className="font-bold mb-3">Topics</h3>
                   <div className="flex flex-wrap gap-2">
-                    {sermon.tags.map((tag) => (
+                    {sermon.tags.map((tag: string) => (
                       <span
                         key={tag}
                         className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm"
@@ -245,7 +256,7 @@ export default async function SermonDetailPage({
                   <div className="border-t pt-6">
                     <h3 className="font-bold mb-3">Scripture References</h3>
                     <ul className="space-y-2">
-                      {sermon.scripture.map((ref) => (
+                      {sermon.scripture.map((ref: string) => (
                         <li key={ref} className="text-sm">
                           <a
                             href={`https://www.biblegateway.com/passage/?search=${encodeURIComponent(ref)}&version=NIV`}
@@ -272,7 +283,7 @@ export default async function SermonDetailPage({
           <div className="container">
             <h2 className="font-heading text-3xl font-bold mb-8">Related Sermons</h2>
             <div className="grid md:grid-cols-3 gap-8">
-              {sermon.relatedSermons.map((relatedSermon) => (
+              {sermon.relatedSermons.map((relatedSermon: any) => (
                 <SermonCard key={relatedSermon._id} sermon={relatedSermon} />
               ))}
             </div>

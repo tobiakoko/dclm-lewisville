@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useEffect } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import useEmblaCarousel from 'embla-carousel-react'
 import Autoplay from 'embla-carousel-autoplay'
 import Link from 'next/link'
@@ -87,18 +87,7 @@ export default function HeroCarousel() {
     if (emblaApi) emblaApi.scrollTo(index)
   }, [emblaApi])
 
-  const [selectedIndex, setSelectedIndex] = useCallback(() => {
-    if (!emblaApi) return [0, () => {}]
-
-    const onSelect = () => {
-      setSelectedIndex(emblaApi.selectedScrollSnap())
-    }
-
-    emblaApi.on('select', onSelect)
-    onSelect()
-
-    return [emblaApi.selectedScrollSnap(), onSelect]
-  }, [emblaApi])
+  const [selectedIndex, setSelectedIndex] = useState(0)
 
   useEffect(() => {
     if (!emblaApi) return

@@ -11,13 +11,18 @@ import Timeline from '@/components/sections/Timeline'
 import Testimonials from '@/components/sections/Testimonials'
 
 export async function generateMetadata({ params }: { params: { slug: string } }) {
-  const ministry = await client.fetch(ministryQuery, { slug: params.slug })
-  
-  if (!ministry) return {}
+  try {
+    const ministry = await client.fetch(ministryQuery, { slug: params.slug })
 
-  return {
-    title: ministry.name,
-    description: ministry.description,
+    if (!ministry) return {}
+
+    return {
+      title: ministry.name,
+      description: ministry.description,
+    }
+  } catch (error) {
+    console.warn('Failed to fetch ministry metadata (this is expected during build without Sanity credentials)', error)
+    return {}
   }
 }
 
@@ -26,7 +31,13 @@ export default async function MinistryDetailPage({
 }: {
   params: { slug: string }
 }) {
-  const ministry = await client.fetch(ministryQuery, { slug: params.slug })
+  let ministry = null
+
+  try {
+    ministry = await client.fetch(ministryQuery, { slug: params.slug })
+  } catch (error) {
+    console.warn('Failed to fetch ministry (this is expected during build without Sanity credentials)', error)
+  }
 
   if (!ministry) {
     notFound()
@@ -75,7 +86,7 @@ export default async function MinistryDetailPage({
                     Our Programs & Activities
                   </h2>
                   <div className="grid md:grid-cols-2 gap-4">
-                    {ministry.activities.map((activity, idx) => (
+                    {ministry.activities.map((activity: { title: string; description: string }, idx: number) => (
                       <div key={idx} className="bg-gray-50 p-6 rounded-lg">
                         <h3 className="font-bold text-lg mb-2">{activity.title}</h3>
                         <p className="text-gray-600">{activity.description}</p>
@@ -92,7 +103,7 @@ export default async function MinistryDetailPage({
                     Ministry Milestones
                   </h2>
                   <Timeline
-                    events={ministry.milestones.map((m) => ({
+                    events={ministry.milestones.map((m: { date: string; title: string; description: string }) => ({
                       year: new Date(m.date).getFullYear().toString(),
                       title: m.title,
                       description: m.description,

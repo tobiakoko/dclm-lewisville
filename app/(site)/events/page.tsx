@@ -14,7 +14,14 @@ export const metadata = {
 }
 
 export default async function EventsPage() {
-  const events = await client.fetch(eventsQuery)
+  let events = []
+
+  try {
+    events = await client.fetch(eventsQuery)
+  } catch (error) {
+    console.warn('Failed to fetch events (this is expected during build without Sanity credentials):', error)
+    events = []
+  }
 
   const upcomingEvents = events.filter((event: any) => new Date(event.date) >= new Date())
   const pastEvents = events.filter((event: any) => new Date(event.date) < new Date())

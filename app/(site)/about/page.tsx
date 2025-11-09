@@ -16,34 +16,39 @@ export const metadata = {
 }
 
 async function getAboutData() {
-  return client.fetch(groq`
-    {
-      "team": *[_type == "person" && active == true] | order(order asc) {
-        _id,
-        name,
-        title,
-        role,
-        shortBio,
-        photo,
-        email
-      },
-      "history": *[_type == "page" && slug.current == "about"][0] {
-        title,
-        content
-      },
-      "events": *[_type == "event" && date >= now()] | order(date asc)[0...3] {
-        _id,
-        title,
-        slug,
-        date,
-        endDate,
-        location,
-        description,
-        image,
-        featured
+  try {
+    return await client.fetch(groq`
+      {
+        "team": *[_type == "person" && active == true] | order(order asc) {
+          _id,
+          name,
+          title,
+          role,
+          shortBio,
+          photo,
+          email
+        },
+        "history": *[_type == "page" && slug.current == "about"][0] {
+          title,
+          content
+        },
+        "events": *[_type == "event" && date >= now()] | order(date asc)[0...3] {
+          _id,
+          title,
+          slug,
+          date,
+          endDate,
+          location,
+          description,
+          image,
+          featured
+        }
       }
-    }
-  `)
+    `)
+  } catch (error) {
+    console.warn('Failed to fetch about page data (this is expected during build without Sanity credentials)', error)
+    return { team: [], history: null, events: [] }
+  }
 }
 
 export default async function AboutPage() {

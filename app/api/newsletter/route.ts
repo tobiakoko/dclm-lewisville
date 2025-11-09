@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { Resend } from 'resend'
 
-const resend = new Resend(process.env.RESEND_API_KEY)
+const getResend = () => new Resend(process.env.RESEND_API_KEY || 're_placeholder')
 
 export async function POST(request: NextRequest) {
   try {
@@ -15,6 +15,8 @@ export async function POST(request: NextRequest) {
         { status: 400 }
       )
     }
+
+    const resend = getResend()
 
     // Add to newsletter list (you might want to integrate with Mailchimp, ConvertKit, etc.)
     // For now, just send a notification email
