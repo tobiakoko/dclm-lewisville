@@ -7,6 +7,7 @@ import Image from 'next/image'
 import { Menu, X, Church, Heart } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { SITE_CONFIG, NAV_LINKS } from '@/lib/constants'
+import { useScroll } from "@/hooks/use-scroll";
 
 // Add after imports
 type MotionTransition = {
@@ -37,25 +38,7 @@ const CTA_BUTTONS = NAV_LINKS.filter(link => link.highlight)
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const [scrolled, setScrolled] = useState(false)
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20)
-    }
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
-
-  useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth >= 1024 && mobileMenuOpen) {
-        setMobileMenuOpen(false)
-      }
-    }
-    window.addEventListener('resize', handleResize)
-    return () => window.removeEventListener('resize', handleResize)
-  }, [mobileMenuOpen])
+  const scrolled = useScroll(10);
 
   return (
     <>

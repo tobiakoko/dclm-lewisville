@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { motion, useInView, Transition, Variants } from 'framer-motion'
 import { 
   Facebook, 
@@ -181,7 +182,7 @@ export default function Footer() {
         backgroundSize: '40px 40px'
       }} />
 
-      <div className="container relative z-10 mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="container relative z-10 mx-auto px-4 sm:px-6 lg:px-8 pt-22">
         {/* Quick Actions Cards */}
         <motion.div
           initial="hidden"
@@ -220,20 +221,16 @@ export default function Footer() {
         >
           {/* Brand Section */}
           <motion.div variants={itemVariants} className="sm:col-span-2 lg:col-span-4 space-y-6">
-            <Link href="/" className="inline-flex items-center gap-3 group">
-              <div className="relative">
-                <div className="absolute inset-0 bg-gradient-to-br from-primary to-secondary rounded-xl blur-md opacity-50 group-hover:opacity-75 transition-opacity" />
-                <div className="relative h-14 w-14 bg-gradient-to-br from-primary to-secondary rounded-xl flex items-center justify-center shadow-lg">
-                  <Church className="w-7 h-7 text-white" />
-                </div>
-              </div>
-              <div>
-                <h3 className="font-bold text-xl text-white group-hover:text-primary transition-colors">
-                  {SITE_CONFIG.shortName}
-                </h3>
-                <p className="text-xs text-gray-400">Deeper Christian Life Ministry</p>
-              </div>
-            </Link>
+            <div className="relative h-12 w-auto sm:h-14 lg:h-16">
+              <Image 
+                src="/Logo.png" 
+                alt={SITE_CONFIG.name}
+                width={180}
+                height={64}
+                className="h-full w-auto object-contain"
+                priority
+              />
+            </div>
 
             <p className="text-sm leading-relaxed text-gray-400">
               {SITE_CONFIG.description}

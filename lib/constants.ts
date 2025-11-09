@@ -15,12 +15,7 @@ export interface MinistryCategory {
   href: string
 }
 
-export interface ServiceTime {
-  name: string
-  day: string
-  time: string
-  description: string
-}
+
 
 export interface SiteConfig {
   name: string
@@ -121,6 +116,151 @@ export const MINISTRY_CATEGORIES: MinistryCategory[] = [
   { name: 'Music & Worship', href: '/ministries/worship' },
   { name: 'Outreach & Missions', href: '/ministries/outreach' },
 ]
+
+// Example data for Services Grid components
+// Copy this to test any of the three versions
+
+export const servicesData = [
+  {
+    name: "Sunday Worship",
+    day: "Sunday",
+    time: "9:00 AM & 11:00 AM",
+    description:
+      "Join us for spirit-filled worship, powerful preaching, and fellowship with believers.",
+    featured: true, // For Premium version
+    location: "Main Sanctuary", // For Compact version
+    attendees: "200+ members", // For Modern version
+  },
+  {
+    name: "Bible Study",
+    day: "Wednesday",
+    time: "7:00 PM",
+    description:
+      "Deep dive into God's Word with interactive discussions and practical applications for daily living.",
+    location: "Fellowship Hall",
+    attendees: "80+ members",
+  },
+  {
+    name: "Prayer Meeting",
+    day: "Friday",
+    time: "6:00 PM",
+    description:
+      "Corporate prayer time for breakthrough, healing, and miracles. Come and experience God's power.",
+    location: "Prayer Room",
+    attendees: "50+ members",
+  },
+];
+
+// Alternative data - Youth Services
+export const youthServicesData = [
+  {
+    name: "Youth Sunday",
+    day: "Sunday",
+    time: "11:00 AM",
+    description:
+      "Dynamic worship and relevant teaching designed specifically for young people ages 13-25.",
+    featured: true,
+    location: "Youth Center",
+    attendees: "100+ youth",
+  },
+  {
+    name: "Teen Connect",
+    day: "Thursday",
+    time: "6:30 PM",
+    description:
+      "Mid-week gathering for teens with games, worship, and life application studies.",
+    location: "Youth Center",
+    attendees: "60+ teens",
+  },
+];
+
+// Alternative data - Special Services
+export const specialServicesData = [
+  {
+    name: "Early Morning Prayer",
+    day: "Daily",
+    time: "5:30 AM",
+    description:
+      "Start your day with prayer and communion with God. Open to all members seeking breakthrough.",
+    location: "Prayer Chapel",
+  },
+  {
+    name: "Women's Fellowship",
+    day: "Saturday",
+    time: "10:00 AM",
+    description:
+      "Join sisters in Christ for worship, teaching, and fellowship. Building godly relationships.",
+    featured: false,
+    location: "Conference Room",
+    attendees: "40+ women",
+  },
+  {
+    name: "Men's Breakfast",
+    day: "Saturday",
+    time: "8:00 AM",
+    description:
+      "Monthly gathering for men with breakfast, powerful teaching, and accountability.",
+    location: "Fellowship Hall",
+    attendees: "50+ men",
+  },
+];
+
+// Alternative data - Online Services
+export const onlineServicesData = [
+  {
+    name: "Online Worship",
+    day: "Sunday",
+    time: "9:00 AM",
+    description:
+      "Join us online via YouTube Live for the full worship experience from anywhere in the world.",
+    featured: true,
+    location: "YouTube Live",
+    attendees: "500+ viewers",
+  },
+  {
+    name: "Virtual Bible Study",
+    day: "Tuesday",
+    time: "8:00 PM",
+    description:
+      "Interactive online Bible study via Zoom. Perfect for those unable to attend in person.",
+    location: "Zoom",
+    attendees: "120+ participants",
+  },
+];
+
+// Example usage in a component:
+/*
+import ServicesGrid from "@/components/ServicesGrid";
+import { servicesData } from "@/data/servicesData";
+
+export default function ServicesPage() {
+  return (
+    <section className="py-20">
+      <div className="container">
+        <h2 className="text-4xl font-heading font-bold text-center mb-4">
+          Join Us for Worship
+        </h2>
+        <p className="text-center text-muted-foreground mb-12 max-w-2xl mx-auto">
+          We have services throughout the week to help you grow in your faith
+          and connect with our church family.
+        </p>
+        <ServicesGrid times={servicesData} />
+      </div>
+    </section>
+  );
+}
+*/
+
+// TypeScript type export for reference
+export type ServiceTime = {
+  name: string;
+  day: string;
+  time: string;
+  description: string;
+  featured?: boolean;
+  location?: string;
+  attendees?: string;
+};
 
 // Type exports for use in components
 // export type { NavLink, QuickLink, MinistryCategory, ServiceTime, SiteConfig }

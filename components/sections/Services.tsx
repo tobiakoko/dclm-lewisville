@@ -1,4 +1,5 @@
 import { Clock, Calendar, MapPin } from 'lucide-react'
+import { ServicesGridCompact, ServicesGridModern, ServicesGrid } from './ServiceGrid'
 
 interface ServiceTime {
   name: string
