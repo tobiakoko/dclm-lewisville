@@ -1,7 +1,7 @@
 import { client } from '@/lib/sanity/client'
 import { homePageQuery } from '@/lib/sanity/queries'
 import { SERVICE_TIMES } from '@/lib/constants'
-import HeroCarousel from '@/components/sections/HeroCarousel'
+import HeroCarousel from '@/components/sections/HeroCarouselNew'
 import GiveSection from '@/components/sections/GiveSection'
 import AboutPreview from '@/components/sections/AboutPreview'
 import ServiceSchedule from '@/components/sections/ServiceSchedule'
@@ -33,14 +33,17 @@ export default async function HomePage() {
       {/* Ministries Section */}
       <MinistriesPreview ministries={data.ministries} />
 
-      {/* Minister's Section (Team/Leadership with carousel) */}
-      <section className="py-16 bg-white">
+      {/* Minister's Section (Team/Leadership) */}
+      <section className="py-20 bg-white">
         <div className="container">
-          <div className="text-center mb-12">
-            <h2 className="font-heading text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+          <div className="mb-12">
+            <div className="inline-block px-3 py-1 bg-muted rounded-full mb-4">
+              <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Leadership</span>
+            </div>
+            <h2 className="font-heading text-3xl md:text-4xl font-semibold mb-3 text-foreground">
               Our Leadership
             </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            <p className="text-base text-muted-foreground max-w-2xl">
               Meet our dedicated team of ministers and leaders serving our congregation
             </p>
           </div>
