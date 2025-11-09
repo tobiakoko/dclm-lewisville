@@ -9,7 +9,13 @@ export const metadata = {
 }
 
 export default async function SermonsPage() {
-  const sermons = await client.fetch(sermonsQuery)
+  let sermons = []
+
+  try {
+    sermons = await client.fetch(sermonsQuery)
+  } catch (error) {
+    console.warn('Failed to fetch sermons (this is expected during build without Sanity credentials)', error)
+  }
 
   return (
     <div className="py-16">
@@ -27,7 +33,7 @@ export default async function SermonsPage() {
       <section className="py-16 bg-gray-50">
         <div className="container">
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {sermons.map((sermon) => (
+            {sermons.map((sermon: any) => (
               <SermonCard key={sermon._id} sermon={sermon} />
             ))}
           </div>

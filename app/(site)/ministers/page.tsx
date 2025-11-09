@@ -13,8 +13,20 @@ export const metadata = {
 }
 
 export default async function MinistersPage() {
-  const team = await client.fetch(teamQuery)
-  const ministries = await client.fetch(ministriesQuery)
+  let team = []
+  let ministries = []
+
+  try {
+    team = await client.fetch(teamQuery)
+  } catch (error) {
+    console.warn('Failed to fetch team data (this is expected during build without Sanity credentials)', error)
+  }
+
+  try {
+    ministries = await client.fetch(ministriesQuery)
+  } catch (error) {
+    console.warn('Failed to fetch ministries data (this is expected during build without Sanity credentials)', error)
+  }
 
   return (
     <>

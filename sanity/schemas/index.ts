@@ -5,7 +5,6 @@ import event from './event'
 import testimonial from './testimonial'
 import page from './page'
 import series from './series'
-import category from './category'
 import siteSettings from './siteSettings'
 
 // Object types
@@ -24,9 +23,8 @@ export const schemaTypes = [
   testimonial,
   page,
   series,
-  category,
   siteSettings,
-  
+
   // Objects
   blockContent,
   socialMedia,
