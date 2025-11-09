@@ -17,7 +17,11 @@ const PRIMARY_ORB_VERTICAL_OFFSET = 20;
 
 export default function NotFoundPage() {
   return (
-    <div className="relative flex min-h-screen w-full items-center justify-center overflow-hidden bg-[radial-gradient(circle_at_center,rgba(99,102,241,0.1),transparent_70%)] text-[var(--foreground)]">
+    <div
+      className="relative flex min-h-screen w-full items-center justify-center overflow-hidden bg-[radial-gradient(circle_at_center,rgba(99,102,241,0.1),transparent_70%)] text-[var(--foreground)]"
+      role="main"
+      aria-labelledby="error-title"
+    >
       <div
         aria-hidden={true}
         className="-z-10 absolute inset-0 overflow-hidden"
@@ -71,10 +75,9 @@ export default function NotFoundPage() {
 
       <Empty>
         <EmptyHeader>
-          <EmptyTitle className="font-extrabold text-8xl">404</EmptyTitle>
-          <EmptyDescription className="text-nowrap">
-            The page you're looking for might have been <br />
-            moved or doesn't exist.
+          <EmptyTitle id="error-title" className="font-extrabold text-6xl sm:text-8xl">404</EmptyTitle>
+          <EmptyDescription className="text-center px-4">
+            The page you're looking for might have been moved or doesn't exist.
           </EmptyDescription>
         </EmptyHeader>
         <EmptyContent>

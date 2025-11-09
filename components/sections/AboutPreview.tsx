@@ -39,7 +39,10 @@ const cardVariants = {
 
 export default function AboutPreview() {
   return (
-    <section className="py-24 bg-white relative overflow-hidden">
+    <section
+      className="py-24 bg-white relative overflow-hidden"
+      aria-labelledby="about-heading"
+    >
       {/* Decorative background */}
       <div className="absolute inset-0 opacity-20">
         <div className="absolute top-20 left-20 w-96 h-96 bg-primary/20 rounded-full blur-3xl" />
@@ -61,18 +64,21 @@ export default function AboutPreview() {
               <span className="text-sm font-semibold text-primary">About Us</span>
             </div>
 
-            <h2 className="font-heading text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+            <h2
+              id="about-heading"
+              className="font-heading text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent text-balance"
+            >
               Welcome to DCLM Lewisville
             </h2>
 
-            <p className="text-lg text-gray-600 mb-6 leading-relaxed">
+            <p className="text-lg text-gray-700 mb-6 leading-relaxed">
               We are a Christ-centered church in Lewisville, Texas, dedicated to biblical teaching,
               passionate worship, and spiritual growth. Part of the global Deeper Christian Life Ministry
               founded in 1973, we continue the mission of bringing people to Christ and building them
               up in the faith.
             </p>
 
-            <p className="text-gray-600 mb-8 leading-relaxed">
+            <p className="text-base text-gray-700 mb-8 leading-relaxed">
               Our church is committed to being a beacon of light in the Lewisville community, providing
               a welcoming environment where individuals and families can grow spiritually, find genuine
               fellowship, and serve the Lord together.

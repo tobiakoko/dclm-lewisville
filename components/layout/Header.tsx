@@ -131,10 +131,11 @@ export default function Header() {
             {/* Mobile Menu Button */}
             <motion.button
               whileTap={{ scale: 0.95 }}
-              className="lg:hidden p-2.5 rounded-lg hover:bg-primary/5 transition-colors relative z-10"
+              className="lg:hidden p-3 rounded-lg hover:bg-primary/5 transition-colors relative z-10 min-h-[44px] min-w-[44px]"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              aria-label="Toggle menu"
+              aria-label={mobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
               aria-expanded={mobileMenuOpen}
+              aria-controls="mobile-menu"
             >
               <AnimatePresence mode="wait">
                 {mobileMenuOpen ? (
@@ -178,11 +179,14 @@ export default function Header() {
             />
 
             <motion.div
+              id="mobile-menu"
               initial={{ opacity: 0, x: '100%' }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: '100%' }}
               transition={{ type: 'spring', damping: 25, stiffness: 200 }}
               className="fixed top-20 right-0 bottom-0 w-full max-w-sm bg-white shadow-2xl z-40 lg:hidden overflow-y-auto"
+              role="navigation"
+              aria-label="Mobile navigation"
             >
               <nav className="flex flex-col p-6">
                 {/* Navigation Links */}
