@@ -46,14 +46,14 @@ export default function Header() {
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.5, ease: 'easeOut' }}
-        className={`fixed top-0 left-0 right-0 z-50 w-full transition-all duration-300 ${
+        className={`fixed top-0 left-0 right-0 z-50 w-full transition-all duration-200 ${
           scrolled
-            ? 'bg-white/98 backdrop-blur-xl shadow-md border-b border-gray-100'
-            : 'bg-white/95 backdrop-blur-md'
+            ? 'bg-white/95 backdrop-blur-lg border-b border-border shadow-sm'
+            : 'bg-white/90 backdrop-blur-md'
         }`}
       >
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex h-20 lg:h-24 items-center justify-between">
+          <div className="flex h-16 lg:h-18 items-center justify-between">
             {/* Logo */}
             <Link 
               href="/" 
@@ -91,17 +91,15 @@ export default function Header() {
                 >
                   <Link
                     href={link.href}
-                    className="relative px-4 py-2 text-sm font-medium text-gray-700 hover:text-primary transition-colors duration-200 group"
+                    className="relative px-3 py-2 text-sm font-medium text-foreground/70 hover:text-foreground transition-colors duration-200"
                   >
-                    <span className="relative z-10">{link.name}</span>
-                    <span className="absolute inset-0 bg-primary/5 rounded-lg scale-0 group-hover:scale-100 transition-transform duration-200 origin-center" />
-                    <span className="absolute bottom-1 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-gradient-to-r from-primary to-secondary group-hover:w-4/5 transition-all duration-300 rounded-full" />
+                    {link.name}
                   </Link>
                 </motion.div>
               ))}
 
               {/* Call-to-Action Buttons */}
-              <div className="flex items-center gap-2 ml-4 pl-4 border-l border-gray-200">
+              <div className="flex items-center gap-2 ml-4 pl-4 border-l border-border">
                 {CTA_BUTTONS.map((button, index) => (
                   <motion.div
                     key={button.href}
@@ -112,14 +110,10 @@ export default function Header() {
                     <Button
                       asChild
                       size="sm"
-                      variant={index === 0 ? "outline" : "default"}
-                      className={index === 0 
-                        ? "border-primary/20 hover:bg-primary/5 hover:border-primary/40 transition-all duration-200"
-                        : "bg-gradient-to-r from-primary to-secondary hover:shadow-lg hover:shadow-primary/20 transition-all duration-300 hover:scale-105"
-                      }
+                      variant={index === 0 ? "outline" : "accent"}
                     >
                       <Link href={button.href}>
-                        {index === 0 ? <Heart className="w-4 h-4 mr-2" /> : <Church className="w-4 h-4 mr-2" />}
+                        {index === 0 ? <Heart className="w-4 h-4" /> : <Church className="w-4 h-4" />}
                         {button.name}
                       </Link>
                     </Button>
