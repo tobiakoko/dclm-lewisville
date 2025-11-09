@@ -294,29 +294,19 @@ export default function HeroCarousel() {
       </div>
 
       {/* Navigation Dots */}
-      <div
-        className="absolute bottom-8 left-0 right-0 z-20 flex justify-center gap-2"
-        role="group"
-        aria-label="Carousel navigation"
-      >
+      <div className="absolute bottom-8 left-0 right-0 z-20 flex justify-center gap-2">
         {slides.map((slide, index) => (
           <button
             key={slide.id}
             onClick={() => goToSlide(index)}
-            className={`transition-all duration-300 rounded-full min-h-[44px] min-w-[44px] flex items-center justify-center ${
-              index === slideIndex
-                ? 'bg-white/20 px-2'
-                : 'bg-white/10 hover:bg-white/20'
-            }`}
-            aria-label={`Go to slide ${index + 1}: ${slide.title}`}
-            aria-current={index === slideIndex}
-          >
-            <span className={`block rounded-full transition-all ${
+            className={`transition-all duration-300 rounded-full ${
               index === slideIndex
                 ? 'bg-white w-8 h-2'
-                : 'bg-white/60 w-2 h-2'
-            }`} />
-          </button>
+                : 'bg-white/40 hover:bg-white/60 w-2 h-2'
+            }`}
+            aria-label={`Go to slide ${index + 1}`}
+            aria-current={index === slideIndex ? 'true' : 'false'}
+          />
         ))}
       </div>
     </section>
