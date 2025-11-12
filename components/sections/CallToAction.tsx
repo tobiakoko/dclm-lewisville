@@ -13,7 +13,7 @@ export function CallToAction() {
 
       <div className="space-y-1">
         <h2 className="text-center font-semibold text-2xl tracking-tight md:text-4xl">
-          Subscripe to our newsletter
+          Subscribe to our newsletter
         </h2>
         <p className="text-balance text-center text-muted-foreground text-sm md:text-base">
           Get the latest updates and insights delivered right to your inbox.

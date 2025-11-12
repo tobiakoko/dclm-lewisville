@@ -67,10 +67,10 @@ export default function AboutPreview() {
 
           {/* CTA Button */}
           <div className="text-center">
-            <Button asChild size="lg" className="h-12 bg-accent text-white hover:bg-accent-secondary">
+            <Button asChild size="lg" className="h-12 bg-accent text-white hover:bg-accent-secondary transition-all duration-300 group">
               <Link href="/about">
                 Learn More About Us
-                <ArrowRight className="w-4 h-4" />
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </Link>
             </Button>
           </div>

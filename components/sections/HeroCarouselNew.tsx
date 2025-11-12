@@ -5,66 +5,8 @@ import useEmblaCarousel from 'embla-carousel-react'
 import Autoplay from 'embla-carousel-autoplay'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
-import { ArrowRight, Church, Heart, BookOpen, Users } from 'lucide-react'
-
-interface Slide {
-  id: number
-  title: string
-  subtitle: string
-  description: string
-  cta: {
-    text: string
-    href: string
-  }
-  image: string
-}
-
-const slides: Slide[] = [
-  {
-    id: 1,
-    title: 'Growing in Faith, Living in Holiness',
-    subtitle: 'Welcome Home',
-    description: 'Join a Christ-centered community in Lewisville, TX dedicated to biblical teaching, fervent prayer, and holy living.',
-    cta: {
-      text: 'Plan Your Visit',
-      href: '/contact'
-    },
-    image: 'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=1920&h=1080&fit=crop&q=80'
-  },
-  {
-    id: 2,
-    title: 'Discover Your Purpose',
-    subtitle: 'Serve & Grow',
-    description: 'Find your place in our vibrant ministries. Make a difference through service and grow in your faith.',
-    cta: {
-      text: 'Explore Ministries',
-      href: '/ministries'
-    },
-    image: 'https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=1920&h=1080&fit=crop&q=80'
-  },
-  {
-    id: 3,
-    title: 'Dive Deeper into God\'s Word',
-    subtitle: 'Learn & Transform',
-    description: 'Join us for in-depth Bible study and powerful messages that transform lives.',
-    cta: {
-      text: 'View Sermons',
-      href: '/sermons'
-    },
-    image: 'https://images.unsplash.com/photo-1507692049790-de58290a4334?w=1920&h=1080&fit=crop&q=80'
-  },
-  {
-    id: 4,
-    title: 'Build Lasting Connections',
-    subtitle: 'Connect & Belong',
-    description: 'Experience genuine Christian fellowship in a loving community.',
-    cta: {
-      text: 'Meet Our Team',
-      href: '/ministers'
-    },
-    image: 'https://images.unsplash.com/photo-1528605248644-14dd04022da1?w=1920&h=1080&fit=crop&q=80'
-  }
-]
+import { ArrowRight } from 'lucide-react'
+import { HERO_SLIDES, SERVICE_TIMES } from '@/lib/constants'
 
 export default function HeroCarousel() {
   const [emblaRef, emblaApi] = useEmblaCarousel(
@@ -114,7 +56,7 @@ export default function HeroCarousel() {
     >
       <div className="overflow-hidden h-full" ref={emblaRef}>
         <div className="flex h-full">
-          {slides.map((slide, index) => (
+          {HERO_SLIDES.map((slide, index) => (
             <div key={slide.id} className="flex-[0_0_100%] min-w-0 relative h-full">
               {/* Background Image */}
               <div
@@ -145,11 +87,11 @@ export default function HeroCarousel() {
                       asChild
                       variant="accent"
                       size="lg"
-                      className="elevation-3 text-base h-12 px-8"
+                      className="elevation-3 text-base h-12 transition-all duration-300 group"
                     >
                       <Link href={slide.cta.href}>
                         {slide.cta.text}
-                        <ArrowRight className="w-5 h-5 ml-1" />
+                        <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                       </Link>
                     </Button>
 
@@ -158,7 +100,7 @@ export default function HeroCarousel() {
                         asChild
                         variant="outline"
                         size="lg"
-                        className="bg-white/10 backdrop-blur-md border-white/30 text-white hover:bg-white/20 hover:border-white/40 text-base h-12 px-8"
+                        className="bg-white/10 backdrop-blur-md border-white/30 text-white hover:bg-white/20 hover:border-white/40 text-base h-12 transition-all duration-300 group"
                       >
                         <Link href="/about">
                           Learn More
@@ -170,18 +112,12 @@ export default function HeroCarousel() {
                   {/* Service Times - Only on first slide */}
                   {index === 0 && (
                     <div className="flex flex-wrap gap-6 pt-6 text-sm text-white/75 font-medium">
-                      <div className="flex items-center gap-2.5">
-                        <div className="w-2 h-2 bg-accent rounded-full animate-pulse" />
-                        <span>Sunday 10:00 AM</span>
-                      </div>
-                      <div className="flex items-center gap-2.5">
-                        <div className="w-2 h-2 bg-accent rounded-full animate-pulse" />
-                        <span>Tuesday 6:30 PM</span>
-                      </div>
-                      <div className="flex items-center gap-2.5">
-                        <div className="w-2 h-2 bg-accent rounded-full animate-pulse" />
-                        <span>Friday 6:30 PM</span>
-                      </div>
+                      {SERVICE_TIMES.map((service, idx) => (
+                        <div key={idx} className="flex items-center gap-2.5">
+                          <div className="w-2 h-2 bg-accent rounded-full animate-pulse" />
+                          <span>{service.day} {service.time}</span>
+                        </div>
+                      ))}
                     </div>
                   )}
                 </div>
@@ -196,7 +132,7 @@ export default function HeroCarousel() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between">
             <div className="flex gap-2.5">
-              {slides.map((_, index) => (
+              {HERO_SLIDES.map((_, index) => (
                 <button
                   key={index}
                   onClick={() => scrollTo(index)}

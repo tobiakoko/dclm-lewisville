@@ -46,29 +46,31 @@ export default function Footer() {
           {/* Brand Section */}
           <div className="space-y-6">
             <div className="relative h-14 w-auto">
-              <Image
-                src="/Logo.png"
-                alt={SITE_CONFIG.name}
-                width={160}
-                height={56}
-                className="h-full w-auto object-contain brightness-0 invert"
-              />
+              <Link href="/">
+                <Image
+                  src="/Logo.png"
+                  alt={SITE_CONFIG.name}
+                  width={160}
+                  height={56}
+                  className="h-full w-auto object-contain brightness-0 invert"
+                />
+              </Link>
             </div>
             <p className="text-sm text-white/70 leading-relaxed">
               {SITE_CONFIG.description}
             </p>
             <div className="flex items-center gap-3">
               {SOCIAL_LINKS.map((social) => (
-                <a
+                <Link
                   key={social.name}
                   href={social.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-10 h-10 bg-white/10 rounded-lg flex items-center justify-center hover:bg-accent transition-colors"
+                  className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-accent transition-colors"
                   aria-label={social.name}
                 >
                   <social.icon size={18} />
-                </a>
+                </Link>
               ))}
             </div>
           </div>
@@ -83,7 +85,7 @@ export default function Footer() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-sm text-white/70 hover:text-accent transition-colors"
+                    className="uppercase text-sm text-white/70 hover:text-accent transition-colors"
                   >
                     {link.name}
                   </Link>
@@ -99,7 +101,7 @@ export default function Footer() {
             </h3>
             <ul className="space-y-4">
               <li>
-                <a
+                <Link
                   href={`https://maps.google.com/?q=${encodeURIComponent(
                     `${SITE_CONFIG.address.street}, ${SITE_CONFIG.address.city}, ${SITE_CONFIG.address.state} ${SITE_CONFIG.address.zip}`
                   )}`}
@@ -112,25 +114,25 @@ export default function Footer() {
                     {SITE_CONFIG.address.street}<br />
                     {SITE_CONFIG.address.city}, {SITE_CONFIG.address.state} {SITE_CONFIG.address.zip}
                   </span>
-                </a>
+                </Link>
               </li>
               <li>
-                <a
+                <Link
                   href={`tel:${SITE_CONFIG.phone.replace(/\D/g, '')}`}
                   className="flex items-center gap-3 text-sm text-white/70 hover:text-accent transition-colors"
                 >
                   <Phone className="w-5 h-5 flex-shrink-0" />
                   {SITE_CONFIG.phone}
-                </a>
+                </Link>
               </li>
               <li>
-                <a
+                <Link
                   href={`mailto:${SITE_CONFIG.email}`}
                   className="flex items-center gap-3 text-sm text-white/70 hover:text-accent transition-colors"
                 >
                   <Mail className="w-5 h-5 flex-shrink-0" />
                   {SITE_CONFIG.email}
-                </a>
+                </Link>
               </li>
             </ul>
           </div>

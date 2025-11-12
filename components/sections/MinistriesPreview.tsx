@@ -153,11 +153,11 @@ export default function MinistriesPreview({ ministries }: MinistriesPreviewProps
             <Button
               asChild
               size="lg"
-              className="bg-gradient-to-r from-primary to-secondary hover:shadow-lg transition-all duration-300 group text-lg px-8 py-6 h-auto"
+              className="h-12 bg-accent text-white hover:bg-accent-secondary transition-all duration-300 group"
             >
               <Link href="/ministries" className="flex items-center gap-2">
                 View All Ministries
-                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </Link>
             </Button>
           </motion.div>

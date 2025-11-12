@@ -71,7 +71,7 @@ export default function CtaSection() {
                 asChild
                 variant="ghost"
                 size="lg"
-                className="text-white hover:bg-white/10 hover:text-white border-2 border-transparent hover:border-white/20 transition-all duration-300"
+                className="h-12 text-white hover:bg-white/10 hover:text-white border border-transparent hover:border-white/20 transition-all duration-300"
                 aria-label="Learn more about DCLM Lewisville"
               >
                 <Link href="/about">Learn More</Link>
@@ -81,7 +81,7 @@ export default function CtaSection() {
               <Button
                 asChild
                 size="lg"
-                className="bg-white text-primary hover:bg-white/90 shadow-xl hover:shadow-2xl transition-all duration-300 group"
+                className="h-12 bg-white text-primary hover:bg-white/90 shadow-xl hover:shadow-2xl transition-all duration-300 group"
                 aria-label="Plan your visit to DCLM Lewisville"
               >
                 <Link href="/contact" className="flex items-center gap-2">

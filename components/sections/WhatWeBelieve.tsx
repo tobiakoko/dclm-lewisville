@@ -1,362 +1,106 @@
-// Type definitions
-export interface NavLink {
-  name: string
-  href: string
-  highlight?: boolean
-  children?: NavLink[] // For dropdown menus
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import Link from "next/link";
+
+export function WhatWeBelieveSection() {
+  return (
+    <div className="mx-auto min-h-screen w-full max-w-7xl">
+      <div className="mx-4 grid min-h-[calc(100vh-3.5rem)] grid-cols-1 border-x md:mx-0 md:grid-cols-5 md:border-x-0 lg:border-x">
+        {/* Left Column - Introduction */}
+        <div className="space-y-6 px-6 pt-16 pb-8 md:col-span-2 md:border-r md:pr-8 lg:px-12">
+          <div className="space-y-4">
+            <div className="inline-block">
+              <span className="text-sm font-bold uppercase tracking-wider text-accent">
+                Our Foundation
+              </span>
+            </div>
+            <h2 className="font-heading text-4xl font-black md:text-5xl lg:text-6xl">
+              Bible Doctrines
+            </h2>
+            <div className="h-1 w-20 bg-accent rounded-full" />
+          </div>
+
+          <div className="space-y-4 text-muted-foreground leading-relaxed">
+            <p className="text-sm italic border-l-4 border-accent/30 pl-4 py-2">
+              Acts 2:42; I Timothy 4:16; Titus 1:9
+            </p>
+            
+            <p className="text-base">
+              <span className="font-semibold text-foreground">"Beloved,</span> when I gave all diligence to write unto you of the common salvation, 
+              it was needful for me to write unto you, and exhort you that ye should{" "}
+              <span className="font-semibold text-foreground">earnestly contend for the faith</span> which was once delivered unto the saints."
+            </p>
+            
+            <p className="text-sm">
+              "Take heed unto thyself, and unto the doctrine; continue in them: 
+              for in doing this thou shalt both save thyself, and them that hear thee."
+            </p>
+            
+            <p className="text-sm italic">
+              (Jude 3; Romans 16:17; I Timothy 4:16)
+            </p>
+
+            <div className="pt-6 mt-6 border-t border-border">
+              <p className="font-semibold text-foreground text-lg mb-2">
+                God's infallible WORD teaches and we believe:
+              </p>
+              <p className="text-sm">
+                These foundational doctrines guide our faith, practice, and understanding 
+                of God's Word at Deeper Life Bible Church.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Right Column - Accordion */}
+        <div className="md:col-span-3 md:pl-8 lg:pl-12">
+          <div className="sticky top-20 max-h-[calc(100vh-6rem)] overflow-y-auto py-8 px-6">
+            <Accordion collapsible type="single" className="w-full">
+              {doctrines.map((item) => (
+                <AccordionItem
+                  className="border-b border-border last:border-b-0 data-[state=open]:bg-accent/5 transition-colors"
+                  key={item.id}
+                  value={item.id}
+                >
+                  <AccordionTrigger className="px-5 py-5 text-[15px] font-semibold leading-6 hover:no-underline hover:text-accent transition-colors">
+                    {item.title}
+                  </AccordionTrigger>
+                  <AccordionContent className="px-5 pb-6 pt-2 text-muted-foreground leading-relaxed">
+                    <p className="mb-3">{item.content}</p>
+                    {item.scripture && (
+                      <p className="text-xs italic text-muted-foreground/70 border-l-2 border-accent/30 pl-3 py-1">
+                        {item.scripture}
+                      </p>
+                    )}
+                  </AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
+          </div>
+        </div>
+      </div>
+
+      {/* Footer */}
+      <div className="flex h-16 items-center justify-center border-t bg-muted/30">
+        <p className="text-sm text-muted-foreground">
+          Questions about our beliefs?{" "}
+          <Link 
+            href="/contact" 
+            className="font-semibold text-accent hover:text-accent/80 hover:underline transition-colors"
+          >
+            Contact Us
+          </Link>
+        </p>
+      </div>
+    </div>
+  );
 }
 
-export interface QuickLink {
-  name: string
-  href: string
-}
-
-export interface MinistryCategory {
-  name: string
-  href: string
-}
-
-export interface SiteConfig {
-  name: string
-  shortName: string
-  description: string
-  url: string
-  address: {
-    street: string
-    city: string
-    state: string
-    zip: string
-    country: string
-  }
-  phone: string
-  email: string
-  socialMedia: {
-    facebook: string
-    instagram: string
-    youtube: string
-  }
-}
-
-// Site Configuration
-export const SITE_CONFIG: SiteConfig = {
-  name: 'Deeper Life Bible Church Lewisville',
-  shortName: 'DCLM Lewisville',
-  description: 'A Christ-centered church in Lewisville, TX, dedicated to biblical teaching and spiritual growth.',
-  url: process.env.NEXT_PUBLIC_SITE_URL || 'https://dclmlewisville.org',
-  address: {
-    street: '123 Church Street',
-    city: 'Lewisville',
-    state: 'TX',
-    zip: '75067',
-    country: 'USA',
-  },
-  phone: '(123) 456-7890',
-  email: 'info@dclmlewisville.org',
-  socialMedia: {
-    facebook: 'https://facebook.com/dclmlewisville',
-    instagram: 'https://instagram.com/dclmlewisville',
-    youtube: 'https://youtube.com/@dclmlewisville',
-  },
-}
-
-// Service Times
-export const SERVICE_TIMES: ServiceTime[] = [
-  {
-    name: 'Sunday Service',
-    day: 'Sunday',
-    time: '9:30 AM',
-    description: 'Main worship service',
-  },
-  {
-    name: 'Bible Study',
-    day: 'Tuesday',
-    time: '7:00 PM',
-    description: 'Systematic and expository study of the Word',
-  },
-  {
-    name: 'Revival Service',
-    day: 'Friday',
-    time: '7:00 PM',
-    description: 'Revival, Prayer, and Evangelism Training',
-  },
-]
-
-// Navigation Links with Mega Menu Support
-export const NAV_LINKS: NavLink[] = [
-  { 
-    name: 'Home', 
-    href: '/' 
-  },
-  { 
-    name: 'About', 
-    href: '/about',
-    children: [
-      { name: 'About Us', href: '/about' },
-      { name: 'What We Believe', href: '/about/what-we-believe' },
-      { name: 'Ministries', href: '/ministries' },
-      { name: 'Ministers', href: '/ministers' },
-    ]
-  },
-  { 
-    name: 'Sermons', 
-    href: '/sermons',
-    children: [
-      { name: 'All Sermons', href: '/sermons' },
-      { name: 'Sunday Service', href: '/sermons/sunday-service' },
-      { name: 'Bible Study', href: '/sermons/bible-study' },
-      { name: 'Revival Service', href: '/sermons/revival-service' },
-    ]
-  },
-  { 
-    name: 'Events', 
-    href: '/events' 
-  },
-  { 
-    name: 'Resources', 
-    href: '/resources',
-    children: [
-      { name: 'Our Blog', href: '/blog' },
-      { name: 'Books', href: '/resources/books' },
-      { name: 'Tracts', href: '/resources/tracts' },
-      { 
-        name: 'Devotions', 
-        href: '/resources/devotions',
-        children: [
-          { name: 'Daily Manna', href: '/resources/devotions/daily-manna' },
-          { name: 'Higher Everyday', href: '/resources/devotions/higher-everyday' },
-        ]
-      },
-    ]
-  },
-  { 
-    name: 'Contact', 
-    href: '/contact' 
-  },
-  // Highlighted CTAs
-  { 
-    name: 'Give', 
-    href: '/give', 
-    highlight: true 
-  },
-  { 
-    name: 'Plan a Visit', 
-    href: '/visit', 
-    highlight: true 
-  },
-]
-
-// Quick Links for Footer
-export const QUICK_LINKS: QuickLink[] = [
-  { name: 'New Here?', href: '/new-here' },
-  { name: 'Beliefs', href: '/beliefs' },
-  { name: 'Leadership', href: '/leadership' },
-  { name: 'Serve', href: '/serve' },
-  { name: 'Small Groups', href: '/groups' },
-  { name: 'Prayer Request', href: '/prayer' },
-]
-
-// Ministry Categories
-export const MINISTRY_CATEGORIES: MinistryCategory[] = [
-  { name: "Children's Ministry", href: '/ministries/children' },
-  { name: 'Youth Ministry', href: '/ministries/youth' },
-  { name: 'Young Adults', href: '/ministries/young-adults' },
-  { name: "Women's Ministry", href: '/ministries/women' },
-  { name: "Men's Ministry", href: '/ministries/men' },
-  { name: 'Seniors Ministry', href: '/ministries/seniors' },
-  { name: 'Music & Worship', href: '/ministries/worship' },
-  { name: 'Outreach & Missions', href: '/ministries/outreach' },
-]
-
-// Example data for Services Grid components
-export const servicesData = [
-  {
-    name: "Sunday Worship",
-    day: "Sunday",
-    time: "9:30 AM to 1:00 PM",
-    description:
-      "Join us for spirit-filled worship, powerful preaching, and fellowship with believers.",
-    featured: true,
-    location: "Main Sanctuary",
-    attendees: "200+ members",
-  },
-  {
-    name: "Bible Study",
-    day: "Wednesday",
-    time: "6:00 PM",
-    description:
-      "Deep dive into God's Word with interactive discussions and practical applications for daily living.",
-    location: "Fellowship Hall",
-    attendees: "80+ members",
-  },
-  {
-    name: "Prayer Meeting",
-    day: "Friday",
-    time: "6:00 PM",
-    description:
-      "Corporate prayer time for breakthrough, healing, and miracles. Come and experience God's power.",
-    location: "Prayer Room",
-    attendees: "50+ members",
-  },
-];
-
-// Alternative data - Youth Services
-export const youthServicesData = [
-  {
-    name: "Youth Sunday",
-    day: "Sunday",
-    time: "11:00 AM",
-    description:
-      "Dynamic worship and relevant teaching designed specifically for young people ages 13-25.",
-    featured: true,
-    location: "Youth Center",
-    attendees: "100+ youth",
-  },
-  {
-    name: "Teen Connect",
-    day: "Thursday",
-    time: "6:30 PM",
-    description:
-      "Mid-week gathering for teens with games, worship, and life application studies.",
-    location: "Youth Center",
-    attendees: "60+ teens",
-  },
-];
-
-// Alternative data - Special Services
-export const specialServicesData = [
-  {
-    name: "Early Morning Prayer",
-    day: "Daily",
-    time: "5:30 AM",
-    description:
-      "Start your day with prayer and communion with God. Open to all members seeking breakthrough.",
-    location: "Prayer Chapel",
-  },
-  {
-    name: "Women's Fellowship",
-    day: "Saturday",
-    time: "10:00 AM",
-    description:
-      "Join sisters in Christ for worship, teaching, and fellowship. Building godly relationships.",
-    featured: false,
-    location: "Conference Room",
-    attendees: "40+ women",
-  },
-  {
-    name: "Men's Breakfast",
-    day: "Saturday",
-    time: "8:00 AM",
-    description:
-      "Monthly gathering for men with breakfast, powerful teaching, and accountability.",
-    location: "Fellowship Hall",
-    attendees: "50+ men",
-  },
-];
-
-// Alternative data - Online Services
-export const onlineServicesData = [
-  {
-    name: "Online Worship",
-    day: "Sunday",
-    time: "9:00 AM",
-    description:
-      "Join us online via YouTube Live for the full worship experience from anywhere in the world.",
-    featured: true,
-    location: "YouTube Live",
-    attendees: "500+ viewers",
-  },
-  {
-    name: "Virtual Bible Study",
-    day: "Tuesday",
-    time: "8:00 PM",
-    description:
-      "Interactive online Bible study via Zoom. Perfect for those unable to attend in person.",
-    location: "Zoom",
-    attendees: "120+ participants",
-  },
-];
-
-// Hero Carousel Slides
-export interface HeroSlide {
-  id: number
-  title: string
-  subtitle: string
-  description: string
-  cta: {
-    text: string
-    href: string
-  }
-  image: string
-}
-
-export const HERO_SLIDES: HeroSlide[] = [
-  {
-    id: 1,
-    title: 'Growing in Faith, Living in Holiness',
-    subtitle: 'Welcome Home',
-    description: 'Join a Christ-centered community in Lewisville, TX dedicated to biblical teaching, fervent prayer, and holy living.',
-    cta: {
-      text: 'Plan Your Visit',
-      href: '/contact'
-    },
-    image: 'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=1920&h=1080&fit=crop&q=80'
-  },
-  {
-    id: 2,
-    title: 'Discover Your Purpose',
-    subtitle: 'Serve & Grow',
-    description: 'Find your place in our vibrant ministries. Make a difference through service and grow in your faith.',
-    cta: {
-      text: 'Explore Ministries',
-      href: '/ministries'
-    },
-    image: 'https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=1920&h=1080&fit=crop&q=80'
-  },
-  {
-    id: 3,
-    title: 'Dive Deeper into God\'s Word',
-    subtitle: 'Learn & Transform',
-    description: 'Join us for in-depth Bible study and powerful messages that transform lives.',
-    cta: {
-      text: 'View Sermons',
-      href: '/sermons'
-    },
-    image: 'https://images.unsplash.com/photo-1507692049790-de58290a4334?w=1920&h=1080&fit=crop&q=80'
-  },
-  {
-    id: 4,
-    title: 'Build Lasting Connections',
-    subtitle: 'Connect & Belong',
-    description: 'Experience genuine Christian fellowship in a loving community.',
-    cta: {
-      text: 'Meet Our Team',
-      href: '/ministers'
-    },
-    image: 'https://images.unsplash.com/photo-1528605248644-14dd04022da1?w=1920&h=1080&fit=crop&q=80'
-  }
-]
-
-// TypeScript type export for reference
-export type ServiceTime = {
-  name: string;
-  day: string;
-  time: string;
-  description: string;
-  featured?: boolean;
-  location?: string;
-  attendees?: string;
-};
-
-// Doctrine type definition
-export interface Doctrine {
-  id: string
-  title: string
-  content: string
-  scripture: string
-}
-
-// Bible Doctrines - What We Believe
-export const BIBLE_DOCTRINES: Doctrine[] = [
+const doctrines = [
   {
     id: "item-1",
     title: "The Holy Bible",
@@ -511,18 +255,4 @@ export const BIBLE_DOCTRINES: Doctrine[] = [
       "That Hell fire is a place of everlasting punishment where sinners (all who do not have their names in the book of life) will suffer torments for ever and ever. It was prepared for the devil and his angels (Matthew 25:41) but God has decreed that the wicked and those who forget Him and reject Christ will also be cast there because of their sin and neglect of His salvation.",
     scripture: "Psalm 9:17; Matthew 25:46; Luke 12:4,5; 16:19-31; Matthew 5:22,30; Mark 9:43-47; Revelation 14:10,11; 20:10,12,15"
   },
-]
-
-// Doctrinal Statement Introduction
-export const DOCTRINAL_STATEMENT = {
-  title: "Bible Doctrines",
-  subtitle: "Our Foundation",
-  references: "Acts 2:42; I Timothy 4:16; Titus 1:9",
-  introduction: {
-    primary: '"Beloved, when I gave all diligence to write unto you of the common salvation, it was needful for me to write unto you, and exhort you that ye should earnestly contend for the faith which was once delivered unto the saints."',
-    secondary: '"Take heed unto thyself, and unto the doctrine; continue in them: for in doing this thou shalt both save thyself, and them that hear thee."',
-    citation: "(Jude 3; Romans 16:17; I Timothy 4:16)",
-  },
-  statement: "God's infallible WORD teaches and we believe:",
-  description: "These foundational doctrines guide our faith, practice, and understanding of God's Word at Deeper Life Bible Church."
-}
+];
