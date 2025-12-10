@@ -31,7 +31,21 @@ const nextConfig: NextConfig = {
   async headers() {
     const isDev = process.env.NODE_ENV === 'development'
 
-    // Comprehensive Content Security Policy
+    // Relaxed CSP for Sanity Studio
+    const studioCspHeader = `
+      default-src 'self' 'unsafe-inline' 'unsafe-eval';
+      script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.sanity.io https://*.sanity.work;
+      style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+      img-src 'self' blob: data: https://*.sanity.io https://cdn.sanity.io;
+      font-src 'self' 'unsafe-inline' data: https://fonts.gstatic.com;
+      connect-src 'self' https://*.sanity.io https://*.sanity.work wss://*.sanity.work;
+      frame-src 'self' https://*.sanity.io;
+      frame-ancestors 'self' https://*.sanity.io;
+      worker-src 'self' blob:;
+      child-src 'self' blob:;
+    `.replace(/\s{2,}/g, ' ').trim()
+
+    // Comprehensive Content Security Policy for main site
     const cspHeader = `
       default-src 'self';
       script-src 'self' 'unsafe-eval' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com ${isDev ? "'unsafe-eval'" : ''};
@@ -51,8 +65,27 @@ const nextConfig: NextConfig = {
     `.replace(/\s{2,}/g, ' ').trim()
 
     return [
+      // Special CSP for Sanity Studio
       {
-        source: '/(.*)',
+        source: '/studio/:path*',
+        headers: [
+          {
+            key: 'Content-Security-Policy',
+            value: studioCspHeader,
+          },
+          {
+            key: 'X-Frame-Options',
+            value: 'SAMEORIGIN',
+          },
+          {
+            key: 'X-Content-Type-Options',
+            value: 'nosniff',
+          },
+        ],
+      },
+      // Standard CSP for rest of the site
+      {
+        source: '/((?!studio).*)',
         headers: [
           {
             key: 'Content-Security-Policy',
