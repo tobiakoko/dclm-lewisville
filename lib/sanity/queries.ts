@@ -1,5 +1,77 @@
 import { groq } from 'next-sanity'
 
+// Site Settings
+export const siteSettingsQuery = groq`
+  *[_type == "siteSettings"][0] {
+    title,
+    description,
+    logo,
+    address,
+    phone,
+    email,
+    servicesTimes[] {
+      name,
+      day,
+      time,
+      description
+    },
+    socialMedia,
+    aboutContent,
+    seo
+  }
+`
+
+// Homepage Sections
+export const homeSectionsQuery = groq`
+  {
+    "heroCarousel": *[_type == "homeSection" && sectionId == "heroCarousel"][0] {
+      enabled,
+      heroSlides[] {
+        title,
+        subtitle,
+        description,
+        image,
+        ctaText,
+        ctaLink
+      }
+    },
+    "pastorWelcome": *[_type == "homeSection" && sectionId == "pastorWelcome"][0] {
+      enabled,
+      welcomeMessage {
+        heading,
+        content,
+        signature,
+        tagline
+      }
+    },
+    "giveSection": *[_type == "homeSection" && sectionId == "giveSection"][0] {
+      enabled,
+      giveContent {
+        heading,
+        description,
+        churchGivingTitle,
+        churchGivingDescription,
+        gckGivingTitle,
+        gckGivingDescription,
+        gckGivingUrl,
+        scriptureVerse,
+        scriptureReference
+      }
+    },
+    "ctaSection": *[_type == "homeSection" && sectionId == "ctaSection"][0] {
+      enabled,
+      ctaContent {
+        heading,
+        highlightedText,
+        primaryButtonText,
+        primaryButtonLink,
+        secondaryButtonText,
+        secondaryButtonLink
+      }
+    }
+  }
+`
+
 // Homepage data
 export const homePageQuery = groq`
   {
@@ -24,7 +96,7 @@ export const homePageQuery = groq`
       image,
       featured
     },
-    "ministries": *[_type == "ministry"] | order(order asc)[0...6] {
+    "ministries": *[_type == "ministry" && active == true] | order(order asc)[0...6] {
       _id,
       name,
       slug,
@@ -47,6 +119,19 @@ export const homePageQuery = groq`
       photo,
       ministry
     }
+  }
+`
+
+// Bible Doctrines
+export const doctrinesQuery = groq`
+  *[_type == "doctrine"] | order(order asc) {
+    _id,
+    title,
+    order,
+    content,
+    scripture,
+    category,
+    featured
   }
 `
 

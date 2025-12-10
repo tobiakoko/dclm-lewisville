@@ -1,6 +1,6 @@
 import { client } from '@/lib/sanity/client'
-import { homePageQuery } from '@/lib/sanity/queries'
-import { SERVICE_TIMES } from '@/lib/constants'
+import { homePageQuery, homeSectionsQuery, siteSettingsQuery } from '@/lib/sanity/queries'
+import { logger } from '@/lib/logger'
 import HeroCarousel from '@/components/sections/HeroCarouselNew'
 import GiveSection from '@/components/sections/GiveSection'
 import AboutPreview from '@/components/sections/AboutPreview'
@@ -15,26 +15,51 @@ export const revalidate = 3600 // Revalidate every hour
 
 export default async function HomePage() {
   let data = { ministries: [], team: [], upcomingEvents: [] }
+  let sections = { heroCarousel: null, pastorWelcome: null, giveSection: null, ctaSection: null }
+  let settings = { servicesTimes: [] }
 
   try {
-    data = await client.fetch(homePageQuery)
+    const [pageData, sectionsData, settingsData] = await Promise.all([
+      client.fetch(homePageQuery),
+      client.fetch(homeSectionsQuery),
+      client.fetch(siteSettingsQuery),
+    ])
+    data = pageData
+    sections = sectionsData
+    settings = settingsData
   } catch (error) {
-    console.warn('Failed to fetch home page data (this is expected during build without Sanity credentials)', error)
+    // Log error with context
+    logger.error(error as Error, {
+      page: 'home',
+      queries: ['homePageQuery', 'homeSectionsQuery', 'siteSettingsQuery'],
+    })
+    // In development, this is expected during build without Sanity credentials
+    if (process.env.NODE_ENV === 'development') {
+      logger.warn('Failed to fetch home page data (this is expected during build without Sanity credentials)')
+    }
   }
 
   return (
     <>
       {/* Hero Carousel Section */}
-      <HeroCarousel />
+      {sections.heroCarousel?.enabled !== false && (
+        <HeroCarousel data={sections.heroCarousel} serviceTimes={settings?.servicesTimes || []} />
+      )}
 
       {/* Give Section */}
-      <GiveSection />
+      {sections.giveSection?.enabled !== false && (
+        <GiveSection data={sections.giveSection} />
+      )}
 
       {/* About Section */}
-      <AboutPreview />
+      {sections.pastorWelcome?.enabled !== false && (
+        <AboutPreview data={sections.pastorWelcome} />
+      )}
 
       {/* Services Section (Sunday, Tuesday, Friday) */}
-      <ServiceSchedule times={SERVICE_TIMES} />
+      {settings?.servicesTimes && settings.servicesTimes.length > 0 && (
+        <ServiceSchedule times={settings.servicesTimes} />
+      )}
 
       {/* Ministries Section */}
       <MinistriesPreview ministries={data.ministries} />
@@ -61,7 +86,9 @@ export default async function HomePage() {
       <UpcomingEvents events={data.upcomingEvents || []} limit={3} showViewAll={true} />
 
       {/* CTA Section */}
-      <CtaSection />
+      {sections.ctaSection?.enabled !== false && (
+        <CtaSection data={sections.ctaSection} />
+      )}
 
       {/* Contact Section */}
       <Contact />

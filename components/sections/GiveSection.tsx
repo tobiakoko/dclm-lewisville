@@ -26,7 +26,34 @@ const itemVariants = {
   }
 }
 
-export default function GiveSection() {
+interface GiveSectionProps {
+  data?: {
+    giveContent?: {
+      heading?: string
+      description?: string
+      churchGivingTitle?: string
+      churchGivingDescription?: string
+      gckGivingTitle?: string
+      gckGivingDescription?: string
+      gckGivingUrl?: string
+      scriptureVerse?: string
+      scriptureReference?: string
+    }
+  } | null
+}
+
+export default function GiveSection({ data }: GiveSectionProps) {
+  const content = data?.giveContent || {
+    heading: 'Make an Impact',
+    description: "Your generous giving helps us spread the Gospel, support our community, and advance God's kingdom locally and globally through GCK.",
+    churchGivingTitle: 'Give to DCLM Lewisville',
+    churchGivingDescription: 'Support our local church ministries, operations, and community outreach programs.',
+    gckGivingTitle: 'Give to GCK',
+    gckGivingDescription: "Support God's Children Kingdom (GCK) global mission and children's ministry worldwide.",
+    gckGivingUrl: 'https://gckhq.org/',
+    scriptureVerse: '"Each of you should give what you have decided in your heart to give, not reluctantly or under compulsion, for God loves a cheerful giver."',
+    scriptureReference: '— 2 Corinthians 9:7'
+  }
   return (
     <section className="py-20 bg-white relative overflow-hidden" aria-labelledby="give-heading">
       <div className="container">
@@ -45,11 +72,10 @@ export default function GiveSection() {
             </div>
 
             <h2 id="give-heading" className="font-heading text-4xl md:text-5xl font-bold mb-6 text-foreground">
-              Make an Impact
+              {content.heading}
             </h2>
             <p className="text-lg text-foreground/70 max-w-2xl mx-auto leading-relaxed">
-              Your generous giving helps us spread the Gospel, support our community,
-              and advance God&apos;s kingdom locally and globally through GCK.
+              {content.description}
             </p>
           </motion.div>
 
@@ -61,15 +87,15 @@ export default function GiveSection() {
             {/* Church Giving Card */}
             <div className="bg-muted rounded-lg p-8 border border-border hover:elevation-2 transition-shadow">
               <div className="flex items-start gap-4 mb-6">
-                <div className="w-12 h-12 bg-accent rounded-lg flex items-center justify-center flex-shrink-0">
+                <div className="w-12 h-12 bg-accent rounded-lg flex items-center justify-center shrink-0">
                   <Building2 className="w-6 h-6 text-white" />
                 </div>
                 <div>
                   <h3 className="font-heading text-2xl font-bold mb-2 text-foreground">
-                    Give to DCLM Lewisville
+                    {content.churchGivingTitle}
                   </h3>
                   <p className="text-sm text-foreground/60">
-                    Support our local church ministries, operations, and community outreach programs.
+                    {content.churchGivingDescription}
                   </p>
                 </div>
               </div>
@@ -84,20 +110,20 @@ export default function GiveSection() {
             {/* GCK Giving Card */}
             <div className="bg-muted rounded-lg p-8 border border-border hover:elevation-2 transition-shadow">
               <div className="flex items-start gap-4 mb-6">
-                <div className="w-12 h-12 bg-primary rounded-lg flex items-center justify-center flex-shrink-0">
+                <div className="w-12 h-12 bg-primary rounded-lg flex items-center justify-center shrink-0">
                   <Heart className="w-6 h-6 text-white" fill="currentColor" />
                 </div>
                 <div>
                   <h3 className="font-heading text-2xl font-bold mb-2 text-foreground">
-                    Give to GCK
+                    {content.gckGivingTitle}
                   </h3>
                   <p className="text-sm text-foreground/60">
-                    Support God&apos;s Children Kingdom (GCK) global mission and children&apos;s ministry worldwide.
+                    {content.gckGivingDescription}
                   </p>
                 </div>
               </div>
               <Button asChild variant="outline" className="w-full h-12 border-primary hover:bg-primary/10">
-                <Link href="https://gckhq.org/" target="_blank" rel="noopener noreferrer">
+                <Link href={content.gckGivingUrl || 'https://gckhq.org/'} target="_blank" rel="noopener noreferrer">
                   Give to GCK
                   <ExternalLink className="w-4 h-4" />
                 </Link>
@@ -138,10 +164,9 @@ export default function GiveSection() {
           {/* Scripture Quote */}
           <motion.div variants={itemVariants} className="text-center mt-10">
             <blockquote className="text-base md:text-lg font-medium italic text-foreground/80 mb-2">
-              &quot;Each of you should give what you have decided in your heart to give,
-              not reluctantly or under compulsion, for God loves a cheerful giver.&quot;
+              {content.scriptureVerse}
             </blockquote>
-            <cite className="text-sm text-foreground/60">— 2 Corinthians 9:7</cite>
+            <cite className="text-sm text-foreground/60">{content.scriptureReference}</cite>
           </motion.div>
         </motion.div>
       </div>

@@ -14,6 +14,8 @@ export const metadata: Metadata = {
     'Lewisville',
     'Texas',
     'DCLM',
+    'Deeper Life Bible Church',
+    'Deeper Christian Life Ministry',
     'Deeper Life',
     'Bible',
     'Christian',

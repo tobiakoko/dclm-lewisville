@@ -29,10 +29,35 @@ const nextConfig: NextConfig = {
   compress: true,
   poweredByHeader: false,
   async headers() {
+    const isDev = process.env.NODE_ENV === 'development'
+
+    // Comprehensive Content Security Policy
+    const cspHeader = `
+      default-src 'self';
+      script-src 'self' 'unsafe-eval' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com ${isDev ? "'unsafe-eval'" : ''};
+      style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+      img-src 'self' blob: data: https://cdn.sanity.io https://images.unsplash.com ${isDev ? 'http://localhost:*' : ''};
+      font-src 'self' https://fonts.gstatic.com;
+      connect-src 'self' https://api.sanity.io https://*.sanity.io https://www.google-analytics.com ${isDev ? 'http://localhost:* ws://localhost:*' : ''};
+      frame-ancestors 'none';
+      base-uri 'self';
+      form-action 'self';
+      object-src 'none';
+      media-src 'self' https://cdn.sanity.io;
+      worker-src 'self' blob:;
+      child-src blob:;
+      manifest-src 'self';
+      upgrade-insecure-requests;
+    `.replace(/\s{2,}/g, ' ').trim()
+
     return [
       {
         source: '/(.*)',
         headers: [
+          {
+            key: 'Content-Security-Policy',
+            value: cspHeader,
+          },
           {
             key: 'X-Frame-Options',
             value: 'DENY',
@@ -48,6 +73,14 @@ const nextConfig: NextConfig = {
           {
             key: 'X-XSS-Protection',
             value: '1; mode=block',
+          },
+          {
+            key: 'Permissions-Policy',
+            value: 'camera=(), microphone=(), geolocation=()',
+          },
+          {
+            key: 'Strict-Transport-Security',
+            value: 'max-age=63072000; includeSubDomains; preload',
           },
         ],
       },

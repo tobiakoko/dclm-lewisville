@@ -5,6 +5,19 @@ import { motion } from 'framer-motion'
 import { Button } from '@/components/ui/button'
 import { ArrowRight } from 'lucide-react'
 
+interface CtaSectionProps {
+  data?: {
+    ctaContent?: {
+      heading?: string
+      highlightedText?: string
+      primaryButtonText?: string
+      primaryButtonLink?: string
+      secondaryButtonText?: string
+      secondaryButtonLink?: string
+    }
+  }
+}
+
 const containerVariants = {
   hidden: { opacity: 0, y: 30 },
   visible: {
@@ -28,7 +41,15 @@ const itemVariants = {
   }
 }
 
-export default function CtaSection() {
+export default function CtaSection({ data }: CtaSectionProps) {
+  // Fallback content
+  const heading = data?.ctaContent?.heading || 'Ready to'
+  const highlightedText = data?.ctaContent?.highlightedText || 'Join Our Community?'
+  const secondaryButtonText = data?.ctaContent?.secondaryButtonText || 'Learn More'
+  const secondaryButtonLink = data?.ctaContent?.secondaryButtonLink || '/about'
+  const primaryButtonText = data?.ctaContent?.primaryButtonText || 'Plan Your Visit'
+  const primaryButtonLink = data?.ctaContent?.primaryButtonLink || '/contact'
+
   return (
     <section
       className="bg-gradient-to-br from-primary via-primary to-[#6B0F2A] py-16 md:py-20 relative overflow-hidden"
@@ -51,9 +72,9 @@ export default function CtaSection() {
             variants={itemVariants}
             className="text-white font-heading text-3xl md:text-4xl lg:text-5xl font-bold max-w-2xl leading-tight"
           >
-            Ready to{' '}
+            {heading}{' '}
             <span className="bg-gradient-to-r from-secondary via-accent to-secondary bg-clip-text text-transparent">
-              Join Our Community?
+              {highlightedText}
             </span>
           </motion.h2>
 
@@ -72,9 +93,9 @@ export default function CtaSection() {
                 variant="ghost"
                 size="lg"
                 className="h-12 text-white hover:bg-white/10 hover:text-white border border-transparent hover:border-white/20 transition-all duration-300"
-                aria-label="Learn more about DCLM Lewisville"
+                aria-label={secondaryButtonText}
               >
-                <Link href="/about">Learn More</Link>
+                <Link href={secondaryButtonLink}>{secondaryButtonText}</Link>
               </Button>
             </motion.div>
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
@@ -82,10 +103,10 @@ export default function CtaSection() {
                 asChild
                 size="lg"
                 className="h-12 bg-white text-primary hover:bg-white/90 shadow-xl hover:shadow-2xl transition-all duration-300 group"
-                aria-label="Plan your visit to DCLM Lewisville"
+                aria-label={primaryButtonText}
               >
-                <Link href="/contact" className="flex items-center gap-2">
-                  Plan Your Visit
+                <Link href={primaryButtonLink} className="flex items-center gap-2">
+                  {primaryButtonText}
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </Link>
               </Button>

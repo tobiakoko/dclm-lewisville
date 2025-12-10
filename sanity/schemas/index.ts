@@ -6,6 +6,8 @@ import testimonial from './testimonial'
 import page from './page'
 import series from './series'
 import siteSettings from './siteSettings'
+import homeSection from './homeSection'
+import doctrine from './doctrine'
 
 // Object types
 import blockContent from './objects/blockContent'
@@ -24,6 +26,8 @@ export const schemaTypes = [
   page,
   series,
   siteSettings,
+  homeSection,
+  doctrine,
 
   // Objects
   blockContent,
