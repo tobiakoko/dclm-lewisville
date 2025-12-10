@@ -1,3 +1,4 @@
+import * as React from 'react'
 import { render, screen } from '@/__tests__/utils/test-utils'
 import { Input } from '@/components/ui/input'
 import userEvent from '@testing-library/user-event'
@@ -133,6 +134,3 @@ describe('Input', () => {
     })
   })
 })
-
-// Import React for controlled component test
-import * as React from 'react'
