@@ -5,7 +5,7 @@ import { env } from '@/lib/env'
 import { newsletterSchema } from '@/lib/validations/newsletter'
 import { escapeHtml } from '@/lib/sanitize'
 
-const resend = new Resend(env.RESEND_API_KEY)
+const resend = env.RESEND_API_KEY ? new Resend(env.RESEND_API_KEY) : null
 
 // Simple in-memory rate limiting (consider using Upstash Redis for production)
 const rateLimitMap = new Map<string, { count: number; resetTime: number }>()
@@ -70,6 +70,15 @@ export async function POST(request: NextRequest) {
     // Validate and sanitize email with Zod
     const { email } = newsletterSchema.parse(body)
     const sanitizedEmail = escapeHtml(email)
+
+    // Check if Resend is configured
+    if (!resend) {
+      console.warn('RESEND_API_KEY not configured. Newsletter subscription not sent.')
+      return NextResponse.json(
+        { message: 'Successfully subscribed to newsletter (email service not configured)' },
+        { status: 200 }
+      )
+    }
 
     // Add to newsletter list (you might want to integrate with Mailchimp, ConvertKit, etc.)
     // For now, just send a notification email

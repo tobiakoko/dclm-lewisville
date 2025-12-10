@@ -1,6 +1,7 @@
 import { client } from '@/lib/sanity/client'
 import { homePageQuery, homeSectionsQuery, siteSettingsQuery } from '@/lib/sanity/queries'
 import { logger } from '@/lib/logger'
+import { HomeSections, SiteSettings, Ministry, Person, Event } from '@/lib/types'
 import HeroCarousel from '@/components/sections/HeroCarouselNew'
 import GiveSection from '@/components/sections/GiveSection'
 import AboutPreview from '@/components/sections/AboutPreview'
@@ -13,10 +14,16 @@ import Contact from '@/components/sections/Contact'
 
 export const revalidate = 3600 // Revalidate every hour
 
+interface HomePageData {
+  ministries: Ministry[]
+  team: Person[]
+  upcomingEvents: Event[]
+}
+
 export default async function HomePage() {
-  let data = { ministries: [], team: [], upcomingEvents: [] }
-  let sections = { heroCarousel: null, pastorWelcome: null, giveSection: null, ctaSection: null }
-  let settings = { servicesTimes: [] }
+  let data: HomePageData = { ministries: [], team: [], upcomingEvents: [] }
+  let sections: HomeSections = { heroCarousel: null, pastorWelcome: null, giveSection: null, ctaSection: null }
+  let settings: SiteSettings = { servicesTimes: [] }
 
   try {
     const [pageData, sectionsData, settingsData] = await Promise.all([
@@ -43,7 +50,7 @@ export default async function HomePage() {
     <>
       {/* Hero Carousel Section */}
       {sections.heroCarousel?.enabled !== false && (
-        <HeroCarousel data={sections.heroCarousel} serviceTimes={settings?.servicesTimes || []} />
+        <HeroCarousel data={sections.heroCarousel} serviceTimes={settings?.servicesTimes} />
       )}
 
       {/* Give Section */}
@@ -52,7 +59,7 @@ export default async function HomePage() {
       )}
 
       {/* About Section */}
-      {sections.pastorWelcome?.enabled !== false && (
+      {sections.pastorWelcome?.enabled !== false && sections.pastorWelcome && (
         <AboutPreview data={sections.pastorWelcome} />
       )}
 
@@ -86,7 +93,7 @@ export default async function HomePage() {
       <UpcomingEvents events={data.upcomingEvents || []} limit={3} showViewAll={true} />
 
       {/* CTA Section */}
-      {sections.ctaSection?.enabled !== false && (
+      {sections.ctaSection?.enabled !== false && sections.ctaSection && (
         <CtaSection data={sections.ctaSection} />
       )}
 

@@ -7,7 +7,7 @@ interface ServiceTime {
   name: string
   day: string
   time: string
-  description: string
+  description?: string
 }
 
 interface ServiceScheduleProps {

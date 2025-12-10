@@ -5,7 +5,7 @@ import { env } from '@/lib/env'
 import { contactFormSchema } from '@/lib/validations/contact'
 import { escapeHtml } from '@/lib/sanitize'
 
-const resend = new Resend(env.RESEND_API_KEY)
+const resend = env.RESEND_API_KEY ? new Resend(env.RESEND_API_KEY) : null
 
 // Simple in-memory rate limiting (consider using Upstash Redis for production)
 const rateLimitMap = new Map<string, { count: number; resetTime: number }>()
@@ -75,6 +75,15 @@ export async function POST(request: NextRequest) {
     const sanitizedEmail = escapeHtml(validatedData.email)
     const sanitizedPhone = validatedData.phone ? escapeHtml(validatedData.phone) : null
     const sanitizedMessage = escapeHtml(validatedData.message)
+
+    // Check if Resend is configured
+    if (!resend) {
+      console.warn('RESEND_API_KEY not configured. Email not sent.')
+      return NextResponse.json(
+        { message: 'Contact form received (email service not configured)' },
+        { status: 200 }
+      )
+    }
 
     // Send email with sanitized content
     await resend.emails.send({

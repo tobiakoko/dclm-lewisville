@@ -10,6 +10,8 @@ import { ArrowRight } from 'lucide-react'
 import { HERO_SLIDES, SERVICE_TIMES } from '@/lib/constants'
 import { urlFor } from '@/lib/sanity/client'
 
+import type { ServiceTime } from '@/lib/types'
+
 interface HeroCarouselProps {
   data?: {
     heroSlides?: Array<{
@@ -21,12 +23,7 @@ interface HeroCarouselProps {
       ctaLink?: string
     }>
   } | null
-  serviceTimes?: Array<{
-    name: string
-    day: string
-    time: string
-    description?: string
-  }>
+  serviceTimes?: ServiceTime[]
 }
 
 export default function HeroCarousel({ data, serviceTimes }: HeroCarouselProps) {

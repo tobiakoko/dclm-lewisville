@@ -1,15 +1,15 @@
-import DOMPurify from 'isomorphic-dompurify'
-
 /**
  * Sanitizes HTML content to prevent XSS attacks
  * @param html - The HTML string to sanitize
  * @param allowedTags - Optional array of allowed HTML tags (default: basic formatting tags)
  * @returns Sanitized HTML string safe for rendering
  */
-export function sanitizeHtml(
+export async function sanitizeHtml(
   html: string,
   allowedTags?: string[]
-): string {
+): Promise<string> {
+  // Dynamic import to avoid loading DOMPurify during build
+  const DOMPurify = (await import('isomorphic-dompurify')).default
   const defaultAllowedTags = ['p', 'br', 'strong', 'em', 'u', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'ul', 'ol', 'li', 'a']
 
   return DOMPurify.sanitize(html, {
@@ -43,6 +43,8 @@ export function escapeHtml(text: string): string {
  * @param html - The HTML string to strip
  * @returns Plain text with no HTML tags
  */
-export function stripHtml(html: string): string {
+export async function stripHtml(html: string): Promise<string> {
+  // Dynamic import to avoid loading DOMPurify during build
+  const DOMPurify = (await import('isomorphic-dompurify')).default
   return DOMPurify.sanitize(html, { ALLOWED_TAGS: [] })
 }

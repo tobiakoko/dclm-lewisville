@@ -186,3 +186,89 @@ export const staggerTransition: SafeTransition = {
   staggerChildren: 0.08,
   delayChildren: 0.1
 }
+
+// Home Section Types
+export interface HeroSlide {
+  title: string
+  subtitle?: string
+  description?: string
+  image: any  // Sanity image reference
+  ctaText?: string
+  ctaLink?: string
+}
+
+export interface HeroCarouselSection {
+  enabled?: boolean
+  heroSlides?: HeroSlide[]
+}
+
+export interface WelcomeMessage {
+  heading?: string
+  content?: unknown  // Portable text content
+  signature?: string
+  tagline?: string
+}
+
+export interface PastorWelcomeSection {
+  enabled?: boolean
+  welcomeMessage?: WelcomeMessage
+}
+
+export interface GiveContent {
+  heading?: string
+  description?: string
+  churchGivingTitle?: string
+  churchGivingDescription?: string
+  gckGivingTitle?: string
+  gckGivingDescription?: string
+  gckGivingUrl?: string
+  scriptureVerse?: string
+  scriptureReference?: string
+}
+
+export interface GiveSection {
+  enabled?: boolean
+  giveContent?: GiveContent
+}
+
+export interface CtaContent {
+  heading?: string
+  highlightedText?: string
+  primaryButtonText?: string
+  primaryButtonLink?: string
+  secondaryButtonText?: string
+  secondaryButtonLink?: string
+}
+
+export interface CtaSection {
+  enabled?: boolean
+  ctaContent?: CtaContent
+}
+
+export interface HomeSections {
+  heroCarousel?: HeroCarouselSection | null
+  pastorWelcome?: PastorWelcomeSection | null
+  giveSection?: GiveSection | null
+  ctaSection?: CtaSection | null
+}
+
+// Service Times
+export interface ServiceTime {
+  name: string
+  day: string
+  time: string
+  description?: string
+}
+
+export interface SiteSettings {
+  title?: string
+  description?: string
+  logo?: SanityImage
+  address?: string
+  phone?: string
+  email?: string
+  servicesTimes?: ServiceTime[]
+  socialMedia?: any
+  aboutContent?: any
+  seo?: any
+}

@@ -7,7 +7,7 @@ export const env = createEnv({
    * This way you can ensure the app isn't built with invalid env vars.
    */
   server: {
-    RESEND_API_KEY: z.string().min(1, "RESEND_API_KEY is required for production"),
+    RESEND_API_KEY: z.string().optional(),
     SANITY_API_TOKEN: z.string().optional(),
     NODE_ENV: z.enum(["development", "test", "production"]).default("development"),
   },
