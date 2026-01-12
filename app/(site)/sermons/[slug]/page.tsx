@@ -142,14 +142,14 @@ export default async function SermonDetailPage({
               )}
 
               {/* Transcript */}
-              {sermon.transcript && (
+              {sermon.transcript && typeof sermon.transcript === 'object' ? (
                 <div className="mb-8 bg-gray-50 rounded-lg p-6">
                   <h2 className="font-heading text-2xl font-bold mb-4">Transcript</h2>
                   <div className="prose prose-lg max-w-none">
-                    <PortableText value={sermon.transcript} />
+                    <PortableText value={sermon.transcript as any} />
                   </div>
                 </div>
-              )}
+              ) : null}
 
               {/* Tags */}
               {sermon.tags && sermon.tags.length > 0 && (

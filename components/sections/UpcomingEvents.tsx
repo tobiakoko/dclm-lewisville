@@ -131,11 +131,11 @@ export default function UpcomingEvents({
                   </div>
                 </div>
 
-                {event.description && (
+                {event.description && typeof event.description === 'object' ? (
                   <div className="text-sm text-gray-600 mb-4 line-clamp-2 prose prose-sm max-w-none">
                     <PortableText value={event.description as any} />
                   </div>
-                )}
+                ) : null}
 
                 <div className="inline-flex items-center gap-2 text-sm font-semibold text-primary group-hover:gap-3 transition-all">
                   <span>Learn More</span>

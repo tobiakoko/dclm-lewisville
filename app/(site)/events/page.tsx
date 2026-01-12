@@ -106,11 +106,11 @@ export default async function EventsPage() {
                       </div>
                     </div>
 
-                    {event.description && (
+                    {event.description && typeof event.description === 'object' ? (
                       <div className="text-sm text-gray-600 mb-4 line-clamp-3 leading-relaxed prose prose-sm max-w-none">
-                        <PortableText value={event.description} />
+                        <PortableText value={event.description as any} />
                       </div>
-                    )}
+                    ) : null}
 
                     {event.ministry && (
                       <div className="mb-4">
