@@ -52,7 +52,7 @@ export default function CtaSection({ data }: CtaSectionProps) {
 
   return (
     <section
-      className="bg-gradient-to-br from-primary via-primary to-[#6B0F2A] py-16 md:py-20 relative overflow-hidden"
+      className="bg-gradient-to-br from-primary via-primary to-[#6B0F2A] py-24 md:py-32 relative overflow-hidden"
       aria-labelledby="cta-heading"
     >
       {/* Decorative pattern overlay */}

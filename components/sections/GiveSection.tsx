@@ -55,118 +55,67 @@ export default function GiveSection({ data }: GiveSectionProps) {
     scriptureReference: '— 2 Corinthians 9:7'
   }
   return (
-    <section className="py-20 bg-white relative overflow-hidden" aria-labelledby="give-heading">
+    <section className="py-32 bg-white relative overflow-hidden" aria-labelledby="give-heading">
       <div className="container">
         <motion.div
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.2 }}
-          className="max-w-6xl mx-auto"
+          className="max-w-4xl mx-auto"
         >
           {/* Header */}
-          <motion.div variants={itemVariants} className="text-center mb-12">
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-muted rounded-full mb-6">
-              <Heart className="w-4 h-4 text-accent" />
-              <span className="text-xs font-semibold text-foreground/70 uppercase tracking-wider">Give</span>
-            </div>
-
+          <motion.div variants={itemVariants} className="text-center mb-20">
             <h2 id="give-heading" className="font-heading text-4xl md:text-5xl font-bold mb-6 text-foreground">
               {content.heading}
             </h2>
-            <p className="text-lg text-foreground/70 max-w-2xl mx-auto leading-relaxed">
+            <p className="text-lg text-foreground/70 max-w-2xl mx-auto leading-relaxed mb-8">
               {content.description}
             </p>
-          </motion.div>
 
-          {/* Two Main CTAs */}
-          <motion.div
-            variants={itemVariants}
-            className="grid md:grid-cols-2 gap-6 mb-12"
-          >
-            {/* Church Giving Card */}
-            <div className="bg-muted rounded-lg p-8 border border-border hover:elevation-2 transition-shadow">
-              <div className="flex items-start gap-4 mb-6">
-                <div className="w-12 h-12 bg-accent rounded-lg flex items-center justify-center shrink-0">
-                  <Building2 className="w-6 h-6 text-white" />
-                </div>
-                <div>
-                  <h3 className="font-heading text-2xl font-bold mb-2 text-foreground">
-                    {content.churchGivingTitle}
-                  </h3>
-                  <p className="text-sm text-foreground/60">
-                    {content.churchGivingDescription}
-                  </p>
-                </div>
-              </div>
-              <Button asChild className="w-full h-12 bg-accent text-white hover:bg-accent-secondary">
-                <Link href="/give">
-                  Give to Church
-                  <ArrowRight className="w-4 h-4" />
-                </Link>
-              </Button>
-            </div>
-
-            {/* GCK Giving Card */}
-            <div className="bg-muted rounded-lg p-8 border border-border hover:elevation-2 transition-shadow">
-              <div className="flex items-start gap-4 mb-6">
-                <div className="w-12 h-12 bg-primary rounded-lg flex items-center justify-center shrink-0">
-                  <Heart className="w-6 h-6 text-white" fill="currentColor" />
-                </div>
-                <div>
-                  <h3 className="font-heading text-2xl font-bold mb-2 text-foreground">
-                    {content.gckGivingTitle}
-                  </h3>
-                  <p className="text-sm text-foreground/60">
-                    {content.gckGivingDescription}
-                  </p>
-                </div>
-              </div>
-              <Button asChild variant="outline" className="w-full h-12 border-primary hover:bg-primary/10">
-                <Link href={content.gckGivingUrl || 'https://gckhq.org/'} target="_blank" rel="noopener noreferrer">
-                  Give to GCK
-                  <ExternalLink className="w-4 h-4" />
-                </Link>
-              </Button>
-            </div>
-          </motion.div>
-
-          {/* Ways to Give */}
-          <motion.div variants={itemVariants} className="bg-muted/50 rounded-lg p-8 border border-border">
-            <h3 className="font-heading text-xl font-bold mb-6 text-center text-foreground">
-              Ways to Give
-            </h3>
-            <div className="grid sm:grid-cols-3 gap-6">
-              <div className="text-center">
-                <div className="w-14 h-14 bg-white rounded-lg flex items-center justify-center mx-auto mb-3 elevation-1">
-                  <Smartphone className="w-7 h-7 text-accent" />
-                </div>
-                <h4 className="font-semibold text-foreground mb-1">Online</h4>
-                <p className="text-sm text-foreground/60">Give securely online anytime</p>
-              </div>
-              <div className="text-center">
-                <div className="w-14 h-14 bg-white rounded-lg flex items-center justify-center mx-auto mb-3 elevation-1">
-                  <CreditCard className="w-7 h-7 text-accent" />
-                </div>
-                <h4 className="font-semibold text-foreground mb-1">In Person</h4>
-                <p className="text-sm text-foreground/60">Give during any service</p>
-              </div>
-              <div className="text-center">
-                <div className="w-14 h-14 bg-white rounded-lg flex items-center justify-center mx-auto mb-3 elevation-1">
-                  <Building2 className="w-7 h-7 text-accent" />
-                </div>
-                <h4 className="font-semibold text-foreground mb-1">Mail</h4>
-                <p className="text-sm text-foreground/60">Mail checks to our church</p>
-              </div>
-            </div>
-          </motion.div>
-
-          {/* Scripture Quote */}
-          <motion.div variants={itemVariants} className="text-center mt-10">
-            <blockquote className="text-base md:text-lg font-medium italic text-foreground/80 mb-2">
+            {/* Scripture Quote - moved up for context */}
+            <blockquote className="text-base font-medium italic text-foreground/60 mt-8 mb-2">
               {content.scriptureVerse}
             </blockquote>
-            <cite className="text-sm text-foreground/60">{content.scriptureReference}</cite>
+            <cite className="text-sm text-foreground/50">{content.scriptureReference}</cite>
+          </motion.div>
+
+          {/* Primary CTA - Church Giving (ONE FOCUS) */}
+          <motion.div
+            variants={itemVariants}
+            className="max-w-xl mx-auto"
+          >
+            <div className="bg-white rounded-2xl p-12 border border-border text-center shadow-sm">
+              <div className="w-16 h-16 bg-accent rounded-2xl flex items-center justify-center mx-auto mb-6 elevation-3">
+                <Heart className="w-8 h-8 text-white" fill="currentColor" />
+              </div>
+              <h3 className="font-heading text-3xl font-bold mb-4 text-foreground">
+                {content.churchGivingTitle}
+              </h3>
+              <p className="text-lg text-foreground/70 mb-8 leading-relaxed">
+                {content.churchGivingDescription}
+              </p>
+              <Button asChild size="lg" className="w-full h-14 bg-accent text-white hover:bg-accent-secondary text-lg font-semibold">
+                <Link href="/give">
+                  Give Now
+                  <ArrowRight className="w-5 h-5 ml-2" />
+                </Link>
+              </Button>
+
+              {/* Secondary option - subtle */}
+              <div className="mt-8 pt-8 border-t border-border/50">
+                <p className="text-sm text-foreground/60 mb-3">Also supporting global missions through GCK?</p>
+                <Link
+                  href={content.gckGivingUrl || 'https://gckhq.org/'}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sm font-medium text-primary hover:text-accent transition-colors inline-flex items-center gap-1"
+                >
+                  Give to GCK
+                  <ExternalLink className="w-3 h-3" />
+                </Link>
+              </div>
+            </div>
           </motion.div>
         </motion.div>
       </div>

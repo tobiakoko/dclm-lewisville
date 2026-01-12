@@ -1,16 +1,15 @@
 import { client } from '@/lib/sanity/client'
 import { homePageQuery, homeSectionsQuery, siteSettingsQuery } from '@/lib/sanity/queries'
 import { logger } from '@/lib/logger'
-import { HomeSections, SiteSettings, Ministry, Person, Event } from '@/lib/types'
+import { HomeSections, SiteSettings, Ministry, Person, Event, Sermon } from '@/lib/types'
 import HeroCarousel from '@/components/sections/HeroCarouselNew'
-import GiveSection from '@/components/sections/GiveSection'
+import SundayService from '@/components/sections/SundayService'
 import AboutPreview from '@/components/sections/AboutPreview'
-import ServiceSchedule from '@/components/sections/ServiceSchedule'
 import MinistriesPreview from '@/components/sections/MinistriesPreview'
 import Team from '@/components/sections/Team'
 import UpcomingEvents from '@/components/sections/UpcomingEvents'
+import FeaturedSermon from '@/components/sections/FeaturedSermon'
 import CtaSection from '@/components/sections/CtaSection'
-import Contact from '@/components/sections/Contact'
 
 export const revalidate = 3600 // Revalidate every hour
 
@@ -18,10 +17,11 @@ interface HomePageData {
   ministries: Ministry[]
   team: Person[]
   upcomingEvents: Event[]
+  featuredSermons: Sermon[]
 }
 
 export default async function HomePage() {
-  let data: HomePageData = { ministries: [], team: [], upcomingEvents: [] }
+  let data: HomePageData = { ministries: [], team: [], upcomingEvents: [], featuredSermons: [] }
   let sections: HomeSections = { heroCarousel: null, pastorWelcome: null, giveSection: null, ctaSection: null }
   let settings: SiteSettings = { servicesTimes: [] }
 
@@ -53,35 +53,31 @@ export default async function HomePage() {
         <HeroCarousel data={sections.heroCarousel} serviceTimes={settings?.servicesTimes} />
       )}
 
-      {/* Give Section */}
-      {sections.giveSection?.enabled !== false && (
-        <GiveSection data={sections.giveSection} />
-      )}
+      {/* Sunday Service Section */}
+      <SundayService serviceTimes={settings?.servicesTimes?.filter(s => s.day === 'Sunday')} />
+
+      {/* Featured Sermon Section */}
+      <FeaturedSermon sermon={data.featuredSermons?.[0] || null} />
 
       {/* About Section */}
       {sections.pastorWelcome?.enabled !== false && sections.pastorWelcome && (
         <AboutPreview data={sections.pastorWelcome} />
       )}
 
-      {/* Services Section (Sunday, Tuesday, Friday) */}
-      {settings?.servicesTimes && settings.servicesTimes.length > 0 && (
-        <ServiceSchedule times={settings.servicesTimes} />
-      )}
+      {/* Events Section */}
+      <UpcomingEvents events={data.upcomingEvents || []} limit={2} showViewAll={true} />
 
       {/* Ministries Section */}
       <MinistriesPreview ministries={data.ministries} />
 
       {/* Minister's Section (Team/Leadership) */}
-      <section className="py-20 bg-white">
+      <section className="py-32 bg-white relative">
         <div className="container">
-          <div className="mb-12">
-            <div className="inline-block px-3 py-1 bg-muted rounded-full mb-4">
-              <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Leadership</span>
-            </div>
-            <h2 className="font-heading text-3xl md:text-4xl font-semibold mb-3 text-foreground">
+          <div className="text-center mb-20">
+            <h2 className="font-heading text-4xl md:text-5xl font-bold mb-6 text-foreground">
               Our Leadership
             </h2>
-            <p className="text-base text-muted-foreground max-w-2xl">
+            <p className="text-lg text-foreground/70 max-w-2xl mx-auto leading-relaxed">
               Meet our dedicated team of ministers and leaders serving our congregation
             </p>
           </div>
@@ -89,16 +85,10 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Events Section */}
-      <UpcomingEvents events={data.upcomingEvents || []} limit={3} showViewAll={true} />
-
       {/* CTA Section */}
       {sections.ctaSection?.enabled !== false && sections.ctaSection && (
         <CtaSection data={sections.ctaSection} />
       )}
-
-      {/* Contact Section */}
-      <Contact />
     </>
   )
 }

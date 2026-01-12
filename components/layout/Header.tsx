@@ -88,13 +88,19 @@ export default function Header() {
             >
               <div className="relative h-9 w-auto">
                 <Image
-                  src="/Logo.png"
+                  src="/dclm_logo.png"
                   alt={SITE_CONFIG.name}
                   width={150}
                   height={45}
                   className="h-full w-auto object-contain transition-all duration-200 group-hover:opacity-80"
                   priority
                 />
+              </div>
+              <div className="hidden sm:block">
+                <div className="font-display font-bold text-blue text-lg leading-tight">
+                  DCLM Lewisville
+                </div>
+                <p className="text-blue/70 text-xs">Deeper Life Bible Church</p>
               </div>
             </Link>
 

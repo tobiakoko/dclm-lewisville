@@ -7,6 +7,7 @@ import { Calendar, Clock, MapPin, ExternalLink, Sparkles, ArrowRight } from 'luc
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 import PageHero from '@/components/sections/PageHero'
+import { PortableText } from '@portabletext/react'
 
 export const metadata = {
   title: 'Events',
@@ -106,9 +107,9 @@ export default async function EventsPage() {
                     </div>
 
                     {event.description && (
-                      <p className="text-sm text-gray-600 mb-4 line-clamp-3 leading-relaxed">
-                        {event.description}
-                      </p>
+                      <div className="text-sm text-gray-600 mb-4 line-clamp-3 leading-relaxed prose prose-sm max-w-none">
+                        <PortableText value={event.description} />
+                      </div>
                     )}
 
                     {event.ministry && (

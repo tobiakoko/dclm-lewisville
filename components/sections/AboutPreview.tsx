@@ -42,27 +42,23 @@ export default function AboutPreview({ data }: AboutPreviewProps) {
 
   return (
     <section
-      className="py-20 bg-muted/30 relative"
+      className="py-32 bg-muted/20 relative"
       aria-labelledby="about-heading"
     >
       <div className="container">
         <div className="max-w-4xl mx-auto">
           {/* Header */}
-          <div className="text-center mb-12">
-            <div className="inline-flex items-center px-3 py-1.5 bg-muted rounded-full mb-6">
-              <span className="text-xs font-semibold text-foreground/70 uppercase tracking-wider">Welcome</span>
-            </div>
-
+          <div className="text-center mb-16">
             <h2
               id="about-heading"
-              className="font-heading text-4xl md:text-5xl font-bold mb-4 text-foreground tracking-tight"
+              className="font-heading text-4xl md:text-5xl font-bold mb-6 text-foreground"
             >
               {heading}
             </h2>
           </div>
 
           {/* Pastor's Welcome Message Card */}
-          <div className="bg-white rounded-lg p-8 md:p-10 elevation-2 mb-8">
+          <div className="bg-white rounded-xl p-10 md:p-12 border border-border mb-12 shadow-sm">
             <Quote className="w-12 h-12 text-accent mb-6" />
 
             <div className="space-y-5 text-foreground/80 leading-relaxed">
@@ -94,7 +90,7 @@ export default function AboutPreview({ data }: AboutPreviewProps) {
 
           {/* CTA Button */}
           <div className="text-center">
-            <Button asChild size="lg" className="h-12 bg-accent text-white hover:bg-accent-secondary transition-all duration-300 group">
+            <Button asChild size="lg" className="bg-primary text-white hover:bg-primary/90 group">
               <Link href="/about">
                 Learn More About Us
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />

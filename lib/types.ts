@@ -91,7 +91,7 @@ export interface Event {
   date: string
   endDate?: string
   location: string
-  description?: string
+  description?: unknown  // Portable Text content (blockContent)
   image?: SanityImage
   featured?: boolean
 }

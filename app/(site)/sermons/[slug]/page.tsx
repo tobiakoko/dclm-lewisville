@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button'
 import SermonCard from '@/components/SermonCard'
 import SermonPlayer from '@/components/SermonPlayer'
 import Link from 'next/link'
+import { PortableText } from '@portabletext/react'
 
 export async function generateMetadata({ params }: { params: { slug: string } }) {
   try {
@@ -145,8 +146,7 @@ export default async function SermonDetailPage({
                 <div className="mb-8 bg-gray-50 rounded-lg p-6">
                   <h2 className="font-heading text-2xl font-bold mb-4">Transcript</h2>
                   <div className="prose prose-lg max-w-none">
-                    {/* You'd render the portable text here */}
-                    <p className="text-gray-700">{sermon.transcript}</p>
+                    <PortableText value={sermon.transcript} />
                   </div>
                 </div>
               )}

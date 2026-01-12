@@ -37,20 +37,16 @@ const cardVariants = {
 
 export default function ServiceSchedule({ times }: ServiceScheduleProps) {
   return (
-    <section className="py-20 bg-muted/50 relative" aria-labelledby="services-heading">
+    <section className="py-32 bg-white relative" aria-labelledby="services-heading">
       <div className="container">
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="text-center mb-12"
+          className="text-center mb-20"
         >
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-white rounded-full mb-6 elevation-1">
-            <Clock className="w-4 h-4 text-accent" />
-            <span className="text-xs font-semibold text-foreground/70 uppercase tracking-wider">Weekly Services</span>
-          </div>
-          <h2 id="services-heading" className="font-heading text-4xl md:text-5xl font-bold mb-4 text-foreground">
+          <h2 id="services-heading" className="font-heading text-4xl md:text-5xl font-bold mb-6 text-foreground">
             Join Us for Worship
           </h2>
           <p className="text-lg text-foreground/70 max-w-2xl mx-auto leading-relaxed">
