@@ -1,6 +1,9 @@
+'use client'
+
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { ArrowRight, Sparkles } from 'lucide-react'
+import { trackCTAClick } from '@/lib/analytics'
 
 interface CTAButton {
   text: string
@@ -18,13 +21,13 @@ export default function CTA({ title, description, primaryButton, secondaryButton
   return (
     <section className="py-24 md:py-32 relative overflow-hidden">
       {/* Animated gradient background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-primary via-secondary to-accent">
+      <div className="absolute inset-0 bg-linear-to-br from-primary via-secondary to-accent">
         <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PHBhdGggZD0iTTM2IDM0SDQ0VjQySDM2eiIvPjwvZz48L2c+PC9zdmc+')] opacity-30" />
       </div>
 
       {/* Overlay gradients */}
       <div className="absolute inset-0">
-        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-black/20 via-transparent to-black/20" />
+        <div className="absolute top-0 left-0 w-full h-full bg-linear-to-b from-black/20 via-transparent to-black/20" />
         <div className="absolute -top-24 -left-24 w-96 h-96 bg-white/10 rounded-full blur-3xl" />
         <div className="absolute -bottom-24 -right-24 w-96 h-96 bg-white/10 rounded-full blur-3xl" />
       </div>
@@ -54,7 +57,11 @@ export default function CTA({ title, description, primaryButton, secondaryButton
               size="lg"
               className="bg-white text-primary hover:bg-white/90 shadow-2xl hover:shadow-white/20 transition-all duration-300 hover:scale-105 group text-lg px-8 py-6 h-auto"
             >
-              <Link href={primaryButton.href} className="flex items-center gap-2">
+              <Link
+                href={primaryButton.href}
+                className="flex items-center gap-2"
+                onClick={() => trackCTAClick(primaryButton.text, 'cta_section')}
+              >
                 {primaryButton.text}
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </Link>
@@ -66,7 +73,11 @@ export default function CTA({ title, description, primaryButton, secondaryButton
                 variant="outline"
                 className="bg-white/10 backdrop-blur-sm border-2 border-white text-white hover:bg-white hover:text-primary shadow-xl transition-all duration-300 hover:scale-105 group text-lg px-8 py-6 h-auto"
               >
-                <Link href={secondaryButton.href} className="flex items-center gap-2">
+                <Link
+                  href={secondaryButton.href}
+                  className="flex items-center gap-2"
+                  onClick={() => trackCTAClick(secondaryButton.text, 'cta_section')}
+                >
                   {secondaryButton.text}
                   <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </Link>

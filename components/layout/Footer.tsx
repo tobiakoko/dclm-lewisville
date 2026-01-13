@@ -11,6 +11,7 @@ import {
   MapPin
 } from 'lucide-react'
 import { SITE_CONFIG } from '@/lib/constants'
+import { trackSocialMediaClick, trackNavigation, trackExternalLink } from '@/lib/analytics'
 
 const SOCIAL_LINKS = [
   {
@@ -68,6 +69,7 @@ export default function Footer() {
                   rel="noopener noreferrer"
                   className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-accent transition-colors"
                   aria-label={social.name}
+                  onClick={() => trackSocialMediaClick(social.name, 'footer')}
                 >
                   <social.icon size={18} />
                 </Link>
@@ -86,6 +88,7 @@ export default function Footer() {
                   <Link
                     href={link.href}
                     className="uppercase text-sm text-white/70 hover:text-accent transition-colors"
+                    onClick={() => trackNavigation(link.href, link.name)}
                   >
                     {link.name}
                   </Link>
@@ -108,8 +111,9 @@ export default function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-start gap-3 text-sm text-white/70 hover:text-accent transition-colors group"
+                  onClick={() => trackExternalLink('Google Maps', 'address_click')}
                 >
-                  <MapPin className="w-5 h-5 flex-shrink-0 mt-0.5" />
+                  <MapPin className="w-5 h-5 shrink-0 mt-0.5" />
                   <span>
                     {SITE_CONFIG.address.street}<br />
                     {SITE_CONFIG.address.city}, {SITE_CONFIG.address.state} {SITE_CONFIG.address.zip}
@@ -120,8 +124,9 @@ export default function Footer() {
                 <Link
                   href={`tel:${SITE_CONFIG.phone.replace(/\D/g, '')}`}
                   className="flex items-center gap-3 text-sm text-white/70 hover:text-accent transition-colors"
+                  onClick={() => trackExternalLink('Phone', 'phone_click')}
                 >
-                  <Phone className="w-5 h-5 flex-shrink-0" />
+                  <Phone className="w-5 h-5 shrink-0" />
                   {SITE_CONFIG.phone}
                 </Link>
               </li>
@@ -129,8 +134,9 @@ export default function Footer() {
                 <Link
                   href={`mailto:${SITE_CONFIG.email}`}
                   className="flex items-center gap-3 text-sm text-white/70 hover:text-accent transition-colors"
+                  onClick={() => trackExternalLink('Email', 'email_click')}
                 >
-                  <Mail className="w-5 h-5 flex-shrink-0" />
+                  <Mail className="w-5 h-5 shrink-0" />
                   {SITE_CONFIG.email}
                 </Link>
               </li>
@@ -145,10 +151,18 @@ export default function Footer() {
               © {new Date().getFullYear()} {SITE_CONFIG.shortName}. All rights reserved.
             </p>
             <div className="flex items-center gap-6">
-              <Link href="/privacy" className="text-white/60 hover:text-accent transition-colors text-sm">
+              <Link
+                href="/privacy"
+                className="text-white/60 hover:text-accent transition-colors text-sm"
+                onClick={() => trackNavigation('/privacy', 'Privacy')}
+              >
                 Privacy
               </Link>
-              <Link href="/terms" className="text-white/60 hover:text-accent transition-colors text-sm">
+              <Link
+                href="/terms"
+                className="text-white/60 hover:text-accent transition-colors text-sm"
+                onClick={() => trackNavigation('/terms', 'Terms')}
+              >
                 Terms
               </Link>
             </div>

@@ -7,6 +7,7 @@ import * as z from 'zod'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
+import { trackContactFormSubmit, trackContactFormError } from '@/lib/analytics'
 
 const contactSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters'),
@@ -43,12 +44,15 @@ export default function ContactForm() {
 
       if (response.ok) {
         setSubmitStatus('success')
+        trackContactFormSubmit('contact_page')
         reset()
       } else {
         setSubmitStatus('error')
+        trackContactFormError('submission_failed')
       }
     } catch (error) {
       setSubmitStatus('error')
+      trackContactFormError('network_error')
     } finally {
       setIsSubmitting(false)
     }

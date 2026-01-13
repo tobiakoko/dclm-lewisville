@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { SITE_CONFIG } from '@/lib/constants'
 import GoogleAnalytics from "@/components/GoogleAnalytics";
+import { Analytics } from '@vercel/analytics/next';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 
 export const metadata: Metadata = {
   title: {
@@ -89,6 +91,8 @@ export default function RootLayout({
           <GoogleAnalytics ga_id={process.env.NEXT_PUBLIC_GA_ID} />
         )}
         {children}
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );

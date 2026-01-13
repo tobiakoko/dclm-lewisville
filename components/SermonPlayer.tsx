@@ -2,6 +2,7 @@
 
 import AudioPlayer from 'react-h5-audio-player'
 import 'react-h5-audio-player/lib/styles.css'
+import { trackSermonPlay, trackSermonPause, trackSermonComplete } from '@/lib/analytics'
 
 interface SermonPlayerProps {
   audioUrl: string
@@ -10,6 +11,20 @@ interface SermonPlayerProps {
 }
 
 export default function SermonPlayer({ audioUrl, title, speaker }: SermonPlayerProps) {
+  const handlePlay = () => {
+    trackSermonPlay(title)
+  }
+
+  const handlePause = (e: Event) => {
+    const audio = e.target as HTMLAudioElement
+    const progress = audio.currentTime / audio.duration
+    trackSermonPause(title, progress)
+  }
+
+  const handleEnded = () => {
+    trackSermonComplete(title)
+  }
+
   return (
     <div className="bg-white rounded-lg shadow-lg p-6">
       <div className="mb-4">
@@ -23,6 +38,9 @@ export default function SermonPlayer({ audioUrl, title, speaker }: SermonPlayerP
         customAdditionalControls={[]}
         customVolumeControls={[]}
         className="sermon-player"
+        onPlay={handlePlay}
+        onPause={handlePause}
+        onEnded={handleEnded}
       />
       <style jsx global>{`
         .sermon-player {

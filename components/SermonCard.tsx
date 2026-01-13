@@ -1,9 +1,12 @@
+'use client'
+
 import Link from 'next/link'
 import Image from 'next/image'
 import { urlFor } from '@/lib/sanity/client'
 import { formatDate } from '@/lib/utils'
 import { Play, Clock, Calendar } from 'lucide-react'
 import { Sermon } from '@/lib/types'
+import { trackNavigation } from '@/lib/analytics'
 
 interface SermonCardProps {
   sermon: Sermon
@@ -14,6 +17,7 @@ export default function SermonCard({ sermon }: SermonCardProps) {
     <Link
       href={`/sermons/${sermon.slug.current}`}
       className="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden border-2 border-border hover:border-primary/50 hover:-translate-y-2"
+      onClick={() => trackNavigation(`/sermons/${sermon.slug.current}`, sermon.title)}
     >
       {/* Thumbnail */}
       <div className="relative h-56 bg-gradient-to-br from-primary via-secondary to-accent overflow-hidden">

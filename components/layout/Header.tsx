@@ -7,6 +7,7 @@ import { Menu, X, Church, Heart, ChevronDown, ChevronRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { SITE_CONFIG, NAV_LINKS } from '@/lib/constants'
 import { useScroll } from "@/hooks/use-scroll"
+import { trackNavigation, trackGiveClick } from '@/lib/analytics'
 
 const NAVIGATION = NAV_LINKS.filter(link => !link.highlight)
 const CTA_BUTTONS = NAV_LINKS.filter(link => link.highlight)
@@ -84,7 +85,10 @@ export default function Header() {
             <Link
               href="/"
               className="flex items-center group relative z-10"
-              onClick={() => setMobileMenuOpen(false)}
+              onClick={() => {
+                setMobileMenuOpen(false)
+                trackNavigation('/', 'logo')
+              }}
             >
               <div className="relative h-9 w-auto">
                 <Image
@@ -179,6 +183,7 @@ export default function Header() {
                                               onClick={() => {
                                                 setOpenDesktopDropdown(null)
                                                 setHoveredItem(null)
+                                                trackNavigation(subChild.href, subChild.name)
                                               }}
                                             >
                                               {subChild.name}
@@ -192,14 +197,15 @@ export default function Header() {
                                   <Link
                                     href={child.href}
                                     className={`
-                                      block px-4 py-3 text-sm font-medium text-foreground/80 
-                                      hover:text-foreground hover:bg-accent/5 
+                                      block px-4 py-3 text-sm font-medium text-foreground/80
+                                      hover:text-foreground hover:bg-accent/5
                                       transition-all duration-200
                                       ${index === 0 ? 'rounded-t-lg' : ''}
                                     `}
                                     onClick={() => {
                                       setOpenDesktopDropdown(null)
                                       setHoveredItem(null)
+                                      trackNavigation(child.href, child.name)
                                     }}
                                   >
                                     {child.name}
@@ -219,6 +225,7 @@ export default function Header() {
                         text-foreground hover:text-accent hover:bg-accent/5
                         transition-all duration-200 rounded-md
                       "
+                      onClick={() => trackNavigation(link.href, link.name)}
                     >
                       {link.name}
                     </Link>
@@ -239,7 +246,16 @@ export default function Header() {
                       ${index === 0 ? "hover:bg-muted" : "elevation-1 hover:elevation-2"}
                     `}
                   >
-                    <Link href={button.href}>
+                    <Link
+                      href={button.href}
+                      onClick={() => {
+                        if (button.name.toLowerCase().includes('give')) {
+                          trackGiveClick('header_desktop')
+                        } else {
+                          trackNavigation(button.href, button.name)
+                        }
+                      }}
+                    >
                       {index === 0 ? <Heart className="w-4 h-4" /> : <Church className="w-4 h-4" />}
                       {button.name}
                     </Link>
@@ -358,6 +374,7 @@ export default function Header() {
                                       onClick={() => {
                                         setMobileMenuOpen(false)
                                         setOpenMobileDropdown(null)
+                                        trackNavigation(subChild.href, subChild.name)
                                       }}
                                     >
                                       {subChild.name}
@@ -372,6 +389,7 @@ export default function Header() {
                                 onClick={() => {
                                   setMobileMenuOpen(false)
                                   setOpenMobileDropdown(null)
+                                  trackNavigation(child.href, child.name)
                                 }}
                               >
                                 {child.name}
@@ -386,7 +404,10 @@ export default function Header() {
                   <Link
                     href={link.href}
                     className="flex items-center px-4 py-3.5 text-base font-semibold text-foreground hover:bg-accent/5 rounded-lg transition-all duration-200"
-                    onClick={() => setMobileMenuOpen(false)}
+                    onClick={() => {
+                      setMobileMenuOpen(false)
+                      trackNavigation(link.href, link.name)
+                    }}
                   >
                     {link.name}
                   </Link>
@@ -405,7 +426,17 @@ export default function Header() {
                 className="w-full justify-center font-semibold h-12"
                 size="default"
               >
-                <Link href={button.href} onClick={() => setMobileMenuOpen(false)}>
+                <Link
+                  href={button.href}
+                  onClick={() => {
+                    setMobileMenuOpen(false)
+                    if (button.name.toLowerCase().includes('give')) {
+                      trackGiveClick('header_mobile')
+                    } else {
+                      trackNavigation(button.href, button.name)
+                    }
+                  }}
+                >
                   {index === 0 ? <Heart className="w-4 h-4" /> : <Church className="w-4 h-4" />}
                   {button.name}
                 </Link>
@@ -416,7 +447,7 @@ export default function Header() {
           {/* Tagline */}
           <div className="pt-6">
             <p className="text-sm text-muted-foreground text-center italic font-medium">
-              "Holiness unto the Lord"
+              &quot;Holiness unto the Lord&quot;
             </p>
           </div>
         </nav>
