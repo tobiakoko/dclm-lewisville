@@ -5,21 +5,29 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { Menu, X, ChevronDown, ChevronRight } from 'lucide-react'
 import { SITE_CONFIG, NAV_LINKS } from '@/lib/constants'
-import { useScroll } from "@/hooks/use-scroll"
 import { trackNavigation, trackGiveClick } from '@/lib/analytics'
 
+// Import your project hook
+import { useScroll } from '@/hooks/use-scroll'
+
+// Filter out highlighted links (like "Give") if they shouldn't appear in the main standard nav list
 const NAVIGATION = NAV_LINKS.filter(link => !link.highlight)
 
 export default function Header() {
+  // UI States
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [openDesktopDropdown, setOpenDesktopDropdown] = useState<string | null>(null)
   const [openMobileDropdown, setOpenMobileDropdown] = useState<string | null>(null)
   const [hoveredItem, setHoveredItem] = useState<string | null>(null)
+  
+  // Use project hook (threshold 10px)
   const scrolled = useScroll(10)
+  
+  // Refs for hover intent
   const dropdownTimeoutRef = useRef<NodeJS.Timeout | null>(null)
   const headerRef = useRef<HTMLElement>(null)
 
-  // Close mobile menu on escape key
+  // Handle Escape Key
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
@@ -27,12 +35,11 @@ export default function Header() {
         setOpenDesktopDropdown(null)
       }
     }
-
     document.addEventListener('keydown', handleEscape)
     return () => document.removeEventListener('keydown', handleEscape)
   }, [])
 
-  // Prevent body scroll when mobile menu is open
+  // Lock Body Scroll when Mobile Menu is open
   useEffect(() => {
     if (mobileMenuOpen) {
       document.body.style.overflow = 'hidden'
@@ -41,6 +48,7 @@ export default function Header() {
     }
   }, [mobileMenuOpen])
 
+  // --- Handlers ---
 
   const handleMouseEnter = (name: string) => {
     if (dropdownTimeoutRef.current) {
@@ -54,7 +62,7 @@ export default function Header() {
     dropdownTimeoutRef.current = setTimeout(() => {
       setOpenDesktopDropdown(null)
       setHoveredItem(null)
-    }, 150)
+    }, 150) // 150ms grace period
   }
 
   const toggleMobileDropdown = (name: string) => {
@@ -65,18 +73,19 @@ export default function Header() {
     <>
       <header
         ref={headerRef}
-        className={`fixed top-0 left-0 right-0 z-50 w-full transition-all duration-300 ${
+        className={`fixed top-0 left-0 right-0 z-50 w-full transition-all duration-300 ease-in-out border-b ${
           scrolled
-            ? 'bg-white shadow-md'
-            : 'bg-transparent'
+            ? 'bg-white/90 backdrop-blur-md shadow-sm border-gray-200/50 py-2'
+            : 'bg-transparent border-transparent py-4'
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex h-24 items-center justify-between">
-            {/* Logo */}
+          <div className="flex items-center justify-between h-16">
+            
+            {/* --- LOGO --- */}
             <Link
               href="/"
-              className="flex items-center gap-3 group shrink-0"
+              className="flex items-center gap-3 group relative z-50"
               onClick={() => {
                 setMobileMenuOpen(false)
                 trackNavigation('/', 'logo')
@@ -88,25 +97,27 @@ export default function Header() {
                   alt={SITE_CONFIG.name}
                   width={150}
                   height={50}
-                  className="h-full w-auto object-contain transition-opacity duration-200 group-hover:opacity-80"
+                  className="h-full w-auto object-contain transition-transform duration-300 group-hover:scale-105"
                   priority
                 />
               </div>
               <div className="hidden sm:block">
-                <div className={`font-display font-bold text-2xl leading-tight border-b-2 pb-1 transition-colors duration-300 ${
-                  scrolled ? 'text-(--church-navy) border-(--church-red)' : 'text-white border-(--church-red)'
+                <div className={`font-display font-semibold text-xl leading-tight pb-0.5 transition-colors duration-300 ${
+                  scrolled 
+                    ? 'text-(--church-navy)' 
+                    : 'text-white'
                 }`}>
                   DCLM Lewisville
                 </div>
               </div>
             </Link>
 
-            {/* Desktop Navigation */}
-            <nav className="hidden lg:flex items-center space-x-8">
+            {/* --- DESKTOP NAVIGATION --- */}
+            <nav className="hidden lg:flex items-center gap-8">
               {NAVIGATION.map((link) => (
                 <div
                   key={link.href}
-                  className="relative"
+                  className="relative h-full flex items-center"
                   onMouseEnter={() => link.children && handleMouseEnter(link.name)}
                   onMouseLeave={handleMouseLeave}
                 >
@@ -114,91 +125,80 @@ export default function Header() {
                     <>
                       <button
                         className={`
-                          group relative text-sm font-semibold tracking-widest uppercase
+                          group relative text-xs font-medium tracking-widest uppercase flex items-center gap-1.5 py-2
                           transition-colors duration-200
                           ${scrolled
                             ? (hoveredItem === link.name ? 'text-(--church-red)' : 'text-(--church-navy) hover:text-(--church-red)')
                             : (hoveredItem === link.name ? 'text-(--church-red)' : 'text-white hover:text-(--church-red)')
                           }
                         `}
+                        aria-expanded={openDesktopDropdown === link.name}
                       >
-                        <span className="flex items-center gap-1.5">
-                          {link.name}
-                          <ChevronDown 
-                            className={`w-3.5 h-3.5 transition-transform duration-300 ${
-                              openDesktopDropdown === link.name ? 'rotate-180' : ''
-                            }`}
-                          />
-                        </span>
-                        
+                        {link.name}
+                        <ChevronDown 
+                          className={`w-3.5 h-3.5 transition-transform duration-300 ${
+                            openDesktopDropdown === link.name ? 'rotate-180' : ''
+                          }`}
+                        />
                       </button>
 
-                      {/* Dropdown Menu */}
+                      {/* Dropdown Panel */}
                       <div
                         className={`
-                          absolute top-full left-0 mt-2 w-64
-                          transition-all duration-300 ease-out origin-top
+                          absolute top-full left-1/2 -translate-x-1/2 pt-6 w-64
+                          transition-all duration-200 ease-out origin-top
                           ${openDesktopDropdown === link.name
                             ? 'opacity-100 visible translate-y-0 scale-100'
                             : 'opacity-0 invisible -translate-y-2 scale-95 pointer-events-none'
                           }
                         `}
                       >
-                        <div className="bg-white elevation-4 rounded-lg overflow-hidden border border-border/50">
-                          <div className="py-2">
-                            {link.children.map((child, index) => (
-                              <div key={child.href}>
-                                {child.children ? (
-                                  // Nested dropdown for "Devotions"
-                                  <div className="relative group/nested">
-                                    <div className="px-4 py-3 text-sm font-semibold text-foreground/80 hover:text-foreground hover:bg-accent/5 transition-all duration-200 flex items-center justify-between cursor-pointer group-hover/nested:bg-accent/5">
-                                      <span>{child.name}</span>
-                                      <ChevronRight className="w-4 h-4 text-foreground/40 group-hover/nested:text-accent transition-colors" />
-                                    </div>
-                                    
-                                    {/* Sub-dropdown */}
-                                    <div className="absolute left-full top-0 ml-2 w-56 opacity-0 invisible group-hover/nested:opacity-100 group-hover/nested:visible transition-all duration-300 ease-out translate-x-2 group-hover/nested:translate-x-0">
-                                      <div className="bg-white elevation-4 rounded-lg overflow-hidden border border-border/50">
-                                        <div className="py-2">
-                                          {child.children.map((subChild, subIndex) => (
-                                            <Link
-                                              key={subChild.href}
-                                              href={subChild.href}
-                                              className="block px-4 py-3 text-sm font-medium text-foreground/80 hover:text-foreground hover:bg-accent/5 transition-all duration-200"
-                                              onClick={() => {
-                                                setOpenDesktopDropdown(null)
-                                                setHoveredItem(null)
-                                                trackNavigation(subChild.href, subChild.name)
-                                              }}
-                                            >
-                                              {subChild.name}
-                                            </Link>
-                                          ))}
-                                        </div>
-                                      </div>
-                                    </div>
+                        {/* Dropdown Content */}
+                        <div className="bg-white shadow-xl rounded-xl overflow-hidden ring-1 ring-black/5 p-1.5">
+                          {link.children.map((child) => (
+                            <div key={child.href} className="relative group/item">
+                              {child.children ? (
+                                // Nested Dropdown Trigger
+                                <div className="w-full text-left px-4 py-3 text-xs font-medium uppercase tracking-widest text-gray-600 hover:text-[var(--church-red)] hover:bg-gray-50 rounded-lg flex items-center justify-between cursor-pointer transition-colors">
+                                  <span>{child.name}</span>
+                                  <ChevronRight className="w-4 h-4 text-gray-300 group-hover/item:text-[var(--church-red)]" />
+
+                                  {/* Nested Sub-menu */}
+                                  <div className="absolute left-full top-0 ml-2 w-56 z-50 opacity-0 invisible -translate-x-2 group-hover/item:opacity-100 group-hover/item:visible group-hover/item:translate-x-0 transition-all duration-200 pointer-events-none group-hover/item:pointer-events-auto">
+                                     <div className="bg-white shadow-lg rounded-xl overflow-hidden ring-1 ring-black/5 p-1.5">
+                                        {child.children.map((subChild) => (
+                                          <Link
+                                            key={subChild.href}
+                                            href={subChild.href}
+                                            className="block px-4 py-2.5 text-xs font-medium uppercase tracking-widest text-gray-500 hover:text-[var(--church-navy)] hover:bg-gray-50 rounded-lg transition-colors"
+                                            onClick={() => {
+                                              setOpenDesktopDropdown(null)
+                                              setHoveredItem(null)
+                                              trackNavigation(subChild.href, subChild.name)
+                                            }}
+                                          >
+                                            {subChild.name}
+                                          </Link>
+                                        ))}
+                                     </div>
                                   </div>
-                                ) : (
-                                  <Link
-                                    href={child.href}
-                                    className={`
-                                      block px-4 py-3 text-sm font-medium text-foreground/80
-                                      hover:text-foreground hover:bg-accent/5
-                                      transition-all duration-200
-                                      ${index === 0 ? 'rounded-t-lg' : ''}
-                                    `}
-                                    onClick={() => {
-                                      setOpenDesktopDropdown(null)
-                                      setHoveredItem(null)
-                                      trackNavigation(child.href, child.name)
-                                    }}
-                                  >
-                                    {child.name}
-                                  </Link>
-                                )}
-                              </div>
-                            ))}
-                          </div>
+                                </div>
+                              ) : (
+                                // Standard Link
+                                <Link
+                                  href={child.href}
+                                  className="block px-4 py-3 text-xs font-medium uppercase tracking-widest text-gray-600 hover:text-[var(--church-navy)] hover:bg-gray-50 rounded-lg transition-colors"
+                                  onClick={() => {
+                                    setOpenDesktopDropdown(null)
+                                    setHoveredItem(null)
+                                    trackNavigation(child.href, child.name)
+                                  }}
+                                >
+                                  {child.name}
+                                </Link>
+                              )}
+                            </div>
+                          ))}
                         </div>
                       </div>
                     </>
@@ -206,11 +206,11 @@ export default function Header() {
                     <Link
                       href={link.href}
                       className={`
-                        text-sm font-semibold tracking-widest uppercase
+                        text-xs font-medium tracking-widest uppercase py-2
                         transition-colors duration-200
                         ${scrolled
-                          ? 'text-(--church-navy) hover:text-(--church-red)'
-                          : 'text-white hover:text-(--church-red)'
+                          ? 'text-[var(--church-navy)] hover:text-[var(--church-red)]'
+                          : 'text-white hover:text-[var(--church-red)]'
                         }
                       `}
                       onClick={() => trackNavigation(link.href, link.name)}
@@ -221,25 +221,23 @@ export default function Header() {
                 </div>
               ))}
 
-              {/* Call-to-Action Button */}
+              {/* CTA Button */}
               <Link
                 href="/give"
-                className="bg-(--church-red) text-white px-6 py-2 rounded-full text-xs font-bold tracking-widest hover:bg-red-700 transition-colors"
+                className="bg-[var(--church-red)] text-white px-7 py-2.5 rounded-full text-xs font-bold tracking-widest hover:bg-red-700 hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0 active:shadow-none transition-all duration-300"
                 onClick={() => trackGiveClick('header_desktop')}
               >
                 GIVE
               </Link>
             </nav>
 
-            {/* Mobile Menu Button */}
+            {/* --- MOBILE MENU BUTTON --- */}
             <button
-              className={`lg:hidden p-2 transition-colors ${
-                scrolled ? 'text-(--church-navy)' : 'text-white'
+              className={`lg:hidden p-2 -mr-2 transition-colors relative z-50 rounded-full hover:bg-white/10 ${
+                (mobileMenuOpen || scrolled) ? 'text-[var(--church-navy)]' : 'text-white'
               }`}
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               aria-label={mobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
-              aria-expanded={mobileMenuOpen}
-              aria-controls="mobile-menu"
             >
               {mobileMenuOpen ? (
                 <X className="w-7 h-7" />
@@ -251,88 +249,101 @@ export default function Header() {
         </div>
       </header>
 
-      {/* Mobile Menu */}
-      {mobileMenuOpen && (
-        <div
-          id="mobile-menu"
-          className="lg:hidden bg-white shadow-xl fixed w-full top-24 left-0 border-t z-40 max-h-[calc(100vh-6rem)] overflow-y-auto"
-          role="navigation"
-          aria-label="Mobile navigation"
-        >
-          <nav className="flex flex-col space-y-4 p-6">
+      {/* --- MOBILE DRAWER --- */}
+      {/* Backdrop */}
+      <div 
+        className={`fixed inset-0 bg-black/40 backdrop-blur-sm z-40 lg:hidden transition-opacity duration-500 ${
+           mobileMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
+        }`}
+        onClick={() => setMobileMenuOpen(false)}
+      />
+
+      {/* Drawer Panel */}
+      <div
+        className={`
+          fixed top-0 right-0 bottom-0 w-[85%] max-w-[320px] bg-white z-50 shadow-2xl
+          transform transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] lg:hidden
+          ${mobileMenuOpen ? 'translate-x-0' : 'translate-x-full'}
+        `}
+      >
+        <div className="flex flex-col h-full pt-28 pb-8 px-6 overflow-y-auto">
+          
+          <nav className="flex-1 space-y-6">
             {NAVIGATION.map((link) => (
-              <div key={link.href}>
+              <div key={link.href} className="border-b border-gray-100 pb-4 last:border-0">
                 {link.children ? (
                   <>
                     <button
                       onClick={() => toggleMobileDropdown(link.name)}
-                      className="flex items-center justify-between w-full text-(--church-navy) font-semibold tracking-widest hover:text-(--church-red) transition-colors"
+                      className="flex items-center justify-between w-full text-[var(--church-navy)] text-xs font-medium tracking-widest uppercase hover:text-[var(--church-red)] transition-colors group"
                     >
                       <span>{link.name}</span>
                       <ChevronDown
-                        className={`w-4 h-4 transition-transform duration-300 ${
-                          openMobileDropdown === link.name ? 'rotate-180' : ''
+                        className={`w-5 h-5 text-gray-300 group-hover:text-[var(--church-red)] transition-transform duration-300 ${
+                          openMobileDropdown === link.name ? 'rotate-180 text-[var(--church-red)]' : ''
                         }`}
                       />
                     </button>
 
-                    {/* Mobile Dropdown */}
+                    {/* Accordion Animation */}
                     <div
                       className={`
-                        overflow-hidden transition-all duration-300 ease-out
+                        grid transition-[grid-template-rows,opacity,margin] duration-300 ease-in-out
                         ${openMobileDropdown === link.name
-                          ? 'max-h-96 opacity-100 mt-2'
-                          : 'max-h-0 opacity-0'
+                          ? 'grid-rows-[1fr] opacity-100 mt-3'
+                          : 'grid-rows-[0fr] opacity-0 mt-0'
                         }
                       `}
                     >
-                      <div className="ml-4 space-y-2 border-l-2 border-(--church-red)/20 pl-4">
-                        {link.children.map((child) => (
-                          <div key={child.href}>
-                            {child.children ? (
-                              <>
-                                <div className="text-sm font-semibold text-(--church-navy)/70">
+                      <div className="overflow-hidden">
+                        <div className="space-y-4 pl-4 border-l-2 border-gray-100 ml-1">
+                          {link.children.map((child) => (
+                            <div key={child.href}>
+                              {child.children ? (
+                                <div className="space-y-3">
+                                  <span className="block text-xs font-medium text-[var(--church-red)] uppercase tracking-widest opacity-80">
+                                    {child.name}
+                                  </span>
+                                  <div className="pl-3 space-y-3 border-l border-gray-100">
+                                     {child.children.map((subChild) => (
+                                        <Link
+                                          key={subChild.href}
+                                          href={subChild.href}
+                                          className="block text-xs font-medium uppercase tracking-widest text-gray-500 hover:text-[var(--church-navy)] transition-colors"
+                                          onClick={() => {
+                                            setMobileMenuOpen(false)
+                                            setOpenMobileDropdown(null)
+                                            trackNavigation(subChild.href, subChild.name)
+                                          }}
+                                        >
+                                          {subChild.name}
+                                        </Link>
+                                     ))}
+                                  </div>
+                                </div>
+                              ) : (
+                                <Link
+                                  href={child.href}
+                                  className="block text-xs font-medium uppercase tracking-widest text-gray-600 hover:text-[var(--church-navy)] transition-colors"
+                                  onClick={() => {
+                                    setMobileMenuOpen(false)
+                                    setOpenMobileDropdown(null)
+                                    trackNavigation(child.href, child.name)
+                                  }}
+                                >
                                   {child.name}
-                                </div>
-                                <div className="ml-3 space-y-2 mt-2">
-                                  {child.children.map((subChild) => (
-                                    <Link
-                                      key={subChild.href}
-                                      href={subChild.href}
-                                      className="block text-sm text-(--church-navy)/60 hover:text-(--church-red) transition-colors"
-                                      onClick={() => {
-                                        setMobileMenuOpen(false)
-                                        setOpenMobileDropdown(null)
-                                        trackNavigation(subChild.href, subChild.name)
-                                      }}
-                                    >
-                                      {subChild.name}
-                                    </Link>
-                                  ))}
-                                </div>
-                              </>
-                            ) : (
-                              <Link
-                                href={child.href}
-                                className="block text-sm text-(--church-navy)/70 hover:text-(--church-red) transition-colors"
-                                onClick={() => {
-                                  setMobileMenuOpen(false)
-                                  setOpenMobileDropdown(null)
-                                  trackNavigation(child.href, child.name)
-                                }}
-                              >
-                                {child.name}
-                              </Link>
-                            )}
-                          </div>
-                        ))}
+                                </Link>
+                              )}
+                            </div>
+                          ))}
+                        </div>
                       </div>
                     </div>
                   </>
                 ) : (
                   <Link
                     href={link.href}
-                    className="text-(--church-navy) font-semibold tracking-widest hover:text-(--church-red) transition-colors"
+                    className="block text-[var(--church-navy)] text-xs font-medium tracking-widest uppercase hover:text-[var(--church-red)] transition-colors"
                     onClick={() => {
                       setMobileMenuOpen(false)
                       trackNavigation(link.href, link.name)
@@ -343,11 +354,13 @@ export default function Header() {
                 )}
               </div>
             ))}
+          </nav>
 
-            {/* CTA Button */}
+          {/* Mobile Footer */}
+          <div className="mt-auto pt-6 border-t border-gray-100">
             <Link
               href="/give"
-              className="bg-(--church-red) text-white px-6 py-3 rounded text-center text-xs font-bold tracking-widest hover:bg-red-700 transition-colors"
+              className="flex items-center justify-center w-full bg-[var(--church-red)] text-white py-4 rounded-xl text-sm font-bold tracking-widest shadow-md hover:bg-red-700 active:scale-95 transition-all"
               onClick={() => {
                 setMobileMenuOpen(false)
                 trackGiveClick('header_mobile')
@@ -355,10 +368,13 @@ export default function Header() {
             >
               GIVE ONLINE
             </Link>
-          </nav>
+            
+            <p className="text-center text-xs text-gray-300 mt-6">
+               © {new Date().getFullYear()} DCLM Lewisville
+            </p>
+          </div>
         </div>
-      )}
-
+      </div>
     </>
   )
 }
