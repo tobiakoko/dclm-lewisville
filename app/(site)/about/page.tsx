@@ -2,15 +2,12 @@ import { client } from '@/lib/sanity/client'
 import { groq } from 'next-sanity'
 import Image from 'next/image'
 import { BookOpen, Church, Heart, Waves, Sparkles, type LucideIcon } from 'lucide-react'
-import Timeline from '@/components/sections/Timeline'
 import Team from '@/components/sections/Team'
-import CTA from '@/components/sections/CTA'
 import HeroSection from '@/components/sections/HeroSection'
 
 export const metadata = {
   title: 'About Us',
-  description:
-    'Learn about Deeper Life Bible Church Lewisville, our history, mission, and leadership.',
+  description: 'Learn about Deeper Life Bible Church Lewisville, our history, mission, and leadership.',
 }
 
 interface Belief {
@@ -23,64 +20,38 @@ const beliefs: Belief[] = [
   {
     icon: BookOpen,
     title: 'The Bible',
-    description:
-      'We believe the Holy Bible is the inspired and infallible Word of God.',
+    description: 'We believe the Holy Bible is the inspired and infallible Word of God, the final authority for faith and life.',
   },
   {
     icon: Church,
     title: 'The Trinity',
-    description:
-      'We believe in the Father, the Son, and the Holy Spirit as one God.',
+    description: 'We believe in the eternal Godhead who has revealed Himself as one God existing in three persons: Father, Son, and Holy Spirit.',
   },
   {
     icon: Heart,
     title: 'Salvation',
-    description:
-      'Redemption is through the blood of Jesus Christ and faith in Him.',
+    description: 'We believe that redemption is solely through the shed blood of Jesus Christ and is received by faith, apart from works.',
   },
   {
     icon: Waves,
     title: 'Baptism',
-    description:
-      'We practice water baptism by immersion in the name of the Lord.',
+    description: 'We practice water baptism by immersion, symbolizing the believer’s identification with Christ in His death, burial, and resurrection.',
   },
   {
     icon: Sparkles,
     title: 'The Spirit',
-    description:
-      'We believe in the baptism of the Holy Spirit and His spiritual gifts.',
+    description: 'We believe in the baptism of the Holy Spirit, empowering believers for service and accompanied by spiritual gifts.',
   },
 ]
 
-const HISTORY_IMAGE_URL =
-  'https://lh3.googleusercontent.com/aida-public/AB6AXuD08Y1p0GG26GLslxgJIlCXK4GY8H9sr6oZivzzkHVKJUb6mGuZbuNzSbo5HiZZC--FYDeL2qH4nsJofgXKu70WFs_IaqsLjETd-LaRWZbEuftuZe27W2D52cTcP0crb94hqKQJeuKnRVCInEYAHPUGudsd0ODV-onA4a2NrRXKrb5LhFRxYrmSQxgYaOPT4WqDUFKiOIc7I-XTQCjNck78IP1byk67wNwZAgq1rsZcnbJgaYC0UPsrK14CC4XLrZVF714v_dU82CA'
+const HISTORY_IMAGE_URL = 'https://lh3.googleusercontent.com/aida-public/AB6AXuD08Y1p0GG26GLslxgJIlCXK4GY8H9sr6oZivzzkHVKJUb6mGuZbuNzSbo5HiZZC--FYDeL2qH4nsJofgXKu70WFs_IaqsLjETd-LaRWZbEuftuZe27W2D52cTcP0crb94hqKQJeuKnRVCInEYAHPUGudsd0ODV-onA4a2NrRXKrb5LhFRxYrmSQxgYaOPT4WqDUFKiOIc7I-XTQCjNck78IP1byk67wNwZAgq1rsZcnbJgaYC0UPsrK14CC4XLrZVF714v_dU82CA'
 
 async function getAboutData() {
   try {
     return await client.fetch(groq`
       {
         "settings": *[_type == "siteSettings"][0] {
-          aboutContent {
-            mission,
-            vision,
-            historyTitle,
-            history,
-            founderInfo {
-              name,
-              title,
-              bio,
-              photo
-            },
-            coreBeliefs[] {
-              title,
-              description
-            },
-            timeline[] {
-              year,
-              title,
-              description
-            }
-          }
+          aboutContent
         },
         "team": *[_type == "person" && active == true] | order(order asc) {
           _id,
@@ -94,153 +65,154 @@ async function getAboutData() {
       }
     `)
   } catch (error) {
-    console.warn(
-      'Failed to fetch about page data (this is expected during build without Sanity credentials)',
-      error
-    )
+    // Return empty state on failure (allows placeholders to take over)
     return { settings: null, team: [] }
   }
 }
 
 export default async function AboutPage() {
   const data = await getAboutData()
-  const aboutContent = data.settings?.aboutContent
-
+  
   return (
-    <main>
-      <HeroSection title="About Us" subtitle="Get To Know Us" />
+    <main className="bg-white">
+      {/* Reusing your HeroSection - assuming it accepts these props */}
+      <HeroSection 
+        title="About Us" 
+        subtitle="Our Story & Mission" 
+        backgroundImage="/images/about-hero.jpg" 
+      />
 
-      {/* Mission & Vision */}
-      <section
-        className="py-24 px-6 max-w-5xl mx-auto text-center"
-        aria-labelledby="mission-heading"
-      >
-        <h2
-          id="mission-heading"
-          className="font-display text-3xl md:text-5xl text-(--church-navy) leading-tight mb-8"
-        >
-          Every one of us was created to belong to a community. It was never
-          God&apos;s heart for us to do this life alone.
-        </h2>
-        <p className="text-lg text-slate-600 max-w-3xl mx-auto mb-6 leading-relaxed">
-          DCLM Lewisville is the citadel for Christ-centered living, a place of
-          hunger and insatiable thirst for more of God. We are a family-oriented
-          place for true worship, unadulterated teachings, and unwavering charge
-          to preach the gospel of Jesus to a dying world.
-        </p>
-        <p className="italic text-(--church-red) font-display text-2xl font-semibold">
-          You are always welcome here!
-        </p>
-      </section>
+      {/* --- Mission Statement --- */}
+      <section className="py-24 px-6 relative overflow-hidden" aria-labelledby="mission-heading">
+         {/* Background Decoration */}
+         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-[var(--church-navy)]/5 rounded-full blur-3xl -z-10" />
 
-      {/* What We Believe */}
-      <section
-        className="bg-slate-50 py-24 border-y border-slate-100"
-        aria-labelledby="beliefs-heading"
-      >
-        <div className="max-w-7xl mx-auto px-6">
-          <header className="text-center mb-16">
-            <span className="text-(--church-red) font-bold uppercase tracking-widest text-xs">
-              Our Core
-            </span>
-            <h2
-              id="beliefs-heading"
-              className="font-display text-4xl md:text-5xl mt-2 text-(--church-navy)"
-            >
-              What We Believe
-            </h2>
-          </header>
+        <div className="max-w-4xl mx-auto text-center space-y-8">
+          <span className="inline-block py-1 px-3 rounded-full bg-[var(--church-red)]/10 text-[var(--church-red)] text-xs font-bold tracking-[0.2em] uppercase">
+            Our Purpose
+          </span>
+          
+          <h2 id="mission-heading" className="font-serif text-3xl md:text-5xl text-[var(--church-navy)] leading-tight">
+            Created to belong. <br/> 
+            <span className="italic text-gray-400">Designed for community.</span>
+          </h2>
+          
+          <div className="prose prose-lg mx-auto text-slate-600 leading-relaxed">
+            <p>
+              DCLM Lewisville is the citadel for Christ-centered living, a place of
+              hunger and insatiable thirst for more of God. We are a family-oriented
+              place for true worship, unadulterated teachings, and unwavering charge
+              to preach the gospel of Jesus to a dying world.
+            </p>
+          </div>
 
-          <ul className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-8 list-none">
-            {beliefs.map((belief) => {
-              const Icon = belief.icon
-
-              return (
-                <li
-                  key={belief.title}
-                  className="bg-white p-8 rounded shadow-sm border-t-4 border-(--church-red) text-center transition-transform hover:-translate-y-1"
-                >
-                  <Icon
-                    className="text-(--church-red) mx-auto mb-4"
-                    size={40}
-                    strokeWidth={1.5}
-                    aria-hidden="true"
-                  />
-                  <h3 className="font-display text-xl font-bold mb-3 text-(--church-navy)">
-                    {belief.title}
-                  </h3>
-                  <p className="text-sm text-slate-500">{belief.description}</p>
-                </li>
-              )
-            })}
-          </ul>
+          <div className="pt-8">
+            <p className="font-serif text-2xl text-[var(--church-navy)] italic">
+              "You are always welcome here."
+            </p>
+          </div>
         </div>
       </section>
 
-      {/* Church History */}
-      <section
-        className="py-24 overflow-hidden"
-        aria-labelledby="history-heading"
-      >
+      {/* --- Core Beliefs --- */}
+      <section className="bg-slate-50 py-24 relative" aria-labelledby="beliefs-heading">
         <div className="max-w-7xl mx-auto px-6">
-          <div className="flex flex-col lg:flex-row items-center gap-16">
-            <figure className="w-full lg:w-1/2 relative">
-              <div
-                className="absolute -top-6 -left-6 w-32 h-32 bg-(--church-red)/10 rounded-full blur-3xl"
-                aria-hidden="true"
-              />
-              <Image
-                src={HISTORY_IMAGE_URL}
-                alt="Deeper Life Bible Church Lewisville building"
-                width={600}
-                height={500}
-                className="rounded-lg shadow-2xl relative z-10 w-full h-[500px] object-cover grayscale hover:grayscale-0 transition-all duration-500"
-              />
-              <figcaption className="absolute -bottom-10 -right-10 hidden lg:block z-20">
-                <div className="bg-(--church-red) text-white p-8 rounded-lg shadow-xl">
-                  <p className="font-display text-4xl font-bold">25+</p>
-                  <p className="text-xs uppercase tracking-widest font-semibold opacity-80">
-                    Years of Service
+          <div className="text-center max-w-3xl mx-auto mb-16">
+            <h2 id="beliefs-heading" className="font-serif text-4xl md:text-5xl text-[var(--church-navy)] mb-4">
+              What We Believe
+            </h2>
+            <p className="text-slate-500">
+              The foundation of our faith and the principles that guide our community.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+            {beliefs.map((belief) => {
+              const Icon = belief.icon
+              return (
+                <div
+                  key={belief.title}
+                  className="group bg-white p-8 rounded-xl shadow-sm border border-slate-100 hover:shadow-xl hover:border-[var(--church-red)]/20 transition-all duration-300 relative overflow-hidden"
+                >
+                  <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[var(--church-red)] to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                  
+                  <div className="w-12 h-12 rounded-lg bg-[var(--church-navy)]/5 text-[var(--church-navy)] flex items-center justify-center mb-6 group-hover:bg-[var(--church-red)] group-hover:text-white transition-colors duration-300">
+                    <Icon size={24} strokeWidth={1.5} />
+                  </div>
+                  
+                  <h3 className="font-bold text-lg mb-3 text-[var(--church-navy)] group-hover:text-[var(--church-red)] transition-colors">
+                    {belief.title}
+                  </h3>
+                  <p className="text-sm text-slate-500 leading-relaxed">
+                    {belief.description}
                   </p>
                 </div>
-              </figcaption>
-            </figure>
+              )
+            })}
+          </div>
+        </div>
+      </section>
 
-            <article className="w-full lg:w-1/2">
+      {/* --- History Section --- */}
+      <section className="py-24 lg:py-32 overflow-hidden" aria-labelledby="history-heading">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
+            
+            {/* Image Side */}
+            <div className="w-full lg:w-1/2 relative group">
+              <div className="absolute -inset-4 bg-gradient-to-tr from-[var(--church-navy)]/20 to-transparent rounded-[2rem] -z-10 rotate-3 group-hover:rotate-1 transition-transform duration-500" />
+              
+              <div className="relative rounded-2xl overflow-hidden shadow-2xl aspect-[4/5] lg:aspect-square">
+                <Image
+                  src={HISTORY_IMAGE_URL}
+                  alt="Church history"
+                  fill
+                  className="object-cover transition-transform duration-700 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-[var(--church-navy)]/10 group-hover:bg-transparent transition-colors" />
+                
+                {/* Floating Stat Card */}
+                <div className="absolute bottom-8 right-8 bg-white/90 backdrop-blur-md p-6 rounded-xl shadow-lg border border-white/20 max-w-[200px]">
+                  <p className="font-display text-5xl font-bold text-[var(--church-red)]">25+</p>
+                  <p className="text-xs font-bold text-[var(--church-navy)] uppercase tracking-widest mt-1">
+                    Years of Faithfulness
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Content Side */}
+            <article className="w-full lg:w-1/2 space-y-8">
               <header>
-                <span className="text-(--church-red) font-bold uppercase tracking-[0.2em] text-xs">
-                  Our Journey
-                </span>
-                <h2
-                  id="history-heading"
-                  className="font-display text-5xl md:text-6xl mt-4 mb-8 text-(--church-navy)"
-                >
-                  Our History
+                <div className="flex items-center gap-3 mb-4">
+                  <span className="h-px w-8 bg-[var(--church-red)]" />
+                  <span className="text-[var(--church-red)] font-bold uppercase tracking-[0.2em] text-xs">
+                    Our Journey
+                  </span>
+                </div>
+                <h2 id="history-heading" className="font-serif text-4xl md:text-5xl text-[var(--church-navy)] leading-[1.1]">
+                  From Humble Beginnings to a <span className="italic text-[var(--church-red)]">Legacy of Faith</span>
                 </h2>
               </header>
 
-              <div className="space-y-6 text-slate-600">
-                <p className="leading-relaxed">
+              <div className="space-y-6 text-slate-600 text-lg leading-relaxed">
+                <p>
                   What started as a small prayer gathering has blossomed into a
                   vibrant beacon of hope in the heart of Lewisville. From our
                   humble beginnings, our focus has always remained steadfast:
-                  preaching the unadulterated word of God and reaching out to
-                  the community with Christ&apos;s love.
+                  preaching the unadulterated word of God.
                 </p>
 
-                <blockquote className="border-l-4 border-(--church-red) pl-6">
-                  <p className="italic font-display text-xl text-(--church-navy)">
-                    &quot;The Lord has done great things for us, and we are
-                    filled with joy.&quot;
+                <blockquote className="border-l-4 border-[var(--church-red)] pl-6 py-2 my-8 bg-[var(--church-navy)]/5 rounded-r-lg">
+                  <p className="font-serif text-xl text-[var(--church-navy)] italic mb-2">
+                    "The Lord has done great things for us, and we are filled with joy."
                   </p>
-                  <footer className="mt-2">
-                    <cite className="text-slate-500 text-sm not-italic">
-                      — Psalm 126:3
-                    </cite>
+                  <footer className="text-sm font-bold text-[var(--church-red)] uppercase tracking-wider">
+                    — Psalm 126:3
                   </footer>
                 </blockquote>
 
-                <p className="leading-relaxed">
+                <p>
                   Throughout the years, we have witnessed countless testimonies
                   of transformation, healing, and restored faith. Our history is
                   not just about buildings or dates, but about the lives touched
@@ -252,35 +224,21 @@ export default async function AboutPage() {
         </div>
       </section>
 
-      {/* Leadership Team */}
-      <section
-        className="py-32 bg-white relative"
-        aria-labelledby="leadership-heading"
-      >
-        <div className="container">
-          <header className="text-center mb-20">
-            
-            <h2
-              id="leadership-heading"
-              className="font-display text-4xl md:text-5xl mb-6 text-(--church-navy)"
-            >
+      {/* --- Leadership Team --- */}
+      <section className="py-24 bg-slate-50 border-t border-slate-200" aria-labelledby="leadership-heading">
+        <div className="max-w-7xl mx-auto px-6">
+          <header className="text-center mb-16 max-w-2xl mx-auto">
+            <h2 id="leadership-heading" className="font-serif text-4xl md:text-5xl mb-4 text-[var(--church-navy)]">
               Our Leadership
             </h2>
-            <p className="text-lg text-foreground/70 max-w-2xl mx-auto">
-              Meet the dedicated servants leading our congregation
+            <p className="text-lg text-slate-500">
+              Meet the dedicated servants committed to shepherding our congregation and serving our community.
             </p>
           </header>
+          
           <Team members={data.team} />
         </div>
       </section>
-      {/* Timeline 
-      <CTA
-        title="Want to Learn More?"
-        description="Join us for a service or reach out with any questions"
-        primaryButton={{ text: 'Contact Us', href: '/contact' }}
-        secondaryButton={{ text: 'Plan Your Visit', href: '/contact' }}
-      />
-      */}
     </main>
   )
 }
