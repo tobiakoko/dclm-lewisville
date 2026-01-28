@@ -2,14 +2,15 @@ import { client } from '@/lib/sanity/client'
 import { homePageQuery, homeSectionsQuery, siteSettingsQuery } from '@/lib/sanity/queries'
 import { logger } from '@/lib/logger'
 import { HomeSections, SiteSettings, Ministry, Person, Event, Sermon } from '@/lib/types'
-import HeroCarousel from '@/components/sections/HeroCarouselNew'
-import SundayService from '@/components/sections/SundayService'
-import AboutPreview from '@/components/sections/AboutPreview'
-import MinistriesPreview from '@/components/sections/MinistriesPreview'
-import Team from '@/components/sections/Team'
-import UpcomingEvents from '@/components/sections/UpcomingEvents'
-import FeaturedSermon from '@/components/sections/FeaturedSermon'
-import CtaSection from '@/components/sections/CtaSection'
+import HeroCarousel from '@/components/sections/home/HeroCarouselNew'
+import MinistriesPreview from '@/components/sections/home/MinistriesPreview'
+import IconSection from '@/components/sections/home/IconSection'
+import { QuickInfo } from '@/components/sections/home/QuickInfo'
+import { PastorsWelcome } from '@/components/sections/home/PastorsWelcome'
+import { Welcome } from '@/components/sections/Welcome'
+import { Values } from '@/components/sections/home/Values'
+import { Testimonies } from '@/components/sections/home/Testimonies'
+import { Verse } from '@/components/sections/home/Verse'
 
 export const revalidate = 3600 // Revalidate every hour
 
@@ -53,42 +54,29 @@ export default async function HomePage() {
         <HeroCarousel data={sections.heroCarousel} serviceTimes={settings?.servicesTimes} />
       )}
 
-      {/* Sunday Service Section */}
-      <SundayService serviceTimes={settings?.servicesTimes?.filter(s => s.day === 'Sunday')} />
+      {/* Icon Grid */}
+      <IconSection />
 
-      {/* Featured Sermon Section */}
-      <FeaturedSermon sermon={data.featuredSermons?.[0] || null} />
+      {/* Pastor's Welcome */}
+      <PastorsWelcome />
 
-      {/* About Section */}
-      {sections.pastorWelcome?.enabled !== false && sections.pastorWelcome && (
-        <AboutPreview data={sections.pastorWelcome} />
-      )}
+      {/* Quick Info Section */}
+      <QuickInfo />
 
-      {/* Events Section */}
-      <UpcomingEvents events={data.upcomingEvents || []} limit={2} showViewAll={true} />
+      {/* Welcome */}
+      <Welcome />
 
-      {/* Ministries Section */}
-      <MinistriesPreview ministries={data.ministries} />
+      {/* Our Values */}
+      <Values />
 
-      {/* Minister's Section (Team/Leadership) */}
-      <section className="py-32 bg-white relative">
-        <div className="container">
-          <div className="text-center mb-20">
-            <h2 className="font-heading text-4xl md:text-5xl font-bold mb-6 text-foreground">
-              Our Leadership
-            </h2>
-            <p className="text-lg text-foreground/70 max-w-2xl mx-auto leading-relaxed">
-              Meet our dedicated team of ministers and leaders serving our congregation
-            </p>
-          </div>
-          <Team members={data.team?.slice(0, 4)} />
-        </div>
-      </section>
+      {/* Testimonies */}
+      <Testimonies />
 
-      {/* CTA Section */}
-      {sections.ctaSection?.enabled !== false && sections.ctaSection && (
-        <CtaSection data={sections.ctaSection} />
-      )}
+      {/* Ministries */}
+      <MinistriesPreview />
+
+      {/* Verse of the day */}
+      <Verse />
     </>
   )
 }
