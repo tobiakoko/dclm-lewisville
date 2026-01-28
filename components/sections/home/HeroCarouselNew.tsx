@@ -84,8 +84,7 @@ export default function HeroCarousel({ data, serviceTimes }: HeroCarouselProps) 
 
   return (
     <section
-      className="relative overflow-hidden bg-primary text-primary-foreground"
-      style={{ height: 'calc(100vh - 3.5rem)' }}
+      className="relative overflow-hidden bg-primary text-primary-foreground h-screen min-h-[600px]"
       aria-label="Hero carousel"
     >
       <div className="overflow-hidden h-full" ref={emblaRef}>
@@ -101,8 +100,8 @@ export default function HeroCarousel({ data, serviceTimes }: HeroCarouselProps) 
               {/* Overlay */}
               <div className="absolute inset-0 bg-gradient-to-r from-black/75 via-black/50 to-transparent" />
 
-              {/* Content */}
-              <div className="relative h-full container mx-auto px-4 sm:px-6 lg:px-8 flex items-center">
+              {/* Content - add pt-24 to account for header overlay */}
+              <div className="relative h-full container mx-auto px-4 sm:px-6 lg:px-8 flex items-center pt-24">
                 <div className="max-w-3xl space-y-8">
                   {slide.subtitle && (
                     <div className="inline-block px-4 py-1.5 bg-white/10 backdrop-blur-md border border-white/20 rounded-full">
@@ -123,7 +122,7 @@ export default function HeroCarousel({ data, serviceTimes }: HeroCarouselProps) 
                   <div className="flex flex-col sm:flex-row gap-4 pt-4">
                     <Button
                       asChild
-                      variant="accent"
+                      variant="default"
                       size="lg"
                       className="elevation-3 text-base h-12 transition-all duration-300 group"
                     >
