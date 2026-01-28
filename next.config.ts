@@ -15,6 +15,10 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: 'images.unsplash.com',
       },
+      {
+        protocol: 'https',
+        hostname: 'lh3.googleusercontent.com',
+      },
     ],
     formats: ['image/avif', 'image/webp'],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048],
@@ -50,7 +54,7 @@ const nextConfig: NextConfig = {
       default-src 'self';
       script-src 'self' 'unsafe-eval' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com ${isDev ? "'unsafe-eval'" : ''};
       style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
-      img-src 'self' blob: data: https://cdn.sanity.io https://images.unsplash.com ${isDev ? 'http://localhost:*' : ''};
+      img-src 'self' blob: data: https://cdn.sanity.io https://images.unsplash.com https://lh3.googleusercontent.com ${isDev ? 'http://localhost:*' : ''};
       font-src 'self' https://fonts.gstatic.com;
       connect-src 'self' https://api.sanity.io https://*.sanity.io https://www.google-analytics.com ${isDev ? 'http://localhost:* ws://localhost:*' : ''};
       frame-ancestors 'none';
