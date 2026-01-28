@@ -4,7 +4,7 @@ import PageHero from '@/components/sections/PageHero'
 import { Heart, Users, Book, Mail, Phone } from 'lucide-react'
 import Image from 'next/image'
 import { urlFor } from '@/lib/sanity/client'
-import MinistriesPreview from '@/components/sections/MinistriesPreview'
+import MinistriesPreview from '@/components/sections/home/MinistriesPreview'
 import { ministriesQuery } from '@/lib/sanity/queries'
 
 export const metadata = {
