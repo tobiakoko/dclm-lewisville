@@ -3,14 +3,12 @@
 import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { Menu, X, Church, Heart, ChevronDown, ChevronRight } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+import { Menu, X, ChevronDown, ChevronRight } from 'lucide-react'
 import { SITE_CONFIG, NAV_LINKS } from '@/lib/constants'
 import { useScroll } from "@/hooks/use-scroll"
 import { trackNavigation, trackGiveClick } from '@/lib/analytics'
 
 const NAVIGATION = NAV_LINKS.filter(link => !link.highlight)
-const CTA_BUTTONS = NAV_LINKS.filter(link => link.highlight)
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
@@ -43,12 +41,6 @@ export default function Header() {
     }
   }, [mobileMenuOpen])
 
-  // Close dropdowns on route change
-  useEffect(() => {
-    setMobileMenuOpen(false)
-    setOpenDesktopDropdown(null)
-    setOpenMobileDropdown(null)
-  }, [])
 
   const handleMouseEnter = (name: string) => {
     if (dropdownTimeoutRef.current) {
@@ -73,43 +65,44 @@ export default function Header() {
     <>
       <header
         ref={headerRef}
-        className={`fixed top-0 left-0 right-0 z-50 w-full transition-all duration-300 ease-in-out ${
+        className={`fixed top-0 left-0 right-0 z-50 w-full transition-all duration-300 ${
           scrolled
-            ? 'bg-white/98 backdrop-blur-xl border-b border-border elevation-2'
-            : 'bg-white/95 backdrop-blur-md'
+            ? 'bg-white shadow-md'
+            : 'bg-transparent'
         }`}
       >
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex h-16 items-center justify-between">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex h-24 items-center justify-between">
             {/* Logo */}
             <Link
               href="/"
-              className="flex items-center group relative z-10"
+              className="flex items-center gap-3 group shrink-0"
               onClick={() => {
                 setMobileMenuOpen(false)
                 trackNavigation('/', 'logo')
               }}
             >
-              <div className="relative h-9 w-auto">
+              <div className="relative h-10 w-auto">
                 <Image
                   src="/dclm_logo.png"
                   alt={SITE_CONFIG.name}
                   width={150}
-                  height={45}
-                  className="h-full w-auto object-contain transition-all duration-200 group-hover:opacity-80"
+                  height={50}
+                  className="h-full w-auto object-contain transition-opacity duration-200 group-hover:opacity-80"
                   priority
                 />
               </div>
               <div className="hidden sm:block">
-                <div className="font-display font-bold text-blue text-lg leading-tight">
+                <div className={`font-display font-bold text-2xl leading-tight border-b-2 pb-1 transition-colors duration-300 ${
+                  scrolled ? 'text-(--church-navy) border-(--church-red)' : 'text-white border-(--church-red)'
+                }`}>
                   DCLM Lewisville
                 </div>
-                <p className="text-blue/70 text-xs">Deeper Life Bible Church</p>
               </div>
             </Link>
 
             {/* Desktop Navigation */}
-            <nav className="hidden lg:flex items-center gap-1">
+            <nav className="hidden lg:flex items-center space-x-8">
               {NAVIGATION.map((link) => (
                 <div
                   key={link.href}
@@ -121,11 +114,11 @@ export default function Header() {
                     <>
                       <button
                         className={`
-                          group relative px-4 py-2 text-sm font-semibold tracking-wide uppercase
-                          transition-all duration-200 rounded-md
-                          ${hoveredItem === link.name 
-                            ? 'text-accent bg-accent/5' 
-                            : 'text-foreground hover:text-accent hover:bg-accent/5'
+                          group relative text-sm font-semibold tracking-widest uppercase
+                          transition-colors duration-200
+                          ${scrolled
+                            ? (hoveredItem === link.name ? 'text-(--church-red)' : 'text-(--church-navy) hover:text-(--church-red)')
+                            : (hoveredItem === link.name ? 'text-(--church-red)' : 'text-white hover:text-(--church-red)')
                           }
                         `}
                       >
@@ -138,14 +131,6 @@ export default function Header() {
                           />
                         </span>
                         
-                        {/* Active indicator */}
-                        <span 
-                          className={`
-                            absolute bottom-0 left-1/2 -translate-x-1/2 h-0.5 bg-accent
-                            transition-all duration-300 ease-out
-                            ${openDesktopDropdown === link.name ? 'w-8' : 'w-0'}
-                          `}
-                        />
                       </button>
 
                       {/* Dropdown Menu */}
@@ -220,11 +205,14 @@ export default function Header() {
                   ) : (
                     <Link
                       href={link.href}
-                      className="
-                        group relative px-4 py-2 text-sm font-semibold tracking-wide uppercase
-                        text-foreground hover:text-accent hover:bg-accent/5
-                        transition-all duration-200 rounded-md
-                      "
+                      className={`
+                        text-sm font-semibold tracking-widest uppercase
+                        transition-colors duration-200
+                        ${scrolled
+                          ? 'text-(--church-navy) hover:text-(--church-red)'
+                          : 'text-white hover:text-(--church-red)'
+                        }
+                      `}
                       onClick={() => trackNavigation(link.href, link.name)}
                     >
                       {link.name}
@@ -233,116 +221,58 @@ export default function Header() {
                 </div>
               ))}
 
-              {/* Call-to-Action Buttons */}
-              <div className="flex items-center gap-2 ml-4 pl-4 border-l border-border/50">
-                {CTA_BUTTONS.map((button, index) => (
-                  <Button
-                    key={button.href}
-                    asChild
-                    size="sm"
-                    variant={index === 0 ? "ghost" : "accent"}
-                    className={`
-                      font-semibold transition-all duration-200
-                      ${index === 0 ? "hover:bg-muted" : "elevation-1 hover:elevation-2"}
-                    `}
-                  >
-                    <Link
-                      href={button.href}
-                      onClick={() => {
-                        if (button.name.toLowerCase().includes('give')) {
-                          trackGiveClick('header_desktop')
-                        } else {
-                          trackNavigation(button.href, button.name)
-                        }
-                      }}
-                    >
-                      {index === 0 ? <Heart className="w-4 h-4" /> : <Church className="w-4 h-4" />}
-                      {button.name}
-                    </Link>
-                  </Button>
-                ))}
-              </div>
+              {/* Call-to-Action Button */}
+              <Link
+                href="/give"
+                className="bg-(--church-red) text-white px-6 py-2 rounded-full text-xs font-bold tracking-widest hover:bg-red-700 transition-colors"
+                onClick={() => trackGiveClick('header_desktop')}
+              >
+                GIVE
+              </Link>
             </nav>
 
             {/* Mobile Menu Button */}
             <button
-              className="lg:hidden p-2.5 rounded-lg hover:bg-muted active:scale-95 transition-all duration-200"
+              className={`lg:hidden p-2 transition-colors ${
+                scrolled ? 'text-(--church-navy)' : 'text-white'
+              }`}
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               aria-label={mobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
               aria-expanded={mobileMenuOpen}
               aria-controls="mobile-menu"
             >
-              <div className="relative w-5 h-5">
-                <span 
-                  className={`
-                    absolute top-1 left-0 w-5 h-0.5 bg-foreground rounded-full
-                    transition-all duration-300 ease-out
-                    ${mobileMenuOpen ? 'top-2.5 rotate-45' : ''}
-                  `}
-                />
-                <span 
-                  className={`
-                    absolute top-2.5 left-0 w-5 h-0.5 bg-foreground rounded-full
-                    transition-all duration-300 ease-out
-                    ${mobileMenuOpen ? 'opacity-0 translate-x-2' : ''}
-                  `}
-                />
-                <span 
-                  className={`
-                    absolute bottom-1 left-0 w-5 h-0.5 bg-foreground rounded-full
-                    transition-all duration-300 ease-out
-                    ${mobileMenuOpen ? 'bottom-2.5 -rotate-45' : ''}
-                  `}
-                />
-              </div>
+              {mobileMenuOpen ? (
+                <X className="w-7 h-7" />
+              ) : (
+                <Menu className="w-7 h-7" />
+              )}
             </button>
           </div>
         </div>
       </header>
 
-      {/* Mobile Navigation Overlay */}
-      <div
-        className={`
-          fixed inset-0 bg-black/40 backdrop-blur-sm z-40 lg:hidden
-          transition-all duration-300 ease-out
-          ${mobileMenuOpen 
-            ? 'opacity-100 visible' 
-            : 'opacity-0 invisible'
-          }
-        `}
-        onClick={() => setMobileMenuOpen(false)}
-      />
-
-      {/* Mobile Navigation Panel */}
-      <div
-        id="mobile-menu"
-        className={`
-          fixed top-16 right-0 bottom-0 w-full max-w-sm bg-white z-40 lg:hidden 
-          overflow-y-auto elevation-4
-          transition-transform duration-300 ease-out
-          ${mobileMenuOpen ? 'translate-x-0' : 'translate-x-full'}
-        `}
-        role="navigation"
-        aria-label="Mobile navigation"
-      >
-        <nav className="flex flex-col h-full p-6">
-          {/* Navigation Links */}
-          <div className="space-y-1 pb-6 border-b border-border flex-1">
+      {/* Mobile Menu */}
+      {mobileMenuOpen && (
+        <div
+          id="mobile-menu"
+          className="lg:hidden bg-white shadow-xl fixed w-full top-24 left-0 border-t z-40 max-h-[calc(100vh-6rem)] overflow-y-auto"
+          role="navigation"
+          aria-label="Mobile navigation"
+        >
+          <nav className="flex flex-col space-y-4 p-6">
             {NAVIGATION.map((link) => (
               <div key={link.href}>
                 {link.children ? (
                   <>
                     <button
                       onClick={() => toggleMobileDropdown(link.name)}
-                      className="flex items-center justify-between w-full px-4 py-3.5 text-base font-semibold text-foreground hover:bg-accent/5 rounded-lg transition-all duration-200 group"
+                      className="flex items-center justify-between w-full text-(--church-navy) font-semibold tracking-widest hover:text-(--church-red) transition-colors"
                     >
                       <span>{link.name}</span>
                       <ChevronDown
-                        className={`
-                          w-4 h-4 text-foreground/40 group-hover:text-accent
-                          transition-all duration-300 ease-out
-                          ${openMobileDropdown === link.name ? 'rotate-180 text-accent' : ''}
-                        `}
+                        className={`w-4 h-4 transition-transform duration-300 ${
+                          openMobileDropdown === link.name ? 'rotate-180' : ''
+                        }`}
                       />
                     </button>
 
@@ -350,27 +280,26 @@ export default function Header() {
                     <div
                       className={`
                         overflow-hidden transition-all duration-300 ease-out
-                        ${openMobileDropdown === link.name 
-                          ? 'max-h-96 opacity-100 mt-1' 
+                        ${openMobileDropdown === link.name
+                          ? 'max-h-96 opacity-100 mt-2'
                           : 'max-h-0 opacity-0'
                         }
                       `}
                     >
-                      <div className="ml-4 space-y-1 py-2 border-l-2 border-accent/20 pl-4">
+                      <div className="ml-4 space-y-2 border-l-2 border-(--church-red)/20 pl-4">
                         {link.children.map((child) => (
                           <div key={child.href}>
                             {child.children ? (
-                              // Nested items for "Devotions"
                               <>
-                                <div className="px-3 py-2 text-sm font-semibold text-foreground/70">
+                                <div className="text-sm font-semibold text-(--church-navy)/70">
                                   {child.name}
                                 </div>
-                                <div className="ml-3 space-y-1">
+                                <div className="ml-3 space-y-2 mt-2">
                                   {child.children.map((subChild) => (
                                     <Link
                                       key={subChild.href}
                                       href={subChild.href}
-                                      className="block px-3 py-2 text-sm font-medium text-foreground/60 hover:text-foreground hover:bg-accent/5 rounded-md transition-all duration-200"
+                                      className="block text-sm text-(--church-navy)/60 hover:text-(--church-red) transition-colors"
                                       onClick={() => {
                                         setMobileMenuOpen(false)
                                         setOpenMobileDropdown(null)
@@ -385,7 +314,7 @@ export default function Header() {
                             ) : (
                               <Link
                                 href={child.href}
-                                className="block px-3 py-2.5 text-sm font-medium text-foreground/70 hover:text-foreground hover:bg-accent/5 rounded-md transition-all duration-200"
+                                className="block text-sm text-(--church-navy)/70 hover:text-(--church-red) transition-colors"
                                 onClick={() => {
                                   setMobileMenuOpen(false)
                                   setOpenMobileDropdown(null)
@@ -403,7 +332,7 @@ export default function Header() {
                 ) : (
                   <Link
                     href={link.href}
-                    className="flex items-center px-4 py-3.5 text-base font-semibold text-foreground hover:bg-accent/5 rounded-lg transition-all duration-200"
+                    className="text-(--church-navy) font-semibold tracking-widest hover:text-(--church-red) transition-colors"
                     onClick={() => {
                       setMobileMenuOpen(false)
                       trackNavigation(link.href, link.name)
@@ -414,47 +343,22 @@ export default function Header() {
                 )}
               </div>
             ))}
-          </div>
 
-          {/* CTA Buttons */}
-          <div className="space-y-3 py-6 border-b border-border">
-            {CTA_BUTTONS.map((button, index) => (
-              <Button
-                key={button.href}
-                asChild
-                variant={index === 0 ? "outline" : "accent"}
-                className="w-full justify-center font-semibold h-12"
-                size="default"
-              >
-                <Link
-                  href={button.href}
-                  onClick={() => {
-                    setMobileMenuOpen(false)
-                    if (button.name.toLowerCase().includes('give')) {
-                      trackGiveClick('header_mobile')
-                    } else {
-                      trackNavigation(button.href, button.name)
-                    }
-                  }}
-                >
-                  {index === 0 ? <Heart className="w-4 h-4" /> : <Church className="w-4 h-4" />}
-                  {button.name}
-                </Link>
-              </Button>
-            ))}
-          </div>
+            {/* CTA Button */}
+            <Link
+              href="/give"
+              className="bg-(--church-red) text-white px-6 py-3 rounded text-center text-xs font-bold tracking-widest hover:bg-red-700 transition-colors"
+              onClick={() => {
+                setMobileMenuOpen(false)
+                trackGiveClick('header_mobile')
+              }}
+            >
+              GIVE ONLINE
+            </Link>
+          </nav>
+        </div>
+      )}
 
-          {/* Tagline */}
-          <div className="pt-6">
-            <p className="text-sm text-muted-foreground text-center italic font-medium">
-              &quot;Holiness unto the Lord&quot;
-            </p>
-          </div>
-        </nav>
-      </div>
-
-      {/* Header Spacer */}
-      <div className="h-16" />
     </>
   )
 }
