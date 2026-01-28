@@ -4,12 +4,9 @@ import { useCallback, useEffect, useState } from 'react'
 import useEmblaCarousel from 'embla-carousel-react'
 import Autoplay from 'embla-carousel-autoplay'
 import Link from 'next/link'
-import Image from 'next/image'
-import { Button } from '@/components/ui/button'
-import { ArrowRight } from 'lucide-react'
+import { ArrowRight, Clock } from 'lucide-react'
 import { HERO_SLIDES, SERVICE_TIMES } from '@/lib/constants'
 import { urlFor } from '@/lib/sanity/client'
-
 import type { ServiceTime } from '@/lib/types'
 
 interface HeroCarouselProps {
@@ -43,21 +40,11 @@ export default function HeroCarousel({ data, serviceTimes }: HeroCarouselProps) 
     : HERO_SLIDES
 
   const times = serviceTimes && serviceTimes.length > 0 ? serviceTimes : SERVICE_TIMES
+  
   const [emblaRef, emblaApi] = useEmblaCarousel(
-    {
-      loop: true,
-      duration: 25
-    },
-    [Autoplay({ delay: 5000, stopOnInteraction: false })]
+    { loop: true, duration: 40 },
+    [Autoplay({ delay: 6000, stopOnInteraction: false })]
   )
-
-  const scrollPrev = useCallback(() => {
-    if (emblaApi) emblaApi.scrollPrev()
-  }, [emblaApi])
-
-  const scrollNext = useCallback(() => {
-    if (emblaApi) emblaApi.scrollNext()
-  }, [emblaApi])
 
   const scrollTo = useCallback((index: number) => {
     if (emblaApi) emblaApi.scrollTo(index)
@@ -67,94 +54,82 @@ export default function HeroCarousel({ data, serviceTimes }: HeroCarouselProps) 
 
   useEffect(() => {
     if (!emblaApi) return
-
-    const onSelect = () => {
-      setSelectedIndex(emblaApi.selectedScrollSnap())
-    }
-
+    const onSelect = () => setSelectedIndex(emblaApi.selectedScrollSnap())
     emblaApi.on('select', onSelect)
     onSelect()
-
-    return () => {
-      emblaApi.off('select', onSelect)
-    }
+    return () => { emblaApi.off('select', onSelect) }
   }, [emblaApi])
 
-  const currentIndex = emblaApi ? emblaApi.selectedScrollSnap() : 0
-
   return (
-    <section
-      className="relative overflow-hidden bg-primary text-primary-foreground h-screen min-h-[600px]"
-      aria-label="Hero carousel"
-    >
+    <section className="relative bg-gray-900 h-screen min-h-[640px]" aria-label="Hero carousel">
       <div className="overflow-hidden h-full" ref={emblaRef}>
         <div className="flex h-full">
           {slides.map((slide, index) => (
             <div key={slide.id} className="flex-[0_0_100%] min-w-0 relative h-full">
-              {/* Background Image */}
+              
+              {/* Background Image with Zoom Effect */}
               <div
-                className="absolute inset-0 bg-cover bg-center"
+                className="absolute inset-0 bg-cover bg-center animate-[fade-in_1s_ease-out]"
                 style={{ backgroundImage: `url('${slide.image}')` }}
               />
 
-              {/* Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-r from-black/75 via-black/50 to-transparent" />
+              {/* Modern Gradient Overlay: Clearer at bottom for controls */}
+              <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/30" />
 
-              {/* Content - add pt-24 to account for header overlay */}
-              <div className="relative h-full container mx-auto px-4 sm:px-6 lg:px-8 flex items-center pt-24">
-                <div className="max-w-3xl space-y-8">
+              {/* Content Container */}
+              <div className="relative h-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center pt-20">
+                <div className="max-w-3xl space-y-6 animate-[slide-up-fade_1s_ease-out]">
+                  
+                  {/* Subtitle Badge */}
                   {slide.subtitle && (
-                    <div className="inline-block px-4 py-1.5 bg-white/10 backdrop-blur-md border border-white/20 rounded-full">
-                      <span className="text-sm font-semibold text-white tracking-wide">{slide.subtitle}</span>
-                    </div>
+                    <span className="inline-block px-4 py-1.5 rounded-full bg-[var(--church-red)]/90 text-white text-xs font-bold tracking-[0.2em] uppercase shadow-lg backdrop-blur-sm">
+                      {slide.subtitle}
+                    </span>
                   )}
 
-                  <h1 className="text-5xl sm:text-6xl lg:text-7xl font-heading font-bold leading-[1.1] text-white tracking-tight">
+                  <h1 className="text-5xl sm:text-6xl lg:text-7xl font-display font-bold text-white tracking-tight leading-[1.05] drop-shadow-md">
                     {slide.title}
                   </h1>
 
                   {slide.description && (
-                    <p className="text-xl text-white/90 max-w-2xl leading-relaxed font-light">
+                    <p className="text-lg sm:text-xl text-white/90 max-w-xl leading-relaxed font-light drop-shadow-sm">
                       {slide.description}
                     </p>
                   )}
 
-                  <div className="flex flex-col sm:flex-row gap-4 pt-4">
-                    <Button
-                      asChild
-                      variant="default"
-                      size="lg"
-                      className="elevation-3 text-base h-12 transition-all duration-300 group"
+                  {/* CTA Buttons */}
+                  <div className="flex flex-col sm:flex-row gap-4 pt-6">
+                    <Link 
+                      href={slide.cta.href}
+                      className="group inline-flex items-center justify-center px-8 py-4 bg-white text-[var(--church-navy)] text-sm font-bold tracking-widest uppercase rounded-full hover:bg-[var(--church-red)] hover:text-white transition-all duration-300 shadow-lg"
                     >
-                      <Link href={slide.cta.href}>
-                        {slide.cta.text}
-                        <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                      </Link>
-                    </Button>
-
+                      {slide.cta.text}
+                      <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
+                    </Link>
+                    
                     {index === 0 && (
-                      <Button
-                        asChild
-                        variant="outline"
-                        size="lg"
-                        className="bg-white/10 backdrop-blur-md border-white/30 text-white hover:bg-white/20 hover:border-white/40 text-base h-12 transition-all duration-300 group"
+                      <Link 
+                        href="/about"
+                        className="inline-flex items-center justify-center px-8 py-4 bg-white/10 backdrop-blur-md border border-white/20 text-white text-sm font-bold tracking-widest uppercase rounded-full hover:bg-white/20 transition-all duration-300"
                       >
-                        <Link href="/about">
-                          Learn More
-                        </Link>
-                      </Button>
+                        New Here?
+                      </Link>
                     )}
                   </div>
 
-                  {/* Service Times - Only on first slide */}
+                  {/* Service Times (Only on first slide) */}
                   {index === 0 && times && times.length > 0 && (
-                    <div className="flex flex-wrap gap-6 pt-6 text-sm text-white/75 font-medium">
-                      {times.map((service, idx) => (
-                        <div key={idx} className="flex items-center gap-2.5">
-                          <div className="w-2 h-2 bg-accent rounded-full animate-pulse" />
-                          <span>{service.day} {service.time}</span>
-                        </div>
-                      ))}
+                    <div className="pt-8 border-t border-white/10 mt-8 hidden sm:block">
+                      <p className="text-xs text-white/50 uppercase tracking-widest mb-3 font-bold">Service Times</p>
+                      <div className="flex flex-wrap gap-x-8 gap-y-2">
+                        {times.map((service, idx) => (
+                          <div key={idx} className="flex items-center gap-2 text-sm text-white font-medium">
+                            <Clock className="w-4 h-4 text-[var(--church-red)]" />
+                            <span><span className="opacity-70">{service.day}:</span> {service.time}</span>
+                          </div>
+                        ))}
+                      </div>
                     </div>
                   )}
                 </div>
@@ -164,46 +139,23 @@ export default function HeroCarousel({ data, serviceTimes }: HeroCarouselProps) 
         </div>
       </div>
 
-      {/* Navigation Dots */}
-      <div className="absolute bottom-8 left-0 right-0 z-10">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between">
-            <div className="flex gap-2.5">
-              {slides.map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => scrollTo(index)}
-                  className={`h-1.5 rounded-full transition-all duration-300 ${
-                    currentIndex === index
-                      ? 'w-10 bg-white elevation-1'
-                      : 'w-1.5 bg-white/40 hover:bg-white/70'
-                  }`}
-                  aria-label={`Go to slide ${index + 1}`}
-                  aria-current={currentIndex === index}
-                />
-              ))}
-            </div>
-
-            <div className="hidden sm:flex gap-3">
+      {/* Navigation Indicators */}
+      <div className="absolute bottom-10 left-0 right-0 z-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex gap-3">
+            {slides.map((_, index) => (
               <button
-                onClick={scrollPrev}
-                className="w-11 h-11 rounded-full bg-white/15 backdrop-blur-md border border-white/20 hover:bg-white/25 hover:border-white/30 transition-all duration-200 flex items-center justify-center text-white elevation-2"
-                aria-label="Previous slide"
-              >
-                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15 19l-7-7 7-7" />
-                </svg>
-              </button>
-              <button
-                onClick={scrollNext}
-                className="w-11 h-11 rounded-full bg-white/15 backdrop-blur-md border border-white/20 hover:bg-white/25 hover:border-white/30 transition-all duration-200 flex items-center justify-center text-white elevation-2"
-                aria-label="Next slide"
-              >
-                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
-                </svg>
-              </button>
-            </div>
+                key={index}
+                onClick={() => scrollTo(index)}
+                className={`h-1 transition-all duration-500 rounded-full ${
+                  selectedIndex === index
+                    ? 'w-12 bg-[var(--church-red)]'
+                    : 'w-4 bg-white/30 hover:bg-white/50'
+                }`}
+                aria-label={`Go to slide ${index + 1}`}
+                aria-current={selectedIndex === index}
+              />
+            ))}
           </div>
         </div>
       </div>

@@ -1,63 +1,65 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { ArrowRight } from 'lucide-react'
+import { ArrowRight, BookHeart } from 'lucide-react'
 
-const VALUES_IMAGE_URL =
-  'https://lh3.googleusercontent.com/aida-public/AB6AXuA8k3EvdIVUJVp4kP4W2yMHmMwd_eIztTYCfi48JY1RbSJxbL1vjhBXYucAMl3sgJRj4TXI2nevoBDdeGMe4DfdqSAbx9Pg1bJ_ZVfnlI1lxjuVfzyMKFCOUemlmPjHh7E4-tpaSH-jiuxIzR7K5QShbqh4qmywMOM2gwdwTBK2ndARVAveuc5WvOvXMe-ANEwfnr-TcTKV16C-PaI_NcPoO2vweWiNX9llg3gAchP-n0jQSFgDi9o0EQmdQuL32TEvih_Ja7IBZZ8'
+const VALUES_IMAGE_URL = 'https://lh3.googleusercontent.com/aida-public/AB6AXuA8k3EvdIVUJVp4kP4W2yMHmMwd_eIztTYCfi48JY1RbSJxbL1vjhBXYucAMl3sgJRj4TXI2nevoBDdeGMe4DfdqSAbx9Pg1bJ_ZVfnlI1lxjuVfzyMKFCOUemlmPjHh7E4-tpaSH-jiuxIzR7K5QShbqh4qmywMOM2gwdwTBK2ndARVAveuc5WvOvXMe-ANEwfnr-TcTKV16C-PaI_NcPoO2vweWiNX9llg3gAchP-n0jQSFgDi9o0EQmdQuL32TEvih_Ja7IBZZ8'
 
 export function Values() {
   return (
-    <section
-      className="bg-(--church-navy) py-24 relative overflow-hidden"
-      aria-labelledby="values-heading"
-    >
-      <div
-        className="absolute right-0 top-0 w-1/2 h-full dot-pattern opacity-10"
-        aria-hidden="true"
-      />
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-          <article>
-            <header>
-              <span className="text-(--church-red) font-display italic text-2xl mb-4 block">
-                Our Values
-              </span>
-              <h2
-                id="values-heading"
-                className="text-white text-4xl md:text-5xl font-display font-bold mb-8 leading-tight"
-              >
-                The Bible still works, when you pray believe your AMEN!
+    <section className="bg-white py-24 overflow-hidden" aria-labelledby="values-heading">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
+          
+          {/* Text Content */}
+          <article className="order-2 lg:order-1">
+            <header className="mb-8">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--church-navy)]/5 text-[var(--church-navy)] text-xs font-bold tracking-widest uppercase mb-6">
+                <BookHeart size={14} />
+                Our Core Belief
+              </div>
+              <h2 id="values-heading" className="text-[var(--church-navy)] text-4xl md:text-5xl font-display font-bold leading-[1.1] mb-6">
+                Believing in the <br />
+                <span className="text-[var(--church-red)]">Power of Prayer</span>
               </h2>
             </header>
 
-            <blockquote className="text-gray-300 mb-6 text-sm leading-relaxed">
-              <p>
-                &quot;And all things, whatsoever ye shall ask in prayer,
-                believing, ye shall receive&quot;{' '}
-                <cite className="not-italic">(Matthew 21:22)</cite>. God relies
-                on a promise but a divine principle, setting the foundation for
-                how we, as believers, should approach prayer.
+            <div className="prose prose-lg text-slate-600 mb-8">
+              <p className="leading-relaxed">
+                God relies not just on a promise but a divine principle. We believe that prayer is the foundation for how we, as believers, should approach every aspect of life.
               </p>
-            </blockquote>
+              
+              <figure className="my-8 pl-6 border-l-4 border-[var(--church-red)]/20 italic text-slate-800 font-serif text-xl">
+                &quot;And all things, whatsoever ye shall ask in prayer, believing, ye shall receive.&quot;
+                <figcaption className="text-sm text-[var(--church-red)] font-sans font-bold mt-2 not-italic uppercase tracking-wider">
+                  — Matthew 21:22
+                </figcaption>
+              </figure>
+            </div>
 
             <Link
               href="/about"
-              className="inline-flex items-center text-white bg-(--church-red) px-8 py-3 rounded text-xs font-bold uppercase tracking-widest hover:bg-red-700 transition-colors"
+              className="group inline-flex items-center justify-center gap-2 bg-[var(--church-navy)] text-white px-8 py-3.5 rounded-full text-sm font-bold tracking-widest hover:bg-[var(--church-red)] transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-0.5"
             >
-              Learn More
-              <ArrowRight className="ml-2" size={14} aria-hidden="true" />
+              OUR BELIEFS
+              <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
             </Link>
           </article>
 
-          <figure className="relative">
-            <div className="aspect-square rounded-full overflow-hidden border-8 border-(--church-blue) shadow-2xl">
+          {/* Image */}
+          <figure className="order-1 lg:order-2 relative">
+            {/* Decorative blob background */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-gray-100 rounded-full blur-3xl -z-10" />
+            
+            <div className="relative rounded-[2.5rem] overflow-hidden shadow-2xl rotate-2 hover:rotate-0 transition-transform duration-500 ease-out">
               <Image
                 src={VALUES_IMAGE_URL}
                 alt="Church community in worship"
-                width={500}
-                height={500}
-                className="w-full h-full object-cover"
+                width={600}
+                height={700}
+                className="w-full h-auto object-cover"
               />
+              {/* Gradient Overlay */}
+              <div className="absolute inset-0 bg-gradient-to-t from-[var(--church-navy)]/60 to-transparent opacity-60" />
             </div>
           </figure>
         </div>
