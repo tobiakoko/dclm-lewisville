@@ -76,10 +76,9 @@ export default async function AboutPage() {
   return (
     <main className="bg-white">
       {/* Reusing your HeroSection - assuming it accepts these props */}
-      <HeroSection 
-        title="About Us" 
-        subtitle="Our Story & Mission" 
-        backgroundImage="/images/about-hero.jpg" 
+      <HeroSection
+        title="About Us"
+        subtitle="Our Story & Mission"
       />
 
       {/* --- Mission Statement --- */}
