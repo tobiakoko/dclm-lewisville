@@ -1,18 +1,13 @@
-"use client"
-import { useState, useEffect } from 'react';
-
 const VERSES = [
   { text: "Be still, and know that I am God.", ref: "Psalm 46:10" },
   { text: "Faith is the assurance of things hoped for.", ref: "Hebrews 11:1" },
   { text: "The Lord is my shepherd; I shall not want.", ref: "Psalm 23:1" },
 ];
 
-export default function Loading() {
-  const [verse, setVerse] = useState(VERSES[0]);
+const getRandomVerse = () => VERSES[Math.floor(Math.random() * VERSES.length)];
 
-  useEffect(() => {
-    setVerse(VERSES[Math.floor(Math.random() * VERSES.length)]);
-  }, []);
+export default function Loading() {
+  const verse = getRandomVerse();
 
   return (
     <div className="min-h-[60vh] flex items-center justify-center bg-background px-4">
