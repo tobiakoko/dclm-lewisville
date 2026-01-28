@@ -2,7 +2,7 @@ import { client } from '@/lib/sanity/client'
 import { groq } from 'next-sanity'
 import Link from 'next/link'
 import Image from 'next/image'
-import { ArrowRight, Heart, Users, Music, BookOpen, Baby, Shield, Sparkles } from 'lucide-react'
+import { ArrowRight, Heart, Users, Music, BookOpen, Baby, Shield, Sparkles, type LucideIcon } from 'lucide-react'
 import HeroSection from '@/components/sections/HeroSection'
 
 export const metadata = {
@@ -10,8 +10,21 @@ export const metadata = {
   description: 'Explore the various ministries at DCLM Lewisville and find your place to serve.',
 }
 
+interface Ministry {
+  _id?: string
+  title?: string
+  name?: string
+  description: string
+  imageUrl: string
+  icon?: LucideIcon
+  slug: string | { current: string }
+  size?: 'large' | 'normal'
+  meetingTime?: string
+  meetingDay?: string
+}
+
 // Enhanced placeholder data with descriptions and specific icons
-const STATIC_MINISTRIES = [
+const STATIC_MINISTRIES: Ministry[] = [
   {
     title: "Women's Ministry",
     description: "Empowering women to grow in faith through fellowship, prayer, and mentorship.",
@@ -62,9 +75,9 @@ const STATIC_MINISTRIES = [
   },
 ]
 
-async function getMinistriesData() {
+async function getMinistriesData(): Promise<Ministry[] | null> {
   try {
-    const data = await client.fetch(groq`
+    const data = await client.fetch<Ministry[]>(groq`
       *[_type == "ministry"] | order(order asc) {
         _id,
         name,
@@ -92,7 +105,6 @@ export default async function MinistriesPage() {
       <HeroSection
         title="Ministries"
         subtitle="Find your place. Serve with purpose."
-        backgroundImage="/images/ministry-hero.jpg"
       />
 
       {/* --- Introduction & Statistics --- */}
@@ -168,7 +180,7 @@ export default async function MinistriesPage() {
                   {/* Background Image */}
                   <Image
                     src={ministry.imageUrl}
-                    alt={ministry.title}
+                    alt={ministry.title || ministry.name || 'Ministry'}
                     fill
                     className="object-cover transition-transform duration-700 group-hover:scale-105"
                   />
@@ -195,7 +207,7 @@ export default async function MinistriesPage() {
                       </p>
 
                       <Link
-                        href={`/ministries/${ministry.slug?.current || ministry.slug}`}
+                        href={`/ministries/${typeof ministry.slug === 'string' ? ministry.slug : ministry.slug.current}`}
                         className="inline-flex items-center gap-2 text-white text-sm font-bold tracking-widest uppercase hover:text-[var(--church-red)] transition-colors"
                       >
                         Learn More <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
