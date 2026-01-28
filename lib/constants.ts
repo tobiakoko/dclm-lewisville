@@ -90,22 +90,14 @@ export const NAV_LINKS: NavLink[] = [
   { 
     name: 'About', 
     href: '/about',
-    children: [
-      { name: 'About Us', href: '/about' },
-      { name: 'What We Believe', href: '/about/what-we-believe' },
-      { name: 'Ministries', href: '/ministries' },
-      { name: 'Ministers', href: '/ministers' },
-    ]
+  },
+  {
+    name: 'Ministries',
+    href: '/ministries',
   },
   { 
     name: 'Sermons', 
     href: '/sermons',
-    children: [
-      { name: 'All Sermons', href: '/sermons' },
-      { name: 'Sunday Service', href: '/sermons/sunday-service' },
-      { name: 'Bible Study', href: '/sermons/bible-study' },
-      { name: 'Revival Service', href: '/sermons/revival-service' },
-    ]
   },
   { 
     name: 'Events', 
@@ -115,15 +107,15 @@ export const NAV_LINKS: NavLink[] = [
     name: 'Resources', 
     href: '/resources',
     children: [
-      { name: 'Our Blog', href: '/blog' },
-      { name: 'Books', href: '/resources/books' },
-      { name: 'Tracts', href: '/resources/tracts' },
+      { name: 'Our Blog', href: 'https://blog.dclm.org/' },
+      { name: 'Radio', href: 'https://radio.dclm.org/' },
       { 
         name: 'Devotions', 
-        href: '/resources/devotions',
+        href: '#',
         children: [
-          { name: 'Daily Manna', href: '/resources/devotions/daily-manna' },
-          { name: 'Higher Everyday', href: '/resources/devotions/higher-everyday' },
+          { name: 'Daily Manna', href: 'https://dailymanna.app/category/daily-manna/' },
+          { name: 'Higher Everyday', href: 'https://dailymanna.app/category/higher-everyday/' },
+          { name: 'Sincere Milk', href: 'https://dailymanna.app/category/sincere-milk/' },
         ]
       },
     ]
@@ -136,11 +128,6 @@ export const NAV_LINKS: NavLink[] = [
   { 
     name: 'Give', 
     href: '/give', 
-    highlight: true 
-  },
-  { 
-    name: 'Plan a Visit', 
-    href: '/visit', 
     highlight: true 
   },
 ]
