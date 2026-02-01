@@ -7,35 +7,35 @@ import type { Person } from '@/lib/types'
 const PLACEHOLDER_TEAM: Partial<Person>[] = [
   {
     _id: 'p1',
-    name: 'Raymond Akoko',
+    name: 'Joseph Agbo',
     title: 'District Pastor',
-    role: 'Lead Pastor',
+    role: 'District Pastor',
     shortBio: 'Serving with a passion for biblical truth and community transformation for over 20 years.',
-    email: 'pastor@dclmlewisville.org'
+    email: 'info@dclmlewisville.org'
   },
   {
     _id: 'p2',
-    name: 'John Doe',
-    title: 'Associate Pastor',
-    role: 'Associate',
+    name: 'Thompson Aderemi',
+    title: 'Regional Overseer',
+    role: 'Regional Overseer',
     shortBio: 'Dedicated to youth ministry and discipleship, guiding the next generation in faith.',
-    email: 'associate@dclmlewisville.org'
+    email: 'info@dclmlewisville.org'
   },
   {
     _id: 'p3',
-    name: 'Jane Smith',
-    title: 'Choir Director',
-    role: 'Music Ministry',
+    name: 'W.F. Kumuyi',
+    title: 'General Superintendent',
+    role: 'General Superintendent',
     shortBio: 'Leading our congregation in spirit-filled worship and musical excellence.',
-    email: 'music@dclmlewisville.org'
+    email: 'info@dclmlewisville.org'
   },
   {
     _id: 'p4',
-    name: 'Michael Brown',
-    title: 'Outreach Coordinator',
-    role: 'Evangelism',
-    shortBio: 'Passionately organizing community outreach programs to share the love of Christ.',
-    email: 'outreach@dclmlewisville.org'
+    name: 'Folake Agbo',
+    title: 'Music Director',
+    role: 'Music Ministry',
+    shortBio: 'Leading our congregation in spirit-filled worship and musical excellence.',
+    email: 'info@dclmlewisville.org'
   }
 ]
 
