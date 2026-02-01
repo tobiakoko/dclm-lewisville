@@ -8,54 +8,269 @@ import { Calendar, Clock, MapPin, Mail, Phone, Users, ArrowRight, Quote } from '
 import Link from 'next/link'
 
 // --- Fallback Data for Development/Preview ---
-const PLACEHOLDER_MINISTRY = {
-  name: "Children's Ministry",
-  mission: "Nurturing the next generation with biblical truth in a fun, safe, and engaging environment where every child feels loved.",
-  fullDescription: [
-    {
-      _type: 'block',
-      style: 'normal',
-      children: [{ text: "We believe that children are not just the church of tomorrow, but the church of today. Our ministry is dedicated to partnering with parents to raise children who know God, love His Word, and share His love with others.", _type: 'span' }]
-    },
-    {
-      _type: 'block',
-      style: 'normal',
-      children: [{ text: "Through interactive lessons, worship, and games, we create an atmosphere where faith comes alive. Our curriculum is designed to take children through the Bible in a way that is age-appropriate and relevant to their lives.", _type: 'span' }]
-    }
-  ],
-  images: [
-    'https://lh3.googleusercontent.com/aida-public/AB6AXuBCbox8_B95JCEqDYNNx_6cJHF7tAeb-M8-LH7a0_o2UR9zXsJF2AX101jmsqpYHBu7eKHa2nNKODqg7J2pTI4guRszXXubAkiDIkN-Zmt33JMrTll4h5kg8CsVkFUb2f7xHT_eG-j4GUHB0QD68l7GvA8U-x7KVw_AW3b8dpPEpTewOy4JzOTlMVuDZiVEi2H-aq5g9-XK19rHnS-eglE-qiPhsXaIj5HEhq_-cTIoxrIdIUcKrVRdq8DL9ipZnVT4Ea_M_KHFNbs' // Using one of your previous placeholders
-  ],
-  activities: [
-    { title: "Sunday School", description: "Weekly bible lessons tailored for different age groups." },
-    { title: "Vacation Bible School", description: "A week-long summer event filled with fun, games, and learning." },
-    { title: "Kids Choir", description: "Learning to worship God through song and performance." }
-  ],
+interface MinistryData {
+  name: string
+  mission: string
+  fullDescription: Array<{
+    _type: string
+    style: string
+    children: Array<{ text: string; _type: string }>
+  }>
+  images: string[]
+  activities: Array<{ title: string; description: string }>
   leader: {
-    name: "Sister Sarah Johnson",
-    title: "Ministry Director",
-    bio: "Sarah has been serving in children's ministry for over 15 years and has a passion for seeing kids grow in Christ.",
-    photo: null, // Will use fallback icon
-    email: "kids@dclmlewisville.org",
-    phone: "(555) 123-4567"
-  },
-  meetingDay: "Sunday",
-  meetingTime: "10:00 AM",
-  location: "Children's Hall, Building B",
-  contactEmail: "kids@dclmlewisville.org"
+    name: string
+    title: string
+    bio: string
+    photo: string | null
+    email: string
+    phone?: string
+  }
+  meetingDay: string
+  meetingTime: string
+  location: string
+  contactEmail: string
 }
+
+const MINISTRIES_DATA: Record<string, MinistryData> = {
+  'men': {
+    name: "Men's Ministry",
+    mission: "A forum where men's matters and issues are discussed from a scriptural perspective with relevance to the culture we find ourselves in.",
+    fullDescription: [
+      {
+        _type: 'block',
+        style: 'normal',
+        children: [{ text: "The men's group is a forum where men's matters and issues are discussed from a scriptural perspective but with relevance to the culture we find ourselves in. It is a place where men are free to share their stories with the goal to better themselves as men, fathers, or citizens.", _type: 'span' }]
+      },
+      {
+        _type: 'block',
+        style: 'normal',
+        children: [{ text: "Come fellowship with us as we learn from Jesus the greatest man that ever lived and you will find healing for your soul.", _type: 'span' }]
+      }
+    ],
+    images: [
+      'https://lh3.googleusercontent.com/aida-public/AB6AXuDaIyApWRxmETEml3qkWO1l3DSH4gPbErNYuP2qrPLWXkiU6NwPqeNXl1oUO_WlX1Je55B70ekZH7JCQGmg1cP3E_RuCNa8QV-gTMxwGaOzwXg2Btt6cRT-isuU1n0zCDPVMH9dlH-VdmiCWMEzICtnRNsTOyHOdPkmcVPQpJR8TrE7X2kFO-25VvRSGB7Ti0-qjL10JO2pePdn7fX2uTLqlpSKR5w7e7YXEIGavYnZ8hHvy-EkWJTX0aSj0_3Pf_T6c8FJAVXTUzQ'
+    ],
+    activities: [
+      { title: "Men's Fellowship", description: "Regular gatherings for fellowship, discussion, and mutual encouragement." },
+      { title: "Bible Study", description: "Deep dives into scripture with practical application for men." },
+      { title: "Community Outreach", description: "Serving our community together as brothers in Christ." }
+    ],
+    leader: {
+      name: "Brother Emeka Onyejizu",
+      title: "Ministry Coordinator",
+      bio: "Emeka is passionate about helping men grow in their faith and become godly leaders in their homes and communities.",
+      photo: null,
+      email: "men@dclmlewisville.org"
+    },
+    meetingDay: "Saturday",
+    meetingTime: "8:00 AM",
+    location: "Fellowship Hall",
+    contactEmail: "men@dclmlewisville.org"
+  },
+  'women': {
+    name: "Women's Ministry",
+    mission: "Come and sit with us at the feet of Christ like Mary, follow along like the women who followed Him from Galilee.",
+    fullDescription: [
+      {
+        _type: 'block',
+        style: 'normal',
+        children: [{ text: "According to Eternity News \"60 percent of church attenders are women.\" For this reason, we take the women's ministry very seriously.", _type: 'span' }]
+      },
+      {
+        _type: 'block',
+        style: 'normal',
+        children: [{ text: "We invite you to come and sit with us at the feet of Christ like Mary (Luke 10:42); follow along like the women who followed him from Galilee (Matthew 27:55,56); Wipe his feet with our hair (John 12:3); call on him when our loved ones are sick (John 11:3); exercise our faith in him (Matthew 15:27,28); worship him with our substance (Matthew 12:44); check up on him like Mary Magdalene (Matthew 28:1); be the first to preach \"He is alive!\" (Mark 16:9-11)", _type: 'span' }]
+      }
+    ],
+    images: [
+      'https://lh3.googleusercontent.com/aida-public/AB6AXuDXbkwd3rhaBTkC-FSQ9wvxz-kV5bgWEQ0UyFF_3R59ddeDNGY9sv5OXL_YVXcLBUUWQN7B27N9ECMotWhIB30fsYJ1v9nRvELdbyS3sWlO1IlwQ2ABqVc3V4VU8W8Z4OUZcbwrOGmZmePzoSxhrh0AHhSNQAbutHemxxrsMDTjt7NyNxL6SiCGiz48JNITagtimYjXMM_YpaVYX_MRW7-Xctc80S9cTh07JNb7epVyZudxFWGXdOyKFMVuktdAKEFTcJk2LV9Mu38'
+    ],
+    activities: [
+      { title: "Women's Fellowship", description: "Regular gatherings for prayer, worship, and mutual encouragement." },
+      { title: "Bible Study", description: "Deep exploration of scripture with practical application for women." },
+      { title: "Mentorship Program", description: "Older women mentoring younger women in faith and life." }
+    ],
+    leader: {
+      name: "Sister Folake Agbo",
+      title: "Ministry Director",
+      bio: "Folake has been serving in women's ministry for over a decade and is passionate about seeing women grow in Christ.",
+      photo: null,
+      email: "women@dclmlewisville.org"
+    },
+    meetingDay: "Saturday",
+    meetingTime: "10:00 AM",
+    location: "Main Sanctuary",
+    contactEmail: "women@dclmlewisville.org"
+  },
+  'young-adults': {
+    name: "Young Adult Ministry",
+    mission: "A family of college-aged believers in the DFW area committed to achieving heaven's goal through Jesus.",
+    fullDescription: [
+      {
+        _type: 'block',
+        style: 'normal',
+        children: [{ text: "Young adult group is a family of college-aged believers in the Dallas Fort Worth (DFW) area committed to achieving heaven's goal through Jesus and leading others to life transformation through Him.", _type: 'span' }]
+      },
+      {
+        _type: 'block',
+        style: 'normal',
+        children: [{ text: "If you are in this age group, please contact Pastor John Enoh (enojoneno@gmail.com) for more information.", _type: 'span' }]
+      }
+    ],
+    images: [
+      'https://lh3.googleusercontent.com/aida-public/AB6AXuB7NC2J5snrEgRENoC28kpRejd5AnmLHbjwXFqNVaXtGlJpwYib1_ajYMrrwycrkTtv8bGcongNZBjnpG0UJdBxkeKRXS60HJ3gWUlhQ5AulYbhGG80Gdb19MdAmei3G0mBfumzsM54uxzh8iuHMzSD9K91OOA0cbZSjL2GfZA3icsAP3n5r-J98DLZL23ZvLu3wQe-JoBgnfmwGgJ2jXadqdeoypOmc9Kr-tHQQu7JsYWvx5ArcNVqXrmRjncCmOA2a8xmEnGnf7M'
+    ],
+    activities: [
+      { title: "Weekly Fellowship", description: "Regular gatherings for worship, discussion, and community building." },
+      { title: "Bible Study", description: "Engaging with scripture in ways relevant to young adult life." },
+      { title: "Outreach Events", description: "Serving the community and reaching other young adults with the gospel." }
+    ],
+    leader: {
+      name: "Pastor John Enoh",
+      title: "Young Adults Pastor",
+      bio: "Pastor John is dedicated to helping young adults navigate life's challenges while growing in their faith.",
+      photo: null,
+      email: "enojoneno@gmail.com"
+    },
+    meetingDay: "Friday",
+    meetingTime: "7:00 PM",
+    location: "Youth Building",
+    contactEmail: "enojoneno@gmail.com"
+  },
+  'youth': {
+    name: "Youth Ministry",
+    mission: "A church where every youth is taught about Jesus and challenged to grow in their relationship with God.",
+    fullDescription: [
+      {
+        _type: 'block',
+        style: 'normal',
+        children: [{ text: "Our Youth Ministry caters to youth from junior high and senior high students (7th through 12th grade). Our mission is to be a Church where every youth is taught about Jesus and challenged to grow.", _type: 'span' }]
+      },
+      {
+        _type: 'block',
+        style: 'normal',
+        children: [{ text: "We provide an environment for young people to be engaged in service, make great friends, and grow in their relationships with God.", _type: 'span' }]
+      }
+    ],
+    images: [
+      'https://lh3.googleusercontent.com/aida-public/AB6AXuCTzR-F9sUEUsKSYtny5AGn8iejhrOciykGWEDMY_lHuSoYDGpi670nf3Grw5UP_-EUT1s-yMR7guOlzCy4lmDYr9w4f6UNeFg50LFdEsON-jqDVUPuuUoUU9ScPPhgfAoWF_H7_mXOdruwGP5iFbN1bG_i_Gb3sYnSgGg7z5Bigg7bGmHrU3pYc1ifStWpDdK3XNkm-O3Z4mWWSUAtBq_N09aRkXZSOv8QUoBN8FFAzrKphPj6DzwMU0cz8BDDFGe25ba9Q4IvFNU'
+    ],
+    activities: [
+      { title: "Youth Service", description: "Weekly gatherings designed specifically for teenagers." },
+      { title: "Youth Bible Study", description: "Diving deep into God's Word together." },
+      { title: "Community Service", description: "Learning to serve others and make a difference." },
+      { title: "Youth Events", description: "Fun activities that build friendships and faith." }
+    ],
+    leader: {
+      name: "Brother Joseph",
+      title: "Youth Pastor",
+      bio: "Brother Joseph is passionate about helping young people discover their purpose in Christ.",
+      photo: null,
+      email: ''
+    },
+    meetingDay: "Sunday",
+    meetingTime: "10:00 AM",
+    location: "Youth Room",
+    contactEmail: ""
+  },
+  'children': {
+    name: "Children's Ministry",
+    mission: "Designed for kids up to 12th Grade to engage with scripture at an age-appropriate level.",
+    fullDescription: [
+      {
+        _type: 'block',
+        style: 'normal',
+        children: [{ text: "\"And that from a child thou hast known the holy scriptures, which are able to make thee wise unto salvation through faith which is in Christ Jesus.\" (2 Timothy 3:15)", _type: 'span' }]
+      },
+      {
+        _type: 'block',
+        style: 'normal',
+        children: [{ text: "The Children's Ministry is designed for kids up to 5th Grade to engage with scripture at a level that is appropriate for their specific age group. We believe that parents are the primary faith trainers of their children, so we also seek to provide resources to parents, helping them engage their kids with the holy scriptures throughout the week.", _type: 'span' }]
+      }
+    ],
+    images: [
+      'https://lh3.googleusercontent.com/aida-public/AB6AXuBCbox8_B95JCEqDYNNx_6cJHF7tAeb-M8-LH7a0_o2UR9zXsJF2AX101jmsqpYHBu7eKHa2nNKODqg7J2pTI4guRszXXubAkiDIkN-Zmt33JMrTll4h5kg8CsVkFUb2f7xHT_eG-j4GUHB0QD68l7GvA8U-x7KVw_AW3b8dpPEpTewOy4JzOTlMVuDZiVEi2H-aq5g9-XK19rHnS-eglE-qiPhsXaIj5HEhq_-cTIoxrIdIUcKrVRdq8DL9ipZnVT4Ea_M_KHFNbs'
+    ],
+    activities: [
+      { title: "Sunday School", description: "Weekly Bible lessons tailored for different age groups." },
+      { title: "Vacation Bible School", description: "A week-long summer event filled with fun, games, and learning." },
+      { title: "Kids Choir", description: "Learning to worship God through song and performance." },
+      { title: "Parent Resources", description: "Tools and materials to help parents disciple their children at home." }
+    ],
+    leader: {
+      name: "Sister Mary",
+      title: "Ministry Director",
+      bio: "Mary has been serving in children's ministry for years and has a passion for seeing kids grow in Christ.",
+      photo: null,
+      email: ""
+    },
+    meetingDay: "Sunday",
+    meetingTime: "10:00 AM",
+    location: "Children's Room",
+    contactEmail: ""
+  },
+  'music': {
+    name: "Music Ministry",
+    mission: "Leading the congregation in spirit-filled worship through excellence in music.",
+    fullDescription: [
+      {
+        _type: 'block',
+        style: 'normal',
+        children: [{ text: "Our Music Ministry is dedicated to leading the congregation into the presence of God through anointed and excellent worship. We believe that music is a powerful tool for spiritual connection and transformation.", _type: 'span' }]
+      },
+      {
+        _type: 'block',
+        style: 'normal',
+        children: [{ text: "Whether you sing, play an instrument, or work with sound and media, there is a place for you to serve in this ministry. We welcome all who have a heart for worship to join us.", _type: 'span' }]
+      }
+    ],
+    images: [
+      'https://lh3.googleusercontent.com/aida-public/AB6AXuBi1lr5rjLDmmyxVWmzTbF3NO_2wcigi_ofsYpcJ0KkSYqhAxlOVymjg3UeuFY-GsQhvmNBEzaJMZcN8nwuX-w8JrgxIv3vsRKVqK-ltcFolF0tkr63UPwUh2LtCPI7N3uVpfiYsbVdEkYcfqx2H5YPN5Kv4MOnSR9OCesGJhHFhDYdH-S4aP_vn_vj4h74n-ikzEN-zrIc8SxmsIk_hMmvnKTZbnDKYdO7vCzACPUTd5d2FfeHfPayuM60GN-nOyIX-zIxuUovYcQ'
+    ],
+    activities: [
+      { title: "Choir", description: "Vocal praise team ministering through song." },
+      { title: "Instrumentalists", description: "Musicians who provide musical accompaniment for services." },
+      { title: "Sound & Media", description: "Technical team ensuring excellent audio and visual experience." }
+    ],
+    leader: {
+      name: "Sister Folake Agbo",
+      title: "Music Director",
+      bio: "Folake has been leading worship for years and is committed to excellence in ministry.",
+      photo: null,
+      email: ""
+    },
+    meetingDay: "Saturday",
+    meetingTime: "4:00 PM",
+    location: "Main Sanctuary",
+    contactEmail: ""
+  }
+}
+
 
 export async function generateMetadata({ params }: { params: { slug: string } }) {
   try {
     const ministry = await client.fetch(ministryQuery, { slug: params.slug })
-    if (!ministry) return { title: 'Ministry Not Found' }
-    return {
-      title: ministry.name,
-      description: ministry.mission,
+    if (ministry) {
+      return {
+        title: ministry.name,
+        description: ministry.mission,
+      }
     }
-  } catch (error) {
-    return { title: 'Ministry Details' }
+  } catch {
+    // Fall through to static data
   }
+
+  // Use static data for metadata
+  const staticData = MINISTRIES_DATA[params.slug]
+  if (staticData) {
+    return {
+      title: staticData.name,
+      description: staticData.mission,
+    }
+  }
+
+  return { title: 'Ministry Details' }
 }
 
 export default async function MinistryDetailPage({
@@ -67,14 +282,15 @@ export default async function MinistryDetailPage({
 
   try {
     ministry = await client.fetch(ministryQuery, { slug: params.slug })
-  } catch (error) {
+  } catch {
     // Fail silently in build/dev without creds
   }
 
-  // Use fallback if sanity fails or returns null (for UI preview purposes)
-  const data = ministry || PLACEHOLDER_MINISTRY
+  // Use Sanity data if available, otherwise use static data based on slug
+  const staticData = MINISTRIES_DATA[params.slug]
+  const data = ministry || staticData
 
-  if (!data && !ministry) {
+  if (!data) {
     notFound()
   }
 
