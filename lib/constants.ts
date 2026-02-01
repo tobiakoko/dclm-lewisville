@@ -44,14 +44,14 @@ export const SITE_CONFIG: SiteConfig = {
   description: 'A Christ-centered church in Lewisville, TX, dedicated to biblical teaching and spiritual growth.',
   url: process.env.NEXT_PUBLIC_SITE_URL || 'https://dclmlewisville.org',
   address: {
-    street: '123 Church Street',
+    street: '1368 W Main St',
     city: 'Lewisville',
     state: 'TX',
     zip: '75067',
     country: 'USA',
   },
-  phone: '(123) 456-7890',
-  email: 'info@dclmlewisville.org',
+  phone: '(469) 665-9972',
+  email: 'info@deeperlifelewisville.org',
   socialMedia: {
     facebook: 'https://facebook.com/dclmlewisville',
     instagram: 'https://instagram.com/dclmlewisville',

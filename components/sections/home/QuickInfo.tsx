@@ -10,16 +10,15 @@ interface ServiceItem {
 
 const services: ServiceItem[] = [
   { icon: Sun, day: 'Sunday', title: 'Worship Service', description: 'Powerful worship & word', time: '9:30 AM' },
-  { icon: BookOpen, day: 'Tuesday', title: 'Bible Study', description: 'Deep dive into scripture', time: '6:00 PM' },
-  { icon: HandHeart, day: 'Friday', title: 'Prayer Meeting', description: 'Intercessory prayer', time: '6:00 PM' },
-  { icon: Users, day: 'Saturday', title: 'Outreach', description: 'Serving our neighbors', time: '8:00 AM' },
+  { icon: BookOpen, day: 'Tuesday', title: 'Bible Study', description: 'Systematic and expository study of the word of God', time: '7:00 PM' },
+  { icon: HandHeart, day: 'Friday', title: 'Revival Service', description: 'Revival, Prayer, and Evangelism Training', time: '7:00 PM' },
 ]
 
 export function QuickInfo() {
   return (
     <section className="relative z-20 -mt-24 pb-20" aria-label="Service times">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {services.map((service) => {
             const Icon = service.icon
             return (

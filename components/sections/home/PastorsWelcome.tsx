@@ -1,10 +1,11 @@
 import Link from 'next/link'
 import Image from 'next/image'
+import Pastor from '@/app/assets/Pastor_Joseph.jpeg'
 
 const PASTOR_INFO = {
   name: 'Joseph Agbo',
   title: 'Local Pastor',
-  imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBedWkezcKEM3ol5ulySRzK9Wma9HVGsiwK2CPkJVJ1prlxKVWD3zpO3rkCgT8NDBxYI2TQkD9FD_ekbdYImXzZtAkoV5qO261-4kJZ96l_lolbcrLtxrB6K4QNBkvNIuIxv328ehwX0v0zL6WH4hnqbEI0HcmJ6w0LR605XenX80ye7Sne6fYDaM07TNnvMWT6l_Fu0398WXHYNiLYZ3F-OB564I0qilwWXTiB7_MgcKLdysHjsvooyYiwVg9fEaXtp_g6IEyhIE8',
+  imageUrl: Pastor,
 } as const
 
 export function PastorsWelcome() {
@@ -57,16 +58,37 @@ export function PastorsWelcome() {
 
             <div className="space-y-6 text-lg text-gray-600 leading-relaxed font-light">
               <p>
-                We are so glad you are here. Whether you are visiting for the
-                first time or have been part of our church family for years, it is
-                our prayer that you encounter the living God as we gather to
-                worship Him together.
+                Thank you for visiting Deeper Life Bible Church Lewisville online. 
+                Founded by Pastor (Dr.) W.F. Kumuyi, Deeper Life Bible Church Worldwide 
+                is a Bible-believing church whose aim in everything is “achieving heaven&apos;s goal.”
               </p>
+              
               <p>
-                Our church is committed to the faithful teaching of God&apos;s
-                Word, passionate worship, and authentic community. We believe that
-                the Bible is God&apos;s revealed truth, and we are dedicated to
-                living according to its principles in holiness and love.
+                Deeper Life Lewisville is one of the branches in the southwest region 
+                headed by the regional overseer, Pastor Thompson Aderemi.
+              </p>
+              
+              <p>
+                I hope this virtual visit will lead you to visit us in ​person soon. 
+                While online, let me encourage you to spend some time to know us better 
+                as a church. You can do this by reading “What We Believe” and our impact 
+                in the community.
+
+              </p>
+              
+              <p>
+                It is our prayer and purpose to bring people to Christ and help them grow 
+                in Him. If you are looking for a church home, or have questions about 
+                Jesus Christ, we want to serve you in any way we can and please remember 
+                that here in Deeper Life Lewisville you cannot be “lost in the crowd.” 
+                Ours is a church where the local pastor and members know you personally 
+                like a family member.
+              </p>
+              
+              <p>  
+                If you have any questions not answered here or would like additional 
+                information about our church, please click the contact link to see how 
+                you can contact us.
               </p>
             </div>
 
@@ -80,7 +102,7 @@ export function PastorsWelcome() {
               
               {/* Signature representation */}
               <div className="text-left">
-                <p className="text-xs text-gray-400 uppercase tracking-widest mb-1">Blessings,</p>
+                <p className="text-xs text-gray-400 uppercase tracking-widest mb-1">In the service of Jesus Christ,</p>
                 <p className="font-serif italic text-2xl text-(--church-navy)">
                   {PASTOR_INFO.name}
                 </p>
