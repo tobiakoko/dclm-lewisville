@@ -261,7 +261,7 @@ export default async function AboutPage() {
 
           <div className="pt-8">
             <p className="font-serif text-2xl text-[var(--church-navy)] italic">
-              "You are always welcome here."
+              &quot;You are always welcome here.&quot;
             </p>
           </div>
         </div>
@@ -343,7 +343,7 @@ export default async function AboutPage() {
                 
                 {/* Floating Stat Card */}
                 <div className="absolute bottom-8 right-8 bg-white/90 backdrop-blur-md p-6 rounded-xl shadow-lg border border-white/20 max-w-[200px]">
-                  <p className="font-display text-5xl font-bold text-[var(--church-red)]">25+</p>
+                  <p className="font-display text-5xl font-bold text-[var(--church-red)]">8+</p>
                   <p className="text-xs font-bold text-[var(--church-navy)] uppercase tracking-widest mt-1">
                     Years of Faithfulness
                   </p>
@@ -367,7 +367,7 @@ export default async function AboutPage() {
 
               <div className="space-y-6 text-slate-600 text-lg leading-relaxed">
                 <p>
-                  What started as a small prayer gathering has blossomed into a
+                  What started as a small worship gathering has blossomed into a
                   vibrant beacon of hope in the heart of Lewisville. From our
                   humble beginnings, our focus has always remained steadfast:
                   preaching the unadulterated word of God.

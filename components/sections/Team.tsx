@@ -1,16 +1,21 @@
-import Image from 'next/image'
+import Image, { type StaticImageData } from 'next/image'
 import { urlFor } from '@/lib/sanity/client'
 import { Mail, User } from 'lucide-react'
 import type { Person } from '@/lib/types'
+import PastorJoseph from '@/app/assets/Pastor_Joseph.jpeg'
+import ChoirDirector from '@/app/assets/choir-director.jpeg'
+import RO from '@/app/assets/Pastor_Aderemi.png'
+import GS from '@/app/assets/Pastor_Kumuyi.jpg'
 
 // Fallback data for development or when CMS is empty
-const PLACEHOLDER_TEAM: Partial<Person>[] = [
+const PLACEHOLDER_TEAM: (Partial<Person> & { imageUrl?: StaticImageData })[] = [
   {
     _id: 'p1',
     name: 'Joseph Agbo',
-    title: 'District Pastor',
-    role: 'District Pastor',
-    shortBio: 'Serving with a passion for biblical truth and community transformation for over 20 years.',
+    title: 'Local Pastor',
+    role: 'Local Pastor',
+    imageUrl: PastorJoseph,
+    shortBio: 'Serving with a passion for biblical truth and community transformation in Lewisville TX.',
     email: 'info@dclmlewisville.org'
   },
   {
@@ -18,7 +23,8 @@ const PLACEHOLDER_TEAM: Partial<Person>[] = [
     name: 'Thompson Aderemi',
     title: 'Regional Overseer',
     role: 'Regional Overseer',
-    shortBio: 'Dedicated to youth ministry and discipleship, guiding the next generation in faith.',
+    imageUrl: RO,
+    shortBio: 'Overseer of the southwest region comprising of 14 states.',
     email: 'info@dclmlewisville.org'
   },
   {
@@ -26,7 +32,8 @@ const PLACEHOLDER_TEAM: Partial<Person>[] = [
     name: 'W.F. Kumuyi',
     title: 'General Superintendent',
     role: 'General Superintendent',
-    shortBio: 'Leading our congregation in spirit-filled worship and musical excellence.',
+    imageUrl: GS,
+    shortBio: 'Founder and General Superintendent of Deeper Life Bible Church Worldwide.',
     email: 'info@dclmlewisville.org'
   },
   {
@@ -34,6 +41,7 @@ const PLACEHOLDER_TEAM: Partial<Person>[] = [
     name: 'Folake Agbo',
     title: 'Music Director',
     role: 'Music Ministry',
+    imageUrl: ChoirDirector,
     shortBio: 'Leading our congregation in spirit-filled worship and musical excellence.',
     email: 'info@dclmlewisville.org'
   }
@@ -56,19 +64,30 @@ export default function Team({ members }: TeamProps) {
         >
           {/* Image Container */}
           <div className="aspect-[4/5] relative bg-slate-100 overflow-hidden">
-            {member.photo ? (
-              <Image
-                src={urlFor(member.photo).width(500).height(600).url()}
-                alt={member.name || 'Team member'}
-                fill
-                className="object-cover transition-transform duration-500 group-hover:scale-105"
-              />
-            ) : (
+            {(() => {
+              const imageSrc =
+                member.photo && 'asset' in member.photo
+                  ? urlFor(member.photo).width(500).height(600).url()
+                  : member.imageUrl
+
+              if (imageSrc) {
+                return (
+                  <Image
+                    src={imageSrc}
+                    alt={member.name || 'Team member'}
+                    fill
+                    className="object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                )
+              }
+
+              return (
               // Fallback Avatar if no photo exists
               <div className="w-full h-full flex items-center justify-center bg-[var(--church-navy)]/5 text-[var(--church-navy)]/20">
                  <User size={64} />
               </div>
-            )}
+              )
+            })()}
             
             {/* Gradient Overlay (visible on hover) */}
             <div className="absolute inset-0 bg-gradient-to-t from-[var(--church-navy)]/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />

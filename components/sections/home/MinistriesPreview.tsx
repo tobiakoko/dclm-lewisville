@@ -1,17 +1,20 @@
 import Link from 'next/link'
-import Image from 'next/image'
+import Image, { StaticImageData } from 'next/image'
 import { ArrowRight } from 'lucide-react'
+import Brothers from '@/app/assets/BrothersCongregation.jpeg'
+import Sisters from '@/app/assets/SistersCongregation.jpeg'
+import Children from '@/app/assets/ChildrenMinistry.jpeg'
 
 interface Ministry {
   title: string
-  image: string
+  image: string | StaticImageData
   slug: string
 }
 
 const ministries: Ministry[] = [
-  { title: "Women's Ministry", image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBtXYe2zPFMXCADDCscYVStthw5Iwnca52E-UztJo4YV-ynBiSkPrjf6pNpQjyqV6ZeqnMQyT4Cd2zmKYjhal319-zV0EHaQ_eIxYMa6j1TtsNETjYHwU6fRo0Q1Tirn1OXkQqE__cT9SZTda_2u--yZZPbPW8baAJFR3qZtlWjU8jZq4dHXod8Jaqp4_o4TZmldNu-_wEY-CLOclPgywQS_4JB2LswQIXbAsDgOZ0s-Bp15bc75M7hzo-mZoZvNA5SiQGwZBrnb4w', slug: '/ministries/women' },
-  { title: "Children's Ministry", image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDurzzgSxF2Grg6Vt5Z5rp6YPoge9EhMdglDJ6UxibBHK9x1b83iDnL7R70jWFajZwncQh76TKn0FXBIEw8aBNgqJpX1gpqvNJMJxNlF5rXsBR7UkqhlGlFHCePg9Hnwi6vs8O6qo4b8Zopm4ZwRbcGGc9fapfZwTHrXlQ95aVKhG8n4YnIbLd_KSTI-0MOrnxkonG-XQ2tSOYNROTifSz6dg3doS5vvwqIPDdBGsIOrTvC0_xUEAAXO0M4MsbANsUMGJmpOYUOMs0', slug: '/ministries/children' },
-  { title: 'Youth Ministry', image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuC8b61Ti8OP8F81lWX053ZiO3SJ0ZdfxieoEAThu7lwfW-U523RSeIPwMKMYIt4M_1kwhFHllHLloMEl8bozN0gtPTjZxyL8ovZqXRTuoHtIhmhlRH2QzeXH8kq18duymCl3HNk9jw1Lei73muDk4JplhaOmfCPt2sExyEwVvPgJZykr34M4xrdOhKIuQbNFV9p7rYWR1e97Ioxz564VadBCgk4E6y7nykj1IpasgCNtThmXcwW4hZ3aWyPAsBk_mDh9J7sVeTp_dg', slug: '/ministries/youth' },
+  { title: "Women's Ministry", image: Sisters, slug: '/ministries/women' },
+  { title: "Children's Ministry", image: Children, slug: '/ministries/children' },
+  { title: 'Youth Ministry', image: Brothers, slug: '/ministries/youth' },
 ]
 
 export default function MinistriesPreview() {

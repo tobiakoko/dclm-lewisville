@@ -4,8 +4,12 @@ import Link from 'next/link'
 import Image, { type StaticImageData } from 'next/image'
 import { ArrowRight, Heart, Users, Music, BookOpen, Baby, Shield, Sparkles, type LucideIcon } from 'lucide-react'
 import HeroSection from '@/components/sections/HeroSection'
-import Image_1 from '@/app/assets/men_ministry.jpeg'
-import Image_2 from '@/app/assets/women_ministry.jpeg'
+import MenMinistry from '@/app/assets/men_ministry.jpeg'
+import WomenMinistry from '@/app/assets/women_ministry.jpeg'
+import ChoirMinistry from '@/app/assets/Choir_ministry.jpeg'
+import Congregation from '@/app/assets/congregation.jpeg'
+import Sisters from '@/app/assets/SistersCongregation.jpeg'
+import Brothers from '@/app/assets/BrothersCongregation.jpeg'
 
 export const metadata = {
   title: 'Our Ministries',
@@ -19,7 +23,7 @@ interface Ministry {
   description: string
   imageUrl: string | StaticImageData
   icon?: LucideIcon
-  slug: string | { current: string }
+  slug: string
   size?: 'large' | 'normal'
   meetingTime?: string
   meetingDay?: string
@@ -30,7 +34,7 @@ const STATIC_MINISTRIES: Ministry[] = [
   {
     title: "Women's Ministry",
     description: "Come sit with us at the feet of Christ like Mary, follow along like the women who followed Him from Galilee, and worship Him with your substance.",
-    imageUrl: Image_2,
+    imageUrl: Sisters,
     icon: Heart,
     slug: 'women',
     size: 'large'
@@ -62,7 +66,7 @@ const STATIC_MINISTRIES: Ministry[] = [
   {
     title: "Men's Ministry",
     description: "A forum where men's matters are discussed from a scriptural perspective, learning from Jesus the greatest man that ever lived.",
-    imageUrl: Image_1,
+    imageUrl: Brothers,
     icon: Shield,
     slug: 'men',
     size: 'normal'
@@ -70,7 +74,7 @@ const STATIC_MINISTRIES: Ministry[] = [
   {
     title: 'Music Ministry',
     description: "Leading the congregation in spirit-filled worship through excellence in music.",
-    imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBi1lr5rjLDmmyxVWmzTbF3NO_2wcigi_ofsYpcJ0KkSYqhAxlOVymjg3UeuFY-GsQhvmNBEzaJMZcN8nwuX-w8JrgxIv3vsRKVqK-ltcFolF0tkr63UPwUh2LtCPI7N3uVpfiYsbVdEkYcfqx2H5YPN5Kv4MOnSR9OCesGJhHFhDYdH-S4aP_vn_vj4h74n-ikzEN-zrIc8SxmsIk_hMmvnKTZbnDKYdO7vCzACPUTd5d2FfeHfPayuM60GN-nOyIX-zIxuUovYcQ',
+    imageUrl: ChoirMinistry,
     icon: Music,
     slug: 'music',
     size: 'normal'
@@ -83,14 +87,15 @@ async function getMinistriesData(): Promise<Ministry[] | null> {
       *[_type == "ministry"] | order(order asc) {
         _id,
         name,
-        slug,
+        "slug": slug.current,
         description,
         "imageUrl": image.asset->url,
         meetingTime,
         meetingDay
       }
     `)
-    return data.length > 0 ? data : null
+    const withSlugs = data.filter((item) => !!item.slug)
+    return withSlugs.length > 0 ? withSlugs : null
   } catch (error) {
     return null
   }
@@ -146,11 +151,11 @@ export default async function MinistriesPage() {
           {/* Decorative Collage */}
           <div className="relative h-[500px] hidden lg:block">
             <div className="absolute top-0 right-0 w-4/5 h-4/5 rounded-3xl overflow-hidden shadow-2xl rotate-3">
-              <Image src={STATIC_MINISTRIES[0].imageUrl} alt="" fill className="object-cover" />
+              <Image src={WomenMinistry} alt="" fill className="object-cover" />
               <div className="absolute inset-0 bg-[var(--church-navy)]/20 mix-blend-multiply" />
             </div>
             <div className="absolute bottom-0 left-0 w-3/5 h-3/5 rounded-3xl overflow-hidden shadow-2xl border-4 border-white -rotate-3">
-              <Image src={STATIC_MINISTRIES[2].imageUrl} alt="" fill className="object-cover" />
+              <Image src={Congregation} alt="" fill className="object-cover" />
             </div>
           </div>
         </div>
@@ -209,7 +214,7 @@ export default async function MinistriesPage() {
                       </p>
 
                       <Link
-                        href={`/ministries/${typeof ministry.slug === 'string' ? ministry.slug : ministry.slug.current}`}
+                        href={`/ministries/${ministry.slug}`}
                         className="inline-flex items-center gap-2 text-white text-sm font-bold tracking-widest uppercase hover:text-[var(--church-red)] transition-colors"
                       >
                         Learn More <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />

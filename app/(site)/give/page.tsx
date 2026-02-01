@@ -33,7 +33,7 @@ export default function GivePage() {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-             <Button size="lg" className="bg-[var(--church-red)] hover:bg-red-700 text-white font-bold uppercase tracking-widest px-10 h-14 rounded-full shadow-lg hover:shadow-red-900/20 hover:-translate-y-0.5 transition-all text-sm">
+             <Button size="lg" className="bg-(--church-red) hover:bg-red-700 text-white font-bold uppercase tracking-widest px-10 h-14 rounded-full shadow-lg hover:shadow-red-900/20 hover:-translate-y-0.5 transition-all text-sm">
                Give Now
              </Button>
              <Button variant="outline" size="lg" className="border-white/20 text-white hover:bg-white/10 font-bold uppercase tracking-widest px-10 h-14 rounded-full text-sm">
@@ -93,7 +93,7 @@ export default function GivePage() {
                  <p className="text-xs font-bold uppercase text-slate-400 mb-1">Mailing Address:</p>
                  <p className="text-sm font-medium text-[var(--church-navy)] leading-relaxed">
                    DCLM Lewisville<br/>
-                   123 Church Street<br/>
+                   1368 W Main St<br/>
                    Lewisville, TX 75067
                  </p>
               </div>

@@ -1,4 +1,5 @@
 
+import type { StaticImageData } from 'next/image'
 import { Transition, Variant, Variants } from 'framer-motion'
 
 // Sanity image reference type
@@ -71,6 +72,7 @@ export interface Person {
   role: string
   shortBio?: string
   photo?: SanityImage
+  imageUrl?: string | StaticImageData
   email?: string
 }
 

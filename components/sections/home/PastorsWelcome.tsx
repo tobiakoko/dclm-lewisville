@@ -94,7 +94,7 @@ export function PastorsWelcome() {
 
             <div className="pt-6 flex flex-col sm:flex-row items-center gap-6 justify-center lg:justify-start">
               <Link
-                href="/about"
+                href="/ministers"
                 className="px-8 py-3.5 bg-(--church-navy) text-white rounded-full font-bold text-sm hover:bg-(--church-red) transition-colors shadow-lg shadow-(--church-navy)/20"
               >
                 Meet Our Leadership

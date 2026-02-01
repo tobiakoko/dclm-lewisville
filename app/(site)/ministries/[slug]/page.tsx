@@ -1,11 +1,15 @@
 import { client } from '@/lib/sanity/client'
 import { ministryQuery } from '@/lib/sanity/queries'
+import { groq } from 'next-sanity'
 import { notFound } from 'next/navigation'
-import Image from 'next/image'
+import Image, { type StaticImageData } from 'next/image'
 import { urlFor } from '@/lib/sanity/client'
 import { PortableText } from '@portabletext/react'
-import { Calendar, Clock, MapPin, Mail, Phone, Users, ArrowRight, Quote } from 'lucide-react'
+import { Clock, MapPin, Mail, Users, ArrowRight, Quote } from 'lucide-react'
 import Link from 'next/link'
+import Sisters from '@/app/assets/SistersCongregation.jpeg'
+import Brothers from '@/app/assets/BrothersCongregation.jpeg'
+import ChoirMinistry from '@/app/assets/Choir_ministry.jpeg'
 
 // --- Fallback Data for Development/Preview ---
 interface MinistryData {
@@ -16,7 +20,7 @@ interface MinistryData {
     style: string
     children: Array<{ text: string; _type: string }>
   }>
-  images: string[]
+  images: (string | StaticImageData)[]
   activities: Array<{ title: string; description: string }>
   leader: {
     name: string
@@ -48,9 +52,7 @@ const MINISTRIES_DATA: Record<string, MinistryData> = {
         children: [{ text: "Come fellowship with us as we learn from Jesus the greatest man that ever lived and you will find healing for your soul.", _type: 'span' }]
       }
     ],
-    images: [
-      'https://lh3.googleusercontent.com/aida-public/AB6AXuDaIyApWRxmETEml3qkWO1l3DSH4gPbErNYuP2qrPLWXkiU6NwPqeNXl1oUO_WlX1Je55B70ekZH7JCQGmg1cP3E_RuCNa8QV-gTMxwGaOzwXg2Btt6cRT-isuU1n0zCDPVMH9dlH-VdmiCWMEzICtnRNsTOyHOdPkmcVPQpJR8TrE7X2kFO-25VvRSGB7Ti0-qjL10JO2pePdn7fX2uTLqlpSKR5w7e7YXEIGavYnZ8hHvy-EkWJTX0aSj0_3Pf_T6c8FJAVXTUzQ'
-    ],
+    images: [Brothers],
     activities: [
       { title: "Men's Fellowship", description: "Regular gatherings for fellowship, discussion, and mutual encouragement." },
       { title: "Bible Study", description: "Deep dives into scripture with practical application for men." },
@@ -83,9 +85,7 @@ const MINISTRIES_DATA: Record<string, MinistryData> = {
         children: [{ text: "We invite you to come and sit with us at the feet of Christ like Mary (Luke 10:42); follow along like the women who followed him from Galilee (Matthew 27:55,56); Wipe his feet with our hair (John 12:3); call on him when our loved ones are sick (John 11:3); exercise our faith in him (Matthew 15:27,28); worship him with our substance (Matthew 12:44); check up on him like Mary Magdalene (Matthew 28:1); be the first to preach \"He is alive!\" (Mark 16:9-11)", _type: 'span' }]
       }
     ],
-    images: [
-      'https://lh3.googleusercontent.com/aida-public/AB6AXuDXbkwd3rhaBTkC-FSQ9wvxz-kV5bgWEQ0UyFF_3R59ddeDNGY9sv5OXL_YVXcLBUUWQN7B27N9ECMotWhIB30fsYJ1v9nRvELdbyS3sWlO1IlwQ2ABqVc3V4VU8W8Z4OUZcbwrOGmZmePzoSxhrh0AHhSNQAbutHemxxrsMDTjt7NyNxL6SiCGiz48JNITagtimYjXMM_YpaVYX_MRW7-Xctc80S9cTh07JNb7epVyZudxFWGXdOyKFMVuktdAKEFTcJk2LV9Mu38'
-    ],
+    images: [Sisters],
     activities: [
       { title: "Women's Fellowship", description: "Regular gatherings for prayer, worship, and mutual encouragement." },
       { title: "Bible Study", description: "Deep exploration of scripture with practical application for women." },
@@ -225,9 +225,7 @@ const MINISTRIES_DATA: Record<string, MinistryData> = {
         children: [{ text: "Whether you sing, play an instrument, or work with sound and media, there is a place for you to serve in this ministry. We welcome all who have a heart for worship to join us.", _type: 'span' }]
       }
     ],
-    images: [
-      'https://lh3.googleusercontent.com/aida-public/AB6AXuBi1lr5rjLDmmyxVWmzTbF3NO_2wcigi_ofsYpcJ0KkSYqhAxlOVymjg3UeuFY-GsQhvmNBEzaJMZcN8nwuX-w8JrgxIv3vsRKVqK-ltcFolF0tkr63UPwUh2LtCPI7N3uVpfiYsbVdEkYcfqx2H5YPN5Kv4MOnSR9OCesGJhHFhDYdH-S4aP_vn_vj4h74n-ikzEN-zrIc8SxmsIk_hMmvnKTZbnDKYdO7vCzACPUTd5d2FfeHfPayuM60GN-nOyIX-zIxuUovYcQ'
-    ],
+    images: [ChoirMinistry],
     activities: [
       { title: "Choir", description: "Vocal praise team ministering through song." },
       { title: "Instrumentalists", description: "Musicians who provide musical accompaniment for services." },
@@ -248,9 +246,10 @@ const MINISTRIES_DATA: Record<string, MinistryData> = {
 }
 
 
-export async function generateMetadata({ params }: { params: { slug: string } }) {
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params
   try {
-    const ministry = await client.fetch(ministryQuery, { slug: params.slug })
+    const ministry = await client.fetch(ministryQuery, { slug })
     if (ministry) {
       return {
         title: ministry.name,
@@ -262,7 +261,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   }
 
   // Use static data for metadata
-  const staticData = MINISTRIES_DATA[params.slug]
+  const staticData = MINISTRIES_DATA[slug]
   if (staticData) {
     return {
       title: staticData.name,
@@ -273,35 +272,55 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   return { title: 'Ministry Details' }
 }
 
+export async function generateStaticParams() {
+  try {
+    const slugs = await client.fetch<string[]>(
+      groq`*[_type == "ministry" && defined(slug.current)][].slug.current`
+    )
+    return slugs
+      .map((slug) => ({ slug }))
+  } catch {
+    // Fall back to static slugs to ensure pages still render without CMS
+    return Object.keys(MINISTRIES_DATA).map((slug) => ({ slug }))
+  }
+}
+
 export default async function MinistryDetailPage({
   params,
 }: {
-  params: { slug: string }
+  params: Promise<{ slug: string }>
 }) {
+  const { slug } = await params
   let ministry = null
 
   try {
-    ministry = await client.fetch(ministryQuery, { slug: params.slug })
+    ministry = await client.fetch(ministryQuery, { slug })
   } catch {
     // Fail silently in build/dev without creds
   }
 
   // Use Sanity data if available, otherwise use static data based on slug
-  const staticData = MINISTRIES_DATA[params.slug]
+  const staticData = MINISTRIES_DATA[slug]
   const data = ministry || staticData
 
   if (!data) {
     notFound()
   }
 
+  // Helper to check if source is a StaticImageData object
+  const isStaticImageData = (source: any): source is StaticImageData => {
+    return source && typeof source === 'object' && 'src' in source
+  }
+
   // Helper to get image URL safely
-  const getImageUrl = (source: any) => {
+  const getImageUrl = (source: any): string | StaticImageData => {
     if (!source) return '/images/ministry-placeholder.jpg' // Local fallback
     if (typeof source === 'string') return source // URL string
+    if (isStaticImageData(source)) return source // StaticImageData from imports
     try {
       return urlFor(source).width(1200).height(600).url()
     } catch {
-      return ''
+      return '/images/ministry-placeholder.jpg'
     }
   }
 

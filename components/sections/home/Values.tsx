@@ -1,8 +1,9 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { ArrowRight, BookHeart } from 'lucide-react'
+import congregation from '@/app/assets/congregation.jpeg'
 
-const VALUES_IMAGE_URL = 'https://lh3.googleusercontent.com/aida-public/AB6AXuA8k3EvdIVUJVp4kP4W2yMHmMwd_eIztTYCfi48JY1RbSJxbL1vjhBXYucAMl3sgJRj4TXI2nevoBDdeGMe4DfdqSAbx9Pg1bJ_ZVfnlI1lxjuVfzyMKFCOUemlmPjHh7E4-tpaSH-jiuxIzR7K5QShbqh4qmywMOM2gwdwTBK2ndARVAveuc5WvOvXMe-ANEwfnr-TcTKV16C-PaI_NcPoO2vweWiNX9llg3gAchP-n0jQSFgDi9o0EQmdQuL32TEvih_Ja7IBZZ8'
+const VALUES_IMAGE_URL = congregation;
 
 export function Values() {
   return (

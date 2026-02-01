@@ -96,10 +96,6 @@ export const NAV_LINKS: NavLink[] = [
     href: '/ministries',
   },
   { 
-    name: 'Sermons', 
-    href: '/sermons',
-  },
-  { 
     name: 'Events', 
     href: '/events' 
   },
