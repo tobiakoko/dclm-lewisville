@@ -28,33 +28,34 @@ interface Location {
 const locations: Location[] = [
   {
     name: 'Lewisville',
-    subtitle: 'Regional Headquarters',
+    subtitle: 'Local Assembly',
     imageUrl:
       'https://lh3.googleusercontent.com/aida-public/AB6AXuB3mIqX3DXLoFoD983nYzHMq9AogNzDwVOYopcIM8ePJuvohFtg_uJ_GmUy3OgOo40e89sHQDXj5hX5KSBanlXREIVHH77g15Togkx4z4D_kik1aIZMZGlXBfhrCqacnuFvFEOMsiKoy--eJGMhspNHxwZoxwLTyBPWhU8TSgib5NFkOLz2D_HlIj6x6Bk-SIAwwB_qa9l5uoNDGw1gXcb-_wOUvOELz2bx9DNrrwH9Ok38s201nmwGMpsICB3MbL1mz8B2nEiYRUQ',
     address: {
-      street: '123 Main St',
+      street: '1368 W Main St',
       city: 'Lewisville',
       state: 'TX',
       zip: '75067',
     },
     services: [
-      { label: 'Worship Service', time: 'Sunday: 10:00 AM - 12:30 PM' },
+      { label: 'Worship Service', time: 'Sunday: 9:30 AM - 12:30 PM' },
       { label: 'Bible Study', time: 'Tuesday: 7:00 PM - 9:00 PM' },
     ],
   },
   {
     name: 'Denton Campus',
+    subtitle: 'Regional Headquarters',
     imageUrl:
       'https://lh3.googleusercontent.com/aida-public/AB6AXuBtpfKcBrwjT0bl3DwVGZuB-YIAhZB7VhAiXMWgL7wTskRfJ0e1oaWR4utzyxPHqC5yXhFUmNPL4qQOiWyQoIctlfv9zRj4RDC5QNTIpok0T-oWhbPm5CsnlapDqysCTsHRNINRSUzBXL0vi6qf4w0nRq_F7NKMjV0fPsBisCL1UF5VBUBrIsLbIo6VE08CSsDDaWY5Q0gFT9RdDdaxbaQHp6NfE--JBNVskdNdxIERwAkL6Yij2oAUQq8m6K2T4x9CQ3rGYuZHsHw',
     address: {
-      street: '456 University Dr',
+      street: '4981 Barthold Rd',
       city: 'Denton',
       state: 'TX',
-      zip: '76201',
+      zip: '76207',
     },
     services: [
-      { label: 'Worship Service', time: 'Sunday: 9:00 AM - 11:30 AM' },
-      { label: 'Revival Service', time: 'Thursday: 7:00 PM - 8:30 PM' },
+      { label: 'Worship Service', time: 'Sunday: 9:30 AM - 12:30 PM' },
+      { label: 'Revival Service', time: 'Thursday: 7:00 PM - 9:00 PM' },
     ],
   },
 ]
@@ -63,6 +64,10 @@ const PRAYER_BG_IMAGE =
   'https://lh3.googleusercontent.com/aida-public/AB6AXuBhrd4yCsO0yOHKw0GqYQouNQKo0wa-ZyrPwiavzto38vxNzNjtB-KgO9sww5F_lrhLqs3buNM0Vcgvz9uRKSfhvBmWfcIg8ntxsJEJAAYIGdzUPOOJsJNqZoqD7eEC2HSnN4LphXJJgw8LaqsiK9oDp_i_Jg8RjDoVhltZlkK13Htrfi9zCKu2K506dqneInaqMpe8pbz2JkWN5VLKhQKtOV5Qagnyw9jga95Y1YFRgeYAL1tM-cosvL140DjYYJx_lgPesABm01s'
 
 export default function ContactPage() {
+  const siteAddressQuery = encodeURIComponent(
+    `${SITE_CONFIG.address.street}, ${SITE_CONFIG.address.city}, ${SITE_CONFIG.address.state} ${SITE_CONFIG.address.zip}`
+  )
+
   return (
     <main>
       <HeroSection title="Contact Us" subtitle="Get in touch" />
@@ -314,9 +319,7 @@ export default function ContactPage() {
             style={{ height: '450px' }}
           >
             <iframe
-              src={`https://maps.google.com/?q=${encodeURIComponent(
-                `${SITE_CONFIG.address.street}, ${SITE_CONFIG.address.city}, ${SITE_CONFIG.address.state} ${SITE_CONFIG.address.zip}`
-              )}&output=embed`}
+              src={`https://www.google.com/maps?q=${siteAddressQuery}&output=embed`}
               width="100%"
               height="100%"
               style={{ border: 0 }}

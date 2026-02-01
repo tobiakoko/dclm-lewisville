@@ -57,6 +57,7 @@ const nextConfig: NextConfig = {
       img-src 'self' blob: data: https://cdn.sanity.io https://images.unsplash.com https://lh3.googleusercontent.com ${isDev ? 'http://localhost:*' : ''};
       font-src 'self' https://fonts.gstatic.com;
       connect-src 'self' https://api.sanity.io https://*.sanity.io https://www.google-analytics.com ${isDev ? 'http://localhost:* ws://localhost:*' : ''};
+      frame-src 'self' https://www.google.com https://maps.google.com;
       frame-ancestors 'none';
       base-uri 'self';
       form-action 'self';
