@@ -1,9 +1,11 @@
 import { client } from '@/lib/sanity/client'
 import { groq } from 'next-sanity'
 import Link from 'next/link'
-import Image from 'next/image'
+import Image, { type StaticImageData } from 'next/image'
 import { ArrowRight, Heart, Users, Music, BookOpen, Baby, Shield, Sparkles, type LucideIcon } from 'lucide-react'
 import HeroSection from '@/components/sections/HeroSection'
+import Image_1 from '@/app/assets/men_ministry.jpeg'
+import Image_2 from '@/app/assets/women_ministry.jpeg'
 
 export const metadata = {
   title: 'Our Ministries',
@@ -15,7 +17,7 @@ interface Ministry {
   title?: string
   name?: string
   description: string
-  imageUrl: string
+  imageUrl: string | StaticImageData
   icon?: LucideIcon
   slug: string | { current: string }
   size?: 'large' | 'normal'
@@ -27,15 +29,15 @@ interface Ministry {
 const STATIC_MINISTRIES: Ministry[] = [
   {
     title: "Women's Ministry",
-    description: "Empowering women to grow in faith through fellowship, prayer, and mentorship.",
-    imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDXbkwd3rhaBTkC-FSQ9wvxz-kV5bgWEQ0UyFF_3R59ddeDNGY9sv5OXL_YVXcLBUUWQN7B27N9ECMotWhIB30fsYJ1v9nRvELdbyS3sWlO1IlwQ2ABqVc3V4VU8W8Z4OUZcbwrOGmZmePzoSxhrh0AHhSNQAbutHemxxrsMDTjt7NyNxL6SiCGiz48JNITagtimYjXMM_YpaVYX_MRW7-Xctc80S9cTh07JNb7epVyZudxFWGXdOyKFMVuktdAKEFTcJk2LV9Mu38',
+    description: "Come sit with us at the feet of Christ like Mary, follow along like the women who followed Him from Galilee, and worship Him with your substance.",
+    imageUrl: Image_2,
     icon: Heart,
     slug: 'women',
-    size: 'large' // Spans 2 columns
+    size: 'large'
   },
   {
     title: "Children's Ministry",
-    description: "Nurturing the next generation with biblical truth in a fun, safe environment.",
+    description: "Designed for kids up to 5th Grade to engage with scripture at an age-appropriate level, partnering with parents as primary faith trainers.",
     imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBCbox8_B95JCEqDYNNx_6cJHF7tAeb-M8-LH7a0_o2UR9zXsJF2AX101jmsqpYHBu7eKHa2nNKODqg7J2pTI4guRszXXubAkiDIkN-Zmt33JMrTll4h5kg8CsVkFUb2f7xHT_eG-j4GUHB0QD68l7GvA8U-x7KVw_AW3b8dpPEpTewOy4JzOTlMVuDZiVEi2H-aq5g9-XK19rHnS-eglE-qiPhsXaIj5HEhq_-cTIoxrIdIUcKrVRdq8DL9ipZnVT4Ea_M_KHFNbs',
     icon: Baby,
     slug: 'children',
@@ -43,7 +45,7 @@ const STATIC_MINISTRIES: Ministry[] = [
   },
   {
     title: 'Youth Ministry',
-    description: "Equipping teenagers to navigate life with a biblical worldview and passion for Christ.",
+    description: "A church where every youth from 7th through 12th grade is taught about Jesus and challenged to grow in their relationship with God.",
     imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCTzR-F9sUEUsKSYtny5AGn8iejhrOciykGWEDMY_lHuSoYDGpi670nf3Grw5UP_-EUT1s-yMR7guOlzCy4lmDYr9w4f6UNeFg50LFdEsON-jqDVUPuuUoUU9ScPPhgfAoWF_H7_mXOdruwGP5iFbN1bG_i_Gb3sYnSgGg7z5Bigg7bGmHrU3pYc1ifStWpDdK3XNkm-O3Z4mWWSUAtBq_N09aRkXZSOv8QUoBN8FFAzrKphPj6DzwMU0cz8BDDFGe25ba9Q4IvFNU',
     icon: Sparkles,
     slug: 'youth',
@@ -51,7 +53,7 @@ const STATIC_MINISTRIES: Ministry[] = [
   },
   {
     title: 'Young Adult Ministry',
-    description: "Building authentic community and deeper discipleship for ages 18-30.",
+    description: "A family of college-aged believers in the DFW area committed to achieving heaven's goal through Jesus and leading others to life transformation.",
     imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuB7NC2J5snrEgRENoC28kpRejd5AnmLHbjwXFqNVaXtGlJpwYib1_ajYMrrwycrkTtv8bGcongNZBjnpG0UJdBxkeKRXS60HJ3gWUlhQ5AulYbhGG80Gdb19MdAmei3G0mBfumzsM54uxzh8iuHMzSD9K91OOA0cbZSjL2GfZA3icsAP3n5r-J98DLZL23ZvLu3wQe-JoBgnfmwGgJ2jXadqdeoypOmc9Kr-tHQQu7JsYWvx5ArcNVqXrmRjncCmOA2a8xmEnGnf7M',
     icon: Users,
     slug: 'young-adults',
@@ -59,8 +61,8 @@ const STATIC_MINISTRIES: Ministry[] = [
   },
   {
     title: "Men's Ministry",
-    description: "Sharpening men to be godly leaders in their homes, workplaces, and community.",
-    imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDaIyApWRxmETEml3qkWO1l3DSH4gPbErNYuP2qrPLWXkiU6NwPqeNXl1oUO_WlX1Je55B70ekZH7JCQGmg1cP3E_RuCNa8QV-gTMxwGaOzwXg2Btt6cRT-isuU1n0zCDPVMH9dlH-VdmiCWMEzICtnRNsTOyHOdPkmcVPQpJR8TrE7X2kFO-25VvRSGB7Ti0-qjL10JO2pePdn7fX2uTLqlpSKR5w7e7YXEIGavYnZ8hHvy-EkWJTX0aSj0_3Pf_T6c8FJAVXTUzQ',
+    description: "A forum where men's matters are discussed from a scriptural perspective, learning from Jesus the greatest man that ever lived.",
+    imageUrl: Image_1,
     icon: Shield,
     slug: 'men',
     size: 'normal'
@@ -125,13 +127,13 @@ export default async function MinistriesPage() {
             
             <p className="text-lg text-slate-600 leading-relaxed font-light">
               We believe that spiritual growth happens best in community. Whether you are looking 
-              for a place to serve, a group to belong to, or a ministry that meets your family's needs, 
+              for a place to serve, a group to belong to, or a ministry that meets your family&apos;s needs, 
               there is a place for you here.
             </p>
 
             <div className="grid grid-cols-2 gap-6 pt-4">
               <div className="p-6 bg-white rounded-2xl shadow-sm border border-slate-100">
-                <p className="text-4xl font-bold text-[var(--church-red)] mb-1">15+</p>
+                <p className="text-4xl font-bold text-[var(--church-red)] mb-1">6</p>
                 <p className="text-sm font-medium text-slate-500 uppercase tracking-wide">Active Groups</p>
               </div>
               <div className="p-6 bg-white rounded-2xl shadow-sm border border-slate-100">
