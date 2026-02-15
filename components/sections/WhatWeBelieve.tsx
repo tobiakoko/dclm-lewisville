@@ -30,14 +30,14 @@ export function WhatWeBelieveSection() {
             </p>
             
             <p className="text-base">
-              <span className="font-semibold text-foreground">"Beloved,</span> when I gave all diligence to write unto you of the common salvation, 
+              <span className="font-semibold text-foreground">&quot;Beloved,</span> when I gave all diligence to write unto you of the common salvation, 
               it was needful for me to write unto you, and exhort you that ye should{" "}
-              <span className="font-semibold text-foreground">earnestly contend for the faith</span> which was once delivered unto the saints."
+              <span className="font-semibold text-foreground">earnestly contend for the faith</span> which was once delivered unto the saints.&quot;
             </p>
             
             <p className="text-sm">
-              "Take heed unto thyself, and unto the doctrine; continue in them: 
-              for in doing this thou shalt both save thyself, and them that hear thee."
+              &quot;Take heed unto thyself, and unto the doctrine; continue in them: 
+              for in doing this thou shalt both save thyself, and them that hear thee.&quot;
             </p>
             
             <p className="text-sm italic">
@@ -46,11 +46,11 @@ export function WhatWeBelieveSection() {
 
             <div className="pt-6 mt-6 border-t border-border">
               <p className="font-semibold text-foreground text-lg mb-2">
-                God's infallible WORD teaches and we believe:
+                God&apos;s infallible WORD teaches and we believe:
               </p>
               <p className="text-sm">
                 These foundational doctrines guide our faith, practice, and understanding 
-                of God's Word at Deeper Life Bible Church.
+                of God&apos;s Word at Deeper Life Bible Church.
               </p>
             </div>
           </div>

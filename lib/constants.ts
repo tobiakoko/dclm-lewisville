@@ -105,15 +105,10 @@ export const NAV_LINKS: NavLink[] = [
     children: [
       { name: 'Our Blog', href: 'https://blog.dclm.org/' },
       { name: 'Radio', href: 'https://radio.dclm.org/' },
-      { 
-        name: 'Devotions', 
-        href: '#',
-        children: [
-          { name: 'Daily Manna', href: 'https://dailymanna.app/category/daily-manna/' },
-          { name: 'Higher Everyday', href: 'https://dailymanna.app/category/higher-everyday/' },
-          { name: 'Sincere Milk', href: 'https://dailymanna.app/category/sincere-milk/' },
-        ]
-      },
+      { name: 'Tracts', href: 'https://dclm.org/tracts/' },
+      { name: 'Daily Manna', href: 'https://dailymanna.app/category/daily-manna/' },
+      { name: 'Higher Everyday', href: 'https://dailymanna.app/category/higher-everyday/' },
+      { name: 'Sincere Milk', href: 'https://dailymanna.app/category/sincere-milk/' },
     ]
   },
   { 

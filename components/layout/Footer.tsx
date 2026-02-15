@@ -55,14 +55,14 @@ export default function Footer() {
           <div className="lg:col-span-4 space-y-6">
             <Link 
               href="/" 
-              className="block relative h-12 w-48 mb-6"
+              className="block relative h-36 w-48 mb-6"
               onClick={() => trackNavigation('/', 'footer_logo')}
             >
               <Image
-                src="/Logo.png"
+                src="/dclm_logo.png"
                 alt={SITE_CONFIG.name}
                 fill
-                className="object-contain object-left brightness-0 invert opacity-90 hover:opacity-100 transition-opacity"
+                className="object-contain"
               />
             </Link>
             <p className="text-zinc-400 text-sm leading-relaxed max-w-xs">
@@ -98,7 +98,7 @@ export default function Footer() {
                 <div className="space-y-1">
                   <span className="block font-medium text-white">Sunday Worship</span>
                   <p className="text-sm text-zinc-400">9:30 AM — Worship Service</p>
-                  <p className="text-sm text-zinc-400">9:45 AM — Search The Scriptures</p>
+                  <p className="text-sm text-zinc-400">9:40 AM — Search The Scriptures</p>
                 </div>
               </li>
               <li className="flex gap-4">
