@@ -11,7 +11,7 @@ export function Welcome() {
                     Every one of us was created to belong to a community. It was never God&apos;s heart for us to do this life alone.
                 </h2>
                 <p className="text-gray-600 max-w-3xl mx-auto mb-16 text-sm leading-relaxed">
-                    DCLM Lewisville is committed to championing the high and heavenly call from Jesus to reach out to people of all race, social economic class and language with the message of God’s love and grace and in turn disciplining them into spiritual maturity.
+                    DCLM Lewisville is committed to championing the high and heavenly call from Jesus to reach out to people of all race, social economic class and language with the message of God’s love and grace and in turn discipling them into spiritual maturity.
                 </p>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                     <Link href="/about" className="relative group cursor-pointer">

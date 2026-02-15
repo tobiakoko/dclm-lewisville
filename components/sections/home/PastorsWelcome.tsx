@@ -51,8 +51,8 @@ export function PastorsWelcome() {
               </div>
 
               <h2 id="welcome-heading" className="text-4xl md:text-5xl font-serif font-bold text-(--church-navy) leading-[1.1]">
-                A Place of Truth & <br/>
-                <span className="italic text-gray-400 font-light">Transformation</span>
+                Welcome to<br/>
+                <span className="italic text-gray-400 font-light">Deeper Life Bible Church Lewisville</span>
               </h2>
             </header>
 
@@ -64,15 +64,14 @@ export function PastorsWelcome() {
               </p>
               
               <p>
-                Deeper Life Lewisville is one of the branches in the southwest region 
-                headed by the regional overseer, Pastor Thompson Aderemi.
+                Deeper Life Lewisville is one of the branches in the Southwest Region, 
+                under the leadership of our Regional Overseer, Pastor Thompson Aderemi.
               </p>
               
               <p>
-                I hope this virtual visit will lead you to visit us in ​person soon. 
-                While online, let me encourage you to spend some time to know us better 
-                as a church. You can do this by reading “What We Believe” and our impact 
-                in the community.
+                We trust that this virtual visit will inspire you to worship with us in person very soon. 
+                While you are here, we encourage you to take time to learn more about us by exploring 
+                What We Believe and reading about our impact in the community.
 
               </p>
               
@@ -86,9 +85,8 @@ export function PastorsWelcome() {
               </p>
               
               <p>  
-                If you have any questions not answered here or would like additional 
-                information about our church, please click the contact link to see how 
-                you can contact us.
+                If you have questions not answered on this site or would like additional information, 
+                please visit our Contact page to reach us.
               </p>
             </div>
 
@@ -102,7 +100,7 @@ export function PastorsWelcome() {
               
               {/* Signature representation */}
               <div className="text-left">
-                <p className="text-xs text-gray-400 uppercase tracking-widest mb-1">In the service of Jesus Christ,</p>
+                <p className="text-xs text-gray-400 uppercase tracking-widest mb-1">We look forward to welcoming you,</p>
                 <p className="font-serif italic text-2xl text-(--church-navy)">
                   {PASTOR_INFO.name}
                 </p>
