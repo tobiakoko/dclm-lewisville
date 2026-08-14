@@ -1,11 +1,31 @@
-import { revalidatePath, revalidateTag } from 'next/cache'
+import { revalidatePath } from 'next/cache'
 import { NextRequest, NextResponse } from 'next/server'
+import { timingSafeEqual } from 'crypto'
+import { checkRateLimit, getClientIp } from '@/lib/rate-limit'
+
+function secretsMatch(provided: string, expected: string): boolean {
+  const providedBuffer = Buffer.from(provided)
+  const expectedBuffer = Buffer.from(expected)
+
+  if (providedBuffer.length !== expectedBuffer.length) return false
+
+  return timingSafeEqual(providedBuffer, expectedBuffer)
+}
 
 export async function POST(request: NextRequest) {
-  // Verify the request is from Sanity (optional but recommended)
-  const secret = request.nextUrl.searchParams.get('secret')
+  const ip = getClientIp(request)
+  const rateLimit = await checkRateLimit(`revalidate:${ip}`)
 
-  if (secret !== process.env.SANITY_REVALIDATE_SECRET) {
+  if (!rateLimit.allowed) {
+    return NextResponse.json({ message: 'Too many requests' }, { status: 429 })
+  }
+
+  const expectedSecret = process.env.SANITY_REVALIDATE_SECRET
+  const providedSecret =
+    request.headers.get('x-revalidate-secret') ??
+    request.nextUrl.searchParams.get('secret')
+
+  if (!expectedSecret || !providedSecret || !secretsMatch(providedSecret, expectedSecret)) {
     return NextResponse.json({ message: 'Invalid secret' }, { status: 401 })
   }
 
@@ -13,7 +33,6 @@ export async function POST(request: NextRequest) {
     const body = await request.json()
     const { _type, slug } = body
 
-    // Revalidate based on document type
     switch (_type) {
       case 'sermon':
         revalidatePath('/')
@@ -47,7 +66,6 @@ export async function POST(request: NextRequest) {
         break
 
       default:
-        // Revalidate homepage for unknown types
         revalidatePath('/')
     }
 
@@ -59,8 +77,7 @@ export async function POST(request: NextRequest) {
   } catch (err) {
     console.error('Revalidation error:', err)
     return NextResponse.json({
-      message: 'Error revalidating',
-      error: err instanceof Error ? err.message : 'Unknown error'
+      message: 'Error revalidating'
     }, { status: 500 })
   }
 }
