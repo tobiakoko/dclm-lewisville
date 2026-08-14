@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import Image from 'next/image'
-import { urlFor } from '@/lib/sanity/client'
+import { urlFor } from '@/lib/sanity/image'
 import { formatDate } from '@/lib/utils'
 import { Play, Clock, Calendar } from 'lucide-react'
 import { Sermon } from '@/lib/types'

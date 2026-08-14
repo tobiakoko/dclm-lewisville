@@ -6,7 +6,7 @@ import Autoplay from 'embla-carousel-autoplay'
 import Link from 'next/link'
 import { ArrowRight, Clock } from 'lucide-react'
 import { HERO_SLIDES, SERVICE_TIMES } from '@/lib/constants'
-import { urlFor } from '@/lib/sanity/client'
+import { urlFor } from '@/lib/sanity/image'
 import type { ServiceTime } from '@/lib/types'
 
 interface HeroCarouselProps {

@@ -3,7 +3,7 @@ import Image from 'next/image'
 import { Calendar, Clock, MapPin, ArrowRight, Sparkles } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Event } from '@/lib/types'
-import { urlFor } from '@/lib/sanity/client'
+import { urlFor } from '@/lib/sanity/image'
 import { PortableText } from '@portabletext/react'
 
 interface UpcomingEventsProps {

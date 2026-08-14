@@ -3,7 +3,7 @@ import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import { Play, ArrowRight, Calendar, Clock, Sparkles } from 'lucide-react'
 import { Sermon } from '@/lib/types'
-import { urlFor } from '@/lib/sanity/client'
+import { urlFor } from '@/lib/sanity/image'
 import { formatDate } from '@/lib/utils'
 
 interface FeaturedSermonProps {

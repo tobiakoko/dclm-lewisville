@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import Image, { type StaticImageData } from 'next/image'
-import { urlFor } from '@/lib/sanity/client'
+import { urlFor } from '@/lib/sanity/image'
 import { Mail, User } from 'lucide-react'
 import type { Person } from '@/lib/types'
 import PastorJoseph from '@/app/assets/Pastor_Joseph.jpeg'

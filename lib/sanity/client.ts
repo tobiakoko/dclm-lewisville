@@ -1,6 +1,5 @@
 import { createClient } from '@sanity/client'
-import imageUrlBuilder from '@sanity/image-url'
-import { SanityImageSource } from '@sanity/image-url/lib/types/types'
+import 'server-only'
 
 export const client = createClient({
   projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'placeholder',
@@ -9,10 +8,3 @@ export const client = createClient({
   useCdn: process.env.NODE_ENV === 'production', // Use CDN in production with webhook revalidation
   token: process.env.SANITY_API_TOKEN,
 })
-
-// Image URL builder
-const builder = imageUrlBuilder(client)
-
-export function urlFor(source: SanityImageSource) {
-  return builder.image(source)
-}
