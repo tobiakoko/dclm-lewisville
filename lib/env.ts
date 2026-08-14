@@ -8,7 +8,12 @@ export const env = createEnv({
    */
   server: {
     RESEND_API_KEY: z.string().optional(),
+    RESEND_AUDIENCE_ID: z.string().optional(),
+    NEWSLETTER_SIGNING_SECRET: z.string().min(16).optional(),
     SANITY_API_TOKEN: z.string().optional(),
+    SANITY_REVALIDATE_SECRET: z.string().min(16).optional(),
+    UPSTASH_REDIS_REST_URL: z.string().url().optional(),
+    UPSTASH_REDIS_REST_TOKEN: z.string().optional(),
     NODE_ENV: z.enum(["development", "test", "production"]).default("development"),
   },
 
@@ -31,7 +36,12 @@ export const env = createEnv({
   runtimeEnv: {
     // Server
     RESEND_API_KEY: process.env.RESEND_API_KEY,
+    RESEND_AUDIENCE_ID: process.env.RESEND_AUDIENCE_ID,
+    NEWSLETTER_SIGNING_SECRET: process.env.NEWSLETTER_SIGNING_SECRET,
     SANITY_API_TOKEN: process.env.SANITY_API_TOKEN,
+    SANITY_REVALIDATE_SECRET: process.env.SANITY_REVALIDATE_SECRET,
+    UPSTASH_REDIS_REST_URL: process.env.UPSTASH_REDIS_REST_URL,
+    UPSTASH_REDIS_REST_TOKEN: process.env.UPSTASH_REDIS_REST_TOKEN,
     NODE_ENV: process.env.NODE_ENV,
     // Client
     NEXT_PUBLIC_SANITY_PROJECT_ID: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,
