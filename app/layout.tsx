@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { headers } from 'next/headers';
 import "./globals.css";
 import { SITE_CONFIG } from '@/lib/constants'
 import GoogleAnalytics from "@/components/GoogleAnalytics";
@@ -45,11 +46,13 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const nonce = (await headers()).get('x-nonce') ?? undefined;
+
   const organizationSchema = {
     "@context": "https://schema.org",
     "@type": "Church",
@@ -83,12 +86,13 @@ export default function RootLayout({
         />
         <script
           type="application/ld+json"
+          nonce={nonce}
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
         />
       </head>
       <body className="antialiased">
         {process.env.NEXT_PUBLIC_GA_ID && (
-          <GoogleAnalytics ga_id={process.env.NEXT_PUBLIC_GA_ID} />
+          <GoogleAnalytics ga_id={process.env.NEXT_PUBLIC_GA_ID} nonce={nonce} />
         )}
         {children}
         <Analytics />
