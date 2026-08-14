@@ -2,7 +2,7 @@ import { mockSermons, mockEvents, mockMinistries, mockTeamMembers, mockTestimoni
 
 // Mock Sanity client for testing
 export const createClient = jest.fn(() => ({
-  fetch: jest.fn((query: string) => {
+  fetch: jest.fn((query: string, params?: unknown) => {
     // Parse query to determine what data to return
     if (query.includes('sermon')) {
       return Promise.resolve(mockSermons)
@@ -55,7 +55,7 @@ export const createClient = jest.fn(() => ({
     return Promise.resolve(allDocs.filter((doc) => ids.includes(doc._id)))
   }),
 
-  create: jest.fn((doc: unknown) => Promise.resolve({ ...doc, _id: 'new-id' })),
+  create: jest.fn((doc: unknown) => Promise.resolve({ ...(doc as object), _id: 'new-id' })),
 
   createOrReplace: jest.fn((doc: unknown) => Promise.resolve(doc)),
 

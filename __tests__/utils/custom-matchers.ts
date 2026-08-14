@@ -1,5 +1,3 @@
-import { expect } from '@testing-library/react'
-
 // Extend Jest matchers with custom assertions
 
 declare global {
@@ -83,7 +81,7 @@ export const toBeAccessible = (received: HTMLElement) => {
       received.getAttribute('aria-label') ||
       received.getAttribute('aria-labelledby') ||
       received.getAttribute('title') ||
-      (received as HTMLInputElement).labels?.length > 0
+      ((received as HTMLInputElement).labels?.length ?? 0) > 0
 
     if (!hasLabel) {
       issues.push('Interactive element missing accessible label')
