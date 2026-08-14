@@ -3,22 +3,46 @@
  */
 import { POST } from '@/app/api/contact/route'
 import { NextRequest } from 'next/server'
-import { Resend } from 'resend'
 
-// Mock Resend
-jest.mock('resend')
+// Mock Resend at import time: the route constructs `new Resend(...)` at module load.
+// The factory returns a shared singleton instance so both route and test share the same mocks.
+jest.mock('resend', () => {
+  const instance = {
+    emails: { send: jest.fn() },
+  }
+  return { Resend: jest.fn().mockReturnValue(instance) }
+})
+
+const { Resend } = jest.requireMock('resend') as { Resend: jest.Mock }
+const resendInstance = new Resend('test-key') as unknown as {
+  emails: { send: jest.Mock }
+}
+
+// Mock env to avoid ESM transform issues with @t3-oss/env-nextjs in Jest
+jest.mock('@/lib/env', () => ({
+  env: {
+    RESEND_API_KEY: 'test-resend-key',
+    RESEND_AUDIENCE_ID: 'test-audience-id',
+    NEWSLETTER_SIGNING_SECRET: 'test-signing-secret-0123456789abcdef',
+    SANITY_API_TOKEN: undefined,
+    SANITY_REVALIDATE_SECRET: 'test-revalidate-secret',
+    UPSTASH_REDIS_REST_URL: undefined,
+    UPSTASH_REDIS_REST_TOKEN: undefined,
+    NEXT_PUBLIC_SANITY_PROJECT_ID: 'test-project-id',
+    NEXT_PUBLIC_SANITY_DATASET: 'test',
+    NEXT_PUBLIC_SANITY_API_VERSION: '2024-01-01',
+    NEXT_PUBLIC_SITE_URL: 'https://dclmlewisville.org',
+    NEXT_PUBLIC_GA_ID: undefined,
+    NODE_ENV: 'test',
+  },
+}))
 
 describe('Contact API Route', () => {
-  let mockSend: jest.Mock
+  const mockSend = resendInstance.emails.send
 
   beforeEach(() => {
     jest.clearAllMocks()
-    mockSend = jest.fn().mockResolvedValue({ id: 'test-email-id' })
-    ;(Resend as jest.MockedClass<typeof Resend>).mockImplementation(() => ({
-      emails: {
-        send: mockSend,
-      },
-    } as any))
+    mockSend.mockResolvedValue({ id: 'test-email-id' })
   })
 
   describe('POST /api/contact', () => {
@@ -71,7 +95,7 @@ describe('Contact API Route', () => {
       const data = await response.json()
 
       expect(response.status).toBe(400)
-      expect(data.error).toBe('Missing required fields')
+      expect(data.error).toBe('Validation failed')
       expect(mockSend).not.toHaveBeenCalled()
     })
 
@@ -93,7 +117,7 @@ describe('Contact API Route', () => {
       const data = await response.json()
 
       expect(response.status).toBe(400)
-      expect(data.error).toBe('Missing required fields')
+      expect(data.error).toBe('Validation failed')
       expect(mockSend).not.toHaveBeenCalled()
     })
 
@@ -115,7 +139,7 @@ describe('Contact API Route', () => {
       const data = await response.json()
 
       expect(response.status).toBe(400)
-      expect(data.error).toBe('Missing required fields')
+      expect(data.error).toBe('Validation failed')
       expect(mockSend).not.toHaveBeenCalled()
     })
 
@@ -188,7 +212,7 @@ describe('Contact API Route', () => {
       const data = await response.json()
 
       expect(response.status).toBe(500)
-      expect(data.error).toBe('Failed to send email')
+      expect(data.error).toBe('Failed to send email. Please try again later.')
     })
 
     it('should handle malformed JSON', async () => {
@@ -204,7 +228,7 @@ describe('Contact API Route', () => {
       const data = await response.json()
 
       expect(response.status).toBe(500)
-      expect(data.error).toBe('Failed to send email')
+      expect(data.error).toBe('Failed to send email. Please try again later.')
     })
   })
 })

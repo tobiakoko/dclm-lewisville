@@ -4,37 +4,20 @@ import { ZodError } from 'zod'
 import { env } from '@/lib/env'
 import { contactFormSchema } from '@/lib/validations/contact'
 import { escapeHtml } from '@/lib/sanitize'
+import { checkRateLimit, getClientIp } from '@/lib/rate-limit'
 
 const resend = env.RESEND_API_KEY ? new Resend(env.RESEND_API_KEY) : null
 
-// Simple in-memory rate limiting (consider using Upstash Redis for production)
-const rateLimitMap = new Map<string, { count: number; resetTime: number }>()
-const RATE_LIMIT_WINDOW = 60 * 1000 // 1 minute
-const RATE_LIMIT_MAX_REQUESTS = 3 // 3 requests per minute
-
-function checkRateLimit(identifier: string): { allowed: boolean; remaining: number } {
-  const now = Date.now()
-  const record = rateLimitMap.get(identifier)
-
-  if (!record || now > record.resetTime) {
-    rateLimitMap.set(identifier, { count: 1, resetTime: now + RATE_LIMIT_WINDOW })
-    return { allowed: true, remaining: RATE_LIMIT_MAX_REQUESTS - 1 }
-  }
-
-  if (record.count >= RATE_LIMIT_MAX_REQUESTS) {
-    return { allowed: false, remaining: 0 }
-  }
-
-  record.count++
-  return { allowed: true, remaining: RATE_LIMIT_MAX_REQUESTS - record.count }
-}
+const ALLOWED_ORIGINS = [
+  'https://dclmlewisville.org',
+  'https://www.dclmlewisville.org',
+  'http://localhost:3000',
+]
 
 export async function POST(request: NextRequest) {
   try {
-    // Rate limiting
-    const forwardedFor = request.headers.get('x-forwarded-for')
-    const ip = forwardedFor ? forwardedFor.split(',')[0] : 'unknown'
-    const rateLimit = checkRateLimit(ip)
+    const ip = getClientIp(request)
+    const rateLimit = await checkRateLimit(`contact:${ip}`)
 
     if (!rateLimit.allowed) {
       return NextResponse.json(
@@ -42,23 +25,16 @@ export async function POST(request: NextRequest) {
         {
           status: 429,
           headers: {
-            'X-RateLimit-Limit': RATE_LIMIT_MAX_REQUESTS.toString(),
+            'X-RateLimit-Limit': '10',
             'X-RateLimit-Remaining': '0',
-            'X-RateLimit-Reset': new Date(Date.now() + RATE_LIMIT_WINDOW).toISOString(),
+            'X-RateLimit-Reset': rateLimit.reset.toString(),
           }
         }
       )
     }
 
-    // CORS check - only allow requests from your domain
     const origin = request.headers.get('origin')
-    const allowedOrigins = [
-      'https://dclmlewisville.org',
-      'https://www.dclmlewisville.org',
-      'http://localhost:3000', // Development
-    ]
-
-    if (origin && !allowedOrigins.includes(origin)) {
+    if (origin && !ALLOWED_ORIGINS.includes(origin)) {
       return NextResponse.json(
         { error: 'Unauthorized origin' },
         { status: 403 }
@@ -67,16 +43,14 @@ export async function POST(request: NextRequest) {
 
     const body = await request.json()
 
-    // Validate inputs with Zod
     const validatedData = contactFormSchema.parse(body)
 
-    // Sanitize all inputs to prevent XSS
     const sanitizedName = escapeHtml(validatedData.name)
     const sanitizedEmail = escapeHtml(validatedData.email)
     const sanitizedPhone = validatedData.phone ? escapeHtml(validatedData.phone) : null
     const sanitizedMessage = escapeHtml(validatedData.message)
+    const sanitizedIp = escapeHtml(ip)
 
-    // Check if Resend is configured
     if (!resend) {
       console.warn('RESEND_API_KEY not configured. Email not sent.')
       return NextResponse.json(
@@ -85,7 +59,6 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Send email with sanitized content
     await resend.emails.send({
       from: 'website@dclmlewisville.org',
       to: 'info@dclmlewisville.org',
@@ -98,7 +71,7 @@ export async function POST(request: NextRequest) {
         <p><strong>Message:</strong></p>
         <p>${sanitizedMessage.replace(/\n/g, '<br>')}</p>
         <hr>
-        <p style="color: #666; font-size: 12px;">Submitted from: ${ip}</p>
+        <p style="color: #666; font-size: 12px;">Submitted from: ${sanitizedIp}</p>
       `,
     })
 
@@ -107,13 +80,12 @@ export async function POST(request: NextRequest) {
       {
         status: 200,
         headers: {
-          'X-RateLimit-Limit': RATE_LIMIT_MAX_REQUESTS.toString(),
+          'X-RateLimit-Limit': '10',
           'X-RateLimit-Remaining': rateLimit.remaining.toString(),
         }
       }
     )
   } catch (error) {
-    // Handle Zod validation errors
     if (error instanceof ZodError) {
       return NextResponse.json(
         {
