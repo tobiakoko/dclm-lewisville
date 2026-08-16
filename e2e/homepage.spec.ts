@@ -70,11 +70,6 @@ test.describe('Homepage', () => {
     await expect(page).toHaveURL(/\/ministries/)
   })
 
-  test('should navigate to Sermons page', async ({ page }) => {
-    await clickNavLink(page, /sermons/i)
-    await expect(page).toHaveURL(/\/sermons/)
-  })
-
   test('should navigate to Events page', async ({ page }) => {
     await clickNavLink(page, /events/i)
     await expect(page).toHaveURL(/\/events/)

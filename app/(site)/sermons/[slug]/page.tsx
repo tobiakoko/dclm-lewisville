@@ -4,8 +4,9 @@ import { notFound } from 'next/navigation'
 import Image from 'next/image'
 import { urlFor } from '@/lib/sanity/image'
 import { formatDate } from '@/lib/utils'
-import { Calendar, Clock, Share2, Download, PlayCircle, Headphones, BookOpen, User, Tag, ArrowRight, ExternalLink } from 'lucide-react'
+import { Calendar, Clock, Download, PlayCircle, Headphones, BookOpen, User, Tag, ArrowRight, ExternalLink } from 'lucide-react'
 import Link from 'next/link'
+import ShareButton from '@/components/ui/share-button'
 import { PortableText } from '@portabletext/react'
 
 // --- Fallback Data for UI Preview ---
@@ -301,17 +302,7 @@ export default async function SermonDetailPage({
                 <div className="bg-slate-100 rounded-xl p-4">
                   <h3 className="sr-only">Actions</h3>
                   <div className="grid grid-cols-2 gap-3">
-                     <button 
-                       className="flex items-center justify-center gap-2 py-3 bg-white border border-slate-200 rounded-lg text-sm font-bold text-slate-700 hover:border-[var(--church-red)] hover:text-[var(--church-red)] transition-all shadow-sm"
-                       onClick={() => {
-                        // Native share fallback
-                        if (typeof navigator !== 'undefined' && navigator.share) {
-                          navigator.share({ title: sermon.title, url: window.location.href })
-                        }
-                       }}
-                     >
-                       <Share2 size={16} /> Share
-                     </button>
+                     <ShareButton title={sermon.title} />
                      {sermon.audioFile && (
                         <a 
                           href={sermon.audioFile.asset.url} 
