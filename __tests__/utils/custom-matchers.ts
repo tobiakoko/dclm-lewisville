@@ -1,5 +1,7 @@
 // Extend Jest matchers with custom assertions
 
+// The `jest` module augmentation requires a TypeScript namespace.
+/* eslint-disable @typescript-eslint/no-namespace */
 declare global {
   namespace jest {
     interface Matchers<R> {
@@ -11,6 +13,7 @@ declare global {
     }
   }
 }
+/* eslint-enable @typescript-eslint/no-namespace */
 
 // Custom matcher for valid email format
 export const toHaveValidEmail = (received: string) => {

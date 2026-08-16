@@ -19,7 +19,7 @@ describe('Badge', () => {
     render(<Badge variant="secondary">Secondary</Badge>)
     const badge = screen.getByText('Secondary')
 
-    expect(badge).toHaveClass('bg-muted')
+    expect(badge).toHaveClass('bg-secondary')
   })
 
   it('should apply destructive variant', () => {

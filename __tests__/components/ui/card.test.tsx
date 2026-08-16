@@ -11,7 +11,7 @@ describe('Card Components', () => {
 
     it('should apply custom className', () => {
       render(<Card className="custom-card">Content</Card>)
-      const card = screen.getByText('Content').parentElement
+      const card = screen.getByText('Content')
 
       expect(card).toHaveClass('custom-card')
     })

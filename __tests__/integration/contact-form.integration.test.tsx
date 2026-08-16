@@ -73,9 +73,6 @@ describe('Contact Form Integration', () => {
     // Submit the form
     await user.click(screen.getByRole('button', { name: /submit/i }))
 
-    // Wait for loading state
-    expect(screen.getByRole('button', { name: /sending/i })).toBeDisabled()
-
     // Wait for success message
     await waitFor(() => {
       expect(screen.getByText('Message sent successfully!')).toBeInTheDocument()

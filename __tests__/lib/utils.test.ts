@@ -39,7 +39,7 @@ describe('Utils', () => {
     })
 
     it('should format Date object correctly', () => {
-      const date = new Date('2024-06-20')
+      const date = new Date('2024-06-20T12:00:00')
       const result = formatDate(date)
       expect(result).toBe('June 20, 2024')
     })

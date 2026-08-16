@@ -1,6 +1,32 @@
 // Learn more: https://github.com/testing-library/jest-dom
 import '@testing-library/jest-dom'
 
+// This setup file runs in the jsdom environment, which lacks the fetch API
+// globals that msw relies on. The polyfills below must be applied in order
+// (TextEncoder first, then undici), so require() is used instead of static
+// imports (which would be hoisted and evaluate undici too early).
+/* eslint-disable @typescript-eslint/no-require-imports */
+if (typeof globalThis.Response === 'undefined') {
+  const { TextEncoder, TextDecoder } = require('node:util')
+  const { ReadableStream, WritableStream, TransformStream } = require('node:stream/web')
+  Object.assign(globalThis, {
+    TextEncoder,
+    TextDecoder,
+    ReadableStream,
+    WritableStream,
+    TransformStream,
+  })
+  // FormData is provided by jsdom (and accepts HTMLFormElement), so only
+  // the fetch API globals are missing.
+  const { fetch, Response, Request, Headers } = require('undici')
+  Object.assign(globalThis, { fetch, Response, Request, Headers })
+}
+
+if (typeof globalThis.BroadcastChannel === 'undefined') {
+  const { BroadcastChannel } = require('node:worker_threads')
+  globalThis.BroadcastChannel = BroadcastChannel
+}
+
 // Mock environment variables
 process.env.NEXT_PUBLIC_SANITY_PROJECT_ID = 'test-project-id'
 process.env.NEXT_PUBLIC_SANITY_DATASET = 'test'
