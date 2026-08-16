@@ -5,6 +5,7 @@ import Image, { type StaticImageData } from 'next/image'
 import { urlFor } from '@/lib/sanity/image'
 import Link from 'next/link'
 import MinistriesPreview from '@/components/sections/home/MinistriesPreview'
+import type { Person } from '@/lib/types'
 import PastorAderemi from '@/app/assets/Pastor_Aderemi.png'
 import PastorKumuyi from '@/app/assets/Pastor_Kumuyi.jpg'
 import PastorJoseph from '@/app/assets/Pastor_Joseph.jpeg'
@@ -78,7 +79,7 @@ export default async function MinistersPage() {
           </div>
 
           <h1 className="font-serif text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6 tracking-tight leading-[1.1] drop-shadow-md">
-            Shepherding <span className="text-[var(--church-red)] italic">God's Flock</span>
+            Shepherding <span className="text-[var(--church-red)] italic">God&apos;s Flock</span>
           </h1>
           
           <p className="text-lg md:text-xl text-slate-300 max-w-2xl mx-auto font-light leading-relaxed">
@@ -91,12 +92,12 @@ export default async function MinistersPage() {
       <section className="py-20 lg:py-24 px-6 -mt-16 relative z-20">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
-            {teamMembers.map((member: any) => {
+            {teamMembers.map((member: Person) => {
               const imageSrc =
                 member?.photo && 'asset' in member.photo
                   ? urlFor(member.photo).width(800).height(1000).url()
                   : member?.photo && typeof member.photo === 'object' && 'src' in member.photo
-                  ? (member.photo as StaticImageData | string)
+                  ? (member.photo as unknown as StaticImageData | string)
                   : member?.imageUrl
 
               return (
@@ -223,8 +224,8 @@ export default async function MinistersPage() {
          <div className="container max-w-4xl mx-auto px-6 text-center relative z-10">
             <Book className="w-12 h-12 mx-auto mb-8 text-[var(--church-red)] opacity-80" />
             <blockquote className="font-serif text-2xl md:text-4xl italic leading-relaxed mb-8 opacity-90">
-              "Obey your leaders and submit to them, for they are keeping watch over your souls,
-              as those who will have to give an account."
+&quot;Obey your leaders and submit to them, for they are keeping watch over your souls,
+               as those who will have to give an account.&quot;
             </blockquote>
             <cite className="text-[var(--church-red)] font-bold uppercase tracking-widest text-sm not-italic">
               — Hebrews 13:17

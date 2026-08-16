@@ -118,9 +118,9 @@ export default function GivePage() {
                 <div className="flex gap-4">
                    <div className="w-10 h-10 rounded-full bg-[var(--church-red)]/10 text-[var(--church-red)] flex items-center justify-center shrink-0 font-bold">1</div>
                    <div>
-                     <h3 className="font-bold text-xl text-[var(--church-navy)] mb-2">It's Biblical</h3>
+                     <h3 className="font-bold text-xl text-[var(--church-navy)] mb-2">It&apos;s Biblical</h3>
                      <p className="text-slate-600 leading-relaxed">
-                       The Bible teaches us to honor God with the "firstfruits" of our labor (Proverbs 3:9). Tithing reflects our trust in His provision.
+                       The Bible teaches us to honor God with the &quot;firstfruits&quot; of our labor (Proverbs 3:9). Tithing reflects our trust in His provision.
                      </p>
                    </div>
                 </div>
@@ -148,7 +148,7 @@ export default function GivePage() {
              <div className="bg-slate-50 rounded-3xl p-10 border border-slate-100 relative">
                <Heart className="absolute top-10 right-10 text-[var(--church-red)]/10 w-32 h-32" />
                <blockquote className="relative z-10 font-serif text-2xl italic text-[var(--church-navy)] leading-relaxed mb-6">
-                 "Each of you should give what you have decided in your heart to give, not reluctantly or under compulsion, for God loves a cheerful giver."
+                 &quot;Each of you should give what you have decided in your heart to give, not reluctantly or under compulsion, for God loves a cheerful giver.&quot;
                </blockquote>
                <cite className="relative z-10 text-sm font-bold uppercase tracking-widest text-[var(--church-red)] not-italic">
                  — 2 Corinthians 9:7

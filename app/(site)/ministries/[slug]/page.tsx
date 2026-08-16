@@ -308,12 +308,12 @@ export default async function MinistryDetailPage({
   }
 
   // Helper to check if source is a StaticImageData object
-  const isStaticImageData = (source: any): source is StaticImageData => {
-    return source && typeof source === 'object' && 'src' in source
+  const isStaticImageData = (source: unknown): source is StaticImageData => {
+    return typeof source === 'object' && source !== null && 'src' in source
   }
 
   // Helper to get image URL safely
-  const getImageUrl = (source: any): string | StaticImageData => {
+  const getImageUrl = (source: unknown): string | StaticImageData => {
     if (!source) return '/images/ministry-placeholder.jpg' // Local fallback
     if (typeof source === 'string') return source // URL string
     if (isStaticImageData(source)) return source // StaticImageData from imports
@@ -391,7 +391,7 @@ export default async function MinistryDetailPage({
                   What We Do
                 </h2>
                 <div className="grid md:grid-cols-2 gap-6">
-                  {data.activities.map((activity: any, idx: number) => (
+                  {data.activities.map((activity: { title: string; description: string }, idx: number) => (
                     <div key={idx} className="group bg-white p-8 rounded-2xl shadow-sm border border-slate-100 hover:shadow-xl hover:border-[var(--church-red)]/20 transition-all duration-300">
                       <div className="w-12 h-12 bg-[var(--church-navy)]/5 text-[var(--church-red)] rounded-xl flex items-center justify-center mb-6 group-hover:bg-[var(--church-red)] group-hover:text-white transition-colors">
                         <Users size={24} />
@@ -410,9 +410,9 @@ export default async function MinistryDetailPage({
                 <Quote className="absolute top-8 right-8 text-white/10 w-32 h-32 rotate-180" />
                 <h2 className="font-serif text-3xl font-bold mb-8 relative z-10">Stories of Impact</h2>
                 <div className="grid md:grid-cols-2 gap-8 relative z-10">
-                  {data.testimonials.map((t: any, idx: number) => (
+                  {data.testimonials.map((t: { quote: string; author: string }, idx: number) => (
                     <div key={idx} className="bg-white/10 backdrop-blur-md p-6 rounded-xl border border-white/10">
-                      <p className="text-lg italic mb-4 font-light text-white/90">"{t.quote}"</p>
+                      <p className="text-lg italic mb-4 font-light text-white/90">&quot;{t.quote}&quot;</p>
                       <p className="font-bold text-[var(--church-red)]">— {t.author}</p>
                     </div>
                   ))}

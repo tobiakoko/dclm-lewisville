@@ -268,7 +268,7 @@ export default function Header() {
       >
         <div className="flex flex-col h-full pt-28 pb-8 px-6 overflow-y-auto">
           
-          <nav className="flex-1 space-y-6">
+          <nav aria-label="Mobile navigation" className="flex-1 space-y-6">
             {NAVIGATION.map((link) => (
               <div key={link.href} className="border-b border-gray-100 pb-4 last:border-0">
                 {link.children ? (
