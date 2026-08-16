@@ -5,12 +5,10 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: 'Inter', sans-serif;
-  --font-heading: 'Poppins', 'Inter', system-ui, sans-serif;
-  --font-serif: 'Playfair Display', serif;
-  --font-cinzel: "Cinzel", serif;
-  --font-display: "Playfair Display", serif;
-  --font-script: "Great Vibes", "cursive";
+  --font-sans: var(--font-inter), 'Inter', sans-serif;
+  --font-heading: var(--font-inter), 'Inter', sans-serif;
+  --font-serif: var(--font-playfair), 'Playfair Display', serif;
+  --font-display: var(--font-playfair), 'Playfair Display', serif;
   
   --color-ring: var(--ring);
   --color-input: var(--input);
@@ -38,9 +36,7 @@
   /* Custom Colors */
   --church-red: #C8102E;
   --church-navy: #0A1D37;
-  --church-blue: #1B3B6F;
   --church-bg: #FDFCF8;
-  --brand-navy: #0a192f;
   
   --radius: 0.5rem; /* 8px - Professional radius following 8px grid */
   --background: oklch(1 0 0); /* Pure white */
@@ -51,11 +47,11 @@
   --popover-foreground: oklch(0.20 0 0);
 
   /* Primary */
-  --primary: #B91C1C;
+  --primary: var(--church-red);
   --primary-foreground: oklch(1 0 0);
 
   /* Secondary */
-  --secondary: #0F172A;
+  --secondary: var(--church-navy);
   --secondary-foreground: oklch(1 0 0);
 
   /* Muted - Ultra-light gray for backgrounds */
@@ -434,46 +430,6 @@
 
 /* Church-specific utility classes */
 @layer components {
-  .btn-faith {
-    background-color: oklch(0.64 0.155 255);
-    color: oklch(0.99 0.002 0);
-  }
-
-  .btn-faith:hover {
-    background-color: oklch(0.58 0.15 255);
-  }
-
-  .btn-hope {
-    background-color: oklch(0.71 0.14 240);
-    color: oklch(0.99 0.002 0);
-  }
-
-  .btn-hope:hover {
-    background-color: oklch(0.65 0.14 240);
-  }
-
-  .btn-love {
-    background-color: oklch(0.64 0.175 25);
-    color: oklch(0.99 0.002 0);
-  }
-
-  .btn-love:hover {
-    background-color: oklch(0.58 0.18 25);
-  }
-
-  .btn-urgency {
-    background-color: oklch(0.55 0.22 27);
-    color: oklch(0.99 0.002 0);
-  }
-
-  .btn-urgency:hover {
-    background-color: oklch(0.50 0.22 27);
-  }
-
-  .hero-gradient {
-    background: linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(200, 16, 46, 0.4)), linear-gradient(to top, rgba(0,0,0,0.6), transparent);
-  }
-  
   .dot-pattern {
     background-image: radial-gradient(#C8102E 1px, transparent 1px);
     background-size: 15px 15px;
@@ -481,38 +437,6 @@
   
   .text-shadow {
     text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-  }
-
-  /* Section backgrounds */
-  .section-faith {
-    background-color: oklch(0.95 0.02 255);
-  }
-
-  .section-hope {
-    background-color: oklch(0.96 0.015 240);
-  }
-
-  .section-light {
-    background-color: oklch(0.98 0.002 0);
-  }
-
-  /* Hero gradient */
-  .hero-gradient {
-    background: linear-gradient(
-      135deg,
-      oklch(0.64 0.155 255),
-      oklch(0.71 0.14 240),
-      oklch(0.58 0.15 255)
-    );
-  }
-
-  .hero-gradient-overlay {
-    background: linear-gradient(
-      to top,
-      oklch(0.10 0 0 / 0.9),
-      oklch(0.10 0 0 / 0.5),
-      transparent
-    );
   }
 }
 
