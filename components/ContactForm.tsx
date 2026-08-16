@@ -20,7 +20,9 @@ type ContactFormData = z.infer<typeof contactSchema>
 
 export default function ContactForm() {
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [submitStatus, setSubmitStatus] = useState<'success' | 'error' | null>(null)
+  const [submitStatus, setSubmitStatus] = useState<
+    'success' | 'error' | 'rate-limited' | null
+  >(null)
 
   const {
     register,
@@ -46,6 +48,9 @@ export default function ContactForm() {
         setSubmitStatus('success')
         trackContactFormSubmit('contact_page')
         reset()
+      } else if (response.status === 429) {
+        setSubmitStatus('rate-limited')
+        trackContactFormError('rate_limited')
       } else {
         setSubmitStatus('error')
         trackContactFormError('submission_failed')
@@ -121,13 +126,28 @@ export default function ContactForm() {
 
       {submitStatus === 'success' && (
         <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded">
-          Thank you! We&apos;ll get back to you soon.
+          Message sent. We&apos;ll reply within 24 hours.
         </div>
       )}
 
       {submitStatus === 'error' && (
         <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
-          Something went wrong. Please try again.
+          We couldn&apos;t send your message. Please try again in a few minutes
+          &mdash; or email us directly at{' '}
+          <a
+            href="mailto:info@deeperlifelewisville.org"
+            className="underline font-semibold"
+          >
+            info@deeperlifelewisville.org
+          </a>
+          .
+        </div>
+      )}
+
+      {submitStatus === 'rate-limited' && (
+        <div className="bg-amber-50 border border-amber-200 text-amber-700 px-4 py-3 rounded">
+          You&apos;ve sent several messages recently. Please wait a few minutes
+          and try again.
         </div>
       )}
 
