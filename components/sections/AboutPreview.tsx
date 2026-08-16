@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { ArrowRight, Quote } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { PortableText } from '@portabletext/react'
+import type { PortableTextBlock } from '@portabletext/types'
 
 interface WelcomeMessage {
   heading?: string
@@ -65,7 +66,7 @@ export default function AboutPreview({ data }: AboutPreviewProps) {
               {hasContent && welcomeMessage?.content ? (
                 // Use PortableText if content from Sanity is available
                 <div className="prose prose-sm max-w-none">
-                  <PortableText value={welcomeMessage.content as any} />
+                  <PortableText value={welcomeMessage.content as PortableTextBlock[]} />
                 </div>
               ) : (
                 // Fallback to hardcoded content

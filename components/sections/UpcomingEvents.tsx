@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Event } from '@/lib/types'
 import { urlFor } from '@/lib/sanity/image'
 import { PortableText } from '@portabletext/react'
+import type { PortableTextBlock } from '@portabletext/types'
 
 interface UpcomingEventsProps {
   events: Event[]
@@ -133,7 +134,7 @@ export default function UpcomingEvents({
 
                 {event.description && typeof event.description === 'object' ? (
                   <div className="text-sm text-gray-600 mb-4 line-clamp-2 prose prose-sm max-w-none">
-                    <PortableText value={event.description as any} />
+                    <PortableText value={event.description as PortableTextBlock[]} />
                   </div>
                 ) : null}
 

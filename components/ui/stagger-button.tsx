@@ -179,8 +179,14 @@ const StaggerButton = React.forwardRef<HTMLButtonElement, StaggerButtonProps>(
 
     const Comp = asChild ? Slot : motion.button;
 
-    // Filter out conflicting props when using motion.button
+    // Filter out conflicting props when using motion.button. The component's
+    // props type cannot express framer-motion-specific handlers such as
+    // onDrag/onDragStart, so cast through any.
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const { onDrag, onDragStart, onDragEnd, ...safeProps } = props as any;
+    void onDrag;
+    void onDragStart;
+    void onDragEnd;
 
     return (
       <Comp
