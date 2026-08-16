@@ -12,7 +12,7 @@ import {
   Clock,
   ExternalLink
 } from 'lucide-react'
-import { SITE_CONFIG } from '@/lib/constants'
+import { SITE_CONFIG, SERVICE_TIMES } from '@/lib/constants'
 import { trackSocialMediaClick, trackNavigation, trackExternalLink } from '@/lib/analytics'
 
 const SOCIAL_LINKS = [
@@ -65,7 +65,7 @@ export default function Footer() {
                 className="object-contain"
               />
             </Link>
-            <p className="text-zinc-400 text-sm leading-relaxed max-w-xs">
+            <p className="text-white/70 text-sm leading-relaxed max-w-xs">
               {SITE_CONFIG.description || "Leading people into a growing relationship with Jesus Christ by creating environments where people are encouraged and equipped."}
             </p>
             
@@ -93,21 +93,19 @@ export default function Footer() {
               Service Times
             </h3>
             <ul className="space-y-4">
-              <li className="flex gap-4">
-                <Clock className="w-5 h-5 text-(--church-red) shrink-0 mt-0.5" />
-                <div className="space-y-1">
-                  <span className="block font-medium text-white">Sunday Worship</span>
-                  <p className="text-sm text-zinc-400">9:30 AM — Worship Service</p>
-                  <p className="text-sm text-zinc-400">9:40 AM — Search The Scriptures</p>
-                </div>
-              </li>
-              <li className="flex gap-4">
-                <div className="w-5 shrink-0" /> {/* Spacer alignment */}
-                <div className="space-y-1">
-                  <span className="block font-medium text-white">Tuesday</span>
-                  <p className="text-sm text-zinc-400">7:00 PM — Bible Study</p>
-                </div>
-              </li>
+              {SERVICE_TIMES.map((service, idx) => (
+                <li key={`${service.day}-${service.time}`} className="flex gap-4">
+                  {idx === 0 ? (
+                    <Clock className="w-5 h-5 text-(--church-red) shrink-0 mt-0.5" />
+                  ) : (
+                    <div className="w-5 shrink-0" />
+                  )}
+                  <div className="space-y-1">
+                    <span className="block font-medium text-white">{service.day}</span>
+                    <p className="text-sm text-white/70">{service.time} — {service.name}</p>
+                  </div>
+                </li>
+              ))}
             </ul>
           </div>
 
@@ -121,7 +119,7 @@ export default function Footer() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-sm text-zinc-400 hover:text-(--church-red) hover:pl-1 transition-all duration-200 block"
+                    className="text-sm text-white/70 hover:text-(--church-red) hover:pl-1 transition-all duration-200 block"
                     onClick={() => trackNavigation(link.href, `footer_${link.name}`)}
                   >
                     {link.name}
@@ -150,7 +148,7 @@ export default function Footer() {
                   <p className="text-sm font-medium text-white group-hover:text-(--church-red) transition-colors flex items-center gap-2">
                     Get Directions <ExternalLink className="w-3 h-3 opacity-50" />
                   </p>
-                  <p className="text-sm text-zinc-400">
+                  <p className="text-sm text-white/70">
                     {SITE_CONFIG.address.street}<br />
                     {SITE_CONFIG.address.city}, {SITE_CONFIG.address.state} {SITE_CONFIG.address.zip}
                   </p>
@@ -168,7 +166,7 @@ export default function Footer() {
                 </Link>
                 <Link
                   href={`mailto:${SITE_CONFIG.email}`}
-                  className="flex items-center gap-4 text-sm text-zinc-400 hover:text-white transition-colors"
+                  className="flex items-center gap-4 text-sm text-white/70 hover:text-white transition-colors"
                   onClick={() => trackExternalLink('Email', 'email_click')}
                 >
                   <Mail className="w-5 h-5 text-(--church-red) shrink-0" />

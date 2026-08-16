@@ -5,14 +5,13 @@ import {
   Clock,
   MapPin,
   ArrowRight,
-  ChevronLeft,
-  ChevronRight,
-  ChevronDown,
   Sun,
   BookOpen,
   Heart,
+  ExternalLink,
 } from 'lucide-react'
 import HeroSection from '@/components/sections/HeroSection'
+import { SERVICE_TIMES, SITE_CONFIG } from '@/lib/constants'
 
 export const metadata = {
   title: 'Events',
@@ -83,23 +82,13 @@ interface WeeklyService {
   time: string
 }
 
-const weeklyServices: WeeklyService[] = [
-  {
-    icon: Sun,
-    title: 'Sunday Worship',
-    time: 'Every Sunday at 10:00 AM',
-  },
-  {
-    icon: BookOpen,
-    title: 'Bible Study',
-    time: 'Mondays at 7:00 PM',
-  },
-  {
-    icon: Heart,
-    title: 'Revival Service',
-    time: 'Fridays at 7:00 PM',
-  },
-]
+const WEEKLY_ICONS = [Sun, BookOpen, Heart]
+
+const weeklyServices: WeeklyService[] = SERVICE_TIMES.filter((s) => s.name !== 'Search The Scriptures').map((service, i) => ({
+  icon: WEEKLY_ICONS[i % WEEKLY_ICONS.length],
+  title: service.name,
+  time: `${service.day}s at ${service.time}`,
+}))
 
 const calendarDays = ['S', 'M', 'T', 'W', 'T', 'F', 'S'] as const
 
@@ -129,95 +118,11 @@ export default function EventsPage() {
                 Calendar of Events
               </h2>
             </header>
-            <div className="flex gap-2" role="group" aria-label="View options">
-              <button
-                type="button"
-                className="px-6 py-2 rounded-full border border-slate-300 text-slate-600 font-bold text-sm hover:border-(--church-red) hover:text-(--church-red) transition-colors"
-              >
-                List View
-              </button>
-              <button
-                type="button"
-                className="px-6 py-2 rounded-full bg-(--church-navy) text-white font-bold text-sm"
-                aria-current="true"
-              >
-                Month View
-              </button>
-            </div>
           </div>
 
           <div className="grid lg:grid-cols-12 gap-12">
-            {/* Calendar Widget */}
+            {/* Weekly Services */}
             <aside className="lg:col-span-4 space-y-8">
-              <div className="bg-white rounded-2xl shadow-xl border border-slate-100 p-8">
-                <div className="flex justify-between items-center mb-8">
-                  <h3 className="font-display font-bold text-xl text-(--church-navy)">
-                    January 2026
-                  </h3>
-                  <div className="flex gap-2" role="group" aria-label="Navigate months">
-                    <button
-                      type="button"
-                      className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-slate-100 text-slate-500"
-                      aria-label="Previous month"
-                    >
-                      <ChevronLeft size={18} />
-                    </button>
-                    <button
-                      type="button"
-                      className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-slate-100 text-slate-500"
-                      aria-label="Next month"
-                    >
-                      <ChevronRight size={18} />
-                    </button>
-                  </div>
-                </div>
-                <div
-                  className="grid grid-cols-7 mb-4 text-center"
-                  role="row"
-                  aria-label="Days of the week"
-                >
-                  {calendarDays.map((day, index) => (
-                    <span
-                      key={index}
-                      className="text-xs font-bold text-slate-400 uppercase py-2"
-                      role="columnheader"
-                    >
-                      {day}
-                    </span>
-                  ))}
-                </div>
-                <div
-                  className="grid grid-cols-7 gap-y-4 text-center text-sm font-medium"
-                  role="grid"
-                  aria-label="January 2026 calendar"
-                >
-                  {[29, 30, 31].map((day) => (
-                    <span
-                      key={`prev-${day}`}
-                      className="text-slate-300 py-2"
-                      aria-disabled="true"
-                    >
-                      {day}
-                    </span>
-                  ))}
-                  {Array.from({ length: 31 }, (_, i) => i + 1).map((day) => (
-                    <button
-                      type="button"
-                      key={day}
-                      className={`py-2 cursor-pointer ${
-                        day === 24
-                          ? 'bg-(--church-red) text-white rounded-full w-8 h-8 flex items-center justify-center mx-auto shadow-lg'
-                          : 'text-slate-500 hover:text-(--church-red)'
-                      }`}
-                      aria-label={`January ${day}, 2026${day === 24 ? ' - Event scheduled' : ''}`}
-                      aria-pressed={day === 24}
-                    >
-                      {day}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
               <div className="bg-(--church-red)/5 rounded-2xl p-8 border border-(--church-red)/10">
                 <h4 className="font-display font-bold text-lg text-(--church-navy) mb-4">
                   Weekly Services
@@ -321,7 +226,7 @@ export default function EventsPage() {
                                 : 'bg-slate-100 hover:bg-(--church-red) hover:text-white text-(--church-navy)'
                             }`}
                           >
-                            {event.featured ? 'Register Now' : 'Learn More'}
+                            {event.featured ? 'Register Now' : 'Contact Us to Register'}
                             {event.featured && (
                               <ArrowRight size={14} aria-hidden="true" />
                             )}
@@ -332,24 +237,15 @@ export default function EventsPage() {
                   </li>
                 ))}
               </ul>
-              <div className="mt-12 flex justify-center">
-                <button
-                  type="button"
-                  className="bg-transparent border border-slate-300 hover:border-(--church-red) text-slate-600 hover:text-(--church-red) px-8 py-3 rounded-full font-bold text-sm transition-all flex items-center gap-2"
-                >
-                  Load More Events
-                  <ChevronDown size={14} aria-hidden="true" />
-                </button>
-              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Newsletter Section */}
+      {/* Visit Us CTA */}
       <section
         className="py-20 bg-(--church-red) relative overflow-hidden"
-        aria-labelledby="newsletter-heading"
+        aria-labelledby="visit-heading"
       >
         <div
           className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"
@@ -361,34 +257,31 @@ export default function EventsPage() {
         />
         <div className="max-w-4xl mx-auto px-4 text-center relative z-10">
           <h2
-            id="newsletter-heading"
+            id="visit-heading"
             className="text-4xl font-display font-bold text-white mb-4"
           >
-            Never Miss an Update
+            Come Visit Us
           </h2>
           <p className="text-white/90 text-lg mb-8 max-w-xl mx-auto">
-            Subscribe to our weekly newsletter to receive updates about upcoming
-            events, sermon series, and church news.
+            Services begin Sunday at 9:30 AM at {SITE_CONFIG.address.street} — right off Main
+            Street in Lewisville. We&apos;ll know your name when you walk in.
           </p>
-          <form className="flex flex-col sm:flex-row gap-4 max-w-lg mx-auto">
-            <label htmlFor="newsletter-email" className="sr-only">
-              Email address
-            </label>
-            <input
-              id="newsletter-email"
-              name="email"
-              type="email"
-              required
-              className="flex-1 px-6 py-4 rounded-full border-0 focus:ring-2 focus:ring-(--church-navy) text-(--church-navy) placeholder:text-slate-400 shadow-xl"
-              placeholder="Your email address"
-            />
-            <button
-              type="submit"
+          <div className="flex flex-col sm:flex-row gap-4 max-w-lg mx-auto">
+            <Link
+              href="/contact"
               className="bg-(--church-navy) text-white px-8 py-4 rounded-full font-bold hover:bg-(--church-navy)/90 transition-colors shadow-xl"
             >
-              Subscribe
-            </button>
-          </form>
+              Plan Your Visit
+            </Link>
+            <Link
+              href={`https://maps.google.com/?q=${encodeURIComponent(`${SITE_CONFIG.address.street}, ${SITE_CONFIG.address.city}, ${SITE_CONFIG.address.state} ${SITE_CONFIG.address.zip}`)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-white/10 backdrop-blur-md border border-white/30 text-white px-8 py-4 rounded-full font-bold hover:bg-white/20 transition-colors shadow-xl inline-flex items-center justify-center gap-2"
+            >
+              Get Directions <ExternalLink size={16} aria-hidden="true" />
+            </Link>
+          </div>
         </div>
       </section>
     </main>

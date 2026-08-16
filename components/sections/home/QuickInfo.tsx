@@ -1,4 +1,7 @@
-import { Sun, BookOpen, HandHeart, Users, type LucideIcon } from 'lucide-react'
+import { Sun, BookOpen, HandHeart, type LucideIcon } from 'lucide-react'
+import { SERVICE_TIMES } from '@/lib/constants'
+
+const ICONS = [Sun, BookOpen, HandHeart]
 
 interface ServiceItem {
   icon: LucideIcon
@@ -8,11 +11,13 @@ interface ServiceItem {
   day: string
 }
 
-const services: ServiceItem[] = [
-  { icon: Sun, day: 'Sunday', title: 'Worship Service', description: 'Powerful worship & word', time: '9:30 AM' },
-  { icon: BookOpen, day: 'Tuesday', title: 'Bible Study', description: 'Systematic and expository study of the word of God', time: '7:00 PM' },
-  { icon: HandHeart, day: 'Friday', title: 'Revival Service', description: 'Revival, Prayer, and Evangelism Training', time: '7:00 PM' },
-]
+const services: ServiceItem[] = SERVICE_TIMES.filter((s) => s.name !== 'Search The Scriptures').map((service, i) => ({
+  icon: ICONS[i % ICONS.length],
+  title: service.name,
+  description: service.description,
+  time: service.time,
+  day: service.day,
+}))
 
 export function QuickInfo() {
   return (

@@ -59,13 +59,19 @@ export const SITE_CONFIG: SiteConfig = {
   },
 }
 
-// Service Times
+// Service Times — single source of truth (Phase 2/EXP-001)
 export const SERVICE_TIMES: ServiceTime[] = [
   {
-    name: 'Sunday Service',
+    name: 'Worship Service',
     day: 'Sunday',
     time: '9:30 AM',
-    description: 'Main worship service',
+    description: 'Powerful worship & word',
+  },
+  {
+    name: 'Search The Scriptures',
+    day: 'Sunday',
+    time: '9:40 AM',
+    description: 'Sunday school',
   },
   {
     name: 'Bible Study',
@@ -270,47 +276,15 @@ export interface HeroSlide {
 export const HERO_SLIDES: HeroSlide[] = [
   {
     id: 1,
-    title: 'Growing in Faith, Living in Holiness',
+    title: 'Find a church family that knows your name',
     subtitle: 'Welcome Home',
-    description: 'Join a Christ-centered community in Lewisville, TX dedicated to biblical teaching, fervent prayer, and holy living.',
+    description:
+      'Walk in Sunday at 9:30 AM — no one here is a stranger. Grow in faith alongside people who know your name.',
     cta: {
       text: 'Plan Your Visit',
       href: '/contact'
     },
     image: 'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=1920&h=1080&fit=crop&q=80'
-  },
-  {
-    id: 2,
-    title: 'Discover Your Purpose',
-    subtitle: 'Serve & Grow',
-    description: 'Find your place in our vibrant ministries. Make a difference through service and grow in your faith.',
-    cta: {
-      text: 'Explore Ministries',
-      href: '/ministries'
-    },
-    image: 'https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=1920&h=1080&fit=crop&q=80'
-  },
-  {
-    id: 3,
-    title: 'Dive Deeper into God\'s Word',
-    subtitle: 'Learn & Transform',
-    description: 'Join us for in-depth Bible study and powerful messages that transform lives.',
-    cta: {
-      text: 'View Sermons',
-      href: '/sermons'
-    },
-    image: 'https://images.unsplash.com/photo-1507692049790-de58290a4334?w=1920&h=1080&fit=crop&q=80'
-  },
-  {
-    id: 4,
-    title: 'Build Lasting Connections',
-    subtitle: 'Connect & Belong',
-    description: 'Experience genuine Christian fellowship in a loving community.',
-    cta: {
-      text: 'Meet Our Team',
-      href: '/ministers'
-    },
-    image: 'https://images.unsplash.com/photo-1528605248644-14dd04022da1?w=1920&h=1080&fit=crop&q=80'
   }
 ]
 

@@ -1,7 +1,8 @@
 import Image from 'next/image'
 import { MapPin, ArrowRight } from 'lucide-react'
-import { SITE_CONFIG } from '@/lib/constants'
+import { SITE_CONFIG, SERVICE_TIMES } from '@/lib/constants'
 import HeroSection from '@/components/sections/HeroSection'
+import ContactForm from '@/components/ContactForm'
 
 export const metadata = {
   title: 'Contact Us',
@@ -37,10 +38,10 @@ const locations: Location[] = [
       state: 'TX',
       zip: '75067',
     },
-    services: [
-      { label: 'Worship Service', time: 'Sunday: 9:30 AM - 12:30 PM' },
-      { label: 'Bible Study', time: 'Tuesday: 7:00 PM - 9:00 PM' },
-    ],
+    services: SERVICE_TIMES.map((service) => ({
+      label: service.name,
+      time: `${service.day}: ${service.time}`,
+    })),
   },
   {
     name: 'Denton Campus',
@@ -163,7 +164,8 @@ export default function ContactPage() {
 
       {/* Contact Form */}
       <section
-        className="bg-(--brand-navy) py-24 px-4 text-white"
+        id="contact-form"
+        className="bg-(--church-navy) py-24 px-4 text-white"
         aria-labelledby="contact-form-heading"
       >
         <div className="max-w-4xl mx-auto">
@@ -180,85 +182,7 @@ export default function ContactPage() {
             </p>
           </header>
 
-          <form className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="space-y-2">
-              <label
-                htmlFor="full-name"
-                className="text-xs uppercase font-bold tracking-wider text-slate-400"
-              >
-                Full Name
-              </label>
-              <input
-                id="full-name"
-                name="fullName"
-                type="text"
-                placeholder="Your Name"
-                required
-                className="w-full bg-white text-(--brand-navy) px-4 py-3 border-none focus:ring-2 focus:ring-yellow-500 transition rounded"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <label
-                htmlFor="email"
-                className="text-xs uppercase font-bold tracking-wider text-slate-400"
-              >
-                Email Address
-              </label>
-              <input
-                id="email"
-                name="email"
-                type="email"
-                placeholder="email@example.com"
-                required
-                className="w-full bg-white text-(--church-navy) px-4 py-3 border-none focus:ring-2 focus:ring-yellow-500 transition rounded"
-              />
-            </div>
-
-            <div className="md:col-span-2 space-y-2">
-              <label
-                htmlFor="subject"
-                className="text-xs uppercase font-bold tracking-wider text-slate-400"
-              >
-                Subject
-              </label>
-              <select
-                id="subject"
-                name="subject"
-                className="w-full bg-white text-(--church-navy) px-4 py-3 border-none focus:ring-2 focus:ring-yellow-500 transition rounded"
-              >
-                <option value="general">General Inquiry</option>
-                <option value="new-member">New Member Question</option>
-                <option value="prayer">Prayer Request</option>
-              </select>
-            </div>
-
-            <div className="md:col-span-2 space-y-2">
-              <label
-                htmlFor="message"
-                className="text-xs uppercase font-bold tracking-wider text-slate-400"
-              >
-                Message
-              </label>
-              <textarea
-                id="message"
-                name="message"
-                placeholder="How can we help you?"
-                rows={6}
-                required
-                className="w-full bg-white text-(--church-navy) px-4 py-3 border-none focus:ring-2 focus:ring-yellow-500 transition rounded"
-              />
-            </div>
-
-            <div className="md:col-span-2 text-center mt-4">
-              <button
-                type="submit"
-                className="bg-(--church-red) hover:bg-red-800 text-white font-bold py-4 px-12 uppercase tracking-widest transition rounded shadow-lg w-full md:w-auto"
-              >
-                Send Message
-              </button>
-            </div>
-          </form>
+          <ContactForm />
         </div>
       </section>
 
@@ -302,12 +226,12 @@ export default function ContactPage() {
             </p>
           </blockquote>
 
-          <button
-            type="button"
-            className="bg-(--church-red) hover:bg-red-800 text-white px-10 py-4 uppercase font-bold tracking-widest transition rounded shadow-xl"
+          <a
+            href="#contact-form"
+            className="inline-block bg-(--church-red) hover:bg-red-800 text-white px-10 py-4 uppercase font-bold tracking-widest transition rounded shadow-xl"
           >
             Ask for Prayer
-          </button>
+          </a>
         </div>
       </section>
 
