@@ -37,7 +37,7 @@ export function ContactSections04() {
       <div className="relative flex min-h-[70vh] flex-col items-center justify-center px-4 py-16 text-center">
         <h2 className="mb-6 text-5xl font-bold text-white">Got a Question?</h2>
         <p className="mx-auto mb-12 max-w-xl text-xl text-white/80">
-          We'd like to talk more about what you need
+          We&apos;d like to talk more about what you need
         </p>
         <div className="grid grid-cols-1 justify-items-center gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-4">
           {OPTIONS.map(({ icon: Icon, title, description }, key) => (

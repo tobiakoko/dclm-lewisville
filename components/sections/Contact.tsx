@@ -43,10 +43,10 @@ export default function Contact() {
           className="text-center mb-20"
         >
           <h2 className="font-heading text-4xl md:text-5xl font-bold mb-6 text-foreground">
-            We'd Love to Hear from You
+            We&apos;d Love to Hear from You
           </h2>
           <p className="text-lg text-foreground/70 max-w-2xl mx-auto leading-relaxed">
-            Have questions or want to know more? Send us a message and we'll get back to you soon.
+            Have questions or want to know more? Send us a message and we&apos;ll get back to you soon.
           </p>
         </motion.div>
 

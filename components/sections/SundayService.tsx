@@ -83,7 +83,7 @@ export default function SundayService({ serviceTimes }: SundayServiceProps) {
             variants={itemVariants}
             className="text-lg text-foreground/70 mb-16 leading-relaxed max-w-2xl mx-auto"
           >
-            We'd love to see you this Sunday! Join us for worship, teaching, and fellowship.
+            We&apos;d love to see you this Sunday! Join us for worship, teaching, and fellowship.
           </motion.p>
 
           {/* Service Time - Simplified */}
@@ -141,7 +141,7 @@ export default function SundayService({ serviceTimes }: SundayServiceProps) {
           {/* CTA */}
           <motion.div variants={itemVariants}>
             <p className="text-sm text-foreground/60 mb-4">
-              First time visiting? We'd love to know you're coming!
+              First time visiting? We&apos;d love to know you&apos;re coming!
             </p>
             <Button
               asChild
