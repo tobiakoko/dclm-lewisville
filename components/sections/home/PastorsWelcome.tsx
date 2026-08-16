@@ -58,35 +58,24 @@ export function PastorsWelcome() {
 
             <div className="space-y-6 text-lg text-gray-600 leading-relaxed font-light">
               <p>
-                Thank you for visiting Deeper Life Bible Church Lewisville online. 
-                Founded by Pastor (Dr.) W.F. Kumuyi, Deeper Life Bible Church Worldwide 
-                is a Bible-believing church whose aim in everything is “achieving heaven&apos;s goal.”
+                Thank you for visiting us online. If you&apos;re new, we know how it
+                feels to walk into a room where no one knows your name yet. So
+                let&apos;s say it plainly: you won&apos;t be &ldquo;lost in the
+                crowd&rdquo; here. Our pastor and members get to know you
+                personally, like family.
               </p>
-              
-              <p>
-                Deeper Life Lewisville is one of the branches in the Southwest Region, 
-                under the leadership of our Regional Overseer, Pastor Thompson Aderemi.
-              </p>
-              
-              <p>
-                We trust that this virtual visit will inspire you to worship with us in person very soon. 
-                While you are here, we encourage you to take time to learn more about us by exploring 
-                What We Believe and reading about our impact in the community.
 
-              </p>
-              
               <p>
-                It is our prayer and purpose to bring people to Christ and help them grow 
-                in Him. If you are looking for a church home, or have questions about 
-                Jesus Christ, we want to serve you in any way we can and please remember 
-                that here in Deeper Life Lewisville you cannot be “lost in the crowd.” 
-                Ours is a church where the local pastor and members know you personally 
-                like a family member.
+                We are a Bible-believing church founded by Pastor (Dr.) W.F.
+                Kumuyi, and Lewisville is part of the Southwest Region under
+                Regional Overseer Pastor Thompson Aderemi. It is our prayer and
+                purpose to bring people to Christ and help them grow in Him.
               </p>
-              
-              <p>  
-                If you have questions not answered on this site or would like additional information, 
-                please visit our Contact page to reach us.
+
+              <p>
+                If you have questions not answered on this site, visit our
+                Contact page — we would love to serve you. We look forward to
+                welcoming you in person very soon.
               </p>
             </div>
 

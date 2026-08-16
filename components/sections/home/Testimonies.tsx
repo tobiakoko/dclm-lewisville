@@ -1,11 +1,11 @@
 import Image from 'next/image'
-import { Play, Quote } from 'lucide-react'
+import { Quote } from 'lucide-react'
 import Testimony from '@/app/assets/Testimonies.jpeg'
 
 const TESTIMONY = {
   author: 'Bro. Kazeem T. - DLBC Dallas TX',
   title: 'FROM DEPORTATION TO DELIVERANCE: JESUS MIRACULOUSLY RESCUES AND TURNS MISTAKE INTO A MERCY-FILLED MIRACLE',
-  quote: 'Jesus is indeed alive! I felt led to travel to Dominican Republic to renew my US F1 Visa (for students). What seemed like a no brainer I will just go on Tuesday and be back on Friday after my visa is approved became a trap of the enemy which could have gotten me deported to Nigeria. I called on our fathers in the Lord to pray along side because I need only God could rescue me from this pit that had been dug. Our fathers prayed for supernatural favor for me and Jesus showed up in a miraculous way, I was detained in both Dominican Republic and Miami within one week and on the verge of being deported but Jesus came to the rescue and power changed hands when the angel of mercy showed up to fight for my cause because of prayer and I was readmitted back to the United States. My US Visa was denied on Thursday, I was readmitted into the US on Friday and through the journey multiple souls came to know the Lord both in the detention cell, on the plane back home and even afterwards. All praise, honor and glory to Jesus for saving me and turning my mistake into a miracle of mercy. Thanks to the faith of our fathers who prayed for me and God showed up. Thank you Jesus.',
+  quote: 'Jesus is indeed alive! I was on the verge of deportation after my US visa was denied — but our fathers in the Lord prayed for supernatural favor, and Jesus showed up. I was readmitted to the United States the very next day, and multiple souls came to know the Lord along the way. All glory to Jesus for turning my mistake into a miracle of mercy.',
   imageUrl: Testimony,
 } as const
 
