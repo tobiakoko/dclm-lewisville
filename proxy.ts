@@ -37,7 +37,6 @@ function siteCspHeader(nonce: string): string {
     worker-src 'self' blob:;
     child-src blob:;
     manifest-src 'self';
-    upgrade-insecure-requests;
   `.replace(/\s{2,}/g, ' ').trim()
 }
 
