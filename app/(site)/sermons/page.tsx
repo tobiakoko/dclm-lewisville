@@ -1,21 +1,8 @@
 import Image from 'next/image'
+import Link from 'next/link'
 import { client } from '@/lib/sanity/client'
 import { sermonsQuery } from '@/lib/sanity/queries'
-import {
-  Search,
-  Play,
-  PlayCircle,
-  Download,
-  User,
-  Calendar,
-  Tag,
-  LayoutGrid,
-  List,
-  Headphones,
-  FileText,
-  Filter,
-  ChevronDown
-} from 'lucide-react'
+import { PlayCircle, User, Calendar, Youtube, ExternalLink } from 'lucide-react'
 
 export const metadata = {
   title: 'Sermons Library',
@@ -23,6 +10,7 @@ export const metadata = {
 }
 
 interface SermonMessage {
+  slug: string
   title: string
   speaker: string
   date: string
@@ -33,6 +21,7 @@ interface SermonMessage {
 
 const recentMessages: SermonMessage[] = [
   {
+    slug: 'the-all-sufficient-name-of-jesus',
     title: 'The All-Sufficient Name of Jesus',
     speaker: 'Pastor W.F. Kumuyi',
     date: 'Jan 14, 2026',
@@ -41,6 +30,7 @@ const recentMessages: SermonMessage[] = [
     description: 'Understanding the power and authority vested in the name of Jesus for every believer.'
   },
   {
+    slug: 'christs-power-to-heal',
     title: "Christ's Power to Heal",
     speaker: 'Pastor Raymond Akoko',
     date: 'Jan 07, 2026',
@@ -49,6 +39,7 @@ const recentMessages: SermonMessage[] = [
     description: 'A deep dive into the healing ministry of Jesus and how it applies to us today.'
   },
   {
+    slug: 'the-first-faith-and-first-love',
     title: 'The First Faith and First Love',
     speaker: 'Pastor W.F. Kumuyi',
     date: 'Dec 31, 2025',
@@ -57,6 +48,7 @@ const recentMessages: SermonMessage[] = [
     description: 'Returning to the fundamentals of our walk with God: faith and love.'
   },
   {
+    slug: 'walking-in-divine-health',
     title: 'Walking in Divine Health',
     speaker: 'Evangelist Mark Johnson',
     date: 'Dec 24, 2025',
@@ -65,6 +57,7 @@ const recentMessages: SermonMessage[] = [
     description: 'Practical steps to walking in the health that Christ has purchased for us.'
   },
   {
+    slug: 'the-virtuous-woman-today',
     title: 'The Virtuous Woman Today',
     speaker: 'Sister Esther Kumuyi',
     date: 'Dec 15, 2025',
@@ -73,6 +66,7 @@ const recentMessages: SermonMessage[] = [
     description: 'Applying the principles of Proverbs 31 in a modern, fast-paced world.'
   },
   {
+    slug: 'standing-tall-in-babylon',
     title: 'Standing Tall in Babylon',
     speaker: 'Pastor John Doe',
     date: 'Dec 01, 2025',
@@ -95,7 +89,7 @@ export default async function SermonsPage() {
 
   return (
     <main className="bg-slate-50 min-h-screen">
-      
+
       {/* --- HERO SECTION --- */}
       <header className="relative py-32 lg:py-48 overflow-hidden bg-[var(--church-navy)]">
         {/* Background Image with modern overlay */}
@@ -116,11 +110,11 @@ export default async function SermonsPage() {
             <PlayCircle size={14} className="text-[var(--church-red)]" />
             Media Library
           </div>
-          
+
           <h1 className="text-5xl md:text-7xl font-serif font-bold text-white mb-6 tracking-tight leading-[1.1] drop-shadow-md">
             Sermons & <span className="text-[var(--church-red)]">Resources</span>
           </h1>
-          
+
           <p className="text-lg md:text-xl text-slate-300 max-w-2xl mx-auto font-light leading-relaxed">
             Access a growing library of life-transforming messages. Watch,
             listen, and download resources to help you grow in your walk with God.
@@ -128,59 +122,61 @@ export default async function SermonsPage() {
         </div>
       </header>
 
-      {/* --- FLOATING SEARCH BAR --- */}
-      <div className="relative z-20 -mt-8 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-5xl mx-auto">
-          <form className="bg-white rounded-2xl shadow-2xl shadow-[var(--church-navy)]/10 border border-slate-100 p-3 md:p-4 flex flex-col md:flex-row gap-3 items-center">
-            
-            {/* Search Input */}
-            <div className="relative grow w-full md:w-auto">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={20} />
-              <input
-                name="search"
-                type="search"
-                className="w-full pl-12 pr-4 py-3.5 bg-slate-50 border-0 rounded-xl text-slate-900 placeholder:text-slate-400 focus:ring-2 focus:ring-[var(--church-navy)]/10 focus:bg-white transition-all"
-                placeholder="Search by title, series, or keyword..."
+      {/* --- LATEST FROM DCLM HQ --- */}
+      <section className="py-16 bg-white border-b border-slate-100" aria-labelledby="dclm-hq-heading">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <header className="flex items-center gap-4 mb-8">
+            <span className="flex items-center justify-center w-8 h-8 rounded-full bg-[var(--church-navy)]/5 text-[var(--church-red)]">
+              <Youtube size={18} />
+            </span>
+            <div>
+              <h2 id="dclm-hq-heading" className="text-xl font-bold text-[var(--church-navy)] tracking-tight">
+                Latest from DCLM HQ
+              </h2>
+              <p className="text-sm text-slate-500">
+                Fresh messages straight from the Deeper Christian Life Ministry channel.
+              </p>
+            </div>
+          </header>
+
+          <div className="grid lg:grid-cols-5 gap-8 items-center">
+            <div className="lg:col-span-3 aspect-video rounded-2xl overflow-hidden shadow-xl ring-1 ring-slate-200 bg-black">
+              <iframe
+                src="https://www.youtube.com/embed/videoseries?list=UU4zsqN5YdXfxkkdVvwNA3JA"
+                title="Latest messages from Deeper Christian Life Ministry"
+                className="w-full h-full"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="strict-origin-when-cross-origin"
               />
             </div>
 
-            {/* Filters */}
-            <div className="flex w-full md:w-auto gap-3 overflow-x-auto pb-1 md:pb-0 no-scrollbar">
-              <div className="relative min-w-[150px]">
-                <select className="w-full appearance-none bg-slate-50 border-0 rounded-xl py-3.5 pl-4 pr-10 text-sm font-medium text-slate-700 focus:ring-2 focus:ring-[var(--church-navy)]/10 cursor-pointer">
-                  <option value="">All Topics</option>
-                  <option value="faith">Faith</option>
-                  <option value="salvation">Salvation</option>
-                  <option value="prayer">Prayer</option>
-                </select>
-                <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" size={16} />
-              </div>
-
-              <div className="relative min-w-[150px]">
-                <select className="w-full appearance-none bg-slate-50 border-0 rounded-xl py-3.5 pl-4 pr-10 text-sm font-medium text-slate-700 focus:ring-2 focus:ring-[var(--church-navy)]/10 cursor-pointer">
-                  <option value="">All Speakers</option>
-                  <option value="kumuyi">Pastor W.F. Kumuyi</option>
-                  <option value="akoko">Pastor Raymond Akoko</option>
-                </select>
-                <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" size={16} />
-              </div>
+            <div className="lg:col-span-2 space-y-4">
+              <p className="text-slate-600 leading-relaxed">
+                Every week, Pastor (Dr.) W.F. Kumuyi and the Deeper Christian
+                Life Ministry family share Bible-centered messages from DCLM
+                Headquarters in Lagos. Watch the latest — or catch up on past
+                messages — right from our channel.
+              </p>
+              <a
+                href="https://www.youtube.com/@DCLMHQ"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 text-[var(--church-red)] font-bold hover:underline"
+              >
+                Subscribe on YouTube
+                <ExternalLink size={14} aria-hidden="true" />
+              </a>
             </div>
-
-            {/* Submit Button */}
-            <button
-              type="submit"
-              className="w-full md:w-auto bg-[var(--church-red)] hover:bg-red-700 text-white px-8 py-3.5 rounded-xl font-bold text-sm tracking-wide uppercase transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0"
-            >
-              Search
-            </button>
-          </form>
+          </div>
         </div>
-      </div>
+      </section>
 
       {/* --- MAIN CONTENT --- */}
       <section className="py-20" aria-labelledby="sermons-heading">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          
+
           {/* Featured Sermon */}
           <div className="mb-24">
             <header className="flex items-center gap-4 mb-8">
@@ -193,8 +189,8 @@ export default async function SermonsPage() {
             </header>
 
             <article className="group relative bg-white rounded-3xl overflow-hidden shadow-xl border border-slate-100/50 hover:shadow-2xl hover:border-[var(--church-red)]/10 transition-all duration-500">
-              <div className="grid lg:grid-cols-5 h-full">
-                
+              <Link href="/sermons/conditions-of-security-in-christ" className="grid lg:grid-cols-5 h-full">
+
                 {/* Thumbnail Side */}
                 <figure className="lg:col-span-3 relative min-h-[300px] lg:min-h-[450px] overflow-hidden bg-gray-900">
                   <Image
@@ -203,24 +199,6 @@ export default async function SermonsPage() {
                     fill
                     className="object-cover opacity-90 group-hover:opacity-80 group-hover:scale-105 transition-all duration-700"
                   />
-                  {/* Play Overlay */}
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <button 
-                      className="w-20 h-20 bg-[var(--church-red)] rounded-full flex items-center justify-center shadow-[0_0_40px_rgba(var(--church-red),0.4)] group-hover:scale-110 transition-transform duration-300 z-20"
-                      aria-label="Play featured sermon"
-                    >
-                      <Play className="text-white fill-white ml-1" size={32} />
-                    </button>
-                    {/* Ripple effect */}
-                    <div className="absolute w-20 h-20 bg-[var(--church-red)] rounded-full animate-[ping_2s_cubic-bezier(0,0,0.2,1)_infinite] opacity-30" />
-                  </div>
-                  
-                  <div className="absolute bottom-6 left-6 z-10">
-                     <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-black/60 backdrop-blur-md text-white text-xs font-bold border border-white/10">
-                        <PlayCircle size={14} className="text-[var(--church-red)]" />
-                        1:15:20
-                     </span>
-                  </div>
                 </figure>
 
                 {/* Content Side */}
@@ -232,15 +210,15 @@ export default async function SermonsPage() {
                   <span className="inline-block w-fit px-3 py-1 rounded bg-[var(--church-navy)]/5 text-[var(--church-navy)] text-xs font-bold uppercase tracking-widest mb-6">
                     New Series
                   </span>
-                  
-                  <h3 className="text-3xl lg:text-4xl font-serif font-bold text-[var(--church-navy)] mb-4 leading-[1.1]">
+
+                  <h3 className="text-3xl lg:text-4xl font-serif font-bold text-[var(--church-navy)] mb-4 leading-[1.1] group-hover:text-[var(--church-red)] transition-colors">
                     Conditions of Security in Christ
                   </h3>
-                  
+
                   <p className="text-slate-600 mb-8 leading-relaxed text-lg font-light">
                     Discover the unshakeable foundation of your faith. In this
                     powerful message, we explore what it means to be truly
-                    secure in Jesus amidst life's uncertainties.
+                    secure in Jesus amidst life&apos;s uncertainties.
                   </p>
 
                   <div className="space-y-4 mb-10 border-t border-slate-100 pt-6">
@@ -253,7 +231,7 @@ export default async function SermonsPage() {
                         <span className="font-medium text-[var(--church-navy)]">Pastor W.F. Kumuyi</span>
                       </div>
                     </div>
-                    
+
                     <div className="flex items-center gap-3 text-sm">
                       <div className="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center text-[var(--church-red)]">
                         <Calendar size={16} />
@@ -265,18 +243,12 @@ export default async function SermonsPage() {
                     </div>
                   </div>
 
-                  <div className="flex gap-4">
-                    <button className="flex-1 bg-[var(--church-navy)] text-white px-6 py-3.5 rounded-xl font-bold text-sm hover:bg-[var(--church-navy)]/90 transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 flex items-center justify-center gap-2">
-                      <PlayCircle size={18} />
-                      Watch Now
-                    </button>
-                    <button className="flex-1 border border-slate-200 text-slate-600 px-6 py-3.5 rounded-xl font-bold text-sm hover:border-[var(--church-red)] hover:text-[var(--church-red)] hover:bg-red-50 transition-all flex items-center justify-center gap-2">
-                      <Download size={18} />
-                      Notes
-                    </button>
-                  </div>
+                  <span className="inline-flex items-center justify-center gap-2 bg-[var(--church-navy)] text-white px-6 py-3.5 rounded-xl font-bold text-sm hover:bg-[var(--church-navy)]/90 transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5">
+                    <PlayCircle size={18} />
+                    Read the Message
+                  </span>
                 </div>
-              </div>
+              </Link>
             </article>
           </div>
 
@@ -288,21 +260,15 @@ export default async function SermonsPage() {
               </h2>
               <p className="text-slate-500 mt-2">Browse our archive of teachings</p>
             </header>
-            
-            <div className="flex items-center gap-2 bg-white p-1 rounded-lg border border-slate-200 shadow-sm">
-               <button className="p-2 rounded bg-slate-100 text-[var(--church-navy)] shadow-sm">
-                  <LayoutGrid size={18} />
-               </button>
-               <button className="p-2 rounded text-slate-400 hover:bg-slate-50 hover:text-slate-600 transition-colors">
-                  <List size={18} />
-               </button>
-            </div>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {recentMessages.map((msg) => (
-              <article key={msg.title} className="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl hover:shadow-[var(--church-navy)]/5 border border-slate-100 transition-all duration-300 flex flex-col h-full hover:-translate-y-1">
-                
+              <Link
+                key={msg.title}
+                href={`/sermons/${msg.slug}`}
+                className="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl hover:shadow-[var(--church-navy)]/5 border border-slate-100 transition-all duration-300 flex flex-col h-full hover:-translate-y-1"
+              >
                 {/* Card Thumbnail */}
                 <figure className="relative aspect-video overflow-hidden bg-gray-100">
                   <Image
@@ -312,18 +278,11 @@ export default async function SermonsPage() {
                     className="object-cover group-hover:scale-110 transition-transform duration-700"
                   />
                   <div className="absolute inset-0 bg-black/10 group-hover:bg-black/30 transition-colors" />
-                  
-                  {/* Hover Play Button */}
-                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 scale-90 group-hover:scale-100">
-                    <span className="w-14 h-14 bg-[var(--church-red)] rounded-full flex items-center justify-center shadow-lg text-white">
-                      <Play fill="currentColor" size={24} className="ml-1" />
-                    </span>
-                  </div>
 
                   <div className="absolute bottom-3 right-3 bg-black/70 backdrop-blur-sm text-white text-[10px] font-bold px-2.5 py-1 rounded-md">
                     {msg.duration}
                   </div>
-                  
+
                   <div className="absolute top-3 left-3 bg-[var(--church-navy)]/90 backdrop-blur-sm text-white text-[10px] font-bold px-2.5 py-1 rounded-md uppercase tracking-wider">
                     {msg.category}
                   </div>
@@ -350,28 +309,11 @@ export default async function SermonsPage() {
                           <p className="text-slate-400">{msg.date}</p>
                        </div>
                     </div>
-                    
-                    <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                       <button className="p-2 rounded-full bg-slate-50 hover:bg-[var(--church-navy)] hover:text-white text-slate-500 transition-colors" title="Audio Only">
-                          <Headphones size={16} />
-                       </button>
-                       <button className="p-2 rounded-full bg-slate-50 hover:bg-[var(--church-navy)] hover:text-white text-slate-500 transition-colors" title="Sermon Notes">
-                          <FileText size={16} />
-                       </button>
-                    </div>
                   </div>
                 </div>
-              </article>
+              </Link>
             ))}
           </div>
-
-          <div className="mt-20 text-center">
-            <button className="group bg-white border border-slate-200 text-[var(--church-navy)] px-8 py-3.5 rounded-full font-bold text-sm hover:border-[var(--church-red)] hover:text-[var(--church-red)] transition-all shadow-sm hover:shadow-md flex items-center gap-2 mx-auto">
-              Load More Sermons
-              <ChevronDown size={16} className="group-hover:translate-y-1 transition-transform" />
-            </button>
-          </div>
-
         </div>
       </section>
     </main>

@@ -196,7 +196,7 @@ export default async function SermonDetailPage({
 
                 {/* Transcript / Full Text */}
                 {sermon.transcript && (
-                  <div className="prose prose-lg prose-slate max-w-none prose-headings:font-serif prose-a:text-[var(--church-red)]">
+                  <div className="prose prose-lg prose-slate max-w-3xl prose-headings:font-serif prose-a:text-[var(--church-red)]">
                      <hr className="my-8 border-slate-100" />
                      <h3 className="text-xl font-bold">Transcript</h3>
                      <PortableText value={sermon.transcript} />
