@@ -25,10 +25,12 @@ export default function VideoBackground({
   const [useVideo, setUseVideo] = useState(false)
 
   useEffect(() => {
-    // Only use video on larger screens and when not on reduced motion
+    // Only use video on larger screens and when not on reduced motion.
+    // The effect intentionally seeds the initial value synchronously.
     const mediaQuery = window.matchMedia('(min-width: 1024px)')
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)')
 
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setUseVideo(mediaQuery.matches && !prefersReducedMotion.matches && !!videoSrc)
 
     const handleResize = () => {

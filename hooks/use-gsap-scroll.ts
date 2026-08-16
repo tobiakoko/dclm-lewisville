@@ -56,7 +56,7 @@ export function useGsapSlideIn(direction: 'left' | 'right' | 'up' | 'down' = 'up
     if (!ref.current) return
 
     const element = ref.current
-    const fromVars: any = { opacity: 0 }
+    const fromVars: gsap.TweenVars = { opacity: 0 }
 
     switch (direction) {
       case 'left':

@@ -24,7 +24,8 @@ export default function MediaGallery({ items, columns = 3 }: MediaGalleryProps) 
 
   const openLightbox = (index: number) => {
     setSelectedIndex(index)
-    // Prevent body scroll when lightbox is open
+    // Prevent body scroll when lightbox is open (intentional DOM side effect)
+    // eslint-disable-next-line react-hooks/immutability
     document.body.style.overflow = 'hidden'
   }
 

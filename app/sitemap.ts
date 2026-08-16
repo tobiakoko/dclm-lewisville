@@ -73,7 +73,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   ]
 
   // Dynamic sermon pages
-  const sermonPages = sermons.map((sermon: any) => ({
+  const sermonPages = sermons.map((sermon: { slug: { current: string }; _updatedAt: string }) => ({
     url: `${baseUrl}/sermons/${sermon.slug.current}`,
     lastModified: new Date(sermon._updatedAt),
     changeFrequency: 'monthly' as const,
@@ -81,7 +81,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }))
 
   // Dynamic ministry pages
-  const ministryPages = ministries.map((ministry: any) => ({
+  const ministryPages = ministries.map((ministry: { slug: { current: string }; _updatedAt: string }) => ({
     url: `${baseUrl}/ministries/${ministry.slug.current}`,
     lastModified: new Date(ministry._updatedAt),
     changeFrequency: 'monthly' as const,

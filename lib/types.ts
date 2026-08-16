@@ -1,5 +1,6 @@
 
 import type { StaticImageData } from 'next/image'
+import type { PortableTextBlock } from '@portabletext/types'
 import { Transition, Variant, Variants } from 'framer-motion'
 
 // Sanity image reference type
@@ -194,7 +195,7 @@ export interface HeroSlide {
   title: string
   subtitle?: string
   description?: string
-  image: any  // Sanity image reference
+  image: SanityImage | string  // Sanity image reference or URL
   ctaText?: string
   ctaLink?: string
 }
@@ -270,7 +271,15 @@ export interface SiteSettings {
   phone?: string
   email?: string
   servicesTimes?: ServiceTime[]
-  socialMedia?: any
-  aboutContent?: any
-  seo?: any
+  socialMedia?: {
+    facebook?: string
+    instagram?: string
+    youtube?: string
+  }
+  aboutContent?: PortableTextBlock[]
+  seo?: {
+    title?: string
+    description?: string
+    ogImage?: SanityImage
+  }
 }
