@@ -77,7 +77,7 @@ export default function NotFoundPage() {
         <EmptyHeader>
           <EmptyTitle id="error-title" className="font-extrabold text-6xl sm:text-8xl">404</EmptyTitle>
           <EmptyDescription className="text-center px-4">
-            The page you're looking for might have been moved or doesn't exist.
+            The page you&apos;re looking for might have been moved or doesn&apos;t exist.
           </EmptyDescription>
         </EmptyHeader>
         <EmptyContent>
@@ -89,8 +89,8 @@ export default function NotFoundPage() {
             </Button>
 
             <Button asChild variant="outline">
-              <Link href="/">
-                <Compass /> Explore
+              <Link href="/contact">
+                <Compass /> Visit Us
               </Link>
             </Button>
           </div>

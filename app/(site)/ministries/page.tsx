@@ -256,7 +256,7 @@ export default async function MinistriesPage() {
               Join a Team
             </Link>
             <Link
-              href="/about"
+              href="/contact"
               className="px-8 py-4 bg-transparent border border-white/20 text-white rounded-full font-bold text-sm tracking-widest uppercase hover:bg-white/10 transition-all"
             >
               Contact Leaders
