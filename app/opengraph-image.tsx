@@ -8,17 +8,15 @@ export const alt = `${SITE_CONFIG.name}: members of the congregation together fo
 export const size = { width: 1200, height: 630 }
 export const contentType = 'image/png'
 
-async function dataUrl(file: string, mime: string) {
-  const bytes = await readFile(path.join(process.cwd(), file))
-  return `data:${mime};base64,${bytes.toString('base64')}`
-}
+// Paths are written out in full so the build traces only these two files, not the whole project
+const toDataUrl = (bytes: Buffer, mime: string) => `data:${mime};base64,${bytes.toString('base64')}`
 
 /** Share image (BUILD-PLAN 2.14): a real congregation photo, the emblem and the church's name */
 export default async function OpenGraphImage() {
   const [{ config }, photo, emblem] = await Promise.all([
     getSiteData(),
-    dataUrl('app/_og/congregation-1200.jpg', 'image/jpeg'),
-    dataUrl('public/dclm_logo.png', 'image/png'),
+    readFile(path.join(process.cwd(), 'app', '_og', 'congregation-1200.jpg')).then((b) => toDataUrl(b, 'image/jpeg')),
+    readFile(path.join(process.cwd(), 'public', 'dclm_logo.png')).then((b) => toDataUrl(b, 'image/png')),
   ])
 
   return new ImageResponse(
