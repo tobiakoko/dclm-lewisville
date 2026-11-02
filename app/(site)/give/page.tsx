@@ -1,9 +1,12 @@
-import HeroSection from '@/components/sections/HeroSection'
+import type { Metadata } from 'next'
+import { PageHero } from '@/components/site/PageHero'
+import { Section } from '@/components/site/Section'
 import { SITE_CONFIG } from '@/lib/constants'
 
-export const metadata = {
+export const metadata: Metadata = {
   title: 'Give',
-  description: `Ways to give to ${SITE_CONFIG.name}.`,
+  description: `Ways to give to ${SITE_CONFIG.name}: Zelle, check or online giving.`,
+  alternates: { canonical: '/give' },
 }
 
 // SITE-CONTENT.md §10: three ways, each with the placeholder until the church supplies details.
@@ -20,24 +23,18 @@ const WAYS_TO_GIVE = [
 
 export default function GivePage() {
   return (
-    <div className="bg-white">
-      <HeroSection title="Give" subtitle={SITE_CONFIG.name} />
-
-      <section className="py-20 px-6" aria-labelledby="ways-heading">
-        <div className="max-w-5xl mx-auto">
-          <h2 id="ways-heading" className="font-serif text-4xl text-(--church-navy) mb-10">
-            Ways to give
-          </h2>
-          <ul className="grid gap-6 md:grid-cols-3 list-none">
-            {WAYS_TO_GIVE.map((way) => (
-              <li key={way.title} className="rounded-2xl border border-slate-200 p-6 space-y-3">
-                <h3 className="font-serif text-2xl font-bold text-(--church-navy)">{way.title}</h3>
-                <p className="text-slate-700">{way.detail}</p>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </section>
-    </div>
+    <>
+      <PageHero title="Give" />
+      <Section id="ways" title="Ways to give">
+        <ul className="grid list-none gap-6 md:grid-cols-3">
+          {WAYS_TO_GIVE.map((way) => (
+            <li key={way.title} className="space-y-2 rounded-2xl border border-border-input/40 bg-white p-6">
+              <h3>{way.title}</h3>
+              <p className="text-ink-muted">{way.detail}</p>
+            </li>
+          ))}
+        </ul>
+      </Section>
+    </>
   )
 }

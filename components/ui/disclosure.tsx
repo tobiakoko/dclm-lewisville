@@ -37,7 +37,7 @@ export function Disclosure({
         aria-controls={panelId}
         onClick={() => setOpen((value) => !value)}
         className={cn(
-          'flex w-full items-start justify-between gap-4 text-left focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--church-navy)',
+          'flex w-full items-start justify-between gap-4 text-left',
           buttonClassName
         )}
       >

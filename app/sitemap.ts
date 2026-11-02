@@ -1,84 +1,34 @@
-import { MetadataRoute } from 'next'
-import { SITE_CONFIG } from '@/lib/constants'
-import { MINISTRIES } from '@/lib/content/site'
-import { client } from '@/lib/sanity/client'
+import type { MetadataRoute } from 'next'
 import { groq } from 'next-sanity'
+import { SITE_CONFIG } from '@/lib/constants'
+import { client } from '@/lib/sanity/client'
+import { PUBLIC_PATHS } from '@/lib/routes'
+
+const PRIORITY: Record<string, number> = { '/': 1, '/visit': 0.9, '/about': 0.8, '/sermons': 0.8 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = SITE_CONFIG.url.replace(/\/$/, '')
 
-  let sermons = []
+  const pages: MetadataRoute.Sitemap = PUBLIC_PATHS.map((path) => ({
+    url: `${baseUrl}${path === '/' ? '' : path}`,
+    changeFrequency: path === '/sermons' ? 'weekly' : 'monthly',
+    priority: PRIORITY[path] ?? 0.6,
+  }))
 
-  // Fetch all sermons
-  try {
-    sermons = await client.fetch(
-      groq`*[_type == "sermon"]{ slug, _updatedAt }`
-    )
-  } catch {
-    console.warn('Failed to fetch sermons for sitemap (this is expected during build without Sanity credentials)')
-  }
+  // Sermon pages exist only for real Sanity documents. Ministry URLs redirect to /ministries
+  // until a ministry has its own document (BUILD-PLAN 2.8), so they aren't listed.
+  // A Sanity error fails the sitemap rather than publishing a partial one (CLAUDE.md rule 5).
+  const sermons = await client.fetch<{ slug: string; updatedAt: string }[]>(
+    groq`*[_type == "sermon" && defined(slug.current)]{ "slug": slug.current, "updatedAt": _updatedAt }`
+  )
 
-  // Static pages
-  const staticPages = [
-    {
-      url: baseUrl,
-      lastModified: new Date(),
-      changeFrequency: 'weekly' as const,
-      priority: 1,
-    },
-    {
-      url: `${baseUrl}/about`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly' as const,
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/ministries`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly' as const,
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/sermons`,
-      lastModified: new Date(),
-      changeFrequency: 'daily' as const,
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/events`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly' as const,
-      priority: 0.7,
-    },
-    {
-      url: `${baseUrl}/contact`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly' as const,
-      priority: 0.6,
-    },
-    {
-      url: `${baseUrl}/give`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly' as const,
-      priority: 0.7,
-    },
+  return [
+    ...pages,
+    ...sermons.map((sermon) => ({
+      url: `${baseUrl}/sermons/${sermon.slug}`,
+      lastModified: new Date(sermon.updatedAt),
+      changeFrequency: 'yearly' as const,
+      priority: 0.5,
+    })),
   ]
-
-  // Dynamic sermon pages
-  const sermonPages = sermons.map((sermon: { slug: { current: string }; _updatedAt: string }) => ({
-    url: `${baseUrl}/sermons/${sermon.slug.current}`,
-    lastModified: new Date(sermon._updatedAt),
-    changeFrequency: 'monthly' as const,
-    priority: 0.7,
-  }))
-
-  // Dynamic ministry pages
-  const ministryPages = MINISTRIES.map((ministry) => ({
-    url: `${baseUrl}/ministries/${ministry.slug}`,
-    lastModified: new Date(),
-    changeFrequency: 'monthly' as const,
-    priority: 0.7,
-  }))
-
-  return [...staticPages, ...sermonPages, ...ministryPages]
 }

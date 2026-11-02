@@ -18,3 +18,13 @@ export async function expectNoSeriousAxeViolations(page: Page) {
     }))
   expect(serious).toEqual([])
 }
+
+/**
+ * Answer /api/contact in the browser so e2e runs never send real email, whatever .env.local
+ * holds. The API's own outcomes are unit-tested in __tests__/api and __tests__/lib/contact.
+ */
+export async function stubContactApi(page: Page, status: number, body: object = { ok: status === 200 }) {
+  await page.route('**/api/contact', (route) =>
+    route.fulfill({ status, contentType: 'application/json', body: JSON.stringify(body) })
+  )
+}

@@ -1,62 +1,39 @@
 import Link from 'next/link'
-import Image, { type StaticImageData } from 'next/image'
-import { ArrowRight } from 'lucide-react'
+import Image from 'next/image'
 import { MINISTRIES } from '@/lib/content/site'
-import Women from '@/app/assets/women_ministry.jpeg'
-import Children from '@/app/assets/ChildrenMinistry.jpeg'
-import Youth from '@/app/assets/YouthMinistry.jpeg'
+import { MINISTRY_PHOTOS } from '@/components/site/ministry-photos'
+import { Section } from '@/components/site/Section'
 
-const PREVIEW: { slug: string; image: StaticImageData; alt: string }[] = [
-  { slug: 'women', image: Women, alt: 'Four women of the church standing together' },
-  { slug: 'children', image: Children, alt: 'A girl speaking at the pulpit' },
-  { slug: 'youth', image: Youth, alt: 'Young people standing during a service' },
-]
+const PREVIEW = ['women', 'children', 'youth']
 
 export default function MinistriesPreview() {
-  const items = PREVIEW.flatMap((item) => {
-    const ministry = MINISTRIES.find((m) => m.slug === item.slug)
-    return ministry ? [{ ...item, name: ministry.name }] : []
+  const items = PREVIEW.flatMap((slug) => {
+    const ministry = MINISTRIES.find((m) => m.slug === slug)
+    const photo = MINISTRY_PHOTOS[slug]
+    return ministry && photo ? [{ ministry, photo }] : []
   })
 
   return (
-    <section className="py-24 bg-gray-50" aria-labelledby="ministries-heading">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
-          <h2 id="ministries-heading" className="text-3xl md:text-4xl font-serif font-bold text-(--church-navy)">
-            Our Ministries
-          </h2>
-          <Link
-            href="/ministries"
-            className="flex items-center gap-2 text-sm font-semibold text-(--church-navy) underline underline-offset-4"
-          >
-            View all ministries <ArrowRight size={16} aria-hidden="true" />
-          </Link>
-        </div>
-
-        <ul className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 list-none">
-          {items.map((ministry) => (
-            <li key={ministry.slug}>
-              <Link
-                href={`/ministries#${ministry.slug}`}
-                className="group block rounded-2xl overflow-hidden bg-white shadow-md"
-              >
-                <div className="relative aspect-4/3">
-                  <Image
-                    src={ministry.image}
-                    alt={ministry.alt}
-                    fill
-                    sizes="(min-width: 768px) 33vw, 100vw"
-                    className="object-cover"
-                  />
-                </div>
-                <p className="p-6 text-xl font-serif font-bold text-(--church-navy) group-hover:underline group-focus-visible:underline">
-                  {ministry.name}
-                </p>
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </section>
+    <Section id="ministries" title="Ministries">
+      <ul className="grid list-none gap-6 md:grid-cols-3">
+        {items.map(({ ministry, photo }) => (
+          <li key={ministry.slug}>
+            <Link href={`/ministries#${ministry.slug}`} className="group block overflow-hidden rounded-2xl border border-border-input/40 bg-white no-underline">
+              <span className="relative block aspect-4/3">
+                <Image src={photo.src} alt={photo.alt} fill sizes="(min-width: 768px) 33vw, 100vw" className="object-cover" />
+              </span>
+              <span className="block p-5 font-serif text-xl font-semibold text-navy-900 underline-offset-4 group-hover:underline">
+                {ministry.name}
+              </span>
+            </Link>
+          </li>
+        ))}
+      </ul>
+      <p className="mt-8">
+        <Link href="/ministries" className="font-semibold text-emblem-sky-700 underline underline-offset-4">
+          All ministries and outreach
+        </Link>
+      </p>
+    </Section>
   )
 }

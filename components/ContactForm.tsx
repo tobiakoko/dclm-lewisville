@@ -1,11 +1,12 @@
 'use client'
 
-import { useId, useState } from 'react'
-import { useForm } from 'react-hook-form'
+import { useId, useState, type ReactNode } from 'react'
+import { useForm, type FieldErrors } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
+import { Alert } from '@/components/site/Alert'
 import { SITE_CONFIG, telHref } from '@/lib/constants'
 import {
   contactFormSchema,
@@ -16,20 +17,60 @@ import {
 import { trackContactFormSubmit, trackContactFormError } from '@/lib/analytics'
 
 type SubmitStatus = 'success' | 'failed' | 'rate-limited' | null
+type FieldName = 'name' | 'email' | 'phone' | 'message' | 'visitDate' | 'adults' | 'children'
 
 interface ContactFormProps {
-  topic?: Exclude<ContactTopic, 'visit'>
+  topic?: ContactTopic
   /** Preselected ministry name when topic is "ministry" */
   ministry?: string
   submitLabel?: string
 }
 
-function FieldError({ id, message }: { id: string; message?: string }) {
-  if (!message) return null
+const MESSAGE_LABEL: Record<ContactTopic, string> = {
+  contact: 'Message (required)',
+  ministry: 'Message (required)',
+  prayer: 'Prayer request (required)',
+  visit: 'Anything we should know? (optional)',
+}
+
+const SUCCESS: Record<ContactTopic, string> = {
+  contact: 'Thank you. Your message has been sent to the church.',
+  ministry: 'Thank you. Your message has been sent to the church.',
+  prayer: 'Thank you. Your message has been sent to the church.',
+  visit: 'Thank you. Your message has been sent to the church. We look forward to welcoming you.',
+}
+
+function PhoneLink() {
   return (
-    <p id={id} className="text-sm mt-1 font-semibold">
-      {message}
-    </p>
+    <a href={telHref(SITE_CONFIG.phone)} className="font-semibold underline underline-offset-4">
+      {SITE_CONFIG.phone}
+    </a>
+  )
+}
+
+function Field({
+  id,
+  label,
+  error,
+  children,
+}: {
+  id: string
+  label: string
+  error?: string
+  children: ReactNode
+}) {
+  return (
+    <div>
+      <label htmlFor={id} className="mb-1.5 block font-semibold text-ink">
+        {label}
+      </label>
+      {children}
+      {error && (
+        <p id={`${id}-error`} className="mt-1 font-semibold text-heaven-700">
+          {error}
+        </p>
+      )}
+    </div>
   )
 }
 
@@ -37,12 +78,7 @@ export default function ContactForm({ topic = 'contact', ministry, submitLabel =
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitStatus, setSubmitStatus] = useState<SubmitStatus>(null)
   const uid = useId()
-  const ids = {
-    name: `${uid}-name`,
-    email: `${uid}-email`,
-    phone: `${uid}-phone`,
-    message: `${uid}-message`,
-  }
+  const id = (field: FieldName) => `${uid}-${field}`
 
   const emptyValues: ContactFormInput = { topic, ministry, name: '', email: '', phone: '', message: '' }
 
@@ -54,6 +90,12 @@ export default function ContactForm({ topic = 'contact', ministry, submitLabel =
   } = useForm<ContactFormInput, unknown, ContactFormData>({
     resolver: zodResolver(contactFormSchema),
     defaultValues: emptyValues,
+  })
+
+  const a11y = (field: FieldName, fieldErrors: FieldErrors<ContactFormInput> = errors) => ({
+    id: id(field),
+    'aria-invalid': fieldErrors[field] ? (true as const) : undefined,
+    'aria-describedby': fieldErrors[field] ? `${id(field)}-error` : undefined,
   })
 
   const onSubmit = async (data: ContactFormData) => {
@@ -86,10 +128,8 @@ export default function ContactForm({ topic = 'contact', ministry, submitLabel =
     }
   }
 
-  const describedBy = (field: keyof typeof ids) => (errors[field] ? `${ids[field]}-error` : undefined)
-
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6" noValidate>
+    <form onSubmit={handleSubmit(onSubmit)} className="max-w-xl space-y-5" noValidate>
       <input type="hidden" {...register('topic')} />
       {ministry && <input type="hidden" {...register('ministry')} />}
 
@@ -99,95 +139,61 @@ export default function ContactForm({ topic = 'contact', ministry, submitLabel =
         </p>
       )}
 
-      <div>
-        <label htmlFor={ids.name} className="block text-sm font-medium mb-2">
-          Name (required)
-        </label>
-        <Input
-          id={ids.name}
-          autoComplete="name"
-          aria-invalid={errors.name ? true : undefined}
-          aria-describedby={describedBy('name')}
-          {...register('name')}
-        />
-        <FieldError id={`${ids.name}-error`} message={errors.name?.message} />
-      </div>
+      <Field id={id('name')} label="Name (required)" error={errors.name?.message}>
+        <Input autoComplete="name" {...a11y('name')} {...register('name')} />
+      </Field>
 
-      <div>
-        <label htmlFor={ids.email} className="block text-sm font-medium mb-2">
-          Email (required)
-        </label>
-        <Input
-          id={ids.email}
-          type="email"
-          autoComplete="email"
-          aria-invalid={errors.email ? true : undefined}
-          aria-describedby={describedBy('email')}
-          {...register('email')}
-        />
-        <FieldError id={`${ids.email}-error`} message={errors.email?.message} />
-      </div>
+      <Field id={id('email')} label="Email (required)" error={errors.email?.message}>
+        <Input type="email" autoComplete="email" {...a11y('email')} {...register('email')} />
+      </Field>
 
-      <div>
-        <label htmlFor={ids.phone} className="block text-sm font-medium mb-2">
-          Phone (optional)
-        </label>
-        <Input
-          id={ids.phone}
-          type="tel"
-          autoComplete="tel"
-          aria-invalid={errors.phone ? true : undefined}
-          aria-describedby={describedBy('phone')}
-          {...register('phone')}
-        />
-        <FieldError id={`${ids.phone}-error`} message={errors.phone?.message} />
-      </div>
+      <Field id={id('phone')} label="Phone (optional)" error={errors.phone?.message}>
+        <Input type="tel" autoComplete="tel" {...a11y('phone')} {...register('phone')} />
+      </Field>
 
-      <div>
-        <label htmlFor={ids.message} className="block text-sm font-medium mb-2">
-          {topic === 'prayer' ? 'Prayer request (required)' : 'Message (required)'}
-        </label>
-        <Textarea
-          id={ids.message}
-          rows={5}
-          aria-invalid={errors.message ? true : undefined}
-          aria-describedby={describedBy('message')}
-          {...register('message')}
-        />
-        <FieldError id={`${ids.message}-error`} message={errors.message?.message} />
-      </div>
+      {topic === 'visit' && (
+        <>
+          <Field id={id('visitDate')} label="Date you plan to visit (required)" error={errors.visitDate?.message}>
+            <Input type="date" {...a11y('visitDate')} {...register('visitDate')} />
+          </Field>
+          <div className="grid gap-5 sm:grid-cols-2">
+            <Field id={id('adults')} label="Number of adults (optional)" error={errors.adults?.message}>
+              <Input type="number" inputMode="numeric" min={0} max={50} {...a11y('adults')} {...register('adults')} />
+            </Field>
+            <Field id={id('children')} label="Number of children (optional)" error={errors.children?.message}>
+              <Input type="number" inputMode="numeric" min={0} max={50} {...a11y('children')} {...register('children')} />
+            </Field>
+          </div>
+        </>
+      )}
 
-      <div role="status" aria-live="polite">
-        {submitStatus === 'success' && (
-          <p className="bg-white text-(--church-navy) px-4 py-3 rounded font-semibold">
-            Thank you. Your message has been sent to the church.
-          </p>
-        )}
+      <Field id={id('message')} label={MESSAGE_LABEL[topic]} error={errors.message?.message}>
+        <Textarea rows={5} {...a11y('message')} {...register('message')} />
+      </Field>
+
+      <div aria-live="polite">
+        {submitStatus === 'success' && <Alert tone="success" title={SUCCESS[topic]} />}
         {submitStatus === 'failed' && (
-          <p className="bg-white text-(--church-navy) px-4 py-3 rounded">
-            <strong>Sorry, your message was not sent.</strong> Please call us at{' '}
-            <a href={telHref(SITE_CONFIG.phone)} className="underline font-semibold">
-              {SITE_CONFIG.phone}
-            </a>{' '}
-            or email{' '}
-            <a href={`mailto:${SITE_CONFIG.email}`} className="underline font-semibold">
-              {SITE_CONFIG.email}
-            </a>
-            .
-          </p>
+          <Alert tone="error" title="Sorry, your message was not sent.">
+            <p>
+              Please call us at <PhoneLink /> or email{' '}
+              <a href={`mailto:${SITE_CONFIG.email}`} className="font-semibold underline underline-offset-4">
+                {SITE_CONFIG.email}
+              </a>
+              .
+            </p>
+          </Alert>
         )}
         {submitStatus === 'rate-limited' && (
-          <p className="bg-white text-(--church-navy) px-4 py-3 rounded">
-            <strong>Too many messages in a short time.</strong> Please wait a minute and try again, or call us at{' '}
-            <a href={telHref(SITE_CONFIG.phone)} className="underline font-semibold">
-              {SITE_CONFIG.phone}
-            </a>
-            .
-          </p>
+          <Alert tone="error" title="Too many messages in a short time.">
+            <p>
+              Please wait a minute and try again, or call us at <PhoneLink />.
+            </p>
+          </Alert>
         )}
       </div>
 
-      <Button type="submit" disabled={isSubmitting} className="w-full">
+      <Button type="submit" disabled={isSubmitting}>
         {isSubmitting ? 'Sending…' : submitLabel}
       </Button>
     </form>

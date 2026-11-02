@@ -123,3 +123,28 @@ describe('ContactForm', () => {
     expect(received).toMatchObject({ topic: 'ministry', ministry: 'Youth Ministry' })
   })
 })
+
+describe('Plan Your Visit form', () => {
+  it('requires a date, sends headcounts and allows an empty message', async () => {
+    let received: Record<string, unknown> | undefined
+    server.use(
+      http.post('/api/contact', async ({ request }) => {
+        received = (await request.json()) as Record<string, unknown>
+        return HttpResponse.json({ ok: true })
+      })
+    )
+    const user = userEvent.setup()
+    render(<ContactForm topic="visit" submitLabel="Let us know" />)
+    await user.type(screen.getByLabelText(/^Name/), 'Test Visitor')
+    await user.type(screen.getByLabelText(/^Email/), 'visitor@example.com')
+    await user.click(screen.getByRole('button', { name: 'Let us know' }))
+    expect(await screen.findByText('Choose the date you plan to visit')).toBeInTheDocument()
+
+    await user.type(screen.getByLabelText(/^Date you plan to visit/), '2026-11-08')
+    await user.type(screen.getByLabelText(/^Number of adults/), '2')
+    await user.click(screen.getByRole('button', { name: 'Let us know' }))
+    await screen.findByText(/We look forward to welcoming you/)
+    expect(received).toMatchObject({ topic: 'visit', visitDate: '2026-11-08', adults: 2, message: '' })
+    expect(received).not.toHaveProperty('children')
+  })
+})

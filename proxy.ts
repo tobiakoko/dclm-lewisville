@@ -19,23 +19,26 @@ function studioCspHeader(): string {
   `.replace(/\s{2,}/g, ' ').trim()
 }
 
-// Strict nonce-based CSP for the main site
+// Strict nonce-based CSP for the main site. Only what pages use (BUILD-PLAN 2.15):
+// - YouTube player: youtube-nocookie.com frames, loaded only when a visitor presses play
+// - Google Maps embed: www.google.com frames on Visit and Contact
+// - Analytics: Vercel (same origin) and Google Analytics when NEXT_PUBLIC_GA_ID is set
+// Images are served through /_next/image (same origin); Sanity audio files play from cdn.sanity.io.
 function siteCspHeader(nonce: string): string {
   return `
     default-src 'self';
-    script-src 'self' 'nonce-${nonce}' 'strict-dynamic' https://www.googletagmanager.com https://www.google-analytics.com ${IS_DEV ? "'unsafe-eval'" : ''};
-    style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
-    img-src 'self' blob: data: https://cdn.sanity.io ${IS_DEV ? 'http://localhost:*' : ''};
-    font-src 'self' https://fonts.gstatic.com;
-    connect-src 'self' https://api.sanity.io https://*.sanity.io https://www.google-analytics.com ${IS_DEV ? 'http://localhost:* ws://localhost:*' : ''};
-    frame-src 'self' https://www.google.com https://maps.google.com https://www.youtube-nocookie.com;
+    script-src 'self' 'nonce-${nonce}' 'strict-dynamic' https://www.googletagmanager.com ${IS_DEV ? "'unsafe-eval'" : ''};
+    style-src 'self' 'unsafe-inline';
+    img-src 'self' blob: data: https://www.google-analytics.com https://www.googletagmanager.com ${IS_DEV ? 'http://localhost:*' : ''};
+    font-src 'self';
+    connect-src 'self' https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com ${IS_DEV ? 'http://localhost:* ws://localhost:*' : ''};
+    frame-src https://www.google.com https://www.youtube-nocookie.com;
     frame-ancestors 'none';
     base-uri 'self';
     form-action 'self';
     object-src 'none';
     media-src 'self' https://cdn.sanity.io;
     worker-src 'self' blob:;
-    child-src blob:;
     manifest-src 'self';
   `.replace(/\s{2,}/g, ' ').trim()
 }

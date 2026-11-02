@@ -1,26 +1,11 @@
 import type { Metadata } from "next";
 import { headers } from 'next/headers';
-import { Inter, Playfair_Display } from 'next/font/google';
 import "./globals.css";
 import { SITE_CONFIG } from '@/lib/constants'
 import { churchJsonLd } from '@/lib/structured-data'
 import GoogleAnalytics from "@/components/GoogleAnalytics";
 import { Analytics } from '@vercel/analytics/next';
 import { SpeedInsights } from '@vercel/speed-insights/next';
-
-const inter = Inter({
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
-  display: 'swap',
-  variable: '--font-inter',
-});
-
-const playfair = Playfair_Display({
-  subsets: ['latin'],
-  weight: ['400', '600', '700'],
-  display: 'swap',
-  variable: '--font-playfair',
-});
 
 export const metadata: Metadata = {
   title: {
@@ -70,7 +55,7 @@ export default async function RootLayout({
   const nonce = (await headers()).get('x-nonce') ?? undefined;
 
   return (
-    <html lang="en" className={`${inter.variable} ${playfair.variable}`}>
+    <html lang="en">
       <head>
         <script
           type="application/ld+json"
@@ -79,8 +64,9 @@ export default async function RootLayout({
         />
       </head>
       <body className="antialiased">
-        {process.env.NEXT_PUBLIC_GA_ID && (
-          <GoogleAnalytics ga_id={process.env.NEXT_PUBLIC_GA_ID} nonce={nonce} />
+        {/* Google Analytics only in production and only with a real measurement ID (BUILD-PLAN 2.16) */}
+        {process.env.NODE_ENV === 'production' && /^G-[A-Z0-9]{6,}$/.test(process.env.NEXT_PUBLIC_GA_ID ?? '') && (
+          <GoogleAnalytics ga_id={process.env.NEXT_PUBLIC_GA_ID!} nonce={nonce} />
         )}
         {children}
         <Analytics />
