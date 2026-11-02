@@ -21,6 +21,54 @@ export const homeHero: Paragraph[] = [
   ]
 ]
 
+export const visit: Paragraph[] = [
+  [
+    "Service times in plain English –\nSunday Worship Service, 9:30 AM–12:00 PM: our main service, an awesome and refreshing time in God’s presence. “",
+    {
+      "em": "I will worship toward thy holy temple, and praise thy name for thy lovingkindness and for thy truth: for thou hast magnified thy word above all thy name."
+    },
+    "” (Psalm 138:2)\nSearch The Scriptures (our Sunday Bible class), 9:40–10:05 AM, as part of the Sunday service, with separate classes for children, youth, and adults.\nMonday Prayer Meeting, 7:00–8:00 PM, online: an hour of prayer together ([Zoom link to come]).\nTuesday Bible Study, 7:00–9:00 PM, in person and online ([online link to come]): a midweek Bible teaching service with systematic, expository study of God’s Word. “",
+    {
+      "em": "The entrance of thy words giveth light; it giveth understanding unto the simple."
+    },
+    "” (Psalm 119:130)\nFriday Revival Hour, 7:00–9:00 PM, in person and online ([online link to come]): a midweek service of prayer, spiritual revival, and evangelism training. “",
+    {
+      "em": "Fear not, O land; be glad and rejoice: for the LORD will do great things."
+    },
+    "” (Joel 2:21)"
+  ],
+  [
+    "Getting here and parking – Free parking is available in the lot around the plaza where the church meets. Look for the large Deeper Life Lewisville sign in front of the building; it shows you’re in the right place."
+  ],
+  [
+    "When you arrive – Information not included, skip"
+  ],
+  [
+    "What happens in a service – Our Sunday service lasts about two and a half hours and blends singing, prayer, Bible study, and teaching. Search The Scriptures, our Bible class, meets in separate classes for children, youth, and adults. Before the service, we pray together online at 9:00 AM ([Zoom link to come]), and you’re welcome to join us."
+  ],
+  [
+    "What to wear – Come as you are. You'll see everything from Sunday best to comfortable clothes. We care far more about you being here than what you're wearing."
+  ],
+  [
+    "Kids & families – Children of every age are welcome in worship. During the Sunday service, we also offer a safe, staffed Children’s Church for infants through 6th grade."
+  ],
+  [
+    "Accessibility and language – Information not included, skip"
+  ],
+  [
+    "Meet the Pastor – Welcome address is already in the home page and there is a separate leadership section for the pastor."
+  ],
+  [
+    "Watch first – Link to the church’s YouTube channel, where services stream live (see Sermons)."
+  ],
+  [
+    "Let us know you’re coming – Send the form to the church inbox (info@deeperlifelewisville.org), which the pastor reads, with a subject line that marks it as a first-time visitor, for example “New visitor: [name], [date]”."
+  ],
+  [
+    "After your visit – During the service, we’ll welcome you as our guest and give you a church card. Our ushers will walk you through the next steps."
+  ]
+]
+
 export const bibleVerse: Paragraph[] = [
   [
     "“Beloved, when I gave all diligence to write unto you of the common salvation, it was needful for me to write unto you, and exhort you that ye should earnestly contend for the faith which was once delivered unto the saints.” (Jude 1:3, KJV)"
@@ -218,5 +266,59 @@ export const ministries: Paragraph[] = [
   ],
   [
     "Prison Ministry (temporary text) – Our Prison Ministry takes the hope of the Gospel to men and women in prison. Contact us to learn more or to get involved."
+  ]
+]
+
+export const legal: Paragraph[] = [
+  [
+    "Add a Privacy Policy and Terms of Use (covering copyright and the waiver and release), following what is standard for US churches. Draft text is below. Generate a proper sitemap and link it in the footer when available. Social links: Facebook and Instagram (links to come) and YouTube (https://www.youtube.com/@DeeperLifeBibleChurchLewisvill)."
+  ],
+  [
+    "Privacy Policy:"
+  ],
+  [
+    "Effective date: [launch date]"
+  ],
+  [
+    "Deeper Life Bible Church Lewisville respects your privacy. This policy explains what information this website collects and how we use it."
+  ],
+  [
+    "Information we collect. We collect only what you choose to send us through our forms, such as your name, email address, phone number, and message when you contact us, request prayer, plan a visit, or sign up for updates. We also collect anonymous statistics about how the site is used, such as which pages are visited, to help us improve it."
+  ],
+  [
+    "How we use it. We use your information only to reply to you, pray for you, welcome you, and keep you informed about church life. Prayer requests are read by our pastor and kept confidential."
+  ],
+  [
+    "We never sell your information. Deeper Life Bible Church Lewisville, Texas, will never sell, rent, or trade your email address or any other personal data to any other website, organization, or company."
+  ],
+  [
+    "Services we use. The site relies on trusted services for email delivery, video (YouTube), online meetings (Zoom), maps (Google Maps), and online giving. These services may process your information under their own privacy policies. Online gifts are handled by our giving provider; this website does not store card or bank details."
+  ],
+  [
+    "Cookies. The site uses only the cookies it needs to work and to measure how it is used."
+  ],
+  [
+    "Children. This website is not directed to children under 13, and we do not knowingly collect their personal information. If you believe your child has sent us information, contact us and we will delete it."
+  ],
+  [
+    "Your choices. You can ask us to correct or delete the information you have sent us, or unsubscribe from our emails at any time, by writing to info@deeperlifelewisville.org."
+  ],
+  [
+    "Changes. We may update this policy from time to time and will post the new version here with its effective date."
+  ],
+  [
+    "Contact. Deeper Life Bible Church Lewisville, 1368 W Main St, Lewisville, TX 75067 · (469) 939-6994 · info@deeperlifelewisville.org"
+  ],
+  [
+    "Copyright Policy:"
+  ],
+  [
+    "All content on this website, including text, images, audio, and video, belongs to Deeper Life Bible Church Lewisville or is used with permission, and is protected by copyright. You may share it for personal, non-commercial use with credit to the church. Please do not sell, alter, or republish any material without written permission. Materials from Deeper Christian Life Ministry remain the property of DCLM. Scripture quotations are from the King James Version."
+  ],
+  [
+    "Waiver and Release:"
+  ],
+  [
+    "This website exists to offer biblical counsel for life’s various challenges, questions, and problems. No information provided by Deeper Life Bible Church, Lewisville, Texas, should be viewed as professional counseling, therapy, medical or legal advice, or other professional advice. By using this website, you release Deeper Life Bible Church, Lewisville, Texas, and any of its officers, directors, or representatives from any responsibility for any decision you might make in your personal life. If you are in crisis, call 911, or call or text 988 to reach the Suicide and Crisis Lifeline."
   ]
 ]

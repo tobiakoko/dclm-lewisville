@@ -47,3 +47,22 @@ describe('contactSubject', () => {
     expect(contactSubject(parse({ topic: 'ministry', ministry: 'Evangelism' }))).toBe('Ministry: Evangelism – Test Visitor')
   })
 })
+
+describe('Plan Your Visit fields', () => {
+  const visit = { ...base, topic: 'visit', visitDate: '2026-11-08' }
+
+  it('makes the message optional for visits only', () => {
+    expect(contactFormSchema.safeParse({ ...visit, message: '' }).success).toBe(true)
+    expect(contactFormSchema.safeParse({ ...base, message: '' }).success).toBe(false)
+  })
+
+  it('reads headcounts from form strings and treats blanks as not given', () => {
+    const parsed = contactFormSchema.parse({ ...visit, adults: '2', children: '' })
+    expect(parsed.adults).toBe(2)
+    expect(parsed.children).toBeUndefined()
+  })
+
+  it.each(['-1', '1.5', '51', 'two'])('rejects the headcount %s', (adults) => {
+    expect(contactFormSchema.safeParse({ ...visit, adults }).success).toBe(false)
+  })
+})

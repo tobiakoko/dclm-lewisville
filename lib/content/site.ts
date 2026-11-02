@@ -68,6 +68,47 @@ export const PASTORS_WELCOME = {
   paragraphs: verbatim.pastorsWelcome.slice(1),
 }
 
+// --- Plan Your Visit (§4) -------------------------------------------------
+
+/** Splits a paragraph at its line breaks, keeping emphasis */
+export function splitLines(paragraph: Paragraph): Paragraph[] {
+  const lines: Paragraph[] = [[]]
+  for (const segment of paragraph) {
+    if (typeof segment !== 'string') {
+      lines[lines.length - 1].push(segment)
+      continue
+    }
+    segment.split('\n').forEach((part, index) => {
+      if (index > 0) lines.push([])
+      if (part) lines[lines.length - 1].push(part)
+    })
+  }
+  return lines.filter((line) => line.length > 0)
+}
+
+// Labels in §4 that carry visitor-facing copy. The others are either "skip" (no approved copy
+// yet) or instructions to us, which the page implements with links and the visit form.
+const VISIT_COPY_LABELS = [
+  'Getting here and parking',
+  'What happens in a service',
+  'What to wear',
+  'Kids & families',
+  'After your visit',
+] as const
+
+const [visitTimes, ...visitRest] = approved.visit
+
+/** One line per meeting, with its scripture, e.g. "Tuesday Bible Study, 7:00–9:00 PM, …" */
+export const VISIT_SERVICE_LINES: Paragraph[] = splitLines(visitTimes).slice(1)
+
+export const VISIT_SECTIONS: TitledText[] = VISIT_COPY_LABELS.map((label) => {
+  const paragraph = expectValue(
+    visitRest.map(splitLabel).find((item) => item?.label === label),
+    `Plan Your Visit section "${label}"`
+  )
+  return { title: label, body: paragraph.body }
+})
+
 // --- About (§5) ------------------------------------------------------------
 
 export interface AboutSection {
@@ -203,3 +244,32 @@ export function findMinistry(slug: string): Ministry | undefined {
 }
 
 export type { Inline, Paragraph }
+
+// --- Privacy Policy and Terms of Use (§11) --------------------------------
+
+/** Paragraphs under a "Title:" line, up to the next such line */
+function block(paragraphs: Paragraph[], title: string): Paragraph[] {
+  const start = paragraphs.findIndex((p) => plainText(p) === `${title}:`)
+  if (start === -1) throw new Error(`SITE-CONTENT.md structure changed: "${title}:"`)
+  const rest = paragraphs.slice(start + 1)
+  const end = rest.findIndex((p) => /^[A-Z][A-Za-z ]+:$/.test(plainText(p)))
+  return end === -1 ? rest : rest.slice(0, end)
+}
+
+const privacy = block(approved.legal, 'Privacy Policy')
+const [effectiveDate, ...privacyBody] = privacy
+
+/** Drafts that still need legal review before launch (SITE-CONTENT.md §11 dev note) */
+export const PRIVACY_POLICY = {
+  effectiveDate: plainText(effectiveDate),
+  /** Every paragraph except the final "Contact." line, which the page renders from SITE_CONFIG */
+  paragraphs: privacyBody.filter((p) => !plainText(p).startsWith('Contact.')),
+  /** The approved "Contact." line, kept so a test can confirm it still matches SITE_CONFIG */
+  contactLine: plainText(expectValue(privacyBody.find((p) => plainText(p).startsWith('Contact.')), 'Privacy contact line')),
+}
+
+export const COPYRIGHT_POLICY: Paragraph[] = block(approved.legal, 'Copyright Policy')
+export const WAIVER_AND_RELEASE: Paragraph[] = block(approved.legal, 'Waiver and Release')
+
+/** When the legal pages' text last changed (shown as "Last updated") */
+export const LEGAL_LAST_UPDATED = '2026-11-02'

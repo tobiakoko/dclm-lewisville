@@ -6,7 +6,8 @@
  */
 import { readdirSync, readFileSync, statSync } from 'fs'
 import path from 'path'
-import { SITE_CONFIG, SERVICE_TIMES } from '@/lib/constants'
+import { SITE_CONFIG, SERVICE_TIMES, formatAddress } from '@/lib/constants'
+import { PRIVACY_POLICY } from '@/lib/content/site'
 
 const ROOT = process.cwd()
 const SCANNED = ['app', 'components', 'lib']
@@ -54,11 +55,20 @@ describe('no wrong or placeholder facts in the code', () => {
     expect(hits).toEqual([])
   })
 
-  it('writes the phone number only in lib/constants.ts', () => {
+  it('writes the phone number only in lib/constants.ts (generated church copy aside)', () => {
     const digits = SITE_CONFIG.phone.replace(/\D/g, '')
     const pattern = new RegExp(digits.replace(/^(\d{3})(\d{3})(\d{4})$/, '\\(?$1\\)?[\\s.-]?$2[\\s.-]?$3'))
-    const hits = sources.filter((source) => pattern.test(source.text)).map((source) => source.file)
+    const hits = sources
+      .filter((source) => !source.file.endsWith('.generated.ts'))
+      .filter((source) => pattern.test(source.text))
+      .map((source) => source.file)
     expect(hits).toEqual(['lib/constants.ts'])
+  })
+
+  it('agrees with the contact line in the approved Privacy Policy', () => {
+    expect(PRIVACY_POLICY.contactLine).toBe(
+      `Contact. ${SITE_CONFIG.name}, ${formatAddress(SITE_CONFIG.address)} · ${SITE_CONFIG.phone} · ${SITE_CONFIG.email}`
+    )
   })
 })
 
