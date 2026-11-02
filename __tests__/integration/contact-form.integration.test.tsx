@@ -13,9 +13,7 @@ jest.mock('@/lib/analytics', () => ({
   trackContactFormError: jest.fn(),
 }))
 
-beforeAll(() => server.listen({ onUnhandledRequest: 'error' }))
-afterEach(() => server.resetHandlers())
-afterAll(() => server.close())
+// __mocks__/server.ts starts and resets the MSW server for this file
 
 async function fillAndSubmit(user: ReturnType<typeof userEvent.setup>) {
   await user.type(screen.getByLabelText(/^Name/), 'Adébáyọ̀ Test')

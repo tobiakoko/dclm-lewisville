@@ -104,3 +104,15 @@ The four remaining high advisories all come from Sanity tooling. Only the Sanity
 **Runtime check.** After `npm run build`, none of `@sanity/cli`, `@sanity/codegen`, `@sanity/runtime-cli`, `@sanity/import`, `archiver` or `rimraf` appears in `.next/server` or `.next/static`. As a control, the same search does find `node_modules/sanity/` in 19 files. So none of the four advisories reaches the running `/studio` route or any site page; they affect developer and CI tooling only. **Nothing is flagged at runtime.**
 
 CI now runs `npm audit --audit-level=critical`, because `--audit-level=high` would fail on these four until Phase 3. Raise it back to `high` after the Sanity 6 upgrade.
+
+## After dependency updates (Phase 1, 1.15)
+
+`npm update` within the existing ranges, plus React and React DOM 19.2.0 → 19.3.1. Notable versions now: Next 16.4.3, React 19.3.1, Zod 4.6.7, Tailwind 4.3.3, Resend 6.37.0, Playwright 1.64.1, msw 2.15.0, Jest 30.5. Sanity stays on 4.22 (Phase 3) and TypeScript on 5.9.
+
+Fallout fixed in the same change:
+
+- The update hoisted `undici` 7 (through `isomorphic-dompurify` → `jsdom` 28). Jest's jsdom setup loads `undici` for `fetch`, and version 7 needs a `MessagePort` global. Polyfilling that from `worker_threads` made Jest hang. `undici@^6.29.1` is now declared as a dev dependency; it was already loaded by `jest.setup.js` without being declared.
+- msw 2.15 has two more ESM-only dependencies (`rettime`, `@open-draft/deferred-promise`), now in the Jest transform allowlist. It also refuses to start a server twice, so the integration test relies on `__mocks__/server.ts` to start it.
+- Playwright 1.64 needs `npx playwright install` locally.
+
+Remaining advisories: **48, of which 0 critical, 4 high, 43 moderate and 1 low**. The four high advisories are the Sanity tooling ones from 1.1a (`@sanity/cli`, `@sanity/codegen`, `sanity`, nested `zod`). None of them is in the built app; they go away with the Sanity 6 upgrade in Phase 3.

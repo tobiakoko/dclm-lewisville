@@ -37,7 +37,7 @@ Goal: nothing on the site is wrong, fake or dead. No visual redesign yet.
 - [x] 1.13 **Sanity client.** Use `perspective: 'published'`, a pinned API version, and no `'placeholder'` project ID fallback in production.
 - [x] 1.14 **Dead code.** Delete the unreachable files from `IMPORT-MAP.md` and dependencies used only by them (expected: `gsap`, `@gsap/react`, `react-h5-audio-player`, `sonner`, `next-themes`, possibly `styled-components` and some Radix packages). Confirm each with a search before removing. Keep `@radix-ui/react-accordion` and `@radix-ui/react-label` (Phase 2 needs them) and `styled-components` (Sanity peer). Delete `ui/badge.tsx` and `ui/card.tsx` with their tests. Remove `date-fns`.
 - [x] 1.14a **Lint.** Fix the remaining warnings and set `npm run lint` to `--max-warnings 0`.
-- [ ] 1.15 **Dependencies.** Apply non-breaking updates (Next 16 latest minor, React 19 minor, Zod, Tailwind, Resend) and `npm audit fix` without `--force`. No Sanity major upgrade yet (Phase 3). Record remaining advisories.
+- [x] 1.15 **Dependencies.** Apply non-breaking updates (Next 16 latest minor, React 19 minor, Zod, Tailwind, Resend) and `npm audit fix` without `--force`. No Sanity major upgrade yet (Phase 3). Record remaining advisories.
 
 **Gate 1:** CI green on Node 22 and 24. A made-up sermon or ministry URL returns 404. A contact test message arrives in the test inbox; with email unconfigured the form shows an error and the phone number. No past event shows as upcoming. No `#` links, placeholder media or invented content anywhere. Footer, Contact page and JSON-LD show the same name, address, phone and email.
 
