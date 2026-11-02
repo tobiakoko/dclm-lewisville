@@ -1,19 +1,24 @@
 import { test, expect } from '@playwright/test'
-import { expectNoSeriousAxeViolations } from './helpers'
+import { expectNoSeriousAxeViolations, stubContactApi } from './helpers'
 import { SITE_CONFIG, SERVICE_TIMES, formatAddress } from '../lib/constants'
 import { EVENTS_EMPTY_STATE } from '../lib/events'
 import { MINISTRIES } from '../lib/content/site'
+import { PUBLIC_PATHS, type PublicPath } from '../lib/routes'
 
-const PAGES: { path: string; heading: RegExp }[] = [
-  { path: '/', heading: /Come as you are/ },
-  { path: '/about', heading: /About Us/ },
-  { path: '/ministries', heading: /Ministries/ },
-  { path: `/ministries/${MINISTRIES[0].slug}`, heading: new RegExp(MINISTRIES[0].name) },
-  { path: '/sermons', heading: /Sermons/ },
-  { path: '/events', heading: /Events/ },
-  { path: '/give', heading: /Give/ },
-  { path: '/contact', heading: /Contact and Prayer/ },
-]
+const HEADINGS: Record<PublicPath, RegExp> = {
+  '/': new RegExp(`${SITE_CONFIG.address.city}, ${SITE_CONFIG.address.state}`),
+  '/visit': /^Plan Your Visit$/,
+  '/about': /^About Us$/,
+  '/ministries': /^Ministries and Outreach$/,
+  '/sermons': /^Sermons$/,
+  '/events': /^Events$/,
+  '/contact': /^Contact and Prayer$/,
+  '/give': /^Give$/,
+  '/privacy': /^Privacy Policy$/,
+  '/terms': /^Terms of Use$/,
+}
+
+const PAGES = PUBLIC_PATHS.map((path) => ({ path, heading: HEADINGS[path] }))
 
 for (const { path, heading } of PAGES) {
   test.describe(`page ${path}`, () => {
@@ -44,6 +49,12 @@ test.describe('status codes', () => {
     const response = await page.goto('/sermons/this-sermon-does-not-exist')
     expect(response?.status()).toBe(404)
     await expect(page.getByRole('heading', { level: 1 })).toHaveText(/couldn.t find that page/)
+  })
+
+  test('a ministry URL without its own page redirects to its card', async ({ request }) => {
+    const response = await request.get(`/ministries/${MINISTRIES[0].slug}`, { maxRedirects: 0 })
+    expect(response.status()).toBe(308)
+    expect(response.headers().location).toBe(`/ministries#${MINISTRIES[0].slug}`)
   })
 
   test('a made-up ministry URL returns 404', async ({ page }) => {
@@ -120,5 +131,88 @@ test.describe('about', () => {
     await page.keyboard.press('Enter')
     await expect(card).toHaveAttribute('aria-expanded', 'true')
     await expect(page.getByText(/recognisable personalities/)).toBeVisible()
+  })
+})
+
+test.describe('home on a phone', () => {
+  test.use({ viewport: { width: 390, height: 844 } })
+
+  test('shows the name, city, Sunday time and Plan your visit without scrolling (2.5)', async ({ page }) => {
+    await page.goto('/')
+    const hero = page.locator('section[aria-labelledby="hero-heading"]')
+    for (const locator of [
+      hero.getByRole('heading', { level: 1 }),
+      hero.getByText(/Sundays, 9:30 AM/),
+      hero.getByRole('link', { name: 'Plan your visit' }),
+    ]) {
+      await expect(locator).toBeInViewport({ ratio: 1 })
+    }
+    await expect(hero.getByRole('heading', { level: 1 })).toContainText(SITE_CONFIG.address.city)
+  })
+
+  test('shows the Sunday bar with directions under the hero', async ({ page }) => {
+    await page.goto('/')
+    await expect(page.getByRole('link', { name: 'Directions' })).toBeVisible()
+  })
+})
+
+test.describe('visit', () => {
+  test('the visit form fails honestly with the phone number when email is unconfigured', async ({ page }) => {
+    await stubContactApi(page, 503, { ok: false, error: 'not-configured' })
+    await page.goto('/visit')
+    const form = page.locator('#let-us-know form')
+    await form.getByLabel(/^Name/).fill('Test Visitor')
+    await form.getByLabel(/^Email/).fill('visitor@example.com')
+    await form.getByLabel(/^Date you plan to visit/).fill('2026-11-08')
+    const [response] = await Promise.all([
+      page.waitForResponse('**/api/contact'),
+      form.getByRole('button', { name: 'Let us know' }).click(),
+    ])
+    expect(response.status()).toBe(503)
+    await expect(form.getByText('Sorry, your message was not sent.')).toBeVisible()
+    await expect(form.getByRole('link', { name: SITE_CONFIG.phone })).toBeVisible()
+  })
+
+  test('leaves out the sections that have no approved copy', async ({ page }) => {
+    await page.goto('/visit')
+    await expect(page.getByRole('heading', { name: 'When you arrive' })).toHaveCount(0)
+    await expect(page.getByRole('heading', { name: /Accessibility/ })).toHaveCount(0)
+  })
+})
+
+test.describe('sermons', () => {
+  test('the top slot shows a real video or an honest message, never a placeholder', async ({ page }) => {
+    await page.goto('/sermons')
+    const latest = page.locator('#latest')
+    await expect(latest.getByRole('button', { name: /^Play/ }).or(latest.getByText('We couldn’t load the latest videos right now.'))).toBeVisible()
+    await expect(latest.getByText(/Next live: Sunday 9:30 AM CT/)).toBeVisible()
+  })
+
+  test('loads the player only after Play is pressed', async ({ page }) => {
+    await page.goto('/sermons')
+    await expect(page.locator('iframe[src*="youtube"]')).toHaveCount(0)
+  })
+})
+
+test.describe('metadata', () => {
+  test('the sitemap lists every public page on the real domain', async ({ request }) => {
+    const xml = await (await request.get('/sitemap.xml')).text()
+    for (const path of PUBLIC_PATHS) {
+      expect(xml).toContain(`<loc>${SITE_CONFIG.url.replace(/\/$/, '')}${path === '/' ? '' : path}</loc>`)
+    }
+  })
+
+  test('every page has a unique description and the share image', async ({ page, request }) => {
+    const descriptions = new Set<string>()
+    for (const path of PUBLIC_PATHS) {
+      await page.goto(path)
+      const description = await page.locator('meta[name="description"]').getAttribute('content')
+      expect(description).toBeTruthy()
+      descriptions.add(description!)
+    }
+    expect(descriptions.size).toBe(PUBLIC_PATHS.length)
+    const image = await request.get('/opengraph-image')
+    expect(image.status()).toBe(200)
+    expect(image.headers()['content-type']).toBe('image/png')
   })
 })

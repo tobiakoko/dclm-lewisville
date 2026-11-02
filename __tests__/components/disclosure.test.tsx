@@ -1,6 +1,6 @@
 import { render, screen, userEvent } from '@/__tests__/utils/test-utils'
 import { Disclosure } from '@/components/ui/disclosure'
-import CoreBeliefs from '@/components/sections/about/CoreBeliefs'
+import CoreBeliefs from '@/components/site/DoctrineCards'
 import { DOCTRINES } from '@/lib/content/doctrines'
 
 describe('Disclosure', () => {

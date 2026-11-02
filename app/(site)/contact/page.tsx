@@ -1,12 +1,17 @@
-import HeroSection from '@/components/sections/HeroSection'
+import type { Metadata } from 'next'
+import { PageHero } from '@/components/site/PageHero'
+import { Section } from '@/components/site/Section'
 import ContactForm from '@/components/ContactForm'
 import { OTHER_LOCATIONS, SITE_CONFIG, formatAddress, mapsUrl, telHref } from '@/lib/constants'
 import { MINISTRY_NAMES } from '@/lib/validations/contact'
 
-export const metadata = {
+export const metadata: Metadata = {
   title: 'Contact and Prayer',
   description: `Phone, email, address and office hours for ${SITE_CONFIG.name}, and how to send a prayer request.`,
+  alternates: { canonical: '/contact' },
 }
+
+const linkClass = 'font-semibold text-emblem-sky-700 underline underline-offset-4'
 
 export default async function ContactPage({
   searchParams,
@@ -18,108 +23,84 @@ export default async function ContactPage({
   const ministry = typeof topic === 'string' && MINISTRY_NAMES.includes(topic) ? topic : undefined
 
   return (
-    <div className="bg-white">
-      <HeroSection title="Contact and Prayer" subtitle={SITE_CONFIG.name} />
+    <>
+      <PageHero title="Contact and Prayer" sentence="Call, email or send us a message. Prayer requests go to our pastor." />
 
-      {/* --- Lewisville details first (SITE-CONTENT.md §8) --- */}
-      <section className="py-20 px-6" aria-labelledby="details-heading">
-        <div className="max-w-3xl mx-auto space-y-6 text-lg text-slate-700">
-          <h2 id="details-heading" className="font-serif text-3xl text-(--church-navy)">
-            {SITE_CONFIG.name}
-          </h2>
-          <dl className="space-y-4">
+      {/* Lewisville's details come first (SITE-CONTENT.md §8) */}
+      <Section id="details" title={SITE_CONFIG.name}>
+        <div className="grid gap-8 lg:grid-cols-2">
+          <dl className="space-y-5">
             <div>
-              <dt className="font-bold text-(--church-navy)">Phone</dt>
+              <dt className="font-semibold text-navy-900">Phone</dt>
               <dd>
-                <a href={telHref(SITE_CONFIG.phone)} className="underline underline-offset-4">
+                <a href={telHref(SITE_CONFIG.phone)} className={linkClass}>
                   {SITE_CONFIG.phone}
                 </a>
               </dd>
             </div>
             <div>
-              <dt className="font-bold text-(--church-navy)">Email</dt>
+              <dt className="font-semibold text-navy-900">Email</dt>
               <dd>
-                <a href={`mailto:${SITE_CONFIG.email}`} className="underline underline-offset-4">
+                <a href={`mailto:${SITE_CONFIG.email}`} className={`${linkClass} break-all`}>
                   {SITE_CONFIG.email}
                 </a>
               </dd>
             </div>
             <div>
-              <dt className="font-bold text-(--church-navy)">Address</dt>
-              <dd>
+              <dt className="font-semibold text-navy-900">Address</dt>
+              <dd className="space-y-1">
                 <address className="not-italic">{formatAddress(SITE_CONFIG.address)}</address>
-                <a href={mapsUrl(SITE_CONFIG.address)} className="underline underline-offset-4">
+                <a href={mapsUrl(SITE_CONFIG.address)} className={linkClass}>
                   Get directions
                 </a>
               </dd>
             </div>
             <div>
-              <dt className="font-bold text-(--church-navy)">Office hours</dt>
-              <dd>{SITE_CONFIG.officeHours}</dd>
+              <dt className="font-semibold text-navy-900">Office hours</dt>
+              <dd className="max-w-prose">{SITE_CONFIG.officeHours}</dd>
             </div>
           </dl>
-          <div className="rounded-lg overflow-hidden border border-slate-200 h-80">
+          <div className="h-80 overflow-hidden rounded-2xl border border-border-input/40">
             <iframe
               src={`https://www.google.com/maps?q=${encodeURIComponent(formatAddress(SITE_CONFIG.address))}&output=embed`}
-              className="w-full h-full border-0"
+              className="size-full border-0"
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
               title={`Map showing ${formatAddress(SITE_CONFIG.address)}`}
             />
           </div>
         </div>
-      </section>
+      </Section>
 
-      {/* --- Contact form --- */}
-      <section id="contact-form" className="bg-(--church-navy) py-20 px-6 text-white scroll-mt-24" aria-labelledby="contact-form-heading">
-        <div className="max-w-3xl mx-auto">
-          <h2 id="contact-form-heading" className="font-display text-4xl mb-8">
-            Send us a message
-          </h2>
-          <ContactForm topic={ministry ? 'ministry' : 'contact'} ministry={ministry} />
-        </div>
-      </section>
+      <Section id="contact-form" tone="paper" title="Send us a message">
+        <ContactForm topic={ministry ? 'ministry' : 'contact'} ministry={ministry} />
+      </Section>
 
-      {/* --- Prayer --- */}
-      <section id="prayer" className="py-20 px-6 bg-slate-50 scroll-mt-24" aria-labelledby="prayer-heading">
-        <div className="max-w-3xl mx-auto space-y-6">
-          <h2 id="prayer-heading" className="font-serif text-4xl text-(--church-navy)">
-            Prayer requests
-          </h2>
-          <p className="text-lg text-slate-700">Prayer requests are read by our pastor.</p>
-          <div className="bg-(--church-navy) text-white rounded-2xl p-6">
-            <ContactForm topic="prayer" submitLabel="Send prayer request" />
-          </div>
-          <p className="text-lg text-slate-700">
-            You can also use the{' '}
-            <a href={SITE_CONFIG.dclm.prayerRequestHub} className="underline underline-offset-4 font-semibold text-(--church-navy)">
-              DCLM Prayer Request Hub
-            </a>
-            .
-          </p>
-        </div>
-      </section>
+      <Section id="prayer" title="Prayer requests" intro={<p>Prayer requests are read by our pastor.</p>}>
+        <ContactForm topic="prayer" submitLabel="Send prayer request" />
+        <p className="mt-8">
+          You can also use the{' '}
+          <a href={SITE_CONFIG.dclm.prayerRequestHub} className={linkClass}>
+            DCLM Prayer Request Hub
+          </a>
+          .
+        </p>
+      </Section>
 
-      {/* --- Our other locations --- */}
-      <section className="py-20 px-6" aria-labelledby="locations-heading">
-        <div className="max-w-3xl mx-auto">
-          <h2 id="locations-heading" className="font-serif text-4xl text-(--church-navy) mb-8">
-            Our other locations
-          </h2>
-          <ul className="grid gap-6 md:grid-cols-2 list-none">
-            {OTHER_LOCATIONS.map((location) => (
-              <li key={location.name} className="rounded-2xl border border-slate-200 p-6 space-y-2 text-slate-700">
-                <h3 className="font-serif text-xl font-bold text-(--church-navy)">{location.name}</h3>
-                <address className="not-italic">{formatAddress(location.address)}</address>
-                <p>{location.serviceTimes}</p>
-                <a href={mapsUrl(location.address)} className="underline underline-offset-4">
-                  Get directions<span className="sr-only"> to {location.name}</span>
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </section>
-    </div>
+      <Section id="other-locations" tone="paper" title="Our other locations">
+        <ul className="grid list-none gap-6 md:grid-cols-2">
+          {OTHER_LOCATIONS.map((location) => (
+            <li key={location.name} className="space-y-2 rounded-2xl border border-border-input/40 bg-white p-6">
+              <h3>{location.name}</h3>
+              <address className="not-italic">{formatAddress(location.address)}</address>
+              <p className="text-ink-muted">{location.serviceTimes}</p>
+              <a href={mapsUrl(location.address)} className={linkClass}>
+                Get directions<span className="sr-only"> to {location.name}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </Section>
+    </>
   )
 }

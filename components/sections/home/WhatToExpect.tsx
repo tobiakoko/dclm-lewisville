@@ -1,25 +1,27 @@
+import Link from 'next/link'
 import { WHAT_TO_EXPECT } from '@/lib/content/site'
 import { InlineText } from '@/components/content/RichText'
+import { Section } from '@/components/site/Section'
 
-/** "What visitors should expect" cards (SITE-CONTENT.md §3) */
+/** "What visitors should expect": four short cards (SITE-CONTENT.md §3) */
 export function WhatToExpect() {
   return (
-    <section className="py-16 bg-slate-50" aria-labelledby="expect-heading">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 id="expect-heading" className="text-3xl font-display font-bold text-(--church-navy) mb-8">
-          What to expect
-        </h2>
-        <ul className="grid grid-cols-1 md:grid-cols-2 gap-6 list-none">
-          {WHAT_TO_EXPECT.map((item) => (
-            <li key={item.title} className="bg-white p-6 rounded-xl border border-slate-200">
-              <h3 className="text-xl font-bold text-(--church-navy) mb-2">{item.title}</h3>
-              <p className="text-slate-700 leading-relaxed">
-                <InlineText paragraph={item.body} />
-              </p>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </section>
+    <Section id="expect" tone="paper" title="What to expect">
+      <ul className="grid list-none gap-6 md:grid-cols-2">
+        {WHAT_TO_EXPECT.map((item) => (
+          <li key={item.title} className="rounded-2xl border border-border-input/40 bg-white p-6">
+            <h3 className="mb-2">{item.title}</h3>
+            <p className="max-w-prose">
+              <InlineText paragraph={item.body} />
+            </p>
+          </li>
+        ))}
+      </ul>
+      <p className="mt-8">
+        <Link href="/visit" className="font-semibold text-emblem-sky-700 underline underline-offset-4">
+          More about your first visit
+        </Link>
+      </p>
+    </Section>
   )
 }

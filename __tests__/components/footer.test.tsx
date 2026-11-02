@@ -1,13 +1,7 @@
 import { render, screen, within } from '@/__tests__/utils/test-utils'
 import Footer from '@/components/layout/Footer'
-import { SITE_CONFIG, SERVICE_TIMES, formatAddress, telHref } from '@/lib/constants'
+import { DCLM_RESOURCES, SITE_CONFIG, SERVICE_TIMES, formatAddress, telHref } from '@/lib/constants'
 import { formatServiceTime } from '@/lib/schedule'
-
-jest.mock('@/lib/analytics', () => ({
-  trackSocialMediaClick: jest.fn(),
-  trackNavigation: jest.fn(),
-  trackExternalLink: jest.fn(),
-}))
 
 describe('Footer', () => {
   beforeEach(() => render(<Footer />))
@@ -19,9 +13,10 @@ describe('Footer', () => {
     expect(within(footer).getByText(formatAddress(SITE_CONFIG.address))).toBeInTheDocument()
   })
 
-  it('lists every weekly meeting', () => {
+  it('lists every weekly meeting with its day and time', () => {
     for (const service of SERVICE_TIMES) {
-      expect(screen.getByText(`${formatServiceTime(service)} — ${service.name}`)).toBeInTheDocument()
+      const name = screen.getByText(service.name)
+      expect(name.closest('li')).toHaveTextContent(`${service.day}, ${formatServiceTime(service)}`)
     }
   })
 
@@ -31,10 +26,16 @@ describe('Footer', () => {
     expect(screen.queryByRole('link', { name: /Instagram/ })).not.toBeInTheDocument()
   })
 
-  it('links only to routes that exist', () => {
-    const hrefs = screen.getAllByRole('link').map((link) => link.getAttribute('href'))
-    for (const missing of ['/privacy', '/terms', '/sitemap']) {
-      expect(hrefs).not.toContain(missing)
+  it('offers Contact, Prayer, Privacy and Terms in the same place on every page', () => {
+    expect(screen.getByRole('link', { name: 'Contact us' })).toHaveAttribute('href', '/contact')
+    expect(screen.getByRole('link', { name: 'Prayer requests' })).toHaveAttribute('href', '/contact#prayer')
+    expect(screen.getByRole('link', { name: 'Privacy Policy' })).toHaveAttribute('href', '/privacy')
+    expect(screen.getByRole('link', { name: 'Terms of Use' })).toHaveAttribute('href', '/terms')
+  })
+
+  it('lists the DCLM resources moved from the header', () => {
+    for (const resource of DCLM_RESOURCES) {
+      expect(screen.getByRole('link', { name: resource.name })).toHaveAttribute('href', resource.href)
     }
   })
 })

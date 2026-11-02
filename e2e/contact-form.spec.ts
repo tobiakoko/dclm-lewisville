@@ -1,8 +1,9 @@
 import { test, expect, type Page } from '@playwright/test'
 import { SITE_CONFIG } from '../lib/constants'
+import { stubContactApi } from './helpers'
 
-// playwright.config.ts starts the test server without CONTACT_INBOX/CONTACT_FROM, so the real
-// API answers 503 (not configured) and no email is ever sent from e2e runs.
+// Form tests stub /api/contact (stubContactApi) so no e2e run ever sends email. Only the
+// foreign-origin test reaches the real API, which rejects it before any email is attempted.
 
 function contactForm(page: Page) {
   return page.locator('#contact-form form')
@@ -28,6 +29,7 @@ test.describe('Contact form', () => {
   })
 
   test('shows inline errors and does not submit an empty form', async ({ page }) => {
+    await stubContactApi(page, 200)
     let requests = 0
     page.on('request', (request) => {
       if (request.url().endsWith('/api/contact')) requests++
@@ -39,7 +41,8 @@ test.describe('Contact form', () => {
     expect(requests).toBe(0)
   })
 
-  test('with email unconfigured, says the message was not sent and shows the phone number', async ({ page }) => {
+  test('with email unconfigured (503), says the message was not sent and shows the phone number', async ({ page }) => {
+    await stubContactApi(page, 503, { ok: false, error: 'not-configured' })
     const form = contactForm(page)
     await fill(form)
     const [response] = await Promise.all([
@@ -52,9 +55,7 @@ test.describe('Contact form', () => {
   })
 
   test('confirms only after the API reports success', async ({ page }) => {
-    await page.route('**/api/contact', (route) =>
-      route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ ok: true }) })
-    )
+    await stubContactApi(page, 200)
     const form = contactForm(page)
     await fill(form)
     await form.getByRole('button', { name: 'Send message' }).click()

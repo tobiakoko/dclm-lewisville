@@ -4,34 +4,31 @@ import { cva, type VariantProps } from "class-variance-authority"
 
 import { cn } from "@/lib/utils"
 
+/**
+ * The only button styles on the site (DESIGN-SYSTEM.md, Components):
+ * - primary: heaven-600 with white text; one per screen (Plan your visit, Give)
+ * - secondary: navy outline
+ * - onDark: white with navy text, for navy sections (red never sits on navy)
+ * - link: text link
+ */
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-1.5 whitespace-nowrap rounded text-sm font-medium transition-all duration-200 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+  "inline-flex items-center justify-center gap-2 rounded-full font-semibold text-base leading-tight no-underline transition-colors duration-200 disabled:pointer-events-none disabled:opacity-60 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:pointer-events-none",
   {
     variants: {
       variant: {
-        default: "bg-primary text-primary-foreground hover:bg-primary/90 elevation-1 hover:elevation-2",
-        accent: "bg-accent text-white hover:bg-accent-secondary elevation-1 hover:elevation-2",
-        destructive:
-          "bg-destructive text-white hover:bg-destructive/90 elevation-1 hover:elevation-2",
-        outline:
-          "border-2 border-border bg-background hover:bg-muted hover:border-foreground/20",
-        secondary:
-          "bg-muted text-foreground hover:bg-muted/80 border border-border",
-        ghost:
-          "hover:bg-muted",
-        link: "text-foreground underline-offset-4 hover:underline",
+        primary: "bg-heaven-600 text-white hover:bg-heaven-700 active:bg-heaven-700",
+        secondary: "border-2 border-navy-700 text-navy-700 bg-transparent hover:bg-navy-900 hover:text-white hover:border-navy-900",
+        onDark: "bg-white text-navy-900 hover:bg-emblem-sky-50",
+        link: "rounded-none px-0 text-emblem-sky-700 underline underline-offset-4 hover:text-navy-900",
       },
       size: {
-        default: "h-12 px-6 py-3",
-        sm: "h-10 px-4 py-2 text-xs",
-        lg: "h-14 px-8 py-4 text-base",
-        icon: "size-12",
-        "icon-sm": "size-10",
-        "icon-lg": "size-14",
+        default: "min-h-12 px-6 py-3",
+        sm: "min-h-11 px-5 py-2.5",
       },
     },
+    compoundVariants: [{ variant: "link", className: "min-h-11 px-0 py-0" }],
     defaultVariants: {
-      variant: "default",
+      variant: "primary",
       size: "default",
     },
   }
@@ -49,13 +46,7 @@ function Button({
   }) {
   const Comp = asChild ? Slot : "button"
 
-  return (
-    <Comp
-      data-slot="button"
-      className={cn(buttonVariants({ variant, size, className }))}
-      {...props}
-    />
-  )
+  return <Comp data-slot="button" className={cn(buttonVariants({ variant, size, className }))} {...props} />
 }
 
 export { Button, buttonVariants }

@@ -5,7 +5,11 @@ import Link from 'next/link'
 import { PortableText } from '@portabletext/react'
 import type { PortableTextBlock } from '@portabletext/types'
 import { formatDate } from '@/lib/utils'
-import { youTubeEmbedUrl, youTubeId } from '@/lib/youtube'
+import { youTubeId } from '@/lib/youtube'
+import { PageHero } from '@/components/site/PageHero'
+import { Section } from '@/components/site/Section'
+import { LiteYouTube } from '@/components/site/LiteYouTube'
+import { buttonVariants } from '@/components/ui/button'
 import ShareButton from '@/components/ui/share-button'
 
 interface SermonDetail {
@@ -39,66 +43,54 @@ export default async function SermonDetailPage({ params }: { params: Promise<{ s
   const videoId = youTubeId(sermon.videoUrl)
 
   return (
-    <article className="bg-white">
-      <header className="bg-(--church-navy) text-white pt-32 pb-16 px-6">
-        <div className="max-w-4xl mx-auto space-y-4">
-          <Link href="/sermons" className="underline underline-offset-4">
-            Sermons
-          </Link>
-          <h1 className="font-serif text-4xl md:text-5xl font-bold leading-tight">{sermon.title}</h1>
-          <p>
-            <time dateTime={sermon.date}>{formatDate(sermon.date)}</time>
-            {sermon.speaker?.name && <> · {sermon.speaker.name}</>}
+    <>
+      <PageHero title={sermon.title}>
+        <p>
+          <time dateTime={sermon.date}>{formatDate(sermon.date)}</time>
+          {sermon.speaker?.name && <> · {sermon.speaker.name}</>}
+        </p>
+      </PageHero>
+
+      <Section>
+        <div className="max-w-3xl space-y-8">
+          {videoId && <LiteYouTube id={videoId} title={sermon.title} />}
+
+          {sermon.audioUrl && (
+            <audio controls preload="none" className="w-full" src={sermon.audioUrl}>
+              <a href={sermon.audioUrl}>Download the audio</a>
+            </audio>
+          )}
+
+          {sermon.description && <p className="max-w-prose">{sermon.description}</p>}
+
+          {sermon.scripture && sermon.scripture.length > 0 && (
+            <section aria-labelledby="scripture-heading">
+              <h2 id="scripture-heading" className="mb-3">
+                Scripture
+              </h2>
+              <ul className="list-disc space-y-1 pl-6">
+                {sermon.scripture.map((ref) => (
+                  <li key={ref}>{ref}</li>
+                ))}
+              </ul>
+            </section>
+          )}
+
+          {sermon.transcript && sermon.transcript.length > 0 && (
+            <section aria-labelledby="transcript-heading" className="max-w-prose space-y-4">
+              <h2 id="transcript-heading">Transcript</h2>
+              <PortableText value={sermon.transcript} />
+            </section>
+          )}
+
+          <p className="flex flex-wrap gap-3">
+            <ShareButton title={sermon.title} />
+            <Link href="/sermons" className={buttonVariants({ variant: 'link' })}>
+              All sermons
+            </Link>
           </p>
         </div>
-      </header>
-
-      <div className="max-w-4xl mx-auto px-6 py-12 space-y-10">
-        {videoId && (
-          <div className="aspect-video bg-black rounded-2xl overflow-hidden">
-            <iframe
-              src={youTubeEmbedUrl(videoId)}
-              className="w-full h-full"
-              title={sermon.title}
-              loading="lazy"
-              allow="clipboard-write; encrypted-media; picture-in-picture"
-              allowFullScreen
-            />
-          </div>
-        )}
-
-        {sermon.audioUrl && (
-          <audio controls preload="none" className="w-full" src={sermon.audioUrl}>
-            <a href={sermon.audioUrl}>Download the audio</a>
-          </audio>
-        )}
-
-        {sermon.description && <p className="text-lg text-slate-700 leading-relaxed">{sermon.description}</p>}
-
-        {sermon.scripture && sermon.scripture.length > 0 && (
-          <section aria-labelledby="scripture-heading">
-            <h2 id="scripture-heading" className="font-serif text-2xl font-bold text-(--church-navy) mb-3">
-              Scripture
-            </h2>
-            <ul className="list-disc pl-6 space-y-1">
-              {sermon.scripture.map((ref) => (
-                <li key={ref}>{ref}</li>
-              ))}
-            </ul>
-          </section>
-        )}
-
-        {sermon.transcript && sermon.transcript.length > 0 && (
-          <section aria-labelledby="transcript-heading" className="prose prose-lg max-w-none">
-            <h2 id="transcript-heading">Transcript</h2>
-            <PortableText value={sermon.transcript} />
-          </section>
-        )}
-
-        <div className="max-w-xs">
-          <ShareButton title={sermon.title} />
-        </div>
-      </div>
-    </article>
+      </Section>
+    </>
   )
 }
