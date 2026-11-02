@@ -6,9 +6,9 @@ Baseline (audit of 1 November 2026, commit `18c17f1`): Next 16.3.1, React 19.2.0
 
 ## Phase 0: Orientation (first session; no app code changes)
 
-- [ ] 0.1 Read `CLAUDE.md` and all three files in `docs/build/`. Run `npm ci`, `npm run type-check`, `npm run lint`, `npm test`, `npm run build`. Record results, `npm audit` counts and `npm outdated` in `docs/build/BASELINE.md`.
-- [ ] 0.2 Build an import map: which files in `components/`, `hooks/` and `lib/` are reachable from `app/` routes and `sanity/`. Save the unreachable list to `docs/build/IMPORT-MAP.md`. About 50 files are expected to be dead, including most of `components/sections/` and `components/pro-blocks/`.
-- [ ] 0.3 Check the remote branches. `feature/cms-page-builder-architecture` is one commit ahead of `main` (a Sanity page-builder). The `claude/*` and `develop` branches are already merged. Summarize anything useful from the page-builder commit for Phase 3, but don't merge it.
+- [x] 0.1 Read `CLAUDE.md` and all three files in `docs/build/`. Run `npm ci`, `npm run type-check`, `npm run lint`, `npm test`, `npm run build`. Record results, `npm audit` counts and `npm outdated` in `docs/build/BASELINE.md`.
+- [x] 0.2 Build an import map: which files in `components/`, `hooks/` and `lib/` are reachable from `app/` routes and `sanity/`. Save the unreachable list to `docs/build/IMPORT-MAP.md`. About 50 files are expected to be dead, including most of `components/sections/` and `components/pro-blocks/`.
+- [x] 0.3 Check the remote branches. `feature/cms-page-builder-architecture` is one commit ahead of `main` (a Sanity page-builder). The `claude/*` and `develop` branches are already merged. Summarize anything useful from the page-builder commit for Phase 3, but don't merge it.
 - [ ] 0.4 Stop and report the baseline, the import map and any surprises to the owner.
 
 ## Phase 1: Foundation and trust fixes (branch `rebuild/phase-1-trust`)
