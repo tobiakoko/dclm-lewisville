@@ -11,7 +11,7 @@ Recorded on 2 November 2026 at commit `39d3b09` (`main`; the app code is unchang
 | `npm run lint` | Pass, 0 errors and 56 warnings (44 `no-unused-vars`, 8 `no-img-element`, 2 `no-location-assign-relative-destination`, 1 `exhaustive-deps`, 1 `no-anonymous-default-export`) |
 | `npm test` | 9 suites, 109 tests, all pass. Coverage: statements 11.69%, branches 9.01%, functions 7.49%, lines 12.14% |
 | `npm run build` | Pass (Next.js 16.3.1, Turbopack). Every page route is dynamic (`ƒ`) except `robots.txt`, `sitemap.xml` and `/ministries/[slug]` (SSG) |
-| `npm run test:e2e` | Not run in Phase 0 |
+| `npm run test:e2e` | Run at the start of Phase 1 (see "E2E baseline" below): 135 of 135 pass, 0 skipped |
 
 Build warnings:
 
@@ -30,6 +30,19 @@ Build warnings:
 On this build, a generic unknown URL already returns 404. The 200 status only shows up on `sermons/[slug]`, so 1.4 still applies.
 
 The home page HTML contains `dclmlewisville.org` 8 times, `123 Church Street` twice, `123-456-7890` twice and `665-9972` once. The correct phone number, `939-6994`, appears 0 times.
+
+## E2E baseline (start of Phase 1, 1.0)
+
+Run on 2 November 2026 at commit `637b54a`, before any app changes: 27 tests × 5 browser projects (Chromium, Firefox, WebKit, Mobile Chrome, Mobile Safari) = 135 runs. **All 135 pass, none fail, and Playwright reports 0 skipped**, in 80 s.
+
+That green result overstates coverage. Sixteen `if (count > 0)` or `if (isVisible)` guards skip assertions silently, so these tests pass without checking anything:
+
+- `newsletter.spec.ts`: all 4 tests. The site has no newsletter form, so every body is skipped. They will be deleted with the newsletter in 1.6.
+- `sermons.spec.ts`: 6 of the tests (list, open detail, search, details, media player, related). No sermon links render, so the assertions never run.
+- `homepage.spec.ts`: the mobile-menu helper and "should be responsive on mobile" open the menu only if a button is found.
+- `contact-form.spec.ts`: "fill and submit" fills the phone field only if present.
+
+No test checks status codes, axe results, facts or a 404. Phase 1 replaces the guards with assertions.
 
 ## npm audit
 
