@@ -1,14 +1,9 @@
 import React, { ReactElement } from 'react'
 import { render, RenderOptions } from '@testing-library/react'
-import { ThemeProvider } from 'next-themes'
 
-// Custom wrapper component that includes all providers
+// Custom wrapper component that includes all providers (the site has none yet)
 function AllTheProviders({ children }: { children: React.ReactNode }) {
-  return (
-    <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
-      {children}
-    </ThemeProvider>
-  )
+  return <>{children}</>
 }
 
 // Custom render function that includes providers
