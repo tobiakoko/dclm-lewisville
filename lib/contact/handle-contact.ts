@@ -59,6 +59,8 @@ function renderEmail(data: ContactFormData) {
     ['Topic', data.topic],
     ['Ministry', data.ministry],
     ['Planned visit', data.visitDate],
+    ['Adults', data.adults === undefined ? undefined : String(data.adults)],
+    ['Children', data.children === undefined ? undefined : String(data.children)],
     ['Name', data.name],
     ['Email', data.email],
     ['Phone', data.phone || undefined],
@@ -66,8 +68,9 @@ function renderEmail(data: ContactFormData) {
   const present = rows.filter((row): row is [string, string] => Boolean(row[1]))
   const html =
     present.map(([label, value]) => `<p><strong>${label}:</strong> ${escapeHtml(value)}</p>`).join('\n') +
-    `\n<p><strong>Message:</strong></p>\n<p>${escapeHtml(data.message).replace(/\n/g, '<br>')}</p>`
-  const text = present.map(([label, value]) => `${label}: ${value}`).join('\n') + `\n\nMessage:\n${data.message}`
+    (data.message ? `\n<p><strong>Message:</strong></p>\n<p>${escapeHtml(data.message).replace(/\n/g, '<br>')}</p>` : '')
+  const text =
+    present.map(([label, value]) => `${label}: ${value}`).join('\n') + (data.message ? `\n\nMessage:\n${data.message}` : '')
   return { html, text }
 }
 

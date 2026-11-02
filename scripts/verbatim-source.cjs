@@ -13,11 +13,13 @@ const VERBATIM_KEYS = {
 /** Export name in lib/content/approved.generated.ts → SITE-CONTENT.md heading */
 const APPROVED_SECTIONS = {
   homeHero: '### Hero and “What visitors should expect”',
+  visit: '## 4. Plan Your Visit (`/visit`)',
   bibleVerse: '### The Bible Verse We Live By',
   whoWeAre: '### Who we are',
   ourStory: '### Our story, mission and vision',
   kumuyiBio: '#### General Superintendent: Pastor (Dr.) W.F. Kumuyi',
   ministries: '## 6. Ministries (`/ministries`) and Outreach',
+  legal: '## 11. Footer, Privacy Policy and Terms of Use',
 }
 
 /**

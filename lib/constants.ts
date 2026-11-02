@@ -8,7 +8,6 @@ export interface NavLink {
   name: string
   href: string
   highlight?: boolean
-  children?: NavLink[] // For dropdown menus
 }
 
 export interface PostalAddress {
@@ -35,6 +34,8 @@ export interface SiteConfig {
   officeHours: string
   timeZone: string
   youtube: {
+    /** Channel ID for the public RSS feed and live check */
+    channelId: string
     channel: string
     streams: string
   }
@@ -47,6 +48,8 @@ export interface SiteConfig {
     prayerRequestHub: string
     webcast: string
     followUs: string
+    /** DCLM headquarters YouTube channel, as linked from dclm.org/followus */
+    youtubeChannelId: string
   }
 }
 
@@ -119,6 +122,8 @@ export const SITE_CONFIG: SiteConfig = {
     'Our church is run by volunteers, so the best time to reach us is during service hours: Sunday 9:30 AM–12:00 PM, and Tuesday and Friday 7:00–9:00 PM. At other times, send us a message or email and we’ll get back to you.',
   timeZone: 'America/Chicago',
   youtube: {
+    // Confirmed from the channel page's canonical URL on 2 November 2026
+    channelId: 'UC1yfxOgjHhTWe49OK61Q30w',
     channel: YOUTUBE_CHANNEL,
     streams: `${YOUTUBE_CHANNEL}/streams`,
   },
@@ -131,6 +136,8 @@ export const SITE_CONFIG: SiteConfig = {
     prayerRequestHub: 'https://dclm.org/?p=89',
     webcast: 'https://webcast.dclm.org/',
     followUs: 'https://dclm.org/followus/',
+    // youtube.com/dclmhq ("Deeper Christian Life Ministry"), confirmed 2 November 2026
+    youtubeChannelId: 'UC4zsqN5YdXfxkkdVvwNA3JA',
   },
 }
 
@@ -204,48 +211,24 @@ export const OTHER_LOCATIONS: OtherLocation[] = [
   },
 ]
 
-// Navigation Links with Mega Menu Support
+// Main navigation (DESIGN-SYSTEM.md, Layout). "Give" is the header's one primary action.
 export const NAV_LINKS: NavLink[] = [
-  {
-    name: 'Home',
-    href: '/'
-  },
-  {
-    name: 'About',
-    href: '/about',
-  },
-  {
-    name: 'Ministries',
-    href: '/ministries',
-  },
-  {
-    name: 'Sermons',
-    href: '/sermons',
-  },
-  {
-    name: 'Events',
-    href: '/events'
-  },
-  {
-    name: 'Resources',
-    href: '/resources',
-    children: [
-      { name: 'Our Blog', href: 'https://blog.dclm.org/' },
-      { name: 'Radio', href: 'https://radio.dclm.org/' },
-      { name: 'Tracts', href: 'https://dclm.org/tracts/' },
-      { name: 'Daily Manna', href: 'https://dailymanna.app/category/daily-manna/' },
-      { name: 'Higher Everyday', href: 'https://dailymanna.app/category/higher-everyday/' },
-      { name: 'Sincere Milk', href: 'https://dailymanna.app/category/sincere-milk/' },
-    ]
-  },
-  {
-    name: 'Contact',
-    href: '/contact'
-  },
-  // Highlighted CTAs
-  {
-    name: 'Give',
-    href: '/give',
-    highlight: true
-  },
+  { name: 'Visit', href: '/visit' },
+  { name: 'About', href: '/about' },
+  { name: 'Ministries', href: '/ministries' },
+  { name: 'Sermons', href: '/sermons' },
+  { name: 'Events', href: '/events' },
+  { name: 'Contact', href: '/contact' },
+]
+
+export const GIVE_LINK: NavLink = { name: 'Give', href: '/give', highlight: true }
+
+// DCLM resources, listed in the footer
+export const DCLM_RESOURCES: NavLink[] = [
+  { name: 'DCLM Blog', href: 'https://blog.dclm.org/' },
+  { name: 'DCLM Radio', href: 'https://radio.dclm.org/' },
+  { name: 'DCLM Tracts', href: 'https://dclm.org/tracts/' },
+  { name: 'Daily Manna', href: 'https://dailymanna.app/category/daily-manna/' },
+  { name: 'Higher Everyday', href: 'https://dailymanna.app/category/higher-everyday/' },
+  { name: 'Sincere Milk', href: 'https://dailymanna.app/category/sincere-milk/' },
 ]
