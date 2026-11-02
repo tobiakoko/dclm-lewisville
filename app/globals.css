@@ -103,6 +103,14 @@
     cursor: pointer;
   }
 
+  /* While the consent banner is open, keep focused elements and the page end clear of it (WCAG 2.4.11) */
+  html:has(#consent-banner) {
+    scroll-padding-bottom: 14rem;
+  }
+  body:has(#consent-banner) {
+    padding-bottom: 14rem;
+  }
+
   @media (prefers-reduced-motion: no-preference) {
     html {
       scroll-behavior: smooth;

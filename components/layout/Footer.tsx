@@ -3,6 +3,8 @@ import Image from 'next/image'
 import { Facebook, Instagram, Youtube, type LucideIcon } from 'lucide-react'
 import { DCLM_RESOURCES, SERVICE_TIMES, SITE_CONFIG, formatAddress, mapsUrl, telHref } from '@/lib/constants'
 import { formatServiceTime } from '@/lib/schedule'
+import { gaMeasurementId } from '@/lib/consent'
+import { CookieSettingsButton } from '@/components/consent/ConsentBanner'
 
 interface SocialLink {
   name: string
@@ -135,6 +137,11 @@ export default function Footer() {
                 Sitemap
               </a>
             </li>
+            {gaMeasurementId() && (
+              <li>
+                <CookieSettingsButton />
+              </li>
+            )}
           </ul>
         </div>
       </div>
