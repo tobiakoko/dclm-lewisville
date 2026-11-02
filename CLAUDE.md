@@ -40,7 +40,7 @@ The same codebase should later serve other Deeper Life branches, so branch facts
 - Sanity 4 (Studio at `/studio`, schemas in `sanity/schemas`, queries in `lib/sanity/queries.ts`); upgrade to Sanity 6 only in Phase 3.
 - Resend (email), Upstash Redis (rate limiting, optional), Zod 4 (validation), `@t3-oss/env-nextjs` (`lib/env.ts`).
 - Jest and Testing Library (`__tests__/`), Playwright with `@axe-core/playwright` (`e2e/`).
-- Hosting: Vercel. Node 22 locally; target Node 24 LTS in CI and on Vercel.
+- Hosting: Vercel. Node 24 LTS locally (`.nvmrc`) and on Vercel; CI tests Node 22 and 24 (`engines`: `>=22.12 <25`).
 
 Next.js 16 reminders: `params` and `searchParams` are Promises, so always `await` them. Request handling lives in `proxy.ts` (the former middleware), which also sets the CSP. Use `next/image`, `next/font` and `next/link`.
 
