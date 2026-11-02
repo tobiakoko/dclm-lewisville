@@ -4,6 +4,8 @@ import "./globals.css";
 import { SITE_CONFIG } from '@/lib/constants'
 import { churchJsonLd } from '@/lib/structured-data'
 import GoogleAnalytics from "@/components/GoogleAnalytics";
+import { ConsentBanner } from "@/components/consent/ConsentBanner";
+import { gaMeasurementId } from "@/lib/consent";
 import { Analytics } from '@vercel/analytics/next';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 
@@ -53,6 +55,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const nonce = (await headers()).get('x-nonce') ?? undefined;
+  const gaId = gaMeasurementId();
 
   return (
     <html lang="en">
@@ -64,11 +67,10 @@ export default async function RootLayout({
         />
       </head>
       <body className="antialiased">
-        {/* Google Analytics only in production and only with a real measurement ID (BUILD-PLAN 2.16) */}
-        {process.env.NODE_ENV === 'production' && /^G-[A-Z0-9]{6,}$/.test(process.env.NEXT_PUBLIC_GA_ID ?? '') && (
-          <GoogleAnalytics ga_id={process.env.NEXT_PUBLIC_GA_ID!} nonce={nonce} />
-        )}
+        {/* Google Analytics only in production with a real ID, and only after consent (BUILD-PLAN 2.16) */}
+        {gaId && <GoogleAnalytics ga_id={gaId} nonce={nonce} />}
         {children}
+        {gaId && <ConsentBanner />}
         <Analytics />
         <SpeedInsights />
       </body>

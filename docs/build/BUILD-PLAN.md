@@ -58,9 +58,9 @@ Goal: nothing on the site is wrong, fake or dead. No visual redesign yet.
 - [x] 2.13 **Privacy and Terms** pages (§11) with a "Last updated" date; add them to the footer, `sitemap.ts` and `robots.ts`, all using `SITE_CONFIG.url`.
 - [x] 2.14 **SEO.** A unique title and description per page (pattern "Plan Your Visit | Deeper Life Bible Church Lewisville"); an Open Graph image (1200×630, a real photo plus the emblem); JSON-LD on every page from one helper.
 - [x] 2.15 **CSP** in `proxy.ts`: allow only what's needed for YouTube (nocookie) frames, the Google Maps embed and analytics. Remove `images.unsplash.com` and `lh3.googleusercontent.com` once unused.
-- [ ] 2.16 **Analytics.** Keep Vercel Analytics. Load Google Analytics only in production with a valid ID; ask the owner whether to keep GA and whether a consent banner is wanted.
+- [x] 2.16 **Analytics.** Keep Vercel Analytics. Load Google Analytics only in production with a valid ID; ask the owner whether to keep GA and whether a consent banner is wanted. *Owner (2 Nov 2026): keep GA (the owner adds the ID later) and show a consent banner; GA loads only after the visitor accepts.*
 
-**Gate 2:** every page passes axe with zero serious or critical violations; a keyboard-only walk-through works on every page; no horizontal scroll at 320 px; Core Web Vitals within budget on a mid-range phone profile; e2e tests cover each page and its main action; all copy matches `SITE-CONTENT.md`.
+**Gate 2:** *(Core Web Vitals check deferred by the owner on 2 Nov 2026; run it on the Vercel preview before launch.)* every page passes axe with zero serious or critical violations; a keyboard-only walk-through works on every page; no horizontal scroll at 320 px; Core Web Vitals within budget on a mid-range phone profile; e2e tests cover each page and its main action; all copy matches `SITE-CONTENT.md`.
 
 ## Phase 3: CMS wiring and handover (branch `rebuild/phase-3-cms`)
 
