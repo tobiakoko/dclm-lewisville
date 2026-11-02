@@ -1,5 +1,5 @@
 import { defineField, defineType } from 'sanity'
-import { HeartIcon } from '@sanity/icons'
+import { HeartIcon } from '@sanity/icons/Heart'
 
 export default defineType({
   name: 'testimonial',

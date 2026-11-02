@@ -1,5 +1,14 @@
 import type {StructureResolver} from 'sanity/structure'
-import {CogIcon, DocumentsIcon, UsersIcon, CalendarIcon, DocumentTextIcon, BookIcon, HeartIcon, PlayIcon, UserIcon, HomeIcon} from '@sanity/icons'
+import { CogIcon } from '@sanity/icons/Cog'
+import { DocumentsIcon } from '@sanity/icons/Documents'
+import { UsersIcon } from '@sanity/icons/Users'
+import { CalendarIcon } from '@sanity/icons/Calendar'
+import { DocumentTextIcon } from '@sanity/icons/DocumentText'
+import { BookIcon } from '@sanity/icons/Book'
+import { HeartIcon } from '@sanity/icons/Heart'
+import { PlayIcon } from '@sanity/icons/Play'
+import { UserIcon } from '@sanity/icons/User'
+import { HomeIcon } from '@sanity/icons/Home'
 
 // https://www.sanity.io/docs/structure-builder-cheat-sheet
 export const structure: StructureResolver = (S) =>
