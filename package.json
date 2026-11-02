@@ -23,7 +23,9 @@
     "test:e2e:headed": "playwright test --headed",
     "test:e2e:debug": "playwright test --debug",
     "test:all": "npm run test:ci && npm run test:e2e",
-    "playwright:install": "playwright install --with-deps"
+    "playwright:install": "playwright install --with-deps",
+    "typegen": "sanity schema extract --path sanity/schema.json --force --enforce-required-fields && sanity typegen generate",
+    "seed": "ts-node --transpile-only --compiler-options '{\"module\":\"commonjs\",\"moduleResolution\":\"node\"}' scripts/seed-sanity.ts"
   },
   "dependencies": {
     "@fontsource-variable/source-sans-3": "^5.3.1",

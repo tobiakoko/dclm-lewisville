@@ -1,7 +1,7 @@
 import { render, screen, userEvent } from '@/__tests__/utils/test-utils'
 import { Disclosure } from '@/components/ui/disclosure'
 import CoreBeliefs from '@/components/site/DoctrineCards'
-import { DOCTRINES } from '@/lib/content/doctrines'
+import { DOCTRINES, DOCTRINES_INTRO } from '@/lib/content/doctrines'
 
 describe('Disclosure', () => {
   it('starts closed, with the panel hidden from the tab order', () => {
@@ -34,7 +34,7 @@ describe('Disclosure', () => {
 describe('CoreBeliefs', () => {
   it('shows 22 doctrine titles and reveals the full verbatim text on demand', async () => {
     const user = userEvent.setup()
-    render(<CoreBeliefs />)
+    render(<CoreBeliefs intro={DOCTRINES_INTRO} doctrines={DOCTRINES} />)
     const buttons = screen.getAllByRole('button')
     expect(buttons).toHaveLength(22)
     expect(buttons[0]).toHaveTextContent(DOCTRINES[0].title)

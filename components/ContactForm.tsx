@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Alert } from '@/components/site/Alert'
-import { SITE_CONFIG, telHref } from '@/lib/constants'
+import { telHref } from '@/lib/constants'
 import {
   contactFormSchema,
   type ContactFormData,
@@ -20,6 +20,9 @@ type SubmitStatus = 'success' | 'failed' | 'rate-limited' | null
 type FieldName = 'name' | 'email' | 'phone' | 'message' | 'visitDate' | 'adults' | 'children'
 
 interface ContactFormProps {
+  /** The church's phone and email, shown whenever sending fails */
+  phone: string
+  email: string
   topic?: ContactTopic
   /** Preselected ministry name when topic is "ministry" */
   ministry?: string
@@ -40,10 +43,10 @@ const SUCCESS: Record<ContactTopic, string> = {
   visit: 'Thank you. Your message has been sent to the church. We look forward to welcoming you.',
 }
 
-function PhoneLink() {
+function PhoneLink({ phone }: { phone: string }) {
   return (
-    <a href={telHref(SITE_CONFIG.phone)} className="font-semibold underline underline-offset-4">
-      {SITE_CONFIG.phone}
+    <a href={telHref(phone)} className="font-semibold underline underline-offset-4">
+      {phone}
     </a>
   )
 }
@@ -74,7 +77,7 @@ function Field({
   )
 }
 
-export default function ContactForm({ topic = 'contact', ministry, submitLabel = 'Send message' }: ContactFormProps) {
+export default function ContactForm({ phone, email, topic = 'contact', ministry, submitLabel = 'Send message' }: ContactFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitStatus, setSubmitStatus] = useState<SubmitStatus>(null)
   const uid = useId()
@@ -176,9 +179,9 @@ export default function ContactForm({ topic = 'contact', ministry, submitLabel =
         {submitStatus === 'failed' && (
           <Alert tone="error" title="Sorry, your message was not sent.">
             <p>
-              Please call us at <PhoneLink /> or email{' '}
-              <a href={`mailto:${SITE_CONFIG.email}`} className="font-semibold underline underline-offset-4">
-                {SITE_CONFIG.email}
+              Please call us at <PhoneLink phone={phone} /> or email{' '}
+              <a href={`mailto:${email}`} className="font-semibold underline underline-offset-4">
+                {email}
               </a>
               .
             </p>
@@ -187,7 +190,7 @@ export default function ContactForm({ topic = 'contact', ministry, submitLabel =
         {submitStatus === 'rate-limited' && (
           <Alert tone="error" title="Too many messages in a short time.">
             <p>
-              Please wait a minute and try again, or call us at <PhoneLink />.
+              Please wait a minute and try again, or call us at <PhoneLink phone={phone} />.
             </p>
           </Alert>
         )}

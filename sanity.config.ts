@@ -10,20 +10,30 @@ import {structureTool} from 'sanity/structure'
 
 // Go to https://www.sanity.io/docs/api-versioning to learn how API versioning works
 import {apiVersion, dataset, projectId} from './sanity/env'
-import {schemaTypes} from './sanity/schemas'
+import {SINGLETONS, schemaTypes} from './sanity/schemas'
 import {structure} from './sanity/structure'
 
 const isDevelopment = process.env.NODE_ENV === 'development'
 
 export default defineConfig({
   name: 'default',
-  title: 'DCLM Lewisville',
+  title: 'Deeper Life Bible Church Lewisville',
   basePath: '/studio',
   projectId,
   dataset,
 
   schema: {
     types: schemaTypes,
+    // Singletons can't be created from the "new document" menu
+    templates: (templates) => templates.filter(({schemaType}) => !(SINGLETONS as readonly string[]).includes(schemaType)),
+  },
+
+  document: {
+    // Singletons can't be duplicated, deleted or unpublished
+    actions: (actions, {schemaType}) =>
+      (SINGLETONS as readonly string[]).includes(schemaType)
+        ? actions.filter(({action}) => action && ['publish', 'discardChanges', 'restore'].includes(action))
+        : actions,
   },
 
   plugins: [

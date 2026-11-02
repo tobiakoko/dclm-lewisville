@@ -1,236 +1,66 @@
-import { groq } from 'next-sanity'
+import { defineQuery } from 'next-sanity'
 
-// Site Settings
-export const siteSettingsQuery = groq`
-  *[_type == "siteSettings"][0] {
-    title,
-    description,
-    logo,
-    address,
-    phone,
-    email,
-    servicesTimes[] {
-      name,
-      day,
-      time,
-      description
-    },
-    socialMedia,
-    aboutContent,
-    seo
-  }
-`
+// Every query the site runs. `npm run typegen` turns these into result types in
+// sanity/types.generated.ts.
 
-// Homepage Sections
-export const homeSectionsQuery = groq`
-  {
-    "heroCarousel": *[_type == "homeSection" && sectionId == "heroCarousel"][0] {
-      enabled,
-      heroSlides[] {
-        title,
-        subtitle,
-        description,
-        image,
-        ctaText,
-        ctaLink
-      }
-    },
-    "pastorWelcome": *[_type == "homeSection" && sectionId == "pastorWelcome"][0] {
-      enabled,
-      welcomeMessage {
-        heading,
-        content,
-        signature,
-        tagline
-      }
-    },
-    "giveSection": *[_type == "homeSection" && sectionId == "giveSection"][0] {
-      enabled,
-      giveContent {
-        heading,
-        description,
-        churchGivingTitle,
-        churchGivingDescription,
-        gckGivingTitle,
-        gckGivingDescription,
-        gckGivingUrl,
-        scriptureVerse,
-        scriptureReference
-      }
-    },
-    "ctaSection": *[_type == "homeSection" && sectionId == "ctaSection"][0] {
-      enabled,
-      ctaContent {
-        heading,
-        highlightedText,
-        primaryButtonText,
-        primaryButtonLink,
-        secondaryButtonText,
-        secondaryButtonLink
-      }
-    }
-  }
-`
+const IMAGE = /* groq */ `{ alt, asset->{ url, metadata { lqip, dimensions { width, height } } } }`
 
-// Homepage data
-export const homePageQuery = groq`
-  {
-    "featuredSermons": *[_type == "sermon"] | order(date desc)[0...3] {
-      _id,
-      title,
-      slug,
-      date,
-      speaker->{name, title, photo},
-      scripture,
-      thumbnail,
-      duration
-    },
-    "upcomingEvents": *[_type == "event" && date >= now()] | order(date asc)[0...3] {
-      _id,
-      title,
-      slug,
-      date,
-      endDate,
-      location,
-      description,
-      image,
-      featured
-    },
-    "ministries": *[_type == "ministry" && active == true] | order(order asc)[0...6] {
-      _id,
-      name,
-      slug,
-      description,
-      icon
-    },
-    "team": *[_type == "person" && active == true] | order(order asc) {
-      _id,
-      name,
-      title,
-      role,
-      shortBio,
-      photo,
-      email
-    },
-    "testimonials": *[_type == "testimonial" && featured == true] | order(_createdAt desc)[0...3] {
-      _id,
-      content,
-      author,
-      photo,
-      ministry
-    }
-  }
-`
+export const SITE_SETTINGS_QUERY = defineQuery(`*[_type == "siteSettings" && _id == "siteSettings"][0]{
+  name, shortName, affiliation, region, regionalOverseer, localPastor,
+  address, phone, email, officeHours, timeZone,
+  schedule[]{ "id": key.current, name, day, start, end, mode, description, joinUrl },
+  scheduleExceptions[]{ date, meeting, cancelled, note },
+  youtube, socialMedia, dclm,
+  otherLocations[]{ name, address, serviceTimes }
+}`)
 
-// Bible Doctrines
-export const doctrinesQuery = groq`
-  *[_type == "doctrine"] | order(order asc) {
-    _id,
-    title,
-    order,
-    content,
-    scripture,
-    category,
-    featured
-  }
-`
+export const HOME_PAGE_QUERY = defineQuery(`{
+  "page": *[_type == "homePage" && _id == "homePage"][0]{ heroTitle, heroSubtitle, whatToExpect[]{ title, body }, welcomeHeading, welcome, verse },
+  "testimony": *[_type == "testimonial" && featured == true] | order(_updatedAt desc)[0]{ name, title, content }
+}`)
 
-// All sermons
-export const sermonsQuery = groq`
-  *[_type == "sermon"] | order(date desc) {
-    _id,
-    title,
-    slug,
-    date,
-    speaker->{name, title, photo},
-    scripture,
-    series->{title, slug},
-    thumbnail,
-    description,
-    duration,
-    tags
-  }
-`
+export const VISIT_PAGE_QUERY = defineQuery(`*[_type == "visitPage" && _id == "visitPage"][0]{ serviceLines, sections[]{ title, body } }`)
 
-// Single sermon
-export const sermonQuery = groq`
-  *[_type == "sermon" && slug.current == $slug][0] {
-    _id,
-    title,
-    slug,
-    date,
-    speaker->{
-      name,
-      title
-    },
-    scripture,
-    "audioUrl": audioFile.asset->url,
-    videoUrl,
-    transcript,
-    description
-  }
-`
+export const ABOUT_PAGE_QUERY = defineQuery(`{
+  "page": *[_type == "aboutPage" && _id == "aboutPage"][0]{ whoWeAre{ title, body }, story[]{ title, body, list, closing }, doctrinesIntro },
+  "doctrines": *[_type == "doctrine"] | order(order asc){ "id": _id, title, body, references },
+  "leaders": *[_type == "person"] | order(order asc){ "id": key.current, name, title, subtitle, shortBio, fullBio, photo ${IMAGE} }
+}`)
 
-// All ministries
-export const ministriesQuery = groq`
-  *[_type == "ministry"] | order(order asc) {
-    _id,
-    name,
-    slug,
-    description,
-    icon,
-    leader->{name, photo},
-    meetingTime,
-    meetingDay
-  }
-`
+export const MINISTRIES_QUERY = defineQuery(`{
+  "ministries": *[_type == "ministry"] | order(order asc){ "slug": slug.current, name, body, audience, meetingInfo, contactEmail, photo ${IMAGE} },
+  "outreach": *[_type == "outreachArea"] | order(order asc){ "slug": slug.current, name, body, audience, meetingInfo, contactEmail, photo ${IMAGE} }
+}`)
 
-// Single ministry
-export const ministryQuery = groq`
-  *[_type == "ministry" && slug.current == $slug && active != false][0] {
-    _id,
-    name,
-    slug,
-    description,
-    fullDescription,
-    leader->{
-      name,
-      title,
-      bio
-    },
-    meetingDay,
-    meetingTime
-  }
-`
+export const UPCOMING_EVENTS_QUERY = defineQuery(`*[_type == "event" && coalesce(end, start) >= $now] | order(start asc){
+  "id": _id, title, start, end, location, mode, registrationUrl
+}`)
 
-// Team members
-export const teamQuery = groq`
-  *[_type == "person"] | order(order asc) {
-    _id,
-    name,
-    title,
-    role,
-    bio,
-    photo,
-    email,
-    phone,
-    socialMedia
-  }
-`
+export const GIVE_PAGE_QUERY = defineQuery(`*[_type == "givePage" && _id == "givePage"][0]{ ways[]{ title, detail } }`)
 
-// Events
-export const eventsQuery = groq`
-  *[_type == "event"] | order(date asc) {
-    _id,
-    title,
-    slug,
-    date,
-    endDate,
-    location,
-    description,
-    image,
-    registrationLink,
-    ministry->{name, slug},
-    featured
-  }
-`
+export const LEGAL_PAGES_QUERY = defineQuery(`*[_type == "legalPages" && _id == "legalPages"][0]{ lastUpdated, effectiveDate, privacy, copyright, waiver }`)
+
+export const SERMON_QUERY = defineQuery(`*[_type == "sermon" && slug.current == $slug][0]{
+  title, speaker, date, youtubeId, source, description
+}`)
+
+export const SERMON_SLUGS_QUERY = defineQuery(`*[_type == "sermon" && defined(slug.current)]{ "slug": slug.current, "updatedAt": _updatedAt }`)
+
+/** Sanity document types that feed each cache tag; the webhook revalidates by type */
+export const TAGS = {
+  siteSettings: 'siteSettings',
+  homePage: 'homePage',
+  visitPage: 'visitPage',
+  aboutPage: 'aboutPage',
+  givePage: 'givePage',
+  legalPages: 'legalPages',
+  person: 'person',
+  ministry: 'ministry',
+  outreachArea: 'outreachArea',
+  doctrine: 'doctrine',
+  event: 'event',
+  sermon: 'sermon',
+  testimonial: 'testimonial',
+} as const
+
+export type SanityTag = (typeof TAGS)[keyof typeof TAGS]

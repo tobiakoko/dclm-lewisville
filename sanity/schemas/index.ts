@@ -1,38 +1,25 @@
-import sermon from './sermon'
-import ministry from './ministry'
-import person from './person'
-import event from './event'
-import testimonial from './testimonial'
-import page from './page'
-import series from './series'
-import siteSettings from './siteSettings'
-import homeSection from './homeSection'
-import doctrine from './doctrine'
+import { objectTypes } from './objects'
+import siteSettings from './singletons/siteSettings'
+import { singletonTypes } from './singletons/pages'
+import person from './documents/person'
+import { ministry, outreachArea } from './documents/ministry'
+import doctrine from './documents/doctrine'
+import event from './documents/event'
+import sermon from './documents/sermon'
+import testimonial from './documents/testimonial'
 
-// Object types
-import blockContent from './objects/blockContent'
-import socialMedia from './objects/socialMedia'
-import seo from './objects/seo'
-import activity from './objects/activity'
-import milestone from './objects/milestone'
+/** Singleton document ids are their type names (see sanity/structure) */
+export const SINGLETONS = ['siteSettings', 'homePage', 'visitPage', 'aboutPage', 'givePage', 'legalPages'] as const
 
 export const schemaTypes = [
-  // Documents
-  sermon,
-  ministry,
-  person,
-  event,
-  testimonial,
-  page,
-  series,
   siteSettings,
-  homeSection,
+  ...singletonTypes,
+  person,
+  ministry,
+  outreachArea,
   doctrine,
-
-  // Objects
-  blockContent,
-  socialMedia,
-  seo,
-  activity,
-  milestone,
+  event,
+  sermon,
+  testimonial,
+  ...objectTypes,
 ]

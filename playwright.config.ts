@@ -66,5 +66,8 @@ export default defineConfig({
     url: 'http://localhost:3000',
     reuseExistingServer: !process.env.CI,
     timeout: 300 * 1000,
+    // Build from the seed content (lib/constants.ts, lib/content) so e2e results don't depend on
+    // what is published in Sanity. Refused on a Vercel production deployment (lib/env.ts).
+    env: { SANITY_DEV_FALLBACK: 'true' },
   },
 })

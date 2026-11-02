@@ -1,15 +1,14 @@
-import { BIBLE_VERSE } from '@/lib/content/site'
 import { Section } from '@/components/site/Section'
 
 /** "The Bible Verse We Live By" (SITE-CONTENT.md §3); replaces "Verse of the Day" */
-export function Verse() {
+export function Verse({ verse }: { verse: { heading: string; text: string; reference: string } }) {
   return (
-    <Section id="verse" tone="sky" title={BIBLE_VERSE.heading}>
+    <Section id="verse" tone="sky" title={verse.heading}>
       <figure className="max-w-3xl">
         <blockquote className="scripture text-navy-900">
-          <p>{BIBLE_VERSE.text}</p>
+          <p>{verse.text}</p>
         </blockquote>
-        <figcaption className="mt-4 font-semibold text-ink-muted">{BIBLE_VERSE.reference}</figcaption>
+        <figcaption className="mt-4 font-semibold text-ink-muted">{verse.reference}</figcaption>
       </figure>
     </Section>
   )

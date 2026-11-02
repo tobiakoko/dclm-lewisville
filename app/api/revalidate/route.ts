@@ -1,82 +1,39 @@
-import { revalidatePath } from 'next/cache'
-import { NextRequest, NextResponse } from 'next/server'
-import { timingSafeEqual } from 'crypto'
-import { checkRateLimit, getClientIp } from '@/lib/rate-limit'
+import { revalidateTag } from 'next/cache'
+import { type NextRequest, NextResponse } from 'next/server'
+import { parseBody } from 'next-sanity/webhook'
+import { tagForType } from '@/lib/sanity/revalidate'
 
-function secretsMatch(provided: string, expected: string): boolean {
-  const providedBuffer = Buffer.from(provided)
-  const expectedBuffer = Buffer.from(expected)
-
-  if (providedBuffer.length !== expectedBuffer.length) return false
-
-  return timingSafeEqual(providedBuffer, expectedBuffer)
-}
-
+/**
+ * Sanity webhook (BUILD-PLAN 3.5): on publish, refresh the cached pages that read that
+ * document type. The request must carry Sanity's `sanity-webhook-signature` header, signed with
+ * SANITY_REVALIDATE_SECRET; a secret in the query string is never accepted.
+ *
+ * Webhook settings in Sanity: POST to /api/revalidate, filter `!(_id in path("drafts.**"))`,
+ * projection `{ _type }`, and the same secret.
+ */
 export async function POST(request: NextRequest) {
-  const ip = getClientIp(request)
-  const rateLimit = await checkRateLimit(`revalidate:${ip}`)
-
-  if (!rateLimit.allowed) {
-    return NextResponse.json({ message: 'Too many requests' }, { status: 429 })
+  const secret = process.env.SANITY_REVALIDATE_SECRET
+  if (!secret) {
+    return NextResponse.json({ ok: false, error: 'not-configured' }, { status: 503 })
   }
 
-  const expectedSecret = process.env.SANITY_REVALIDATE_SECRET
-  const providedSecret =
-    request.headers.get('x-revalidate-secret') ??
-    request.nextUrl.searchParams.get('secret')
-
-  if (!expectedSecret || !providedSecret || !secretsMatch(providedSecret, expectedSecret)) {
-    return NextResponse.json({ message: 'Invalid secret' }, { status: 401 })
-  }
-
+  let parsed: Awaited<ReturnType<typeof parseBody<{ _type?: string }>>>
   try {
-    const body = await request.json()
-    const { _type, slug } = body
-
-    switch (_type) {
-      case 'sermon':
-        revalidatePath('/')
-        revalidatePath('/sermons')
-        if (slug?.current) {
-          revalidatePath(`/sermons/${slug.current}`)
-        }
-        break
-
-      case 'event':
-        revalidatePath('/')
-        revalidatePath('/events')
-        break
-
-      case 'ministry':
-        revalidatePath('/')
-        revalidatePath('/ministries')
-        if (slug?.current) {
-          revalidatePath(`/ministries/${slug.current}`)
-        }
-        break
-
-      case 'person':
-        revalidatePath('/')
-        break
-
-      case 'homeSections':
-      case 'siteSettings':
-        revalidatePath('/')
-        break
-
-      default:
-        revalidatePath('/')
-    }
-
-    return NextResponse.json({
-      revalidated: true,
-      message: `Revalidated ${_type}`,
-      now: Date.now()
-    })
-  } catch (err) {
-    console.error('Revalidation error:', err)
-    return NextResponse.json({
-      message: 'Error revalidating'
-    }, { status: 500 })
+    parsed = await parseBody<{ _type?: string }>(request, secret, true)
+  } catch {
+    return NextResponse.json({ ok: false, error: 'invalid-body' }, { status: 400 })
   }
+
+  if (!parsed.isValidSignature) {
+    return NextResponse.json({ ok: false, error: 'invalid-signature' }, { status: 401 })
+  }
+
+  const tag = tagForType(parsed.body?._type)
+  if (!tag) {
+    return NextResponse.json({ ok: false, error: 'unknown-type' }, { status: 400 })
+  }
+
+  // Expire immediately: the next visit renders fresh content
+  revalidateTag(tag, { expire: 0 })
+  return NextResponse.json({ ok: true, revalidated: tag })
 }

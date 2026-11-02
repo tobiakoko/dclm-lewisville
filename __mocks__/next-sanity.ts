@@ -15,3 +15,6 @@ export const sanityFetch = jest.fn(async (options: { query: string; params?: Rec
   void options
   return createClient().fetch()
 })
+
+// defineQuery is the identity at run time; it only carries types for TypeGen
+export const defineQuery = <const Q extends string>(query: Q): Q => query

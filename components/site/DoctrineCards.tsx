@@ -1,24 +1,24 @@
-import { DOCTRINES, DOCTRINES_INTRO } from '@/lib/content/doctrines'
+import type { Doctrine, DoctrinesIntro } from '@/lib/content/doctrines'
 import { Disclosure } from '@/components/ui/disclosure'
 
 /**
  * The 22 Bible doctrines as cards that expand to the full verbatim text
  * (SITE-CONTENT.md §5, "What we believe"). Titles only on the card; no summaries.
  */
-export default function DoctrineCards() {
+export default function DoctrineCards({ intro, doctrines }: { intro: DoctrinesIntro; doctrines: Doctrine[] }) {
   return (
     <>
       <div className="mb-10 max-w-3xl space-y-3">
-        <p className="font-semibold text-navy-900">{DOCTRINES_INTRO.heading}</p>
-        <p className="text-[0.9375rem] italic text-ink-muted">{DOCTRINES_INTRO.references}</p>
+        <p className="font-semibold text-navy-900">{intro.heading}</p>
+        <p className="text-[0.9375rem] italic text-ink-muted">{intro.references}</p>
         <blockquote className="scripture text-navy-900">
-          <p>{DOCTRINES_INTRO.quotation}</p>
+          <p>{intro.quotation}</p>
         </blockquote>
-        <p className="font-semibold">{DOCTRINES_INTRO.statement}</p>
+        <p className="font-semibold">{intro.statement}</p>
       </div>
 
       <ol className="grid list-none gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {DOCTRINES.map((doctrine) => (
+        {doctrines.map((doctrine) => (
           <li key={doctrine.id} id={`doctrine-${doctrine.id}`}>
             <Disclosure
               className="h-full rounded-2xl border border-border-input/40 bg-white"

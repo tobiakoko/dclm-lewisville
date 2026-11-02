@@ -3,8 +3,16 @@ import Footer from '@/components/layout/Footer'
 import { DCLM_RESOURCES, SITE_CONFIG, SERVICE_TIMES, formatAddress, telHref } from '@/lib/constants'
 import { formatServiceTime } from '@/lib/schedule'
 
+jest.mock('@/lib/data', () => {
+  const constants = jest.requireActual('@/lib/constants')
+  return {
+    getSiteData: async () => ({ config: constants.SITE_CONFIG, schedule: constants.SERVICE_TIMES, exceptions: [], otherLocations: [] }),
+  }
+})
+
 describe('Footer', () => {
-  beforeEach(() => render(<Footer />))
+  // Footer is an async Server Component: render the element it resolves to
+  beforeEach(async () => render(await Footer()))
 
   it('shows the church facts from SITE_CONFIG', () => {
     const footer = screen.getByRole('contentinfo')

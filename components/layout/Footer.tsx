@@ -1,7 +1,8 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { Facebook, Instagram, Youtube, type LucideIcon } from 'lucide-react'
-import { DCLM_RESOURCES, SERVICE_TIMES, SITE_CONFIG, formatAddress, mapsUrl, telHref } from '@/lib/constants'
+import { DCLM_RESOURCES, formatAddress, mapsUrl, telHref, type SiteConfig } from '@/lib/constants'
+import { getSiteData } from '@/lib/data'
 import { formatServiceTime } from '@/lib/schedule'
 import { gaMeasurementId } from '@/lib/consent'
 import { CookieSettingsButton } from '@/components/consent/ConsentBanner'
@@ -13,16 +14,20 @@ interface SocialLink {
 }
 
 // Only links the church has provided are shown
-const SOCIAL_LINKS = ([
-  { name: 'Facebook', icon: Facebook, href: SITE_CONFIG.socialMedia.facebook },
-  { name: 'Instagram', icon: Instagram, href: SITE_CONFIG.socialMedia.instagram },
-  { name: 'YouTube', icon: Youtube, href: SITE_CONFIG.youtube.channel },
-] satisfies SocialLink[]).filter((link): link is SocialLink & { href: string } => link.href !== null)
+function socialLinks(config: SiteConfig) {
+  return ([
+    { name: 'Facebook', icon: Facebook, href: config.socialMedia.facebook },
+    { name: 'Instagram', icon: Instagram, href: config.socialMedia.instagram },
+    { name: 'YouTube', icon: Youtube, href: config.youtube.channel },
+  ] satisfies SocialLink[]).filter((link): link is SocialLink & { href: string } => link.href !== null)
+}
 
 const linkClass = 'underline-offset-4 hover:underline'
 
 /** Address, phone, email, service times, social, DCLM resources, Privacy, Terms (DESIGN-SYSTEM.md) */
-export default function Footer() {
+export default async function Footer() {
+  const { config, schedule } = await getSiteData()
+  const SOCIAL_LINKS = socialLinks(config)
   const year = new Date().getFullYear()
 
   return (
@@ -32,17 +37,17 @@ export default function Footer() {
         <div className="space-y-4">
           <Link href="/" className="flex items-center gap-3 no-underline">
             <Image src="/dclm_logo.png" alt="" width={56} height={50} className="h-12 w-auto" />
-            <span className="font-serif text-lg font-semibold leading-tight">{SITE_CONFIG.name}</span>
+            <span className="font-serif text-lg font-semibold leading-tight">{config.name}</span>
           </Link>
           <address className="space-y-2 not-italic">
-            <a href={mapsUrl(SITE_CONFIG.address)} className={`block ${linkClass}`}>
-              {formatAddress(SITE_CONFIG.address)}
+            <a href={mapsUrl(config.address)} className={`block ${linkClass}`}>
+              {formatAddress(config.address)}
             </a>
-            <a href={telHref(SITE_CONFIG.phone)} className={`block ${linkClass}`}>
-              {SITE_CONFIG.phone}
+            <a href={telHref(config.phone)} className={`block ${linkClass}`}>
+              {config.phone}
             </a>
-            <a href={`mailto:${SITE_CONFIG.email}`} className={`block break-all ${linkClass}`}>
-              {SITE_CONFIG.email}
+            <a href={`mailto:${config.email}`} className={`block break-all ${linkClass}`}>
+              {config.email}
             </a>
           </address>
           {SOCIAL_LINKS.length > 0 && (
@@ -65,7 +70,7 @@ export default function Footer() {
         <div>
           <h3 className="mb-4 text-lg">When we meet</h3>
           <ul className="space-y-3 list-none">
-            {SERVICE_TIMES.map((service) => (
+            {schedule.map((service) => (
               <li key={service.id}>
                 <span className="block font-semibold">{service.name}</span>
                 <span className="tabular">
@@ -119,7 +124,7 @@ export default function Footer() {
       <div className="border-t border-white/20">
         <div className="mx-auto flex max-w-content flex-col gap-3 px-4 py-6 text-[0.9375rem] sm:px-6 md:flex-row md:items-center md:justify-between lg:px-8">
           <p>
-            © {year} {SITE_CONFIG.name}
+            © {year} {config.name}
           </p>
           <ul className="flex flex-wrap gap-x-6 gap-y-2 list-none">
             <li>

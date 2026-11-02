@@ -28,6 +28,7 @@ const eslintConfig = defineConfig([
     "next-env.d.ts",
     // Generated output:
     "coverage/**",
+    "sanity/types.generated.ts",
     "playwright-report/**",
     "test-results/**",
   ]),

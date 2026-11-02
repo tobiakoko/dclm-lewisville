@@ -1,12 +1,9 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { SITE_CONFIG, SERVICE_TIMES, formatAddress, mapsUrl } from '@/lib/constants'
+import { formatAddress, mapsUrl, type ServiceTime, type SiteConfig } from '@/lib/constants'
 import { formatServiceTime } from '@/lib/schedule'
-import { HOME_HERO } from '@/lib/content/site'
 import { buttonVariants } from '@/components/ui/button'
 import congregation from '@/app/assets/congregation.jpeg'
-
-const sundayWorship = SERVICE_TIMES.find((service) => service.id === 'sunday-worship')
 
 /**
  * Name, city, Sunday time, address and the three main actions. Text sits on paper (not over
@@ -14,7 +11,16 @@ const sundayWorship = SERVICE_TIMES.find((service) => service.id === 'sunday-wor
  * Acceptance (BUILD-PLAN 2.5): on a 390px phone the name, city, Sunday time and "Plan your visit"
  * are visible without scrolling.
  */
-export default function Hero() {
+export default function Hero({
+  config: SITE_CONFIG,
+  schedule,
+  hero,
+}: {
+  config: SiteConfig
+  schedule: ServiceTime[]
+  hero: { title: string; subtitle: string }
+}) {
+  const sundayWorship = schedule.find((service) => service.day === 'Sunday' && service.mode !== 'online')
   const [church] = SITE_CONFIG.shortName.split(' · ')
   return (
     <section aria-labelledby="hero-heading" className="bg-paper">
@@ -46,7 +52,7 @@ export default function Hero() {
             </a>
           </p>
           <p className="max-w-prose">
-            <strong className="font-serif text-xl text-navy-900">{HOME_HERO.title}.</strong> {HOME_HERO.subtitle}
+            <strong className="font-serif text-xl text-navy-900">{hero.title}.</strong> {hero.subtitle}
           </p>
           <p>
             <Link href="/about#beliefs" className="font-semibold text-emblem-sky-700 underline underline-offset-4">

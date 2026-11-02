@@ -25,7 +25,7 @@ The same codebase should later serve other Deeper Life branches, so branch facts
 
 1. **Never invent church facts.** No made-up times, names, phone numbers, addresses, statistics, quotes, testimonies, sermons, events, photos or links. If something is missing, use the placeholder given in `SITE-CONTENT.md` or hide the element, add a `TODO(content):` comment, and make sure it's in the "Still missing" list. Never ship lorem ipsum, "John Doe", sample YouTube IDs, `#` links, or stock or AI images presented as the church.
 2. **Verbatim content stays verbatim.** Text between `<!-- VERBATIM START -->` and `<!-- VERBATIM END -->` (the 22 doctrines, the Pastor's Welcome, and the bios of Pastor Thompson Aderemi and Pastor Joseph Agbo) is published exactly as written. Don't correct spelling (British spellings are intentional), punctuation or scripture references, even if they look wrong. Don't summarize them in your own words.
-3. **One source for every fact.** Name, address, phone, email, URL, schedule, links and other locations live in `lib/constants.ts` (Phases 1–2), then in the Sanity `siteSettings` singleton (Phase 3). No component, metadata, JSON-LD, email template or test may hard-code a fact.
+3. **One source for every fact.** Name, address, phone, email, schedule, links and other locations live in the Sanity `siteSettings` singleton, read through `lib/data.ts`; `lib/constants.ts` holds the same facts as seed data and development fallback. No component, metadata, JSON-LD, email template or test may hard-code a fact.
 4. **Domain and email.** The domain is `deeperlifelewisville.org`; replace every `dclmlewisville.org`. All form email goes to `info@deeperlifelewisville.org` in production, and never to that inbox from development or preview.
 5. **Honest states.** A form that fails says so and shows the phone number. Unknown URLs return a real 404. An empty list shows an honest empty state. A CMS error is an error, never fallback or placeholder content.
 6. **Accessibility is required: WCAG 2.2 AA.** Keyboard access everywhere, visible focus, nothing on hover only, `prefers-reduced-motion` respected, no autoplaying carousels or video, contrast only from the design tokens.
@@ -37,12 +37,12 @@ The same codebase should later serve other Deeper Life branches, so branch facts
 
 - Next.js 16 App Router with React 19; Server Components by default, `'use client'` only for interactivity. TypeScript 5.9 strict; stay on 5.9.
 - Tailwind CSS v4 with tokens in `app/globals.css` (`@theme`); Radix primitives and shadcn-style components in `components/ui`.
-- Sanity 4 (Studio at `/studio`, schemas in `sanity/schemas`, queries in `lib/sanity/queries.ts`); upgrade to Sanity 6 only in Phase 3.
+- Sanity 6 (Studio at `/studio`, schemas in `sanity/schemas`, queries in `lib/sanity/queries.ts`, types from `npm run typegen`). Pages read content through `lib/data.ts`; `lib/constants.ts` and `lib/content/` are seed data and the development fallback.
 - Resend (email), Upstash Redis (rate limiting, optional), Zod 4 (validation), `@t3-oss/env-nextjs` (`lib/env.ts`).
 - Jest and Testing Library (`__tests__/`), Playwright with `@axe-core/playwright` (`e2e/`).
 - Hosting: Vercel. Node 24 LTS locally (`.nvmrc`) and on Vercel; CI tests Node 22 and 24 (`engines`: `>=22.12 <25`).
 
-Next.js 16 reminders: `params` and `searchParams` are Promises, so always `await` them. Request handling lives in `proxy.ts` (the former middleware), which also sets the CSP. Use `next/image`, `next/font` and `next/link`.
+Next.js 16 reminders: `params` and `searchParams` are Promises, so always `await` them. Pages are cached and refreshed by the Sanity webhook (`revalidateTag`); the CSP and security headers are set in `next.config.ts` (no per-request nonce). Use `next/image` and `next/link`.
 
 ## Commands
 
