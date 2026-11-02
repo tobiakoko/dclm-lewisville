@@ -87,3 +87,20 @@ Not merged:
   - A free-form page builder runs against 3.2's fixed singletons and typed documents, which keep the verbatim text and facts out of editors' layout choices.
   - Its palette, fonts and animation helpers contradict `DESIGN-SYSTEM.md`.
   - It is 103 commits behind on Next 16.0.0.
+
+## After `npm audit fix` (Phase 1, 1.1a)
+
+Running `npm audit fix` (no `--force`) on 2 November 2026 took the count from 65 to **47: 0 critical, 4 high, 42 moderate, 1 low**. It also moved `next` to 16.4.3 and `zod` to 4.6.7, both within their existing ranges.
+
+The four remaining high advisories all come from Sanity tooling. Only the Sanity 6 upgrade (Phase 3) fixes them:
+
+| Package | Comes in via | Runs where |
+| --- | --- | --- |
+| `@sanity/cli` | `@sanity/codegen`, `@sanity/runtime-cli` | CLI only (`sanity dev`, `deploy`, `typegen`) |
+| `@sanity/codegen` | its own nested `zod` 3.25.76 (GHSA-mrhx-c7xc-m3w5, memory exhaustion on oversized input) | TypeGen CLI only |
+| `zod` (nested) | `@sanity/codegen` | TypeGen CLI only. The app's own `zod` is 4.6.7 and not affected |
+| `sanity` | `@sanity/cli`, `@sanity/import`, `archiver`, `rimraf` | Dataset import/export and CLI only |
+
+**Runtime check.** After `npm run build`, none of `@sanity/cli`, `@sanity/codegen`, `@sanity/runtime-cli`, `@sanity/import`, `archiver` or `rimraf` appears in `.next/server` or `.next/static`. As a control, the same search does find `node_modules/sanity/` in 19 files. So none of the four advisories reaches the running `/studio` route or any site page; they affect developer and CI tooling only. **Nothing is flagged at runtime.**
+
+CI now runs `npm audit --audit-level=critical`, because `--audit-level=high` would fail on these four until Phase 3. Raise it back to `high` after the Sanity 6 upgrade.
