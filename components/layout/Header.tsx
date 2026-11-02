@@ -107,7 +107,7 @@ export default function Header() {
                     ? 'text-(--church-navy)' 
                     : 'text-white'
                 }`}>
-                  DCLM Lewisville
+                  {SITE_CONFIG.shortName}
                 </div>
               </div>
             </Link>
@@ -370,7 +370,7 @@ export default function Header() {
             </Link>
             
             <p className="text-center text-xs text-gray-300 mt-6">
-               © {new Date().getFullYear()} DCLM Lewisville
+               © {new Date().getFullYear()} {SITE_CONFIG.name}
             </p>
           </div>
         </div>

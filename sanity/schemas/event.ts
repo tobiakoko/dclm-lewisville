@@ -84,7 +84,7 @@ export default defineType({
       media: 'image',
     },
     prepare(selection) {
-      const { title, date } = selection
+      const { date } = selection
       return {
         ...selection,
         subtitle: new Date(date).toLocaleDateString(),

@@ -118,7 +118,7 @@ export default defineType({
       date: 'date',
     },
     prepare(selection) {
-      const { title, speaker, date } = selection
+      const { speaker, date } = selection
       return {
         ...selection,
         subtitle: `${speaker} - ${new Date(date).toLocaleDateString()}`,

@@ -2,21 +2,13 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   experimental: {
-    optimizePackageImports: ['lucide-react', 'framer-motion', 'gsap'],
+    optimizePackageImports: ['lucide-react'],
   },
   images: {
     remotePatterns: [
       {
         protocol: 'https',
         hostname: 'cdn.sanity.io',
-      },
-      {
-        protocol: 'https',
-        hostname: 'images.unsplash.com',
-      },
-      {
-        protocol: 'https',
-        hostname: 'lh3.googleusercontent.com',
       },
     ],
     formats: ['image/avif', 'image/webp'],
@@ -29,6 +21,12 @@ const nextConfig: NextConfig = {
   },
   compress: true,
   poweredByHeader: false,
+  async redirects() {
+    return [
+      // The old leadership page; its content now lives on About (BUILD-PLAN 2.7)
+      { source: '/ministers', destination: '/about#leadership', permanent: true },
+    ]
+  },
 };
 
 export default nextConfig;

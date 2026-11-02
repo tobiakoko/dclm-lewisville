@@ -2,23 +2,6 @@ import { http, HttpResponse } from 'msw'
 
 // API route handlers for MSW
 export const handlers = [
-  // Newsletter subscription
-  http.post('/api/newsletter', async ({ request }) => {
-    const body = await request.json() as { email?: string }
-
-    if (!body.email || !body.email.includes('@')) {
-      return HttpResponse.json(
-        { error: 'Valid email is required' },
-        { status: 400 }
-      )
-    }
-
-    return HttpResponse.json(
-      { message: 'Successfully subscribed to newsletter' },
-      { status: 200 }
-    )
-  }),
-
   // Contact form submission
   http.post('/api/contact', async ({ request }) => {
     const body = await request.json() as {
@@ -35,10 +18,7 @@ export const handlers = [
       )
     }
 
-    return HttpResponse.json(
-      { message: 'Email sent successfully' },
-      { status: 200 }
-    )
+    return HttpResponse.json({ ok: true }, { status: 200 })
   }),
 
   // Health check endpoint
@@ -52,17 +32,7 @@ export const handlers = [
 
 // Error handlers for testing error scenarios
 export const errorHandlers = [
-  http.post('/api/newsletter', () => {
-    return HttpResponse.json(
-      { error: 'Failed to subscribe' },
-      { status: 500 }
-    )
-  }),
-
   http.post('/api/contact', () => {
-    return HttpResponse.json(
-      { error: 'Failed to send email' },
-      { status: 500 }
-    )
+    return HttpResponse.json({ ok: false, error: 'provider-error' }, { status: 502 })
   }),
 ]

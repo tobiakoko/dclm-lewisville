@@ -1,96 +1,65 @@
-# DCLM Lewisville Website
+# Deeper Life Bible Church Lewisville website
 
-Modern church website built with Next.js 14, Sanity CMS, and Tailwind CSS.
+The public website for Deeper Life Bible Church Lewisville (1368 W Main St, Lewisville, TX 75067), a local congregation of Deeper Christian Life Ministry. Built with Next.js 16, React 19, Sanity and Tailwind CSS v4, hosted on Vercel.
 
-## 🚀 Quick Start
+The site is being rebuilt in phases. Start with [`docs/build/BUILD-PLAN.md`](docs/build/BUILD-PLAN.md); [`CLAUDE.md`](CLAUDE.md) has the working rules.
 
-### Prerequisites
-- Node.js 18.17.0 or higher
-- npm or yarn
+## Requirements
 
-### Installation
+- Node.js 24 LTS (`.nvmrc`). Node 22.12 or later also works; CI tests both.
+- npm (the repo uses `package-lock.json`)
 
-1. Clone the repository
+## Getting started
+
 ```bash
-git clone https://github.com/yourusername/dclm-lewisville.git
-cd dclm-lewisville
-```
-
-2. Install dependencies
-```bash
-npm install
-```
-
-3. Set up environment variables
-```bash
-cp .env.example .env.local
-# Edit .env.local with your credentials
-```
-
-4. Run development servers
-```bash
-# Terminal 1 - Next.js
+nvm use                      # Node 24
+npm ci
+cp .env.example .env.local   # then fill in the values below
 npm run dev
-
-# Terminal 2 - Sanity Studio
-npm run sanity
 ```
 
-5. Open your browser
 - Website: http://localhost:3000
-- Sanity Studio: http://localhost:3333
+- Sanity Studio: http://localhost:3000/studio (embedded in the Next.js app)
 
-## 📁 Project Structure
+## Commands
 
-```
-dclm-lewisville/
-├── app/                    # Next.js app directory
-├── components/             # React components
-├── lib/                    # Utility functions
-├── sanity/                 # Sanity CMS configuration
-├── public/                 # Static assets
-└── ...config files
-```
+| Command | What it does |
+| --- | --- |
+| `npm run dev` | Development server |
+| `npm run build` / `npm start` | Production build and server |
+| `npm run type-check` | `tsc --noEmit` |
+| `npm run lint` | ESLint |
+| `npm test` | Jest unit and integration tests (`__tests__/`) |
+| `npm run test:e2e` | Playwright end-to-end and axe checks (`e2e/`); run `npm run playwright:install` once first |
 
-## 🛠️ Tech Stack
+Before every commit: `npm run type-check && npm run lint && npm test`. Before finishing a phase, also run `npm run build` and `npm run test:e2e`.
 
-- **Framework**: Next.js 14
-- **CMS**: Sanity.io
-- **Styling**: Tailwind CSS
-- **Deployment**: Vercel
-- **Email**: Resend
-- **Forms**: React Hook Form + Zod
+## Environment variables
 
-## 📝 Available Scripts
+Set them in `.env.local` locally and in the Vercel project settings for Preview and Production. Never commit `.env*` files. Real keys come from the site owner.
 
-- `npm run dev` - Start development server
-- `npm run build` - Build for production
-- `npm run start` - Start production server
-- `npm run lint` - Run ESLint
-- `npm run sanity` - Start Sanity Studio
-- `npm run sanity:deploy` - Deploy Sanity Studio
+| Variable | Required | Purpose |
+| --- | --- | --- |
+| `NEXT_PUBLIC_SITE_URL` | Yes in production | `https://deeperlifelewisville.org` |
+| `NEXT_PUBLIC_SANITY_PROJECT_ID` | Yes | Sanity project |
+| `NEXT_PUBLIC_SANITY_DATASET` | Yes | Usually `production` |
+| `NEXT_PUBLIC_SANITY_API_VERSION` | No | Pinned API date; defaults to the one in `lib/env.ts` |
+| `SANITY_API_TOKEN` | No | Read-only token (never a write token) |
+| `SANITY_REVALIDATE_SECRET` | For the webhook | Shared secret for `/api/revalidate`, 16+ characters |
+| `RESEND_API_KEY` | For forms | Without it, forms show an error and the church phone number |
+| `CONTACT_INBOX` | For forms | Where form email goes. Production: `info@deeperlifelewisville.org`. Outside production it must be a different, test inbox |
+| `CONTACT_FROM` | For forms | Sender address on a domain verified in Resend |
+| `UPSTASH_REDIS_REST_URL`, `UPSTASH_REDIS_REST_TOKEN` | No | Durable rate limiting; falls back to in-memory |
+| `NEXT_PUBLIC_GA_ID` | No | Google Analytics, production only |
 
-## 🚢 Deployment
+## Project layout
 
-### Deploy to Vercel
-1. Push code to GitHub
-2. Import project in Vercel
-3. Add environment variables
-4. Deploy
+- `app/(site)/` pages; `app/api/` contact, health and revalidation routes; `app/studio/` Sanity Studio
+- `components/layout/` header and footer; `components/sections/` page sections; `components/ui/` primitives
+- `lib/constants.ts` branch facts, schedule and navigation (the single source for facts until Phase 3)
+- `lib/sanity/` client, queries and image helper; `sanity/schemas/` content types
+- `docs/build/` the build plan, approved site content and design system; `docs/archive/` superseded documents
 
-### Deploy Sanity Studio
-```bash
-npm run sanity:deploy
-```
+## Deployment
 
-## 📖 Documentation
-
-For detailed implementation guide, see the implementation artifacts.
-
-## 📧 Contact
-
-For questions or support, contact: info@dclmlewisville.org
-
-## 📄 License
-
-Copyright © 2025 DCLM Lewisville. All rights reserved.
+Vercel builds every push. `main` is production; each phase lands through a pull request from its `rebuild/phase-*` branch.

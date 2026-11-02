@@ -3,6 +3,7 @@ import { headers } from 'next/headers';
 import { Inter, Playfair_Display } from 'next/font/google';
 import "./globals.css";
 import { SITE_CONFIG } from '@/lib/constants'
+import { churchJsonLd } from '@/lib/structured-data'
 import GoogleAnalytics from "@/components/GoogleAnalytics";
 import { Analytics } from '@vercel/analytics/next';
 import { SpeedInsights } from '@vercel/speed-insights/next';
@@ -24,7 +25,7 @@ const playfair = Playfair_Display({
 export const metadata: Metadata = {
   title: {
     default: SITE_CONFIG.name,
-    template: `%s | ${SITE_CONFIG.shortName}`,
+    template: `%s | ${SITE_CONFIG.name}`,
   },
   description: SITE_CONFIG.description,
   keywords: [
@@ -68,35 +69,13 @@ export default async function RootLayout({
 }>) {
   const nonce = (await headers()).get('x-nonce') ?? undefined;
 
-  const organizationSchema = {
-    "@context": "https://schema.org",
-    "@type": "Church",
-    "name": "Deeper Life Bible Church Lewisville",
-    "address": {
-      "@type": "PostalAddress",
-      "streetAddress": "123 Church Street",
-      "addressLocality": "Lewisville",
-      "addressRegion": "TX",
-      "postalCode": "75067",
-      "addressCountry": "US"
-    },
-    "telephone": "+1-123-456-7890",
-    "url": "https://dclmlewisville.org",
-    "email": "info@dclmlewisville.org",
-    "logo": "https://dclmlewisville.org/logo.png",
-    "sameAs": [
-      "https://facebook.com/dclmlewisville",
-      "https://instagram.com/dclmlewisville",
-      "https://youtube.com/@dclmlewisville"
-    ]
-  }
   return (
     <html lang="en" className={`${inter.variable} ${playfair.variable}`}>
       <head>
         <script
           type="application/ld+json"
           nonce={nonce}
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(churchJsonLd()).replace(/</g, '\\u003c') }}
         />
       </head>
       <body className="antialiased">

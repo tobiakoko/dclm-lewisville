@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect } from 'react'
+import { SITE_CONFIG, telHref } from '@/lib/constants'
 
 export default function GlobalError({
   error,
@@ -10,15 +11,11 @@ export default function GlobalError({
   reset: () => void
 }) {
   useEffect(() => {
-    // Log the error to an error reporting service
     console.error('Global application error:', error)
-
-    // TODO: Send to error tracking service (Sentry, Rollbar, etc.)
-    // Example: Sentry.captureException(error)
   }, [error])
 
   return (
-    <html>
+    <html lang="en">
       <body>
         <div style={{
           minHeight: '100vh',
@@ -33,7 +30,8 @@ export default function GlobalError({
               Something went wrong!
             </h1>
             <p style={{ marginBottom: '2rem', color: '#666' }}>
-              We encountered a critical error. Our team has been notified.
+              The site didn&apos;t load. Please try again, or call us at{' '}
+              <a href={telHref(SITE_CONFIG.phone)}>{SITE_CONFIG.phone}</a>.
             </p>
             {error.digest && (
               <p style={{ fontSize: '0.875rem', color: '#999', marginBottom: '2rem' }}>
@@ -55,8 +53,10 @@ export default function GlobalError({
             >
               Try again
             </button>
-            <button
-              onClick={() => window.location.href = '/'}
+            {/* A full page load: the root layout itself failed, so client navigation can't be trusted */}
+            {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
+            <a
+              href="/"
               style={{
                 padding: '0.75rem 1.5rem',
                 fontSize: '1rem',
@@ -68,7 +68,7 @@ export default function GlobalError({
               }}
             >
               Go home
-            </button>
+            </a>
           </div>
         </div>
       </body>

@@ -553,3 +553,4 @@ This website exists to offer biblical counsel for life’s various challenges, q
 - Giving details: Zelle, check payee and mailing address, online provider, tax-deductibility statement
 - Denton and Dallas service times; other DFW locations
 - Privacy and terms legal review; effective date
+- Newsletter (optional, later): sender, sign-up and confirmation flow

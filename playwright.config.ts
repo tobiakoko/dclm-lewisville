@@ -66,5 +66,8 @@ export default defineConfig({
     url: 'http://localhost:3000',
     reuseExistingServer: !process.env.CI,
     timeout: 300 * 1000,
+    // Never send real email from e2e runs: without an inbox and sender the contact API
+    // answers 503 and the form shows the honest error state.
+    env: { CONTACT_INBOX: '', CONTACT_FROM: '' },
   },
 })

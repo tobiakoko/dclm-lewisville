@@ -30,9 +30,6 @@ if (typeof globalThis.BroadcastChannel === 'undefined') {
 // Mock environment variables
 process.env.NEXT_PUBLIC_SANITY_PROJECT_ID = 'test-project-id'
 process.env.NEXT_PUBLIC_SANITY_DATASET = 'test'
-process.env.RESEND_API_KEY = 'test-resend-key'
-process.env.RESEND_AUDIENCE_ID = 'test-audience-id'
-process.env.NEWSLETTER_SIGNING_SECRET = 'test-signing-secret-0123456789abcdef'
 
 // Only mock browser APIs when in jsdom environment
 if (typeof window !== 'undefined') {

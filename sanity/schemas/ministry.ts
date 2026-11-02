@@ -139,7 +139,7 @@ export default defineType({
       media: 'images.0',
     },
     prepare(selection) {
-      const { title, leader } = selection
+      const { leader } = selection
       return {
         ...selection,
         subtitle: leader ? `Led by ${leader}` : 'No leader assigned',

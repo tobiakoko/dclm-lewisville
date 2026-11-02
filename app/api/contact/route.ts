@@ -1,109 +1,57 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { Resend } from 'resend'
-import { ZodError } from 'zod'
 import { env } from '@/lib/env'
-import { contactFormSchema } from '@/lib/validations/contact'
-import { escapeHtml } from '@/lib/sanitize'
+import { SITE_CONFIG } from '@/lib/constants'
 import { checkRateLimit, getClientIp } from '@/lib/rate-limit'
+import { OUTCOME_STATUS, handleContact, type ContactOutcome, type EmailSender } from '@/lib/contact/handle-contact'
 
-const resend = env.RESEND_API_KEY ? new Resend(env.RESEND_API_KEY) : null
+const sender: EmailSender | null = env.RESEND_API_KEY ? new Resend(env.RESEND_API_KEY) : null
 
-const ALLOWED_ORIGINS = [
-  'https://dclmlewisville.org',
-  'https://www.dclmlewisville.org',
-  'http://localhost:3000',
-]
+function allowedOrigins(): string[] {
+  const site = new URL(SITE_CONFIG.url)
+  const origins = [site.origin, `${site.protocol}//www.${site.host}`]
+  if (env.NODE_ENV === 'development') origins.push('http://localhost:3000')
+  return origins
+}
+
+function respond(outcome: ContactOutcome) {
+  const status = OUTCOME_STATUS[outcome.kind]
+  switch (outcome.kind) {
+    case 'sent':
+      return NextResponse.json({ ok: true }, { status })
+    case 'invalid':
+      return NextResponse.json({ ok: false, error: 'invalid', issues: outcome.issues }, { status })
+    case 'rate-limited':
+      return NextResponse.json(
+        { ok: false, error: outcome.kind },
+        { status, headers: { 'Retry-After': String(outcome.retryAfterSeconds) } }
+      )
+    default:
+      return NextResponse.json({ ok: false, error: outcome.kind }, { status })
+  }
+}
 
 export async function POST(request: NextRequest) {
+  let body: unknown
   try {
-    const ip = getClientIp(request)
-    const rateLimit = await checkRateLimit(`contact:${ip}`)
-
-    if (!rateLimit.allowed) {
-      return NextResponse.json(
-        { error: 'Too many requests. Please try again later.' },
-        {
-          status: 429,
-          headers: {
-            'X-RateLimit-Limit': '10',
-            'X-RateLimit-Remaining': '0',
-            'X-RateLimit-Reset': rateLimit.reset.toString(),
-          }
-        }
-      )
-    }
-
-    const origin = request.headers.get('origin')
-    if (origin && !ALLOWED_ORIGINS.includes(origin)) {
-      return NextResponse.json(
-        { error: 'Unauthorized origin' },
-        { status: 403 }
-      )
-    }
-
-    const body = await request.json()
-
-    const validatedData = contactFormSchema.parse(body)
-
-    const sanitizedName = escapeHtml(validatedData.name)
-    const sanitizedEmail = escapeHtml(validatedData.email)
-    const sanitizedPhone = validatedData.phone ? escapeHtml(validatedData.phone) : null
-    const sanitizedMessage = escapeHtml(validatedData.message)
-    const sanitizedIp = escapeHtml(ip)
-
-    if (!resend) {
-      console.warn('RESEND_API_KEY not configured. Email not sent.')
-      return NextResponse.json(
-        { message: 'Contact form received (email service not configured)' },
-        { status: 200 }
-      )
-    }
-
-    await resend.emails.send({
-      from: 'website@dclmlewisville.org',
-      to: 'info@dclmlewisville.org',
-      subject: `New Contact Form Submission from ${sanitizedName}`,
-      html: `
-        <h2>New Contact Form Submission</h2>
-        <p><strong>Name:</strong> ${sanitizedName}</p>
-        <p><strong>Email:</strong> ${sanitizedEmail}</p>
-        ${sanitizedPhone ? `<p><strong>Phone:</strong> ${sanitizedPhone}</p>` : ''}
-        <p><strong>Message:</strong></p>
-        <p>${sanitizedMessage.replace(/\n/g, '<br>')}</p>
-        <hr>
-        <p style="color: #666; font-size: 12px;">Submitted from: ${sanitizedIp}</p>
-      `,
-    })
-
-    return NextResponse.json(
-      { message: 'Email sent successfully' },
-      {
-        status: 200,
-        headers: {
-          'X-RateLimit-Limit': '10',
-          'X-RateLimit-Remaining': rateLimit.remaining.toString(),
-        }
-      }
-    )
-  } catch (error) {
-    if (error instanceof ZodError) {
-      return NextResponse.json(
-        {
-          error: 'Validation failed',
-          details: error.issues.map((e) => ({
-            field: e.path.join('.'),
-            message: e.message,
-          }))
-        },
-        { status: 400 }
-      )
-    }
-
-    console.error('Contact form error:', error)
-
-    return NextResponse.json(
-      { error: 'Failed to send email. Please try again later.' },
-      { status: 500 }
-    )
+    body = await request.json()
+  } catch {
+    body = null
   }
+
+  const outcome = await handleContact(
+    {
+      origin: request.headers.get('origin'),
+      ownOrigin: request.nextUrl.origin,
+      allowedOrigins: allowedOrigins(),
+      clientKey: getClientIp(request),
+      body,
+    },
+    { sender, inbox: env.CONTACT_INBOX, from: env.CONTACT_FROM },
+    checkRateLimit,
+    // Structured, body-free logging only
+    (event, detail) => console.info(JSON.stringify({ event, ...detail }))
+  )
+
+  return respond(outcome)
 }

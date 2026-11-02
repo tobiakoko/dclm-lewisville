@@ -25,10 +25,10 @@ function siteCspHeader(nonce: string): string {
     default-src 'self';
     script-src 'self' 'nonce-${nonce}' 'strict-dynamic' https://www.googletagmanager.com https://www.google-analytics.com ${IS_DEV ? "'unsafe-eval'" : ''};
     style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
-    img-src 'self' blob: data: https://cdn.sanity.io https://images.unsplash.com https://lh3.googleusercontent.com ${IS_DEV ? 'http://localhost:*' : ''};
+    img-src 'self' blob: data: https://cdn.sanity.io ${IS_DEV ? 'http://localhost:*' : ''};
     font-src 'self' https://fonts.gstatic.com;
     connect-src 'self' https://api.sanity.io https://*.sanity.io https://www.google-analytics.com ${IS_DEV ? 'http://localhost:* ws://localhost:*' : ''};
-    frame-src 'self' https://www.google.com https://maps.google.com https://www.youtube.com;
+    frame-src 'self' https://www.google.com https://maps.google.com https://www.youtube-nocookie.com;
     frame-ancestors 'none';
     base-uri 'self';
     form-action 'self';

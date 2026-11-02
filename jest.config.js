@@ -58,7 +58,7 @@ const configPromise = createJestConfig(customJestConfig)
 module.exports = async (...args) => {
   const config = await configPromise(...args)
   const nextAllow = '(geist|next/dist/client|next/dist/shared/lib|next/src/client|next/src/shared/lib)'
-  const mswAllow = '(@mswjs|undici|until-async|iconv-lite)'
+  const mswAllow = '(@mswjs|undici|until-async|iconv-lite|rettime|@open-draft/deferred-promise)'
   config.transformIgnorePatterns = [
     `/node_modules/(?!.pnpm)(?!${nextAllow}|${mswAllow}/)`,
     ...config.transformIgnorePatterns.filter((p) => p.includes('.pnpm[')),
