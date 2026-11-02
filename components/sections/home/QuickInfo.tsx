@@ -1,66 +1,36 @@
-import { Sun, BookOpen, HandHeart, type LucideIcon } from 'lucide-react'
-import { SERVICE_TIMES } from '@/lib/constants'
+import { SERVICE_TIMES, ZOOM_PLACEHOLDER } from '@/lib/constants'
+import { MODE_LABEL, formatServiceTime } from '@/lib/schedule'
 
-const ICONS = [Sun, BookOpen, HandHeart]
-
-interface ServiceItem {
-  icon: LucideIcon
-  title: string
-  description: string
-  time: string
-  day: string
-}
-
-const services: ServiceItem[] = SERVICE_TIMES.filter((s) => s.name !== 'Search The Scriptures').map((service, i) => ({
-  icon: ICONS[i % ICONS.length],
-  title: service.name,
-  description: service.description,
-  time: service.time,
-  day: service.day,
-}))
-
+/** Weekly schedule strip; visible on phones (SITE-CONTENT.md §2) */
 export function QuickInfo() {
   return (
-    <section className="relative z-20 -mt-24 pb-20" aria-label="Service times">
+    <section className="py-16 bg-white" aria-labelledby="times-heading">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {services.map((service) => {
-            const Icon = service.icon
-            return (
-              <div
-                key={service.title}
-                className="group relative overflow-hidden bg-(--church-navy)/95 backdrop-blur-xl border border-white/10 p-6 rounded-xl shadow-2xl hover:-translate-y-1 transition-all duration-300"
-              >
-                {/* Decoration */}
-                <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
-                  <Icon size={80} />
-                </div>
-
-                <div className="relative z-10">
-                  <div className="flex items-center justify-between mb-4">
-                    <span className="text-[var(--church-red)] font-bold text-xs uppercase tracking-widest">
-                      {service.day}
-                    </span>
-                    <Icon className="text-white/40 group-hover:text-[var(--church-red)] transition-colors" size={20} />
-                  </div>
-                  
-                  <h3 className="text-white font-bold text-lg leading-tight mb-1">
-                    {service.title}
-                  </h3>
-                  <p className="text-white/60 text-xs mb-6 h-8">
-                    {service.description}
-                  </p>
-                  
-                  <div className="pt-4 border-t border-white/10">
-                    <time className="text-2xl font-display font-bold text-white">
-                      {service.time}
-                    </time>
-                  </div>
-                </div>
-              </div>
-            )
-          })}
-        </div>
+        <h2 id="times-heading" className="text-3xl font-display font-bold text-(--church-navy) mb-8">
+          When we meet
+        </h2>
+        <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 list-none">
+          {SERVICE_TIMES.map((service) => (
+            <li key={service.id} className="bg-(--church-navy) text-white p-6 rounded-xl">
+              <p className="font-bold">{service.day}</p>
+              <h3 className="text-lg font-bold leading-tight mt-1">{service.name}</h3>
+              <p className="text-2xl font-display font-bold mt-3 tabular-nums">{formatServiceTime(service)}</p>
+              <p className="text-sm mt-2">{MODE_LABEL[service.mode]}</p>
+              <p className="text-sm mt-3">{service.description}</p>
+              {service.mode !== 'in-person' && (
+                <p className="text-sm mt-3">
+                  {service.joinUrl ? (
+                    <a href={service.joinUrl} className="underline underline-offset-4">
+                      Join online
+                    </a>
+                  ) : (
+                    ZOOM_PLACEHOLDER
+                  )}
+                </p>
+              )}
+            </li>
+          ))}
+        </ul>
       </div>
     </section>
   )

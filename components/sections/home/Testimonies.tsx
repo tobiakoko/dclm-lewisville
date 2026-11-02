@@ -3,7 +3,8 @@ import { Quote } from 'lucide-react'
 import Testimony from '@/app/assets/Testimonies.jpeg'
 
 const TESTIMONY = {
-  author: 'Bro. Kazeem T. - DLBC Dallas TX',
+  // SITE-CONTENT.md §3: a real, already-public testimony; the member is named "Bro K"
+  author: 'Bro K',
   title: 'FROM DEPORTATION TO DELIVERANCE: JESUS MIRACULOUSLY RESCUES AND TURNS MISTAKE INTO A MERCY-FILLED MIRACLE',
   quote: 'Jesus is indeed alive! I was on the verge of deportation after my US visa was denied — but our fathers in the Lord prayed for supernatural favor, and Jesus showed up. I was readmitted to the United States the very next day, and multiple souls came to know the Lord along the way. All glory to Jesus for turning my mistake into a miracle of mercy.',
   imageUrl: Testimony,
@@ -22,25 +23,12 @@ export function Testimonies() {
           <figure className="relative group rounded-2xl overflow-hidden shadow-2xl aspect-[4/3] lg:aspect-square">
             <Image
               src={TESTIMONY.imageUrl}
-              alt={`${TESTIMONY.author} sharing testimony`}
+              alt=""
               fill
               className="object-cover transition-transform duration-700 group-hover:scale-105"
             />
             <div className="absolute inset-0 bg-black/30 group-hover:bg-black/40 transition-colors duration-300" />
             
-            <figcaption className="absolute inset-0 flex items-center justify-center">
-              {/* 
-              <button
-                type="button"
-                className="relative flex items-center justify-center w-20 h-20 bg-[var(--church-red)] rounded-full text-white shadow-lg transition-transform hover:scale-110 active:scale-95 group/btn"
-                aria-label="Play testimony video"
-              >
-                Ping animation ring 
-                <span className="absolute inline-flex h-full w-full rounded-full bg-[var(--church-red)] opacity-75 animate-[ping_2s_cubic-bezier(0,0,0.2,1)_infinite]" />
-                <Play className="relative ml-1 w-8 h-8 fill-white" />
-              </button>
-              */}
-            </figcaption>
           </figure>
 
           {/* Content Section */}

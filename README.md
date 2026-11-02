@@ -48,7 +48,7 @@ Set them in `.env.local` locally and in the Vercel project settings for Preview 
 | `SANITY_REVALIDATE_SECRET` | For the webhook | Shared secret for `/api/revalidate`, 16+ characters |
 | `RESEND_API_KEY` | For forms | Without it, forms show an error and the church phone number |
 | `CONTACT_INBOX` | For forms | Where form email goes. Production: `info@deeperlifelewisville.org`. Outside production it must be a different, test inbox |
-| `CONTACT_FROM` | No | Sender address on a domain verified in Resend |
+| `CONTACT_FROM` | For forms | Sender address on a domain verified in Resend |
 | `UPSTASH_REDIS_REST_URL`, `UPSTASH_REDIS_REST_TOKEN` | No | Durable rate limiting; falls back to in-memory |
 | `NEXT_PUBLIC_GA_ID` | No | Google Analytics, production only |
 

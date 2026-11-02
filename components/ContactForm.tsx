@@ -1,36 +1,59 @@
 'use client'
 
-import { useState } from 'react'
+import { useId, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import * as z from 'zod'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
+import { SITE_CONFIG, telHref } from '@/lib/constants'
+import {
+  contactFormSchema,
+  type ContactFormData,
+  type ContactFormInput,
+  type ContactTopic,
+} from '@/lib/validations/contact'
 import { trackContactFormSubmit, trackContactFormError } from '@/lib/analytics'
 
-const contactSchema = z.object({
-  name: z.string().min(2, 'Name must be at least 2 characters'),
-  email: z.string().email('Invalid email address'),
-  phone: z.string().optional(),
-  message: z.string().min(10, 'Message must be at least 10 characters'),
-})
+type SubmitStatus = 'success' | 'failed' | 'rate-limited' | null
 
-type ContactFormData = z.infer<typeof contactSchema>
+interface ContactFormProps {
+  topic?: Exclude<ContactTopic, 'visit'>
+  /** Preselected ministry name when topic is "ministry" */
+  ministry?: string
+  submitLabel?: string
+}
 
-export default function ContactForm() {
+function FieldError({ id, message }: { id: string; message?: string }) {
+  if (!message) return null
+  return (
+    <p id={id} className="text-sm mt-1 font-semibold">
+      {message}
+    </p>
+  )
+}
+
+export default function ContactForm({ topic = 'contact', ministry, submitLabel = 'Send message' }: ContactFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [submitStatus, setSubmitStatus] = useState<
-    'success' | 'error' | 'rate-limited' | null
-  >(null)
+  const [submitStatus, setSubmitStatus] = useState<SubmitStatus>(null)
+  const uid = useId()
+  const ids = {
+    name: `${uid}-name`,
+    email: `${uid}-email`,
+    phone: `${uid}-phone`,
+    message: `${uid}-message`,
+  }
+
+  const emptyValues: ContactFormInput = { topic, ministry, name: '', email: '', phone: '', message: '' }
 
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<ContactFormData>({
-    resolver: zodResolver(contactSchema),
+  } = useForm<ContactFormInput, unknown, ContactFormData>({
+    resolver: zodResolver(contactFormSchema),
+    defaultValues: emptyValues,
   })
 
   const onSubmit = async (data: ContactFormData) => {
@@ -46,113 +69,126 @@ export default function ContactForm() {
 
       if (response.ok) {
         setSubmitStatus('success')
-        trackContactFormSubmit('contact_page')
-        reset()
+        trackContactFormSubmit(`contact_page_${topic}`)
+        reset(emptyValues)
       } else if (response.status === 429) {
         setSubmitStatus('rate-limited')
         trackContactFormError('rate_limited')
       } else {
-        setSubmitStatus('error')
-        trackContactFormError('submission_failed')
+        setSubmitStatus('failed')
+        trackContactFormError(`status_${response.status}`)
       }
-    } catch (error) {
-      setSubmitStatus('error')
+    } catch {
+      setSubmitStatus('failed')
       trackContactFormError('network_error')
     } finally {
       setIsSubmitting(false)
     }
   }
 
+  const describedBy = (field: keyof typeof ids) => (errors[field] ? `${ids[field]}-error` : undefined)
+
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6" noValidate>
+      <input type="hidden" {...register('topic')} />
+      {ministry && <input type="hidden" {...register('ministry')} />}
+
+      {ministry && (
+        <p>
+          About: <strong>{ministry}</strong>
+        </p>
+      )}
+
       <div>
-        <label htmlFor="name" className="block text-sm font-medium mb-2">
-          Name *
+        <label htmlFor={ids.name} className="block text-sm font-medium mb-2">
+          Name (required)
         </label>
         <Input
-          id="name"
+          id={ids.name}
+          autoComplete="name"
+          aria-invalid={errors.name ? true : undefined}
+          aria-describedby={describedBy('name')}
           {...register('name')}
-          placeholder="Your name"
-          className={errors.name ? 'border-red-500' : ''}
         />
-        {errors.name && (
-          <p className="text-sm text-red-500 mt-1">{errors.name.message}</p>
-        )}
+        <FieldError id={`${ids.name}-error`} message={errors.name?.message} />
       </div>
 
       <div>
-        <label htmlFor="email" className="block text-sm font-medium mb-2">
-          Email *
+        <label htmlFor={ids.email} className="block text-sm font-medium mb-2">
+          Email (required)
         </label>
         <Input
-          id="email"
+          id={ids.email}
           type="email"
+          autoComplete="email"
+          aria-invalid={errors.email ? true : undefined}
+          aria-describedby={describedBy('email')}
           {...register('email')}
-          placeholder="your.email@example.com"
-          className={errors.email ? 'border-red-500' : ''}
         />
-        {errors.email && (
-          <p className="text-sm text-red-500 mt-1">{errors.email.message}</p>
-        )}
+        <FieldError id={`${ids.email}-error`} message={errors.email?.message} />
       </div>
 
       <div>
-        <label htmlFor="phone" className="block text-sm font-medium mb-2">
-          Phone (Optional)
+        <label htmlFor={ids.phone} className="block text-sm font-medium mb-2">
+          Phone (optional)
         </label>
         <Input
-          id="phone"
+          id={ids.phone}
           type="tel"
+          autoComplete="tel"
+          aria-invalid={errors.phone ? true : undefined}
+          aria-describedby={describedBy('phone')}
           {...register('phone')}
-          placeholder="(123) 456-7890"
         />
+        <FieldError id={`${ids.phone}-error`} message={errors.phone?.message} />
       </div>
 
       <div>
-        <label htmlFor="message" className="block text-sm font-medium mb-2">
-          Message *
+        <label htmlFor={ids.message} className="block text-sm font-medium mb-2">
+          {topic === 'prayer' ? 'Prayer request (required)' : 'Message (required)'}
         </label>
         <Textarea
-          id="message"
-          {...register('message')}
-          placeholder="How can we help you?"
+          id={ids.message}
           rows={5}
-          className={errors.message ? 'border-red-500' : ''}
+          aria-invalid={errors.message ? true : undefined}
+          aria-describedby={describedBy('message')}
+          {...register('message')}
         />
-        {errors.message && (
-          <p className="text-sm text-red-500 mt-1">{errors.message.message}</p>
+        <FieldError id={`${ids.message}-error`} message={errors.message?.message} />
+      </div>
+
+      <div role="status" aria-live="polite">
+        {submitStatus === 'success' && (
+          <p className="bg-white text-(--church-navy) px-4 py-3 rounded font-semibold">
+            Thank you. Your message has been sent to the church.
+          </p>
+        )}
+        {submitStatus === 'failed' && (
+          <p className="bg-white text-(--church-navy) px-4 py-3 rounded">
+            <strong>Sorry, your message was not sent.</strong> Please call us at{' '}
+            <a href={telHref(SITE_CONFIG.phone)} className="underline font-semibold">
+              {SITE_CONFIG.phone}
+            </a>{' '}
+            or email{' '}
+            <a href={`mailto:${SITE_CONFIG.email}`} className="underline font-semibold">
+              {SITE_CONFIG.email}
+            </a>
+            .
+          </p>
+        )}
+        {submitStatus === 'rate-limited' && (
+          <p className="bg-white text-(--church-navy) px-4 py-3 rounded">
+            <strong>Too many messages in a short time.</strong> Please wait a minute and try again, or call us at{' '}
+            <a href={telHref(SITE_CONFIG.phone)} className="underline font-semibold">
+              {SITE_CONFIG.phone}
+            </a>
+            .
+          </p>
         )}
       </div>
 
-      {submitStatus === 'success' && (
-        <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded">
-          Message sent. We&apos;ll reply within 24 hours.
-        </div>
-      )}
-
-      {submitStatus === 'error' && (
-        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
-          We couldn&apos;t send your message. Please try again in a few minutes
-          &mdash; or email us directly at{' '}
-          <a
-            href="mailto:info@deeperlifelewisville.org"
-            className="underline font-semibold"
-          >
-            info@deeperlifelewisville.org
-          </a>
-          .
-        </div>
-      )}
-
-      {submitStatus === 'rate-limited' && (
-        <div className="bg-amber-50 border border-amber-200 text-amber-700 px-4 py-3 rounded">
-          You&apos;ve sent several messages recently. Please wait a few minutes
-          and try again.
-        </div>
-      )}
-
       <Button type="submit" disabled={isSubmitting} className="w-full">
-        {isSubmitting ? 'Sending...' : 'Send Message'}
+        {isSubmitting ? 'Sending…' : submitLabel}
       </Button>
     </form>
   )

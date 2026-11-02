@@ -1,234 +1,104 @@
 /**
  * @jest-environment node
  */
-import { POST } from '@/app/api/contact/route'
 import { NextRequest } from 'next/server'
+import { SITE_CONFIG } from '@/lib/constants'
 
-// Mock Resend at import time: the route constructs `new Resend(...)` at module load.
-// The factory returns a shared singleton instance so both route and test share the same mocks.
-jest.mock('resend', () => {
-  const instance = {
-    emails: { send: jest.fn() },
-  }
-  return { Resend: jest.fn().mockReturnValue(instance) }
-})
+const send = jest.fn()
+jest.mock('resend', () => ({ Resend: jest.fn(() => ({ emails: { send } })) }))
 
-const { Resend } = jest.requireMock('resend') as { Resend: jest.Mock }
-const resendInstance = new Resend('test-key') as unknown as {
-  emails: { send: jest.Mock }
+const mockEnv = {
+  RESEND_API_KEY: 'test-resend-key' as string | undefined,
+  CONTACT_INBOX: 'test-inbox@example.com' as string | undefined,
+  CONTACT_FROM: 'Website <website@example.org>' as string | undefined,
+  NODE_ENV: 'test',
 }
+jest.mock('@/lib/env', () => ({ env: mockEnv }))
 
-// Mock env to avoid ESM transform issues with @t3-oss/env-nextjs in Jest
-jest.mock('@/lib/env', () => ({
-  env: {
-    RESEND_API_KEY: 'test-resend-key',
-    RESEND_AUDIENCE_ID: 'test-audience-id',
-    NEWSLETTER_SIGNING_SECRET: 'test-signing-secret-0123456789abcdef',
-    SANITY_API_TOKEN: undefined,
-    SANITY_REVALIDATE_SECRET: 'test-revalidate-secret',
-    UPSTASH_REDIS_REST_URL: undefined,
-    UPSTASH_REDIS_REST_TOKEN: undefined,
-    NEXT_PUBLIC_SANITY_PROJECT_ID: 'test-project-id',
-    NEXT_PUBLIC_SANITY_DATASET: 'test',
-    NEXT_PUBLIC_SANITY_API_VERSION: '2024-01-01',
-    NEXT_PUBLIC_SITE_URL: 'https://dclmlewisville.org',
-    NEXT_PUBLIC_GA_ID: undefined,
-    NODE_ENV: 'test',
-  },
+const rateLimit = jest.fn()
+jest.mock('@/lib/rate-limit', () => ({
+  checkRateLimit: (key: string) => rateLimit(key),
+  getClientIp: () => '203.0.113.7',
 }))
 
-describe('Contact API Route', () => {
-  const mockSend = resendInstance.emails.send
+// The route allows the configured site URL; requests here come from that origin
+const ORIGIN = new URL(SITE_CONFIG.url).origin
+const body = { name: 'Test Visitor', email: 'visitor@example.com', message: 'I would like to visit on Sunday.' }
 
-  beforeEach(() => {
-    jest.clearAllMocks()
-    mockSend.mockResolvedValue({ id: 'test-email-id' })
+function post(payload: unknown, origin: string | null = ORIGIN) {
+  const headers: Record<string, string> = { 'Content-Type': 'application/json' }
+  if (origin) headers.origin = origin
+  return new NextRequest(`${ORIGIN}/api/contact`, {
+    method: 'POST',
+    headers,
+    body: typeof payload === 'string' ? payload : JSON.stringify(payload),
+  })
+}
+
+async function loadRoute() {
+  let route: typeof import('@/app/api/contact/route') | undefined
+  jest.isolateModules(() => {
+    route = jest.requireActual<typeof import('@/app/api/contact/route')>('@/app/api/contact/route')
+  })
+  return route!
+}
+
+beforeEach(() => {
+  send.mockReset().mockResolvedValue({ data: { id: 'email_1' }, error: null })
+  rateLimit.mockReset().mockResolvedValue({ allowed: true, remaining: 9, reset: Date.now() + 60_000 })
+  mockEnv.RESEND_API_KEY = 'test-resend-key'
+  mockEnv.CONTACT_INBOX = 'test-inbox@example.com'
+  mockEnv.CONTACT_FROM = 'Website <website@example.org>'
+})
+
+describe('POST /api/contact', () => {
+  it('returns 200 only when Resend accepted the email', async () => {
+    const { POST } = await loadRoute()
+    const response = await POST(post(body))
+    expect(response.status).toBe(200)
+    expect(await response.json()).toEqual({ ok: true })
+    expect(send).toHaveBeenCalledWith(expect.objectContaining({ to: 'test-inbox@example.com', subject: 'Contact: Test Visitor' }))
   })
 
-  describe('POST /api/contact', () => {
-    it('should successfully send an email with valid data', async () => {
-      const requestBody = {
-        name: 'John Doe',
-        email: 'john@example.com',
-        phone: '123-456-7890',
-        message: 'Test message',
-      }
+  it('returns 400 with field issues for invalid input', async () => {
+    const { POST } = await loadRoute()
+    const response = await POST(post({ ...body, email: 'nope' }))
+    expect(response.status).toBe(400)
+    expect((await response.json()).issues[0].field).toBe('email')
+  })
 
-      const request = new NextRequest('http://localhost:3000/api/contact', {
-        method: 'POST',
-        body: JSON.stringify(requestBody),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
+  it('returns 400 for a body that is not JSON', async () => {
+    const { POST } = await loadRoute()
+    expect((await POST(post('{not json'))).status).toBe(400)
+  })
 
-      const response = await POST(request)
-      const data = await response.json()
+  it('returns 403 for a foreign origin', async () => {
+    const { POST } = await loadRoute()
+    expect((await POST(post(body, 'https://evil.example.net'))).status).toBe(403)
+    expect(send).not.toHaveBeenCalled()
+  })
 
-      expect(response.status).toBe(200)
-      expect(data.message).toBe('Email sent successfully')
-      expect(mockSend).toHaveBeenCalledTimes(1)
-      expect(mockSend).toHaveBeenCalledWith(
-        expect.objectContaining({
-          from: 'website@dclmlewisville.org',
-          to: 'info@dclmlewisville.org',
-          subject: 'New Contact Form Submission from John Doe',
-        })
-      )
-    })
+  it('returns 429 with Retry-After when rate limited', async () => {
+    rateLimit.mockResolvedValue({ allowed: false, remaining: 0, reset: Date.now() + 42_000 })
+    const { POST } = await loadRoute()
+    const response = await POST(post(body))
+    expect(response.status).toBe(429)
+    expect(Number(response.headers.get('Retry-After'))).toBeGreaterThan(0)
+  })
 
-    it('should handle missing name field', async () => {
-      const requestBody = {
-        email: 'john@example.com',
-        message: 'Test message',
-      }
+  it('returns 502 when Resend reports an error', async () => {
+    send.mockResolvedValue({ data: null, error: { name: 'application_error', message: 'Something went wrong' } })
+    const { POST } = await loadRoute()
+    const response = await POST(post(body))
+    expect(response.status).toBe(502)
+    expect(await response.json()).toEqual({ ok: false, error: 'provider-error' })
+  })
 
-      const request = new NextRequest('http://localhost:3000/api/contact', {
-        method: 'POST',
-        body: JSON.stringify(requestBody),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-
-      const response = await POST(request)
-      const data = await response.json()
-
-      expect(response.status).toBe(400)
-      expect(data.error).toBe('Validation failed')
-      expect(mockSend).not.toHaveBeenCalled()
-    })
-
-    it('should handle missing email field', async () => {
-      const requestBody = {
-        name: 'John Doe',
-        message: 'Test message',
-      }
-
-      const request = new NextRequest('http://localhost:3000/api/contact', {
-        method: 'POST',
-        body: JSON.stringify(requestBody),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-
-      const response = await POST(request)
-      const data = await response.json()
-
-      expect(response.status).toBe(400)
-      expect(data.error).toBe('Validation failed')
-      expect(mockSend).not.toHaveBeenCalled()
-    })
-
-    it('should handle missing message field', async () => {
-      const requestBody = {
-        name: 'John Doe',
-        email: 'john@example.com',
-      }
-
-      const request = new NextRequest('http://localhost:3000/api/contact', {
-        method: 'POST',
-        body: JSON.stringify(requestBody),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-
-      const response = await POST(request)
-      const data = await response.json()
-
-      expect(response.status).toBe(400)
-      expect(data.error).toBe('Validation failed')
-      expect(mockSend).not.toHaveBeenCalled()
-    })
-
-    it('should handle optional phone field', async () => {
-      const requestBody = {
-        name: 'John Doe',
-        email: 'john@example.com',
-        message: 'Test message',
-      }
-
-      const request = new NextRequest('http://localhost:3000/api/contact', {
-        method: 'POST',
-        body: JSON.stringify(requestBody),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-
-      const response = await POST(request)
-      const data = await response.json()
-
-      expect(response.status).toBe(200)
-      expect(data.message).toBe('Email sent successfully')
-      expect(mockSend).toHaveBeenCalledTimes(1)
-    })
-
-    it('should include phone number in email when provided', async () => {
-      const requestBody = {
-        name: 'John Doe',
-        email: 'john@example.com',
-        phone: '123-456-7890',
-        message: 'Test message',
-      }
-
-      const request = new NextRequest('http://localhost:3000/api/contact', {
-        method: 'POST',
-        body: JSON.stringify(requestBody),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-
-      await POST(request)
-
-      expect(mockSend).toHaveBeenCalledWith(
-        expect.objectContaining({
-          html: expect.stringContaining('123-456-7890'),
-        })
-      )
-    })
-
-    it('should handle email sending failure', async () => {
-      mockSend.mockRejectedValueOnce(new Error('Email service unavailable'))
-
-      const requestBody = {
-        name: 'John Doe',
-        email: 'john@example.com',
-        message: 'Test message',
-      }
-
-      const request = new NextRequest('http://localhost:3000/api/contact', {
-        method: 'POST',
-        body: JSON.stringify(requestBody),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-
-      const response = await POST(request)
-      const data = await response.json()
-
-      expect(response.status).toBe(500)
-      expect(data.error).toBe('Failed to send email. Please try again later.')
-    })
-
-    it('should handle malformed JSON', async () => {
-      const request = new NextRequest('http://localhost:3000/api/contact', {
-        method: 'POST',
-        body: 'invalid json',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-
-      const response = await POST(request)
-      const data = await response.json()
-
-      expect(response.status).toBe(500)
-      expect(data.error).toBe('Failed to send email. Please try again later.')
-    })
+  it('returns 503 when email is not configured', async () => {
+    mockEnv.RESEND_API_KEY = undefined
+    const { POST } = await loadRoute()
+    const response = await POST(post(body))
+    expect(response.status).toBe(503)
+    expect(await response.json()).toEqual({ ok: false, error: 'not-configured' })
   })
 })

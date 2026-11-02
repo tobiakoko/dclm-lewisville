@@ -57,7 +57,6 @@ export async function POST(request: NextRequest) {
 
       case 'person':
         revalidatePath('/')
-        revalidatePath('/ministers')
         break
 
       case 'homeSections':

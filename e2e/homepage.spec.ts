@@ -1,31 +1,26 @@
-import { test, expect, Page } from '@playwright/test'
+import { test, expect, type Page } from '@playwright/test'
+import { isMobileViewport } from './helpers'
 
-// The `lg:` breakpoint is 1024px; below it the header links live in a
-// drawer that must be opened first.
-async function isMobileViewport(page: Page) {
-  const width = page.viewportSize()?.width ?? 1280
-  return width < 1024
+// The menu click is dispatched directly because WebKit's hit-testing reports
+// lazy images in the footer as intercepting the fixed header button.
+async function openMobileNav(page: Page) {
+  await page.getByRole('button', { name: 'Open navigation menu' }).dispatchEvent('click')
 }
 
-// The menu click is dispatched directly because WebKit's hit-testing
-// reports lazy images in the footer as intercepting the fixed header
-// button.
-async function openNavIfMobile(page: Page) {
-  const menuButton = page.getByRole('button', { name: /open navigation menu/i })
-  if ((await menuButton.count()) > 0 && (await menuButton.isVisible())) {
-    await menuButton.dispatchEvent('click')
-  }
+async function closeMobileNav(page: Page) {
+  await page.getByRole('button', { name: 'Close navigation menu' }).dispatchEvent('click')
 }
 
-async function clickNavLink(page: Page, name: RegExp) {
-  const link = page.getByRole('link', { name }).first()
-  if (await isMobileViewport(page)) {
-    // Close the drawer so its overlay doesn't block the link, then
-    // activate via keyboard to bypass WebKit's hit-testing quirk.
-    const closeButton = page.getByRole('button', { name: /close navigation menu/i })
-    if ((await closeButton.count()) > 0) {
-      await closeButton.dispatchEvent('click')
-    }
+function navigation(page: Page) {
+  return isMobileViewport(page) ? page.locator('nav[aria-label="Mobile navigation"]') : page.locator('header nav').first()
+}
+
+async function followNavLink(page: Page, name: string) {
+  const link = navigation(page).getByRole('link', { name, exact: true })
+  if (isMobileViewport(page)) {
+    // Close the drawer so its overlay doesn't block the link, then use the keyboard
+    // to avoid WebKit's hit-testing quirk.
+    await closeMobileNav(page)
     await link.focus()
     await page.keyboard.press('Enter')
   } else {
@@ -33,70 +28,56 @@ async function clickNavLink(page: Page, name: RegExp) {
   }
 }
 
-test.describe('Homepage', () => {
+test.describe('Home page navigation', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/')
-    await openNavIfMobile(page)
+    if (isMobileViewport(page)) await openMobileNav(page)
   })
 
-  test('should load the homepage successfully', async ({ page }) => {
-    await expect(page).toHaveTitle(/Deeper Life Bible Church Lewisville|DCLM Lewisville/i)
-  })
-
-  test('should display navigation menu', async ({ page }) => {
-    // Check for main navigation links, scoped to the visible nav
-    const isMobile = await isMobileViewport(page)
-    const nav = isMobile
-      ? page.locator('nav[aria-label="Mobile navigation"]')
-      : page.locator('header')
-    await expect(nav.getByRole('link', { name: /home/i })).toBeVisible()
-    await expect(nav.getByRole('link', { name: /about/i })).toBeVisible()
-    await expect(nav.getByRole('link', { name: /ministries/i })).toBeVisible()
-    await expect(nav.getByRole('link', { name: /events/i })).toBeVisible()
-    await expect(nav.getByRole('button', { name: /resources/i })).toBeVisible()
-    await expect(nav.getByRole('link', { name: /contact/i })).toBeVisible()
-    if (!isMobile) {
-      await expect(nav.getByRole('link', { name: /give/i })).toBeVisible()
+  test('shows the main navigation links', async ({ page }) => {
+    const nav = navigation(page)
+    for (const name of ['Home', 'About', 'Ministries', 'Sermons', 'Events', 'Contact']) {
+      await expect(nav.getByRole('link', { name, exact: true })).toBeVisible()
     }
+    await expect(nav.getByRole('button', { name: /Resources/ })).toBeVisible()
   })
 
-  test('should navigate to About page', async ({ page }) => {
-    await clickNavLink(page, /about/i)
-    await expect(page).toHaveURL(/\/about/)
-  })
+  for (const [name, path] of [
+    ['About', '/about'],
+    ['Ministries', '/ministries'],
+    ['Sermons', '/sermons'],
+    ['Events', '/events'],
+    ['Contact', '/contact'],
+  ] as const) {
+    test(`goes to ${name}`, async ({ page }) => {
+      await followNavLink(page, name)
+      await expect(page).toHaveURL(new RegExp(`${path}$`))
+    })
+  }
 
-  test('should navigate to Ministries page', async ({ page }) => {
-    await clickNavLink(page, /ministries/i)
-    await expect(page).toHaveURL(/\/ministries/)
-  })
-
-  test('should navigate to Events page', async ({ page }) => {
-    await clickNavLink(page, /events/i)
-    await expect(page).toHaveURL(/\/events/)
-  })
-
-  test('should navigate to Contact page', async ({ page }) => {
-    await clickNavLink(page, /contact/i)
-    await expect(page).toHaveURL(/\/contact/)
-  })
-
-  test('should display Give button', async ({ page }) => {
+  test('offers a Give link', async ({ page }) => {
     await expect(page.getByRole('link', { name: /give/i }).first()).toBeVisible()
   })
+})
 
-  test('should be responsive on mobile', async ({ page }) => {
-    await page.setViewportSize({ width: 375, height: 667 })
-
-    // Check if mobile menu button is visible
-    const menuButton = page.locator('button[aria-label*="menu" i], button[aria-label*="navigation" i]')
-    if (await menuButton.count() > 0) {
-      await expect(menuButton.first()).toBeVisible()
-    }
+test.describe('Home page content', () => {
+  test('shows the three main actions', async ({ page }) => {
+    await page.goto('/')
+    const hero = page.locator('section[aria-labelledby="hero-heading"]')
+    await expect(hero.getByRole('link', { name: 'Plan your visit' })).toBeVisible()
+    await expect(hero.getByRole('link', { name: 'Watch online' })).toBeVisible()
+    await expect(hero.getByRole('link', { name: 'What we believe' })).toBeVisible()
   })
 
-  test('should have no accessibility violations', async ({ page }) => {
-    // Basic accessibility checks
-    await expect(page.locator('h1').first()).toBeVisible()
-    await expect(page.locator('main')).toBeVisible()
+  test('has exactly one welcome section, the Pastor’s Welcome', async ({ page }) => {
+    await page.goto('/')
+    await expect(page.getByRole('heading', { name: 'Welcome to Deeper Life Bible Church Lewisville' })).toHaveCount(1)
+    await expect(page.getByText(/lost in the crowd/)).toBeVisible()
+  })
+
+  test('shows the menu button on phones', async ({ page }) => {
+    await page.setViewportSize({ width: 375, height: 667 })
+    await page.goto('/')
+    await expect(page.getByRole('button', { name: 'Open navigation menu' })).toBeVisible()
   })
 })

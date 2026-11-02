@@ -68,3 +68,7 @@ Live code (anything reachable above, plus `app/`, `sanity/` and the root config 
 | `prettier` | Tooling | Move to `devDependencies` |
 | `styled-components` | Not imported, but it is a peer dependency of Sanity Studio | **Keep** |
 | `react-dom` | Not imported, but it is a peer dependency of Next and React | **Keep** |
+
+## Phase 1 result
+
+1.14 deleted the 45 files above, `ui/badge.tsx` and `ui/card.tsx` with their tests, and the packages in the table, except `@radix-ui/react-accordion` and `@radix-ui/react-label`, which Phase 2 needs. The Phase 1 rewrites then made more files unreachable, and those were deleted as well: `ui/modal.tsx`, `ui/empty.tsx`, `lib/logger.ts`, `lib/types.ts`, `lib/sanity/image.ts`, `sections/Team.tsx`, `sections/Welcome.tsx`, `home/HeroCarouselNew.tsx`, `home/IconSection.tsx` and `home/Values.tsx`. Along with them went `framer-motion` (which `not-found.tsx` had imported through a transitive `motion` package) and the unused test fixtures. `@radix-ui/react-dialog` has no importer now but stays for the Phase 2 mobile menu (DESIGN-SYSTEM.md).

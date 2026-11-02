@@ -1,123 +1,84 @@
-import { test, expect, Page } from '@playwright/test'
+import { test, expect, type Page } from '@playwright/test'
+import { SITE_CONFIG } from '../lib/constants'
 
-function form(page: Page) {
-  return page.locator('form')
+// playwright.config.ts starts the test server without CONTACT_INBOX/CONTACT_FROM, so the real
+// API answers 503 (not configured) and no email is ever sent from e2e runs.
+
+function contactForm(page: Page) {
+  return page.locator('#contact-form form')
 }
 
-test.describe('Contact Form', () => {
+async function fill(form: ReturnType<typeof contactForm>) {
+  await form.getByLabel(/^Name/).fill('Adébáyọ̀ Test')
+  await form.getByLabel(/^Email/).fill('visitor@example.com')
+  await form.getByLabel(/^Message/).fill('This is a test message from end-to-end testing.')
+}
+
+test.describe('Contact form', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/contact')
   })
 
-  test('should display contact form', async ({ page }) => {
-    await expect(form(page).getByLabel(/name/i)).toBeVisible()
-    await expect(form(page).getByLabel(/email/i)).toBeVisible()
-    await expect(form(page).getByLabel(/message/i)).toBeVisible()
+  test('has labelled fields', async ({ page }) => {
+    const form = contactForm(page)
+    await expect(form.getByLabel(/^Name/)).toBeVisible()
+    await expect(form.getByLabel(/^Email/)).toBeVisible()
+    await expect(form.getByLabel(/^Phone/)).toBeVisible()
+    await expect(form.getByLabel(/^Message/)).toBeVisible()
   })
 
-  test('should show validation errors for empty required fields', async ({ page }) => {
-    // Try to submit empty form
-    await form(page).getByRole('button', { name: /send message/i }).click()
-
-    // HTML5 validation should prevent submission
-    const nameInput = form(page).getByLabel(/name/i)
-    await expect(nameInput).toBeFocused().catch(() => {
-      // If not focused, check if there's a validation message
-      expect(nameInput).toHaveAttribute('required')
+  test('shows inline errors and does not submit an empty form', async ({ page }) => {
+    let requests = 0
+    page.on('request', (request) => {
+      if (request.url().endsWith('/api/contact')) requests++
     })
+    const form = contactForm(page)
+    await form.getByRole('button', { name: 'Send message' }).click()
+    await expect(form.getByLabel(/^Name/)).toHaveAttribute('aria-invalid', 'true')
+    await expect(form.getByText('Invalid email address')).toBeVisible()
+    expect(requests).toBe(0)
   })
 
-  test('should fill and submit contact form successfully', async ({ page }) => {
-    // Fill out the form
-    await form(page).getByLabel(/name/i).fill('Test User')
-    await form(page).getByLabel(/email/i).fill('test@example.com')
+  test('with email unconfigured, says the message was not sent and shows the phone number', async ({ page }) => {
+    const form = contactForm(page)
+    await fill(form)
+    const [response] = await Promise.all([
+      page.waitForResponse('**/api/contact'),
+      form.getByRole('button', { name: 'Send message' }).click(),
+    ])
+    expect(response.status()).toBe(503)
+    await expect(form.getByText('Sorry, your message was not sent.')).toBeVisible()
+    await expect(form.getByRole('link', { name: SITE_CONFIG.phone })).toBeVisible()
+  })
 
-    // Check if phone field exists (it's optional)
-    const phoneField = form(page).getByLabel(/phone/i)
-    if (await phoneField.count() > 0) {
-      await phoneField.fill('123-456-7890')
-    }
+  test('confirms only after the API reports success', async ({ page }) => {
+    await page.route('**/api/contact', (route) =>
+      route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ ok: true }) })
+    )
+    const form = contactForm(page)
+    await fill(form)
+    await form.getByRole('button', { name: 'Send message' }).click()
+    await expect(form.getByText('Thank you. Your message has been sent to the church.')).toBeVisible()
+  })
 
-    await form(page).getByLabel(/message/i).fill('This is a test message from E2E testing.')
+  test('a ministry link preselects the ministry', async ({ page }) => {
+    await page.goto('/contact?topic=Youth%20Ministry')
+    await expect(contactForm(page).getByText('Youth Ministry')).toBeVisible()
+  })
 
-    // Mock the API response
-    await page.route('**/api/contact', async (route) => {
-      await route.fulfill({
-        status: 200,
-        contentType: 'application/json',
-        body: JSON.stringify({ message: 'Email sent successfully' }),
-      })
+  test('the API refuses a foreign origin', async ({ request }) => {
+    const response = await request.post('/api/contact', {
+      headers: { origin: 'https://evil.example.net' },
+      data: { name: 'Test Visitor', email: 'visitor@example.com', message: 'Hello from elsewhere.' },
     })
-
-    // Submit the form
-    await form(page).getByRole('button', { name: /send message/i }).click()
-
-    // Wait for success message or confirmation
-    await expect(page.getByText(/success|sent|thank you/i)).toBeVisible({ timeout: 10000 })
+    expect(response.status()).toBe(403)
   })
+})
 
-  test('should validate email format', async ({ page }) => {
-    await form(page).getByLabel(/name/i).fill('Test User')
-    await form(page).getByLabel(/email/i).fill('invalid-email')
-    await form(page).getByLabel(/message/i).fill('Test message')
-
-    await form(page).getByRole('button', { name: /send message/i }).click()
-
-    // Check for HTML5 email validation
-    const emailInput = form(page).getByLabel(/email/i)
-    const validationMessage = await emailInput.evaluate((el: HTMLInputElement) => el.validationMessage)
-    expect(validationMessage).toBeTruthy()
-  })
-
-  test('should handle API error gracefully', async ({ page }) => {
-    await form(page).getByLabel(/name/i).fill('Test User')
-    await form(page).getByLabel(/email/i).fill('test@example.com')
-    await form(page).getByLabel(/message/i).fill('Test message')
-
-    // Mock API error
-    await page.route('**/api/contact', async (route) => {
-      await route.fulfill({
-        status: 500,
-        contentType: 'application/json',
-        body: JSON.stringify({ error: 'Failed to send email' }),
-      })
-    })
-
-    await form(page).getByRole('button', { name: /send message/i }).click()
-
-    // Check for error message
-    await expect(page.getByText(/went wrong|try again/i)).toBeVisible({ timeout: 10000 })
-  })
-
-  test('should clear form after successful submission', async ({ page }) => {
-    await form(page).getByLabel(/name/i).fill('Test User')
-    await form(page).getByLabel(/email/i).fill('test@example.com')
-    await form(page).getByLabel(/message/i).fill('Test message')
-
-    await page.route('**/api/contact', async (route) => {
-      await route.fulfill({
-        status: 200,
-        contentType: 'application/json',
-        body: JSON.stringify({ message: 'Email sent successfully' }),
-      })
-    })
-
-    await form(page).getByRole('button', { name: /send message/i }).click()
-
-    // Wait for success
-    await page.waitForTimeout(2000)
-
-    // Check if form is cleared (this depends on implementation)
-    // Some forms clear, others don't
-  })
-
-  test('should be accessible', async ({ page }) => {
-    // Check for proper form labels
-    await expect(form(page).getByLabel(/name/i)).toBeVisible()
-    await expect(form(page).getByLabel(/email/i)).toBeVisible()
-    await expect(form(page).getByLabel(/message/i)).toBeVisible()
-
-    // Check for submit button
-    await expect(form(page).getByRole('button', { name: /send message/i })).toBeVisible()
+test.describe('Prayer request form', () => {
+  test('links the DCLM Prayer Request Hub as a second option', async ({ page }) => {
+    await page.goto('/contact')
+    await expect(page.getByRole('link', { name: 'DCLM Prayer Request Hub' })).toHaveAttribute('href', SITE_CONFIG.dclm.prayerRequestHub)
+    await expect(page.locator('#prayer form').getByLabel(/^Prayer request/)).toBeVisible()
   })
 })

@@ -10,28 +10,25 @@ import {
   Phone,
   MapPin,
   Clock,
-  ExternalLink
+  ExternalLink,
+  type LucideIcon,
 } from 'lucide-react'
-import { SITE_CONFIG, SERVICE_TIMES } from '@/lib/constants'
+import { SITE_CONFIG, SERVICE_TIMES, formatAddress, mapsUrl, telHref } from '@/lib/constants'
+import { formatServiceTime } from '@/lib/schedule'
 import { trackSocialMediaClick, trackNavigation, trackExternalLink } from '@/lib/analytics'
 
-const SOCIAL_LINKS = [
-  {
-    name: 'Facebook',
-    icon: Facebook,
-    href: SITE_CONFIG.socialMedia.facebook
-  },
-  {
-    name: 'Instagram',
-    icon: Instagram,
-    href: SITE_CONFIG.socialMedia.instagram
-  },
-  {
-    name: 'YouTube',
-    icon: Youtube,
-    href: SITE_CONFIG.socialMedia.youtube
-  },
-]
+interface SocialLink {
+  name: string
+  icon: LucideIcon
+  href: string | null
+}
+
+// Only links the church has provided are shown
+const SOCIAL_LINKS = ([
+  { name: 'Facebook', icon: Facebook, href: SITE_CONFIG.socialMedia.facebook },
+  { name: 'Instagram', icon: Instagram, href: SITE_CONFIG.socialMedia.instagram },
+  { name: 'YouTube', icon: Youtube, href: SITE_CONFIG.youtube.channel },
+] satisfies SocialLink[]).filter((link): link is SocialLink & { href: string } => link.href !== null)
 
 const QUICK_LINKS = [
   { name: 'About Us', href: '/about' },
@@ -66,7 +63,7 @@ export default function Footer() {
               />
             </Link>
             <p className="text-white/70 text-sm leading-relaxed max-w-xs">
-              {SITE_CONFIG.description || "Leading people into a growing relationship with Jesus Christ by creating environments where people are encouraged and equipped."}
+              {SITE_CONFIG.description}
             </p>
             
             {/* Social Icons */}
@@ -94,7 +91,7 @@ export default function Footer() {
             </h3>
             <ul className="space-y-4">
               {SERVICE_TIMES.map((service, idx) => (
-                <li key={`${service.day}-${service.time}`} className="flex gap-4">
+                <li key={service.id} className="flex gap-4">
                   {idx === 0 ? (
                     <Clock className="w-5 h-5 text-(--church-red) shrink-0 mt-0.5" />
                   ) : (
@@ -102,7 +99,7 @@ export default function Footer() {
                   )}
                   <div className="space-y-1">
                     <span className="block font-medium text-white">{service.day}</span>
-                    <p className="text-sm text-white/70">{service.time} — {service.name}</p>
+                    <p className="text-sm text-white/70">{formatServiceTime(service)} — {service.name}</p>
                   </div>
                 </li>
               ))}
@@ -137,7 +134,7 @@ export default function Footer() {
             <div className="space-y-4">
               {/* Map Card */}
               <Link
-                href={`https://maps.google.com/?q=${encodeURIComponent(`${SITE_CONFIG.address.street}, ${SITE_CONFIG.address.city}, ${SITE_CONFIG.address.state} ${SITE_CONFIG.address.zip}`)}`}
+                href={mapsUrl(SITE_CONFIG.address)}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group flex gap-4 items-start p-3 -ml-3 rounded-lg hover:bg-white/5 transition-colors"
@@ -148,16 +145,13 @@ export default function Footer() {
                   <p className="text-sm font-medium text-white group-hover:text-(--church-red) transition-colors flex items-center gap-2">
                     Get Directions <ExternalLink className="w-3 h-3 opacity-50" />
                   </p>
-                  <p className="text-sm text-white/70">
-                    {SITE_CONFIG.address.street}<br />
-                    {SITE_CONFIG.address.city}, {SITE_CONFIG.address.state} {SITE_CONFIG.address.zip}
-                  </p>
+                  <p className="text-sm text-white/70">{formatAddress(SITE_CONFIG.address)}</p>
                 </div>
               </Link>
 
               <div className="space-y-3 pt-2">
                 <Link
-                  href={`tel:${SITE_CONFIG.phone.replace(/\D/g, '')}`}
+                  href={telHref(SITE_CONFIG.phone)}
                   className="flex items-center gap-4 text-sm text-zinc-400 hover:text-white transition-colors"
                   onClick={() => trackExternalLink('Phone', 'phone_click')}
                 >
@@ -178,33 +172,10 @@ export default function Footer() {
         </div>
 
         {/* --- BOTTOM BAR --- */}
-        <div className="pt-8 mt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-zinc-500">
+        <div className="pt-8 mt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-white/80">
           <p>
             &copy; {currentYear} {SITE_CONFIG.name}. All rights reserved.
           </p>
-          <div className="flex items-center gap-6">
-            <Link 
-              href="/privacy" 
-              className="hover:text-white transition-colors"
-              onClick={() => trackNavigation('/privacy', 'Privacy Policy')}
-            >
-              Privacy Policy
-            </Link>
-            <Link 
-              href="/terms" 
-              className="hover:text-white transition-colors"
-              onClick={() => trackNavigation('/terms', 'Terms of Service')}
-            >
-              Terms of Use
-            </Link>
-            <Link 
-              href="/sitemap" 
-              className="hover:text-white transition-colors"
-              onClick={() => trackNavigation('/sitemap', 'Sitemap')}
-            >
-              Sitemap
-            </Link>
-          </div>
         </div>
       </div>
     </footer>

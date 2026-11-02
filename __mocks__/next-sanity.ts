@@ -11,7 +11,7 @@ export const groq = (strings: TemplateStringsArray, ...values: unknown[]) => {
 }
 
 // Mock sanityFetch for next-sanity integration
-export const sanityFetch = jest.fn(async ({ query, params }: { query: string; params?: Record<string, unknown> }) => {
-  const client = createClient()
-  return client.fetch(query, params)
+export const sanityFetch = jest.fn(async (options: { query: string; params?: Record<string, unknown> }) => {
+  void options
+  return createClient().fetch()
 })

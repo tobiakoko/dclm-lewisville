@@ -161,35 +161,13 @@ export const sermonQuery = groq`
     date,
     speaker->{
       name,
-      title,
-      bio,
-      photo,
-      email
+      title
     },
     scripture,
-    series->{
-      title,
-      slug,
-      description
-    },
-    audioFile,
+    "audioUrl": audioFile.asset->url,
     videoUrl,
-    thumbnail,
     transcript,
-    description,
-    tags,
-    duration,
-    "relatedSermons": *[_type == "sermon" && slug.current != $slug && (
-      series._ref == ^.series._ref ||
-      count((tags[])[@ in ^.tags[]]) > 0
-    )] | order(date desc)[0...3] {
-      _id,
-      title,
-      slug,
-      date,
-      thumbnail,
-      speaker->{name}
-    }
+    description
   }
 `
 
@@ -209,42 +187,19 @@ export const ministriesQuery = groq`
 
 // Single ministry
 export const ministryQuery = groq`
-  *[_type == "ministry" && slug.current == $slug][0] {
+  *[_type == "ministry" && slug.current == $slug && active != false][0] {
     _id,
     name,
     slug,
-    mission,
     description,
+    fullDescription,
     leader->{
       name,
       title,
-      bio,
-      photo,
-      email,
-      phone
+      bio
     },
-    meetingTime,
     meetingDay,
-    location,
-    contactEmail,
-    images,
-    activities[] {
-      title,
-      description,
-      icon
-    },
-    "testimonials": *[_type == "testimonial" && references(^._id)] {
-      _id,
-      content,
-      author,
-      photo,
-      date
-    },
-    milestones[] {
-      date,
-      title,
-      description
-    }
+    meetingTime
   }
 `
 

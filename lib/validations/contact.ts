@@ -1,25 +1,70 @@
 import { z } from 'zod'
+import { MINISTRIES, OUTREACH } from '@/lib/content/site'
 
-export const contactFormSchema = z.object({
-  name: z
-    .string()
-    .min(2, 'Name must be at least 2 characters')
-    .max(100, 'Name must be less than 100 characters')
-    .regex(/^[a-zA-Z\s'-]+$/, 'Name contains invalid characters'),
-  email: z
-    .string()
-    .email('Invalid email address')
-    .max(255, 'Email must be less than 255 characters'),
-  phone: z
-    .string()
-    .regex(/^[\d\s()+-]*$/, 'Phone number contains invalid characters')
-    .max(20, 'Phone number must be less than 20 characters')
-    .optional()
-    .or(z.literal('')),
-  message: z
-    .string()
-    .min(10, 'Message must be at least 10 characters')
-    .max(2000, 'Message must be less than 2000 characters'),
-})
+/** What a form message is about; decides the email subject prefix */
+export const CONTACT_TOPICS = ['contact', 'prayer', 'visit', 'ministry'] as const
+export type ContactTopic = (typeof CONTACT_TOPICS)[number]
 
-export type ContactFormInput = z.infer<typeof contactFormSchema>
+/** Ministry and outreach names a "Send us a message" link may preselect */
+export const MINISTRY_NAMES = [...MINISTRIES, ...OUTREACH].map((ministry) => ministry.name)
+
+// Letters and marks from any script (e.g. "Adébáyọ̀", "Ọlátúndé"), spaces, periods, apostrophes, hyphens
+const NAME_PATTERN = /^[\p{L}\p{M}\s.'’-]+$/u
+
+/** One schema for the browser and the API */
+export const contactFormSchema = z
+  .object({
+    topic: z.enum(CONTACT_TOPICS).default('contact'),
+    name: z
+      .string()
+      .trim()
+      .min(2, 'Name must be at least 2 characters')
+      .max(100, 'Name must be less than 100 characters')
+      .regex(NAME_PATTERN, 'Name contains invalid characters'),
+    email: z
+      .string()
+      .trim()
+      .max(255, 'Email must be less than 255 characters')
+      .pipe(z.email('Invalid email address')),
+    phone: z
+      .string()
+      .trim()
+      .max(20, 'Phone number must be less than 20 characters')
+      .regex(/^[\d\s()+.-]*$/, 'Phone number contains invalid characters')
+      .optional()
+      .or(z.literal('')),
+    message: z
+      .string()
+      .trim()
+      .min(10, 'Message must be at least 10 characters')
+      .max(2000, 'Message must be less than 2000 characters'),
+    ministry: z.enum(MINISTRY_NAMES as [string, ...string[]]).optional(),
+    /** Planned visit date, YYYY-MM-DD (Plan Your Visit form) */
+    visitDate: z.iso.date('Choose the date you plan to visit').optional(),
+  })
+  .superRefine((value, ctx) => {
+    if (value.topic === 'ministry' && !value.ministry) {
+      ctx.addIssue({ code: 'custom', path: ['ministry'], message: 'Choose a ministry' })
+    }
+    if (value.topic === 'visit' && !value.visitDate) {
+      ctx.addIssue({ code: 'custom', path: ['visitDate'], message: 'Choose the date you plan to visit' })
+    }
+  })
+
+export type ContactFormInput = z.input<typeof contactFormSchema>
+export type ContactFormData = z.output<typeof contactFormSchema>
+
+/** Email subject, so the pastor can sort messages (SITE-CONTENT.md §4 and §8) */
+export function contactSubject(data: ContactFormData): string {
+  const name = data.name.replace(/[\r\n]+/g, ' ')
+  switch (data.topic) {
+    case 'visit':
+      return `New visitor: ${name}, ${data.visitDate}`
+    case 'prayer':
+      return `Prayer request: ${name}`
+    case 'ministry':
+      return `Ministry: ${data.ministry} – ${name}`
+    case 'contact':
+      return `Contact: ${name}`
+  }
+}

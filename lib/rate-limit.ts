@@ -55,7 +55,8 @@ export async function checkRateLimit(identifier: string): Promise<{
 
   try {
     const { success, remaining, reset } = await ratelimit.limit(identifier)
-    return { allowed: success, remaining, reset: reset - Date.now() }
+    // Upstash returns the reset time as a Unix timestamp in milliseconds, like the in-memory store
+    return { allowed: success, remaining, reset }
   } catch {
     return checkInMemory(identifier)
   }

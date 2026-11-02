@@ -1,7 +1,9 @@
 'use client'
 
 import { useEffect } from 'react'
+import Link from 'next/link'
 import { Button } from '@/components/ui/button'
+import { SITE_CONFIG, telHref } from '@/lib/constants'
 
 export default function Error({
   error,
@@ -14,8 +16,6 @@ export default function Error({
     // Log the error to an error reporting service
     console.error('Application error:', error)
 
-    // TODO: Send to error tracking service (Sentry, Rollbar, etc.)
-    // Example: Sentry.captureException(error)
   }, [error])
 
   return (
@@ -32,7 +32,11 @@ export default function Error({
 
         <div className="bg-muted/30 rounded-lg p-6 mb-8">
           <p className="text-sm text-muted-foreground mb-2">
-            We encountered an unexpected error. Our team has been notified and is working on a fix.
+            This page didn&apos;t load. Please try again, or call us at{' '}
+            <a href={telHref(SITE_CONFIG.phone)} className="underline font-semibold">
+              {SITE_CONFIG.phone}
+            </a>
+            .
           </p>
           {error.digest && (
             <p className="text-xs text-muted-foreground mt-4 font-mono">
@@ -49,12 +53,8 @@ export default function Error({
           >
             Try again
           </Button>
-          <Button
-            onClick={() => window.location.href = '/'}
-            variant="outline"
-            size="lg"
-          >
-            Go home
+          <Button asChild variant="outline" size="lg">
+            <Link href="/">Go home</Link>
           </Button>
         </div>
       </div>

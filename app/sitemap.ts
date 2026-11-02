@@ -1,29 +1,21 @@
 import { MetadataRoute } from 'next'
+import { SITE_CONFIG } from '@/lib/constants'
+import { MINISTRIES } from '@/lib/content/site'
 import { client } from '@/lib/sanity/client'
 import { groq } from 'next-sanity'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://dclmlewisville.org'
+  const baseUrl = SITE_CONFIG.url.replace(/\/$/, '')
 
   let sermons = []
-  let ministries = []
 
   // Fetch all sermons
   try {
     sermons = await client.fetch(
       groq`*[_type == "sermon"]{ slug, _updatedAt }`
     )
-  } catch (error) {
+  } catch {
     console.warn('Failed to fetch sermons for sitemap (this is expected during build without Sanity credentials)')
-  }
-
-  // Fetch all ministries
-  try {
-    ministries = await client.fetch(
-      groq`*[_type == "ministry"]{ slug, _updatedAt }`
-    )
-  } catch (error) {
-    console.warn('Failed to fetch ministries for sitemap (this is expected during build without Sanity credentials)')
   }
 
   // Static pages
@@ -81,9 +73,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }))
 
   // Dynamic ministry pages
-  const ministryPages = ministries.map((ministry: { slug: { current: string }; _updatedAt: string }) => ({
-    url: `${baseUrl}/ministries/${ministry.slug.current}`,
-    lastModified: new Date(ministry._updatedAt),
+  const ministryPages = MINISTRIES.map((ministry) => ({
+    url: `${baseUrl}/ministries/${ministry.slug}`,
+    lastModified: new Date(),
     changeFrequency: 'monthly' as const,
     priority: 0.7,
   }))
