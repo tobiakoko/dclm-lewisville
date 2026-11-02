@@ -25,6 +25,10 @@ describe('seed documents', () => {
     for (const doc of docs) expect(doc._type).toBeTruthy()
   })
 
+  it('use ids without dots, which Sanity would hide from public reads', () => {
+    for (const doc of docs) expect(doc._id).not.toContain('.')
+  })
+
   it('round-trip our paragraphs through Portable Text without change', () => {
     for (const paragraphs of [verbatim.pastorsWelcome, verbatim.bibleDoctrines, verbatim.aderemiBio, verbatim.agboBio]) {
       expect(fromPortableText(toPortableText(paragraphs))).toEqual(paragraphs)
@@ -45,15 +49,15 @@ describe('seed documents', () => {
   })
 
   it('carry the Aderemi and Agbo bios word for word and mark them verbatim', () => {
-    const aderemi = byId('person.aderemi')
-    const agbo = byId('person.agbo')
+    const aderemi = byId('person-aderemi')
+    const agbo = byId('person-agbo')
     expect(aderemi.verbatim).toBe(true)
     expect(agbo.verbatim).toBe(true)
     // The header lines become name, title and subtitle; the paragraphs are the full bio
     expect(text(aderemi.fullBio)).toEqual(sourcePlain('Pastor Thompson Aderemi bio').slice(1))
     const [agboFirst, ...agboRest] = sourcePlain('Pastor Joseph Agbo bio')
     expect(text(agbo.fullBio)).toEqual([agboFirst.split('\n').slice(2).join('\n'), ...agboRest])
-    expect(byId('person.kumuyi').verbatim).toBe(false)
+    expect(byId('person-kumuyi').verbatim).toBe(false)
   })
 
   it('carry the branch facts and schedule from lib/constants.ts', () => {

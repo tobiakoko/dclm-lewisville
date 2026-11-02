@@ -8,7 +8,9 @@
  *
  * Idempotent: by default a document that already exists is left alone, so edits made in the
  * Studio are never overwritten. Nothing is ever deleted, except the one known test event when
- * --delete-test-event is passed. The token is read from the environment only; never commit it.
+ * --delete-test-event is passed, and with --remove-dotted-ids the copies an early version of
+ * this script created under dotted ids (e.g. doctrine.hell), which Sanity hides from public
+ * reads. The token is read from the environment only; never commit it.
  */
 import { createClient } from '@sanity/client'
 import { buildSeedDocuments } from '../lib/sanity/seed-documents'
@@ -50,11 +52,15 @@ async function main() {
     else transaction.createIfNotExists(doc)
   }
   if (flag('delete-test-event')) transaction.delete(TEST_EVENT_ID)
+  // Exactly the old dotted twin of each seeded id, e.g. doctrine-hell -> doctrine.hell
+  const dottedIds = documents.map((d) => d._id).filter((id) => id.includes('-') && !id.includes('.')).map((id) => id.replace('-', '.'))
+  if (flag('remove-dotted-ids')) for (const id of dottedIds) transaction.delete(id)
   await transaction.commit({ visibility: 'sync' })
 
   const created = documents.filter((d) => !existing.has(d._id)).length
   console.log(`Done: ${created} created, ${documents.length - created} ${replace ? 'replaced' : 'already existed (left unchanged)'}.`)
   if (flag('delete-test-event')) console.log(`Deleted the test event ${TEST_EVENT_ID} (if it existed).`)
+  if (flag('remove-dotted-ids')) console.log(`Removed up to ${dottedIds.length} documents with old dotted ids.`)
 }
 
 main().catch((error) => {

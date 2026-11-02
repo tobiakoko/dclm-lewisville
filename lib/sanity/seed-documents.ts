@@ -135,7 +135,7 @@ export function buildSeedDocuments(): SeedDocument[] {
   }
 
   const people: SeedDocument[] = LEADERS.map((leader, index) => ({
-    _id: `person.${leader.id}`,
+    _id: `person-${leader.id}`,
     _type: 'person',
     key: slug(leader.id),
     name: leader.name,
@@ -151,7 +151,7 @@ export function buildSeedDocuments(): SeedDocument[] {
     ...MINISTRIES.map((ministry, index) => ({ type: 'ministry', ministry, index })),
     ...OUTREACH.map((ministry, index) => ({ type: 'outreachArea', ministry, index })),
   ].map(({ type, ministry, index }) => ({
-    _id: `${type}.${ministry.slug}`,
+    _id: `${type}-${ministry.slug}`,
     _type: type,
     name: ministry.name,
     slug: slug(ministry.slug),
@@ -160,7 +160,7 @@ export function buildSeedDocuments(): SeedDocument[] {
   }))
 
   const doctrines: SeedDocument[] = DOCTRINES.map((doctrine, index) => ({
-    _id: `doctrine.${doctrine.id}`,
+    _id: `doctrine-${doctrine.id}`,
     _type: 'doctrine',
     title: doctrine.title,
     body: doctrine.body,
@@ -169,7 +169,7 @@ export function buildSeedDocuments(): SeedDocument[] {
   }))
 
   const testimonial: SeedDocument = {
-    _id: 'testimonial.bro-k',
+    _id: 'testimonial-bro-k',
     _type: 'testimonial',
     name: TESTIMONY.name,
     title: TESTIMONY.title,
