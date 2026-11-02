@@ -4,7 +4,8 @@ on:
   push:
     branches: [main]
   pull_request:
-    branches: [main]
+    # rebuild/** so stacked phase PRs (e.g. Phase 2 onto Phase 1) get checks too
+    branches: [main, 'rebuild/**']
 
 env:
   NEXT_PUBLIC_SANITY_PROJECT_ID: ${{ secrets.NEXT_PUBLIC_SANITY_PROJECT_ID }}
