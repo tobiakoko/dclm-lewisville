@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Contact and prayer — Direction A</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="/_blob/e2227b12e35ecea2ad2b01efb10f4063">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&amp;family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400;1,8..60,500&amp;display=swap">
+<style>
+body{margin:0;background:#0F2542}
+a{color:#0A6A8F}a:hover{color:#16365E}
+</style>
+</helmet>
+<div class="site">
+  <dc-import name="Header" tone="light" active="Contact" set="A" hint-size="100%,88px"></dc-import>
+
+  <section class="pagehead-a" aria-labelledby="ct-h">
+    <div class="wrap stack-md" style="display: grid; grid-template-columns: minmax(0,6fr) minmax(0,6fr); gap: 64px; align-items: center">
+      <div class="stack" style="gap: 24px">
+        <span class="eyebrow">Contact &amp; prayer</span>
+        <h1 id="ct-h" class="h1">We’re here for you.</h1>
+        <p class="lead">Call, email or send us a message. Prayer requests go straight to our pastor.</p>
+        <dl class="stack" style="gap: 0">
+          <div class="row" style="gap: 18px; padding: 16px 0; box-shadow: inset 0 -1px 0 #E7E2D8">
+            <dt class="icon-tile warm" style="width: 44px; height: 44px; border-radius: 12px"><svg class="ic" viewBox="0 0 24 24" aria-label="Phone" role="img"><path d="M5 4h3l1.5 4-2 1.5a11 11 0 0 0 7 7l1.5-2 4 1.5v3a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"></path></svg></dt>
+            <dd><a class="h5" href="tel:+14699396994" style="text-decoration: none">(469) 939-6994</a></dd>
+          </div>
+          <div class="row" style="gap: 18px; padding: 16px 0; box-shadow: inset 0 -1px 0 #E7E2D8">
+            <dt class="icon-tile warm" style="width: 44px; height: 44px; border-radius: 12px"><svg class="ic" viewBox="0 0 24 24" aria-label="Email" role="img"><rect x="3" y="5" width="18" height="14" rx="2.5"></rect><path d="M4 7l8 6 8-6"></path></svg></dt>
+            <dd><a class="h5" href="mailto:info@deeperlifelewisville.org" style="text-decoration: none">info@deeperlifelewisville.org</a></dd>
+          </div>
+          <div class="row" style="gap: 18px; padding: 16px 0; box-shadow: inset 0 -1px 0 #E7E2D8">
+            <dt class="icon-tile warm" style="width: 44px; height: 44px; border-radius: 12px"><svg class="ic" viewBox="0 0 24 24" aria-label="Address" role="img"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"></path><circle cx="12" cy="9.5" r="2.5"></circle></svg></dt>
+            <dd class="row wrapx" style="gap: 4px 16px"><span class="h5" style="font-weight: 600">1368 W Main St, Lewisville, TX 75067</span><a class="link small" href="https://maps.google.com/?q=1368+W+Main+St+Lewisville+TX+75067">Get directions</a></dd>
+          </div>
+        </dl>
+      </div>
+      <img class="photo" src="/_blob/a565143799d27d354f726a71a2063339" alt="Map showing 1368 W Main St, Lewisville" style="aspect-ratio: 4/3; height: auto; border-radius: 24px; box-shadow: 0 0 0 1px #E7E2D8">
+    </div>
+  </section>
+
+  <section class="sec bg-white" aria-labelledby="form-h">
+    <div class="wrap stack-md" style="display: grid; grid-template-columns: minmax(0,4fr) minmax(0,8fr); gap: 64px; align-items: start">
+      <div class="stack" style="gap: 20px">
+        <span class="eyebrow">Get in touch</span>
+        <h2 id="form-h" class="h2" style="font-size: 38px">Send us a message or a prayer request</h2>
+        <div class="panel-cream" style="padding: 24px; display: flex; flex-direction: column; gap: 10px">
+          <p class="h5">Office hours</p>
+          <p class="small muted">Our church is run by volunteers, so the best time to reach us is during service hours: Sunday 9:30 AM–12:00 PM, and Tuesday and Friday 7:00–9:00 PM. At other times, send a message and we’ll get back to you.</p>
+        </div>
+      </div>
+      <form class="card" style="padding: 40px" action="#">
+        <fieldset style="border: 0; padding: 0; margin: 0 0 28px">
+          <legend class="legend" style="margin-bottom: 12px">What can we help with?</legend>
+          <div class="seg" role="group">
+            <button type="button" class="{{msgCls}}" aria-pressed="{{isMessage}}" onClick="{{toMessage}}">
+              <svg class="ic ic-sm" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2.5"></rect><path d="M4 7l8 6 8-6"></path></svg>General message
+            </button>
+            <button type="button" class="{{prayerCls}}" aria-pressed="{{isPrayer}}" onClick="{{toPrayer}}">
+              <svg class="ic ic-sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7.5-4.6-7.5-10A4.3 4.3 0 0 1 12 7.4 4.3 4.3 0 0 1 19.5 10c0 5.4-7.5 10-7.5 10z"></path></svg>Prayer request
+            </button>
+          </div>
+          <sc-if value="{{isPrayer}}" hint-placeholder-val="{{false}}">
+            <p class="small muted" style="margin-top: 12px">Prayer requests are read by our pastor. You can also use the <a class="link" href="#">DCLM Prayer Request Hub</a>.</p>
+          </sc-if>
+        </fieldset>
+        <div class="form-grid">
+          <div class="field full"><label for="c-name">Name</label><input class="input" id="c-name" type="text" autocomplete="name" required=""></div>
+          <div class="field"><label for="c-email">Email</label><input class="input" id="c-email" type="email" autocomplete="email" required=""></div>
+          <div class="field"><label for="c-phone">Phone <span class="opt">(optional)</span></label><input class="input" id="c-phone" type="tel" autocomplete="tel"></div>
+          <div class="field full"><label for="c-msg">{{fieldLabel}}</label><textarea class="input" id="c-msg" required=""></textarea></div>
+          <div class="full row wrapx" style="gap: 16px; justify-content: space-between">
+            <p class="xs muted">Fields without “optional” are required.</p>
+            <button class="btn btn-primary" type="submit">{{submitLabel}}</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <section class="sec-md bg-cream" aria-labelledby="loc-h">
+    <div class="wrap stack" style="gap: 32px">
+      <div class="stack" style="gap: 12px">
+        <span class="eyebrow">Nearby</span>
+        <h2 id="loc-h" class="h2" style="font-size: 36px">Our other locations</h2>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px">
+        <article class="card row" style="padding: 28px; gap: 20px; align-items: flex-start">
+          <span class="icon-tile"><svg class="ic ic-lg" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"></path><circle cx="12" cy="9.5" r="2.5"></circle></svg></span>
+          <div class="stack" style="gap: 6px">
+            <h3 class="h4">Deeper Life Bible Church Denton</h3>
+            <p class="muted">4981 Barthold Rd, Denton, TX 76207</p>
+            <p class="small muted">[Service times to be confirmed]</p>
+            <a class="link small" href="https://maps.google.com/?q=4981+Barthold+Rd+Denton+TX+76207">Get directions</a>
+          </div>
+        </article>
+        <article class="card row" style="padding: 28px; gap: 20px; align-items: flex-start">
+          <span class="icon-tile"><svg class="ic ic-lg" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"></path><circle cx="12" cy="9.5" r="2.5"></circle></svg></span>
+          <div class="stack" style="gap: 6px">
+            <h3 class="h4">Deeper Life Bible Church Dallas</h3>
+            <p class="muted">202 Beckleymeade Ave, Dallas, TX 75232</p>
+            <p class="small muted">[Service times to be confirmed]</p>
+            <a class="link small" href="https://maps.google.com/?q=202+Beckleymeade+Ave+Dallas+TX+75232">Get directions</a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <dc-import name="Footer" set="A" hint-size="100%,700px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":3000}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { mode: 'message' };
+  }
+  renderVals() {
+    const prayer = this.state.mode === 'prayer';
+    return {
+      isPrayer: prayer,
+      isMessage: !prayer,
+      msgCls: prayer ? '' : 'on',
+      prayerCls: prayer ? 'on' : '',
+      fieldLabel: prayer ? 'Prayer request' : 'Message',
+      submitLabel: prayer ? 'Send prayer request' : 'Send message',
+      toMessage: () => this.setState({ mode: 'message' }),
+      toPrayer: () => this.setState({ mode: 'prayer' })
+    };
+  }
+}
+</script>
+</body>
+</html>

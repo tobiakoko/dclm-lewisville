@@ -9,6 +9,7 @@ You are building the public website for **Deeper Life Bible Church Lewisville** 
 | `docs/build/BUILD-PLAN.md` | What to build, in what order, and when each phase is done. **Start here.** |
 | `docs/build/SITE-CONTENT.md` | Every word and fact on the site. Source of truth for copy. |
 | `docs/build/DESIGN-SYSTEM.md` | Colors, fonts, components, accessibility and performance rules. |
+| `docs/build/REDESIGN.md` | Phase 4 layout and component redesign, page by page. Reference exports in `docs/build/redesign-reference/`. |
 | `docs/POSITIONING.md` | Voice and the visitor we are writing for. Still valid. |
 
 Superseded, so don't follow them where they conflict: `docs/DESIGN.md` (gold accent, Inter and Playfair), `docs/IMPROVE-WEBSITE-PLAN.md`, `docs/WEBSITE.md`, `docs/METRICS.md`, `docs/EXPERIMENTS.md`, and the README's references to Next.js 14 and Node 18. Phase 1 moves them to `docs/archive/`.
@@ -87,13 +88,14 @@ Found in the 1 November 2026 audit of commit `18c17f1`; `BUILD-PLAN.md` schedule
 
 ## How to work
 
-- Follow `BUILD-PLAN.md` phase by phase. Use one branch per phase (`rebuild/phase-1-trust`, `rebuild/phase-2-pages`, `rebuild/phase-3-cms`), small commits with conventional messages (`fix:`, `feat:`, `refactor:`, `test:`, `docs:`), and one pull request per phase. Never push to `main`.
+- Follow `BUILD-PLAN.md` phase by phase. Use one branch per phase (`rebuild/phase-1-trust`, `rebuild/phase-2-pages`, `rebuild/phase-3-cms`, `rebuild/phase-4-redesign`), small commits with conventional messages (`fix:`, `feat:`, `refactor:`, `test:`, `docs:`), and one pull request per phase. Never push to `main`.
 - Before editing a component, check that something actually imports it. Many files in `components/sections/` are dead.
 - Define TypeScript types first for any new data, then build the component.
 - Write tests with each change: a unit test for every state of a form, API route or menu; an e2e test with an axe check for every page you touch. Tests must assert; no conditional skips.
 - Check every page you change at 375 px and 1280 px wide.
 - When a task is done, tick it in `BUILD-PLAN.md`. If you discover missing information, add it to "Still missing" in `SITE-CONTENT.md` and keep going with the placeholder or hidden element.
-- Stop and ask the owner at the checkpoints marked in the plan (0.4, 2.16, 3.0) and whenever rules 8 or 9 apply.
+- Stop and ask the owner at the checkpoints marked in the plan (0.4, 2.16, 3.0, the Events calendar export in 4.11, the Give scripture in 4.13) and whenever rules 8 or 9 apply.
+- In Phase 4, the redesign changes layout and styling only. If a mock-up shows words that differ from Sanity or `SITE-CONTENT.md`, keep the existing words unless `REDESIGN.md` §7 lists the new ones.
 
 ## Definition of done (every task)
 

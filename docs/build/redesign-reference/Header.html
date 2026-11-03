@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Site header</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="/_blob/e2227b12e35ecea2ad2b01efb10f4063">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&amp;family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400;1,8..60,500&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#0A6A8F}a:hover{color:#16365E}
+</style>
+</helmet>
+<header class="{{rootCls}}" style="font-family: 'Source Sans 3', system-ui, sans-serif; color: #16365E">
+  <div class="wrap hdr">
+    <a class="brand" href="Main.dc.html" aria-label="Deeper Life Bible Church Lewisville — home">
+      <img src="/_blob/e6bf17c1f3316074423d00752b4b5196" alt="" width="46" height="46">
+      <span>
+        <span class="brand-name">Deeper Life Bible Church</span>
+        <span class="brand-sub">Lewisville, Texas</span>
+      </span>
+    </a>
+    <nav aria-label="Main">
+      <ul class="nav-links">
+        <sc-for list="{{nav}}" as="item" hint-placeholder-count="6">
+          <li><a class="{{item.cls}}" href="{{item.href}}" aria-current="{{item.current}}">{{item.label}}</a></li>
+        </sc-for>
+      </ul>
+    </nav>
+    <div class="hdr-actions">
+      <a class="watch-link" href="https://www.youtube.com/@DeeperLifeBibleChurchLewisvill/streams"><span class="live-dot"></span>Watch live</a>
+      <a class="btn btn-primary btn-sm" href="{{giveHref}}">Give</a>
+      <button class="menu-btn" type="button" aria-label="Open menu">
+        <svg class="ic ic-lg" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"></path></svg>
+      </button>
+    </div>
+  </div>
+</header>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"active":{"editor":"enum","options":["","Visit","About","Ministries","Sermons","Events","Contact"],"default":""},"tone":{"editor":"enum","options":["light","overlay"],"default":"light"},"set":{"editor":"enum","options":["A","B"],"default":"A"},"$preview":{"width":1440,"height":88}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const active = this.props.active ?? '';
+    const tone = this.props.tone ?? 'light';
+    const set = this.props.set ?? 'A';
+    const pages = ['Visit', 'About', 'Ministries', 'Sermons', 'Events', 'Contact'];
+    const nav = pages.map(function (p) {
+      const on = p === active;
+      return {
+        label: p,
+        href: set + '-' + p + '.dc.html',
+        cls: on ? 'nav-link is-active' : 'nav-link',
+        current: on ? 'page' : 'false'
+      };
+    });
+    return {
+      nav: nav,
+      rootCls: tone === 'overlay' ? 'site-hdr site-hdr--overlay' : 'site-hdr site-hdr--light',
+      giveHref: set + '-Give.dc.html'
+    };
+  }
+}
+</script>
+</body>
+</html>
