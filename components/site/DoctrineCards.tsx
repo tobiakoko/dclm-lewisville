@@ -1,37 +1,35 @@
-import type { Doctrine, DoctrinesIntro } from '@/lib/content/doctrines'
+import type { Doctrine } from '@/lib/content/doctrines'
 import { Disclosure } from '@/components/ui/disclosure'
 
 /**
- * The 22 Bible doctrines as cards that expand to the full verbatim text
- * (SITE-CONTENT.md §5, "What we believe"). Titles only on the card; no summaries.
+ * The 22 Bible doctrines as numbered accordion buttons that open to the full verbatim text and
+ * references (SITE-CONTENT.md §5, "What we believe"). Titles only on the button; no summaries.
  */
-export default function DoctrineCards({ intro, doctrines }: { intro: DoctrinesIntro; doctrines: Doctrine[] }) {
+export default function DoctrineCards({ doctrines }: { doctrines: Doctrine[] }) {
   return (
-    <>
-      <div className="mb-10 max-w-3xl space-y-3">
-        <p className="font-semibold text-navy-900">{intro.heading}</p>
-        <p className="text-[0.9375rem] italic text-ink-muted">{intro.references}</p>
-        <blockquote className="scripture text-navy-900">
-          <p>{intro.quotation}</p>
-        </blockquote>
-        <p className="font-semibold">{intro.statement}</p>
-      </div>
-
-      <ol className="grid list-none gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {doctrines.map((doctrine) => (
-          <li key={doctrine.id} id={`doctrine-${doctrine.id}`}>
-            <Disclosure
-              className="h-full rounded-2xl border border-border-input/40 bg-white"
-              buttonClassName="min-h-12 rounded-2xl p-5 text-navy-900"
-              panelClassName="space-y-3 px-5 pb-5"
-              summary={<h3 className="text-lg">{doctrine.title}</h3>}
-            >
-              <p>{doctrine.body}</p>
-              <p className="text-[0.9375rem] italic text-ink-muted">{doctrine.references}</p>
-            </Disclosure>
-          </li>
-        ))}
-      </ol>
-    </>
+    <ol className="grid list-none grid-cols-[repeat(auto-fill,minmax(min(320px,100%),1fr))] items-start gap-3">
+      {doctrines.map((doctrine, index) => (
+        <li key={doctrine.id} id={`doctrine-${doctrine.id}`}>
+          <Disclosure
+            heading="h3"
+            className="group rounded-box bg-white shadow-[inset_0_0_0_1px_var(--color-line)] hover:shadow-[inset_0_0_0_1.5px_var(--color-navy-900)] data-[state=open]:shadow-[inset_0_0_0_1.5px_var(--color-navy-900)]"
+            buttonClassName="min-h-16 items-center rounded-box px-5 py-4 font-bold leading-snug text-navy-900"
+            iconClassName="mt-0 text-navy-900"
+            panelClassName="space-y-3 pb-5 pl-[68px] pr-5 text-base"
+            summary={
+              <span className="flex items-center gap-4">
+                <span aria-hidden="true" className="w-8 shrink-0 font-serif text-xl font-semibold text-emblem-sky-700">
+                  {String(index + 1).padStart(2, '0')}
+                </span>
+                {doctrine.title}
+              </span>
+            }
+          >
+            <p>{doctrine.body}</p>
+            <p className="text-[0.9375rem] italic text-ink-muted">{doctrine.references}</p>
+          </Disclosure>
+        </li>
+      ))}
+    </ol>
   )
 }

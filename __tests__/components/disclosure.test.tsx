@@ -1,7 +1,7 @@
 import { render, screen, userEvent } from '@/__tests__/utils/test-utils'
 import { Disclosure } from '@/components/ui/disclosure'
 import CoreBeliefs from '@/components/site/DoctrineCards'
-import { DOCTRINES, DOCTRINES_INTRO } from '@/lib/content/doctrines'
+import { DOCTRINES } from '@/lib/content/doctrines'
 
 describe('Disclosure', () => {
   it('starts closed, with the panel hidden from the tab order', () => {
@@ -34,7 +34,7 @@ describe('Disclosure', () => {
 describe('CoreBeliefs', () => {
   it('shows 22 doctrine titles and reveals the full verbatim text on demand', async () => {
     const user = userEvent.setup()
-    render(<CoreBeliefs intro={DOCTRINES_INTRO} doctrines={DOCTRINES} />)
+    render(<CoreBeliefs doctrines={DOCTRINES} />)
     const buttons = screen.getAllByRole('button')
     expect(buttons).toHaveLength(22)
     expect(buttons[0]).toHaveTextContent(DOCTRINES[0].title)
@@ -44,5 +44,13 @@ describe('CoreBeliefs', () => {
     await user.click(screen.getByRole('button', { name: 'The Godhead' }))
     expect(screen.getByText(godhead.body)).toBeVisible()
     expect(screen.getByText(godhead.references)).toBeVisible()
+  })
+
+  it('wraps each button in an H3 and numbers the doctrines 01–22 as decoration', () => {
+    render(<CoreBeliefs doctrines={DOCTRINES} />)
+    const headings = screen.getAllByRole('heading', { level: 3 })
+    expect(headings).toHaveLength(22)
+    expect(headings[0]).toHaveAccessibleName(DOCTRINES[0].title)
+    expect(screen.getByText('22')).toHaveAttribute('aria-hidden', 'true')
   })
 })

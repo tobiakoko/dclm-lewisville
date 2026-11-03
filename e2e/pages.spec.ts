@@ -9,7 +9,7 @@ const HEADINGS: Record<PublicPath, RegExp> = {
   // The home H1 is the hero title from the CMS (REDESIGN.md §3.1)
   '/': /\S/,
   '/visit': /^We’d love to meet you this Sunday\.$/,
-  '/about': /^About Us$/,
+  '/about': /^A Bible-centered church family in Lewisville\.$/,
   '/ministries': /^Ministries and Outreach$/,
   '/sermons': /^Sermons$/,
   '/events': /^Events$/,

@@ -52,3 +52,32 @@ export const VISIT = {
   /** Restates the approved "After your visit" text (REDESIGN.md §4, Visit 06) */
   checklist: ['An usher will welcome you and walk you through the next steps', 'A church card for first-time guests'],
 }
+
+export const ABOUT = {
+  eyebrow: 'About us',
+  title: 'A Bible-centered church family in Lewisville.',
+  nav: {
+    whoWeAre: 'Who we are',
+    why: 'Why we exist',
+    heritage: 'Heritage',
+    vision: 'Vision',
+    beliefs: 'What we believe',
+    leadership: 'Leadership',
+  },
+  /** Section H2s, keyed by the approved section title, which becomes the eyebrow */
+  headings: {
+    'Who we are': 'Changed from the inside out',
+    'Why We Exist': 'Grace that transforms, truth that clarifies',
+    'Our Message and Heritage': 'Shaped by Scripture since 1973',
+    'Our Vision': 'The church we’re committed to being',
+    'A Life That Thrives Now and Forever': 'A life that thrives now and forever',
+  } as Record<string, string>,
+  /** The approved sentence from "Who we are" set as a pull-quote */
+  pullQuote: 'At the heart of our calling is a simple conviction: God still changes lives.',
+  /** Restated from approved bios (Pastor Kumuyi's short bio; Pastor Aderemi's verbatim bio) */
+  figures: (region: string, overseer: string) => [
+    { value: '1973', label: 'DCLM founded as a Bible study of 15 students at the University of Lagos' },
+    { value: '14', label: `States in our ${region}, under ${overseer}` },
+  ],
+  leadershipTitle: 'The people who shepherd us',
+}
