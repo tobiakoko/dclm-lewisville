@@ -25,7 +25,7 @@ Source of truth for every word on the site until content moves into Sanity (Phas
 | Office hours | Service hours (the church is run by volunteers): Sunday 9:30 AM–12:00 PM; Tuesday and Friday 7:00–9:00 PM |
 | YouTube | https://www.youtube.com/@DeeperLifeBibleChurchLewisvill (live streams: https://www.youtube.com/@DeeperLifeBibleChurchLewisvill/streams) |
 | Facebook, Instagram | Official accounts exist; links to come. Hide the icons until the links are provided |
-| Zoom (online prayer and midweek services) | `[Zoom link to come]` |
+| Zoom (online prayer and midweek services) | https://deeperlifedallas.zoom.us/j/8965682345?pwd=QStScStCRWN5a3hMd1hXSmJrTDJiQT09 (Sunday prayer, Monday prayer, Tuesday Bible Study, Friday Revival Hour) |
 | DCLM Prayer Request Hub | https://dclm.org/?p=89 |
 | DCLM livestream (headquarters) | https://webcast.dclm.org/ and the YouTube channel listed at https://dclm.org/followus/ |
 | Time zone | Central Time (America/Chicago) |
@@ -39,7 +39,7 @@ Friday, Revival Hour, 7:00 PM to 9:00 PM (in person and online)
 
 Additional details:
 
-- Sunday prayer meeting online at 9:00 AM, before the service: `[Zoom link to come]`.
+- Sunday prayer meeting online at 9:00 AM, before the service, on Zoom (link in §1).
 - Search The Scriptures (our Sunday Bible class) runs 9:40–10:05 AM inside the Sunday service, in separate classes for children, youth and adults.
 - Children's Church runs during the Sunday service for infants through 6th grade. Youth Ministry covers grades 7–12.
 - *Dev note:* Use the name “Revival Hour” for Friday everywhere.
@@ -65,7 +65,7 @@ What to wear
 Come as you are. You'll see everything from Sunday best to comfortable clothes. We care far more about you being here than what you're wearing.
 
 Our gathering  
-Our Sunday service lasts about two and a half hours and blends singing, prayer, Bible study (Search The Scriptures), and teaching. Before the service, we pray together online at 9:00 AM ([Zoom link to come]), and you’re welcome to join us.
+Our Sunday service lasts about two and a half hours and blends singing, prayer, Bible study (Search The Scriptures), and teaching. Before the service, we pray together online at 9:00 AM (on Zoom), and you’re welcome to join us.
 
 ### Pastor's Welcome
 
@@ -105,7 +105,7 @@ We look forward to welcoming you.
 Service times in plain English –  
 Sunday Worship Service, 9:30 AM–12:00 PM: our main service, an awesome and refreshing time in God’s presence. “*I will worship toward thy holy temple, and praise thy name for thy lovingkindness and for thy truth: for thou hast magnified thy word above all thy name.*” (Psalm 138:2)  
 Search The Scriptures (our Sunday Bible class), 9:40–10:05 AM, as part of the Sunday service, with separate classes for children, youth, and adults.  
-Monday Prayer Meeting, 7:00–8:00 PM, online: an hour of prayer together ([Zoom link to come]).  
+Monday Prayer Meeting, 7:00–8:00 PM, online: an hour of prayer together (on Zoom).  
 Tuesday Bible Study, 7:00–9:00 PM, in person and online ([online link to come]): a midweek Bible teaching service with systematic, expository study of God’s Word. “*The entrance of thy words giveth light; it giveth understanding unto the simple.*” (Psalm 119:130)  
 Friday Revival Hour, 7:00–9:00 PM, in person and online ([online link to come]): a midweek service of prayer, spiritual revival, and evangelism training. “*Fear not, O land; be glad and rejoice: for the LORD will do great things.*” (Joel 2:21)
 
@@ -113,7 +113,7 @@ Getting here and parking – Free parking is available in the lot around the pla
 
 When you arrive – Information not included, skip
 
-What happens in a service – Our Sunday service lasts about two and a half hours and blends singing, prayer, Bible study, and teaching. Search The Scriptures, our Bible class, meets in separate classes for children, youth, and adults. Before the service, we pray together online at 9:00 AM ([Zoom link to come]), and you’re welcome to join us.
+What happens in a service – Our Sunday service lasts about two and a half hours and blends singing, prayer, Bible study, and teaching. Search The Scriptures, our Bible class, meets in separate classes for children, youth, and adults. Before the service, we pray together online at 9:00 AM (on Zoom), and you’re welcome to join us.
 
 What to wear – Come as you are. You'll see everything from Sunday best to comfortable clothes. We care far more about you being here than what you're wearing.
 
@@ -544,7 +544,6 @@ This website exists to offer biblical counsel for life’s various challenges, q
 
 ## 12. Still missing (do not invent)
 
-- Zoom links (Sunday prayer, Monday prayer, Tuesday, Friday)
 - Facebook and Instagram links
 - Year Lewisville began and its local story
 - Suite or unit number at 1368 W Main St, if any

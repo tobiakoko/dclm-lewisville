@@ -19,8 +19,17 @@ describe('ServiceTimesCard', () => {
     expect(screen.getByRole('link', { name: /Join online/ })).toHaveAttribute('href', service.joinUrl)
   })
 
-  it('shows the Zoom placeholder, never an invented link, when the link is missing', () => {
+  it('links to the meeting when it has a join link', () => {
     render(<ServiceTimesCard service={byId('monday-prayer')} />)
+    expect(screen.getByRole('link', { name: /Join online.*Monday Prayer Meeting/ })).toHaveAttribute(
+      'href',
+      byId('monday-prayer').joinUrl
+    )
+    expect(screen.queryByText(ZOOM_PLACEHOLDER)).not.toBeInTheDocument()
+  })
+
+  it('shows the Zoom placeholder, never an invented link, when the link is missing', () => {
+    render(<ServiceTimesCard service={{ ...byId('monday-prayer'), joinUrl: null }} />)
     expect(screen.getByText(ZOOM_PLACEHOLDER)).toBeInTheDocument()
     expect(screen.queryByRole('link')).not.toBeInTheDocument()
   })

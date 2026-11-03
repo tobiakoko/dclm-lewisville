@@ -17,7 +17,7 @@ export const homeHero: Paragraph[] = [
     "What to wear\nCome as you are. You'll see everything from Sunday best to comfortable clothes. We care far more about you being here than what you're wearing."
   ],
   [
-    "Our gathering\nOur Sunday service lasts about two and a half hours and blends singing, prayer, Bible study (Search The Scriptures), and teaching. Before the service, we pray together online at 9:00 AM ([Zoom link to come]), and you’re welcome to join us."
+    "Our gathering\nOur Sunday service lasts about two and a half hours and blends singing, prayer, Bible study (Search The Scriptures), and teaching. Before the service, we pray together online at 9:00 AM (on Zoom), and you’re welcome to join us."
   ]
 ]
 
@@ -27,7 +27,7 @@ export const visit: Paragraph[] = [
     {
       "em": "I will worship toward thy holy temple, and praise thy name for thy lovingkindness and for thy truth: for thou hast magnified thy word above all thy name."
     },
-    "” (Psalm 138:2)\nSearch The Scriptures (our Sunday Bible class), 9:40–10:05 AM, as part of the Sunday service, with separate classes for children, youth, and adults.\nMonday Prayer Meeting, 7:00–8:00 PM, online: an hour of prayer together ([Zoom link to come]).\nTuesday Bible Study, 7:00–9:00 PM, in person and online ([online link to come]): a midweek Bible teaching service with systematic, expository study of God’s Word. “",
+    "” (Psalm 138:2)\nSearch The Scriptures (our Sunday Bible class), 9:40–10:05 AM, as part of the Sunday service, with separate classes for children, youth, and adults.\nMonday Prayer Meeting, 7:00–8:00 PM, online: an hour of prayer together (on Zoom).\nTuesday Bible Study, 7:00–9:00 PM, in person and online ([online link to come]): a midweek Bible teaching service with systematic, expository study of God’s Word. “",
     {
       "em": "The entrance of thy words giveth light; it giveth understanding unto the simple."
     },
@@ -44,7 +44,7 @@ export const visit: Paragraph[] = [
     "When you arrive – Information not included, skip"
   ],
   [
-    "What happens in a service – Our Sunday service lasts about two and a half hours and blends singing, prayer, Bible study, and teaching. Search The Scriptures, our Bible class, meets in separate classes for children, youth, and adults. Before the service, we pray together online at 9:00 AM ([Zoom link to come]), and you’re welcome to join us."
+    "What happens in a service – Our Sunday service lasts about two and a half hours and blends singing, prayer, Bible study, and teaching. Search The Scriptures, our Bible class, meets in separate classes for children, youth, and adults. Before the service, we pray together online at 9:00 AM (on Zoom), and you’re welcome to join us."
   ],
   [
     "What to wear – Come as you are. You'll see everything from Sunday best to comfortable clothes. We care far more about you being here than what you're wearing."

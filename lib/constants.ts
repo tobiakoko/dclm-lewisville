@@ -141,8 +141,10 @@ export const SITE_CONFIG: SiteConfig = {
   },
 }
 
+/** One Zoom meeting for online prayer and the midweek services (SITE-CONTENT.md §1) */
+const ZOOM_MEETING = 'https://deeperlifedallas.zoom.us/j/8965682345?pwd=QStScStCRWN5a3hMd1hXSmJrTDJiQT09'
+
 // Weekly schedule (SITE-CONTENT.md §2 and §4)
-// TODO(content): Zoom links for Sunday prayer, Monday, Tuesday and Friday
 export const SERVICE_TIMES: ServiceTime[] = [
   {
     id: 'sunday-prayer',
@@ -152,7 +154,7 @@ export const SERVICE_TIMES: ServiceTime[] = [
     end: null,
     mode: 'online',
     description: 'Before the service, we pray together online, and you’re welcome to join us.',
-    joinUrl: null,
+    joinUrl: ZOOM_MEETING,
   },
   {
     id: 'sunday-worship',
@@ -172,7 +174,7 @@ export const SERVICE_TIMES: ServiceTime[] = [
     end: '20:00',
     mode: 'online',
     description: 'An hour of prayer together.',
-    joinUrl: null,
+    joinUrl: ZOOM_MEETING,
   },
   {
     id: 'tuesday-bible-study',
@@ -182,7 +184,7 @@ export const SERVICE_TIMES: ServiceTime[] = [
     end: '21:00',
     mode: 'both',
     description: 'A midweek Bible teaching service with systematic, expository study of God’s Word.',
-    joinUrl: null,
+    joinUrl: ZOOM_MEETING,
   },
   {
     id: 'friday-revival-hour',
@@ -192,7 +194,7 @@ export const SERVICE_TIMES: ServiceTime[] = [
     end: '21:00',
     mode: 'both',
     description: 'A midweek service of prayer, spiritual revival, and evangelism training.',
-    joinUrl: null,
+    joinUrl: ZOOM_MEETING,
   },
 ]
 

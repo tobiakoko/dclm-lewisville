@@ -91,7 +91,7 @@ Goal: the layout and component refresh in `REDESIGN.md` for **every route and sh
 - [ ] 4.10 **Sermons.**
 - [ ] 4.11 **Events.** WeekStrip and DateCard. The calendar export buttons wait for the owner's yes.
 - [ ] 4.12 **Contact.** SegmentedControl as a radio group wired to the existing topic and subject logic.
-- [ ] 4.13 **Give.** The scripture card is shown only after church approval; until then, a photo.
+- [ ] 4.13 **Give.** The scripture card is shown only after church approval; until then, a photo. *Owner, 2 November 2026: the 2 Corinthians 9:7 scripture card is approved.*
 - [ ] 4.14 **Sermon detail** (`/sermons/[slug]`), per `REDESIGN.md` §4.
 - [ ] 4.15 **Privacy and Terms**, with the “On this page” layout.
 - [ ] 4.16 **Not found, error and global error** pages.

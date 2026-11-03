@@ -295,9 +295,9 @@ Short headings and leads that frame approved content. Use them as written, seed 
 | Ministries header | H1 “Find your place to grow and serve.”; lead “Every ministry has a way to get in touch. Tell us where you'd like to start and we'll help you take the next step.”; Outreach H2 “Serving beyond our walls” | Use; church to review |
 | Sermons header | H1 “Hear the Word, wherever you are.”; lead “Watch our services live on Sundays, or catch up on recent messages from Lewisville and DCLM Headquarters.” | Use; church to review |
 | Events header | H1 “This week at Deeper Life”; lead “Our weekly meetings and any special events. All times are Central.” | Use |
-| Contact header | H1 “We're here for you.”; lead “Call, email or send us a message. Prayer requests go straight to our pastor.” | Use; church to review |
+| Contact header | H1 “We're here for you.”; lead “Call, email or send us a message. Prayer requests go straight to our pastor.” | Approved by the owner, 2 November 2026 |
 | Give header | H1 “Give with a cheerful heart.”; lead “Thank you for supporting the work of the Gospel through Deeper Life Bible Church Lewisville. Choose the way that's easiest for you.” | Use; church to review |
-| Give scripture card | “Every man according as he purposeth in his heart, so let him give; not grudgingly, or of necessity: for God loveth a cheerful giver.” 2 Corinthians 9:7 (KJV) | **Needs approval** (scripture choice is the church's); fallback: a photo |
+| Give scripture card | “Every man according as he purposeth in his heart, so let him give; not grudgingly, or of necessity: for God loveth a cheerful giver.” 2 Corinthians 9:7 (KJV) | Approved by the owner, 2 November 2026 |
 | Testimony link | Share your testimony | Use |
 
 ## 8. Acceptance (Gate 4)

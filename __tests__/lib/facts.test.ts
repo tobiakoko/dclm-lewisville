@@ -93,9 +93,12 @@ describe('branch facts (SITE-CONTENT.md §1-2)', () => {
     ])
   })
 
-  it('never invents a Zoom link', () => {
+  it('uses only the Zoom link in SITE-CONTENT.md §1 for the online meetings', () => {
+    const siteContent = readFileSync(path.join(ROOT, 'docs/build/SITE-CONTENT.md'), 'utf8')
+    const zoom = /^\| Zoom \(online prayer and midweek services\) \| (https:\/\/\S+) /m.exec(siteContent)?.[1]
+    expect(zoom).toMatch(/^https:\/\/[a-z]+\.zoom\.us\/j\//)
     for (const service of SERVICE_TIMES.filter((s) => s.id !== 'sunday-worship')) {
-      expect(service.joinUrl).toBeNull()
+      expect(service.joinUrl).toBe(zoom)
     }
   })
 })
