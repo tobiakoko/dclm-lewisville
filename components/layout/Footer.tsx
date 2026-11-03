@@ -135,7 +135,7 @@ export default async function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/contact#prayer" className={linkClass}>
+                <Link href="/contact?topic=prayer#contact-form" className={linkClass}>
                   Prayer requests
                 </Link>
               </li>

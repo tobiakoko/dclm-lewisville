@@ -102,3 +102,10 @@ export const EVENTS = {
   title: 'This week at Deeper Life',
   lead: 'Our weekly meetings and any special events. All times are Central.',
 }
+
+export const CONTACT = {
+  eyebrow: 'Contact',
+  /** Approved by the owner, 2 November 2026 */
+  title: 'We’re here for you.',
+  lead: 'Call, email or send us a message. Prayer requests go straight to our pastor.',
+}

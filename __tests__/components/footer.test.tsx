@@ -49,7 +49,7 @@ describe('Footer', () => {
 
   it('offers Contact, Prayer, Privacy and Terms in the same place on every page', () => {
     expect(screen.getByRole('link', { name: 'Contact us' })).toHaveAttribute('href', '/contact')
-    expect(screen.getByRole('link', { name: 'Prayer requests' })).toHaveAttribute('href', '/contact#prayer')
+    expect(screen.getByRole('link', { name: 'Prayer requests' })).toHaveAttribute('href', '/contact?topic=prayer#contact-form')
     expect(screen.getByRole('link', { name: 'Privacy Policy' })).toHaveAttribute('href', '/privacy')
     expect(screen.getByRole('link', { name: 'Terms of Use' })).toHaveAttribute('href', '/terms')
   })

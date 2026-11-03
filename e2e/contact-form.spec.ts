@@ -1,6 +1,6 @@
 import { test, expect, type Page } from '@playwright/test'
 import { SITE_CONFIG } from '../lib/constants'
-import { stubContactApi } from './helpers'
+import { expectNoSeriousAxeViolations, stubContactApi } from './helpers'
 
 // Form tests stub /api/contact (stubContactApi) so no e2e run ever sends email. Only the
 // foreign-origin test reaches the real API, which rejects it before any email is attempted.
@@ -77,9 +77,23 @@ test.describe('Contact form', () => {
 })
 
 test.describe('Prayer request form', () => {
-  test('links the DCLM Prayer Request Hub as a second option', async ({ page }) => {
+  test('the segmented control switches to a prayer request with the keyboard', async ({ page }) => {
     await page.goto('/contact')
+    const general = page.getByRole('radio', { name: 'General message' })
+    await expect(general).toBeChecked()
+    await general.focus()
+    await page.keyboard.press('ArrowRight')
+    await expect(page.getByRole('radio', { name: 'Prayer request' })).toBeChecked()
+    const form = contactForm(page)
+    await expect(form.getByLabel(/^Prayer request/)).toBeVisible()
+    await expect(form.getByRole('button', { name: 'Send prayer request' })).toBeVisible()
     await expect(page.getByRole('link', { name: 'DCLM Prayer Request Hub' })).toHaveAttribute('href', SITE_CONFIG.dclm.prayerRequestHub)
-    await expect(page.locator('#prayer form').getByLabel(/^Prayer request/)).toBeVisible()
+    await expectNoSeriousAxeViolations(page)
+  })
+
+  test('?topic=prayer opens the prayer form', async ({ page }) => {
+    await page.goto('/contact?topic=prayer#contact-form')
+    await expect(page.getByRole('radio', { name: 'Prayer request' })).toBeChecked()
+    await expect(contactForm(page).getByLabel(/^Prayer request/)).toBeVisible()
   })
 })
