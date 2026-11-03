@@ -1,8 +1,7 @@
 import type { Metadata } from 'next'
 import { PageHero } from '@/components/site/PageHero'
-import { Section } from '@/components/site/Section'
 import { LastUpdated } from '@/components/site/LastUpdated'
-import { Paragraphs } from '@/components/content/RichText'
+import { LegalLayout, LegalParagraph, paragraphLabel, type LegalAnchor } from '@/components/site/LegalLayout'
 import { formatAddress, telHref } from '@/lib/constants'
 import { getLegalContent, getSiteData } from '@/lib/data'
 
@@ -20,27 +19,30 @@ const linkClass = 'font-semibold text-emblem-sky-700 underline underline-offset-
 // TODO(content): legal review and effective date before launch (SITE-CONTENT.md §11)
 export default async function PrivacyPage() {
   const [{ config }, legal] = await Promise.all([getSiteData(), getLegalContent()])
+  const anchors: LegalAnchor[] = [
+    ...legal.privacy.map(paragraphLabel).filter((anchor): anchor is LegalAnchor => anchor !== null),
+    { id: 'contact', label: 'Contact' },
+  ]
   return (
     <>
-      <PageHero title="Privacy Policy" />
-      <Section>
-        <div className="max-w-prose space-y-4">
-          <LastUpdated date={legal.lastUpdated} />
-          <p>{legal.effectiveDate}</p>
-          <Paragraphs paragraphs={legal.privacy} />
-          {/* The approved "Contact." line, built from Church details (a unit test keeps them equal) */}
-          <p>
-            Contact. {config.name}, {formatAddress(config.address)} ·{' '}
-            <a href={telHref(config.phone)} className={linkClass}>
-              {config.phone}
-            </a>{' '}
-            ·{' '}
-            <a href={`mailto:${config.email}`} className={`${linkClass} break-all`}>
-              {config.email}
-            </a>
-          </p>
-        </div>
-      </Section>
+      <PageHero eyebrow="Legal" title="Privacy Policy" lead={<LastUpdated date={legal.lastUpdated} />} />
+      <LegalLayout anchors={anchors}>
+        <p>{legal.effectiveDate}</p>
+        {legal.privacy.map((paragraph, index) => (
+          <LegalParagraph key={index} paragraph={paragraph} />
+        ))}
+        {/* The approved "Contact." line, built from Church details (a unit test keeps them equal) */}
+        <p id="contact" className="scroll-mt-28">
+          <strong className="text-navy-900">Contact.</strong> {config.name}, {formatAddress(config.address)} ·{' '}
+          <a href={telHref(config.phone)} className={linkClass}>
+            {config.phone}
+          </a>{' '}
+          ·{' '}
+          <a href={`mailto:${config.email}`} className={`${linkClass} break-all`}>
+            {config.email}
+          </a>
+        </p>
+      </LegalLayout>
     </>
   )
 }
