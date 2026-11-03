@@ -207,9 +207,34 @@
     top: 0;
   }
 
+  /* Home hero scrim (DESIGN-SYSTEM.md color rules): navy-950 left to right plus a bottom fade;
+     at least 86% wherever text sits on phones and tablets, where the text spans the photo */
+  .hero-scrim {
+    background:
+      linear-gradient(0deg, rgb(15 37 66 / 0.9) 0%, rgb(15 37 66 / 0) 42%),
+      rgb(15 37 66 / 0.86);
+  }
+  @media (min-width: 60rem) {
+    .hero-scrim {
+      background:
+        linear-gradient(90deg, rgb(15 37 66 / 0.95) 0%, rgb(15 37 66 / 0.86) 34%, rgb(15 37 66 / 0.5) 66%, rgb(15 37 66 / 0.32) 100%),
+        linear-gradient(0deg, rgb(15 37 66 / 0.9) 0%, rgb(15 37 66 / 0) 42%);
+    }
+  }
+
   /* Service times and other numbers line up */
   .tabular {
     font-variant-numeric: tabular-nums;
+  }
+
+  /* Bento photo zoom: 500ms, only without reduced motion (DESIGN-SYSTEM.md) */
+  @media (prefers-reduced-motion: no-preference) {
+    .bento-photo {
+      transition: transform 500ms ease;
+    }
+    .group:is(:hover, :focus-visible) .bento-photo {
+      transform: scale(1.04);
+    }
   }
 
   /* Type scale classes, for text that isn't a heading of that level (DESIGN-SYSTEM.md) */

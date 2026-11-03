@@ -1,5 +1,6 @@
 import { act, render, screen, userEvent, waitFor, within } from '@/__tests__/utils/test-utils'
-import Header, { OVERLAY_HERO_ID, type HeaderInfo } from '@/components/layout/Header'
+import Header, { type HeaderInfo } from '@/components/layout/Header'
+import { OVERLAY_HERO_ID } from '@/lib/routes'
 import { GIVE_LINK, NAV_LINKS, SITE_CONFIG, formatAddress, mapsUrl, telHref } from '@/lib/constants'
 
 let mockPathname = '/about'

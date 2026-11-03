@@ -13,14 +13,14 @@ import { cn } from "@/lib/utils"
  * - link: text link
  */
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2.5 whitespace-nowrap rounded-pill border-[1.5px] border-transparent font-bold leading-none no-underline transition-colors duration-150 disabled:pointer-events-none disabled:opacity-60 [&_svg]:size-5 [&_svg]:shrink-0 [&_svg]:pointer-events-none",
+  "inline-flex items-center justify-center gap-2.5 whitespace-nowrap rounded-pill border-[1.5px] font-bold leading-none no-underline transition-colors duration-150 disabled:pointer-events-none disabled:opacity-60 [&_svg]:size-5 [&_svg]:shrink-0 [&_svg]:pointer-events-none",
   {
     variants: {
       variant: {
-        primary: "bg-heaven-600 text-white shadow-primary hover:bg-heaven-700 active:bg-heaven-700",
+        primary: "border-transparent bg-heaven-600 text-white shadow-primary hover:bg-heaven-700 active:bg-heaven-700",
         secondary: "border-line-strong bg-white text-navy-900 hover:border-navy-900",
         ghost: "border-white/50 bg-white/6 text-white hover:border-white hover:bg-white/14",
-        light: "bg-white text-navy-900 hover:bg-emblem-sky-50",
+        light: "border-transparent bg-white text-navy-900 hover:bg-emblem-sky-50",
         link: "rounded-none border-0 text-emblem-sky-700 underline decoration-[1.5px] underline-offset-4 hover:text-navy-900",
       },
       size: {

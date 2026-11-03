@@ -49,7 +49,7 @@ export function SectionHeader({
         <h2 id={headingId}>{title}</h2>
         {lead && <div className="type-lead mt-4">{lead}</div>}
       </div>
-      {action && <div className="shrink-0">{action}</div>}
+      {action && <div className="min-w-0 max-w-full">{action}</div>}
     </div>
   )
 }
@@ -87,7 +87,8 @@ export function Section({
   children: ReactNode
   className?: string
 }) {
-  const headingId = title ? (titleId ?? (id ? `${id}-heading` : undefined)) : undefined
+  // A section that renders its own H2 passes titleId alone
+  const headingId = titleId ?? (title && id ? `${id}-heading` : undefined)
   return (
     <section id={id} aria-labelledby={headingId} className={cn('scroll-mt-24', TONES[tone], SIZES[size], className)}>
       <Container narrow={narrow}>

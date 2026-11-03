@@ -6,7 +6,8 @@ import { MINISTRIES } from '../lib/content/site'
 import { PUBLIC_PATHS, type PublicPath } from '../lib/routes'
 
 const HEADINGS: Record<PublicPath, RegExp> = {
-  '/': new RegExp(`${SITE_CONFIG.address.city}, ${SITE_CONFIG.address.state}`),
+  // The home H1 is the hero title from the CMS (REDESIGN.md §3.1)
+  '/': /\S/,
   '/visit': /^Plan Your Visit$/,
   '/about': /^About Us$/,
   '/ministries': /^Ministries and Outreach$/,
@@ -137,20 +138,21 @@ test.describe('about', () => {
 test.describe('home on a phone', () => {
   test.use({ viewport: { width: 390, height: 844 } })
 
-  test('shows the name, city, Sunday time and Plan your visit without scrolling (2.5)', async ({ page }) => {
+  test('shows the name and city, the Sunday time and Plan your visit without scrolling (REDESIGN.md §8)', async ({ page }) => {
     await page.goto('/')
-    const hero = page.locator('section[aria-labelledby="hero-heading"]')
+    const hero = page.locator('#home-hero')
+    const brand = page.getByRole('banner').getByRole('link', { name: /home page/ })
     for (const locator of [
-      hero.getByRole('heading', { level: 1 }),
-      hero.getByText(/Sundays, 9:30 AM/),
+      brand.getByText('Deeper Life Bible Church'),
+      brand.getByText(`${SITE_CONFIG.address.city}, Texas`),
+      hero.getByText(/Sundays at 9:30 AM/),
       hero.getByRole('link', { name: 'Plan your visit' }),
     ]) {
       await expect(locator).toBeInViewport({ ratio: 1 })
     }
-    await expect(hero.getByRole('heading', { level: 1 })).toContainText(SITE_CONFIG.address.city)
   })
 
-  test('shows the Sunday bar with directions under the hero', async ({ page }) => {
+  test('shows the info bar with directions under the hero', async ({ page }) => {
     await page.goto('/')
     await expect(page.getByRole('link', { name: 'Directions' })).toBeVisible()
   })

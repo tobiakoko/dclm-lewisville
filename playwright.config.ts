@@ -63,7 +63,8 @@ export default defineConfig({
 
   /* Serve a production build. Dev-mode compilation on CI runners is slow
      enough to blow past test timeouts. */
-  webServer: {
+  // With PLAYWRIGHT_TEST_BASE_URL set, test that server instead of building one
+  webServer: process.env.PLAYWRIGHT_TEST_BASE_URL ? undefined : {
     command: 'npm run build && npm run start',
     url: 'http://localhost:3000',
     reuseExistingServer: !process.env.CI,

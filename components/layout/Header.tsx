@@ -10,6 +10,7 @@ import { GIVE_LINK, NAV_LINKS } from '@/lib/constants'
 import { trackGiveClick, trackNavigation } from '@/lib/analytics'
 import { buttonVariants } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
+import { OVERLAY_HERO_ID } from '@/lib/routes'
 
 /** Facts the header shows, all from siteSettings (computed by the site layout) */
 export interface HeaderInfo {
@@ -25,9 +26,6 @@ export interface HeaderInfo {
   phone: string
   phoneHref: string
 }
-
-/** The page whose hero the header overlays (REDESIGN.md §2); the hero carries this id */
-export const OVERLAY_HERO_ID = 'home-hero'
 
 function isCurrent(pathname: string, href: string) {
   return href === '/' ? pathname === '/' : pathname === href || pathname.startsWith(`${href}/`)

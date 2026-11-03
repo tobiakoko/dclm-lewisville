@@ -40,3 +40,20 @@ export function SermonCard({ video }: { video: Video }) {
     </article>
   )
 }
+
+/** A small row for a recent message: 128×72 thumbnail, title and date, one link */
+export function MiniSermonRow({ video }: { video: Video }) {
+  return (
+    <a href={videoUrl(video.id)} className="group grid min-h-[72px] grid-cols-[128px_minmax(0,1fr)] items-center gap-4 no-underline">
+      <span className="relative block h-[72px] w-32 overflow-hidden rounded-thumb bg-navy-950">
+        <Image src={thumbnailUrl(video.id)} alt="" fill sizes="128px" className="object-cover" />
+      </span>
+      <span className="min-w-0">
+        <span className="type-h5 line-clamp-2 block text-navy-900 group-hover:underline in-[.on-dark]:text-white">{video.title}</span>
+        <span className="mt-1 block text-[0.9375rem] text-ink-muted in-[.on-dark]:text-white/76">
+          <time dateTime={video.published}>{formatVideoDate(video.published)}</time>
+        </span>
+      </span>
+    </a>
+  )
+}
