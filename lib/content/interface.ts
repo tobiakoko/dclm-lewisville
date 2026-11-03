@@ -109,3 +109,14 @@ export const CONTACT = {
   title: 'We’re here for you.',
   lead: 'Call, email or send us a message. Prayer requests go straight to our pastor.',
 }
+
+export const GIVE = {
+  eyebrow: 'Give',
+  title: 'Give with a cheerful heart.',
+  lead: 'Thank you for supporting the work of the Gospel through Deeper Life Bible Church Lewisville. Choose the way that’s easiest for you.',
+  /** Approved by the owner, 2 November 2026 (KJV) */
+  scripture: {
+    text: '“Every man according as he purposeth in his heart, so let him give; not grudgingly, or of necessity: for God loveth a cheerful giver.”',
+    reference: '2 Corinthians 9:7 (KJV)',
+  },
+}

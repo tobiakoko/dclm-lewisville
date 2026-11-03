@@ -14,8 +14,11 @@ export const TESTIMONY = {
 /** SITE-CONTENT.md §10: three ways, each with the placeholder until the church supplies details */
 // TODO(content): Zelle details; check payee and mailing address; online giving provider and link;
 // tax-deductibility statement
+/** The approved placeholder for a way to give whose details haven't arrived */
+export const GIVE_PLACEHOLDER = 'Information will be provided shortly.'
+
 export const WAYS_TO_GIVE = [
-  { title: 'Zelle', detail: 'Information will be provided shortly.' },
-  { title: 'Check payable to the church', detail: 'Information will be provided shortly.' },
-  { title: 'Online giving', detail: 'Information will be provided shortly.' },
+  { title: 'Zelle', detail: GIVE_PLACEHOLDER },
+  { title: 'Check payable to the church', detail: GIVE_PLACEHOLDER },
+  { title: 'Online giving', detail: GIVE_PLACEHOLDER },
 ] as const

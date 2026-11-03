@@ -14,7 +14,7 @@ const HEADINGS: Record<PublicPath, RegExp> = {
   '/sermons': /^Hear the Word, wherever you are\.$/,
   '/events': /^This week at Deeper Life$/,
   '/contact': /^We’re here for you\.$/,
-  '/give': /^Give$/,
+  '/give': /^Give with a cheerful heart\.$/,
   '/privacy': /^Privacy Policy$/,
   '/terms': /^Terms of Use$/,
 }
