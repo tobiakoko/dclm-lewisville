@@ -23,7 +23,7 @@ export default async function MinistriesPage() {
 
   return (
     <>
-      <PageHero title="Ministries and Outreach" sentence="Find your place to grow and serve. Every ministry has a way to get in touch." photo={choir} />
+      <PageHero title="Ministries and Outreach" lead="Find your place to grow and serve. Every ministry has a way to get in touch." photo={choir} />
 
       <Section id="our-ministries" title="Ministries">
         <ul className="grid list-none gap-6 md:grid-cols-2 lg:grid-cols-3">

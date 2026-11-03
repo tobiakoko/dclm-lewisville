@@ -28,7 +28,7 @@ export default async function ContactPage({
 
   return (
     <>
-      <PageHero title="Contact and Prayer" sentence="Call, email or send us a message. Prayer requests go to our pastor." />
+      <PageHero title="Contact and Prayer" lead="Call, email or send us a message. Prayer requests go to our pastor." />
 
       {/* Lewisville's details come first (SITE-CONTENT.md §8) */}
       <Section id="details" title={config.name}>

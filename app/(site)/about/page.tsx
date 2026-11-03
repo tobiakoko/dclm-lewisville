@@ -23,7 +23,7 @@ export default async function AboutPage() {
 
   return (
     <>
-      <PageHero title="About Us" sentence={`${config.name} is a local congregation of ${config.affiliation}.`} photo={congregation} />
+      <PageHero title="About Us" lead={`${config.name} is a local congregation of ${config.affiliation}.`} photo={congregation} />
 
       <Section id="who-we-are" title={about.whoWeAre.title}>
         <div className="max-w-prose space-y-4">

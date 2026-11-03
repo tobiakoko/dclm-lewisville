@@ -25,7 +25,7 @@ export default async function EventsPage() {
 
   return (
     <>
-      <PageHero title="Events" sentence="Our weekly meetings and any special events. All times are Central Time." />
+      <PageHero title="Events" lead="Our weekly meetings and any special events. All times are Central Time." />
 
       <Section id="weekly" title="Every week">
         <ul className="grid list-none gap-4 md:grid-cols-2 lg:grid-cols-3">

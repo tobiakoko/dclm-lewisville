@@ -36,7 +36,7 @@ export default async function VisitPage() {
 
   return (
     <>
-      <PageHero title="Plan Your Visit" sentence={hero.subtitle} photo={visit} />
+      <PageHero title="Plan Your Visit" lead={hero.subtitle} photo={visit} />
 
       <Section id="times" title="Service times" intro={<p>All times are Central Time.</p>}>
         <ul className="grid list-none gap-4 md:grid-cols-2">

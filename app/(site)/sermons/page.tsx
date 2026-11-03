@@ -26,7 +26,7 @@ export default async function SermonsPage() {
 
   return (
     <>
-      <PageHero title="Sermons" sentence="Watch our services live on Sundays, or catch up on recent messages." photo={congregationPrayer} />
+      <PageHero title="Sermons" lead="Watch our services live on Sundays, or catch up on recent messages." photo={congregationPrayer} />
 
       <Section id="latest" title="Latest message">
         <FeaturedMessage featured={featured} config={config} schedule={schedule} />
