@@ -1,18 +1,22 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { formatAddress, mapsUrl, type ServiceTime, type SiteConfig } from '@/lib/constants'
-import { formatServiceTime } from '@/lib/schedule'
+import { Play } from 'lucide-react'
+import type { ServiceTime, SiteConfig } from '@/lib/constants'
+import { formatClock, mainService } from '@/lib/schedule'
+import { OVERLAY_HERO_ID } from '@/lib/routes'
 import { buttonVariants } from '@/components/ui/button'
 import congregation from '@/app/assets/congregation.jpeg'
 
+const MODE_PHRASE = { 'in-person': 'In person', online: 'Online', both: 'In person & online' } as const
+
 /**
- * Name, city, Sunday time, address and the three main actions. Text sits on paper (not over
- * the photo) so the red primary button never touches navy and contrast never depends on the image.
- * Acceptance (BUILD-PLAN 2.5): on a 390px phone the name, city, Sunday time and "Plan your visit"
- * are visible without scrolling.
+ * Full-bleed congregation photo behind the navy scrim, with the overlay header on top
+ * (REDESIGN.md §3.1). Acceptance: on a 390px phone the header brand, the Sunday time in the pill
+ * and "Plan your visit" are visible without scrolling. The bottom padding leaves room for the
+ * info bar, which overlaps the hero.
  */
 export default function Hero({
-  config: SITE_CONFIG,
+  config,
   schedule,
   hero,
 }: {
@@ -20,56 +24,39 @@ export default function Hero({
   schedule: ServiceTime[]
   hero: { title: string; subtitle: string }
 }) {
-  const sundayWorship = schedule.find((service) => service.day === 'Sunday' && service.mode !== 'online')
-  const [church] = SITE_CONFIG.shortName.split(' · ')
+  const main = mainService(schedule)
   return (
-    <section aria-labelledby="hero-heading" className="bg-paper">
-      <div className="mx-auto grid max-w-content items-center gap-8 px-4 py-8 sm:px-6 md:py-14 lg:grid-cols-2 lg:px-8">
-        <div className="space-y-4">
-          <h1 id="hero-heading">
-            {church}
-            <span className="mt-1 block text-[0.6em] leading-tight">
-              {SITE_CONFIG.address.city}, {SITE_CONFIG.address.state}
-            </span>
-          </h1>
-          {sundayWorship && (
-            <p className="tabular text-xl font-semibold text-navy-900">
-              {sundayWorship.day}s, {formatServiceTime(sundayWorship)}
+    <section id={OVERLAY_HERO_ID} aria-labelledby="hero-heading" className="on-dark relative isolate overflow-hidden bg-navy-950">
+      <Image
+        src={congregation}
+        alt="Members of the congregation together for a group photo"
+        fill
+        priority
+        placeholder="blur"
+        sizes="100vw"
+        className="-z-20 object-cover object-[62%_30%]"
+      />
+      <div aria-hidden="true" className="hero-scrim absolute inset-0 -z-10" />
+      <div className="mx-auto w-full max-w-content px-5 pb-[136px] pt-[104px] sm:px-6 sm:pb-[176px] sm:pt-[184px] wide:px-10">
+        <div className="max-w-[700px] wide:max-w-[min(700px,55%)]">
+          {main && (
+            <p className="tabular inline-flex min-h-10 items-center rounded-pill bg-white/10 px-4 text-[0.9375rem] font-semibold leading-tight text-white shadow-[inset_0_0_0_1px_rgb(255_255_255/0.22)]">
+              {main.day}s at {formatClock(main.start)} · {MODE_PHRASE[main.mode]}
             </p>
           )}
-          <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-            {/* The page's one red action */}
+          <h1 id="hero-heading" className="type-display mt-6 text-white">
+            {hero.title}
+          </h1>
+          <p className="type-lead mt-6 max-w-[38rem]">{hero.subtitle}</p>
+          <div className="mt-8 flex flex-wrap gap-3">
             <Link href="/visit" className={buttonVariants()}>
               Plan your visit
             </Link>
-            <a href={SITE_CONFIG.youtube.streams} className={buttonVariants({ variant: 'secondary' })}>
+            <a href={config.youtube.streams} className={buttonVariants({ variant: 'ghost' })}>
+              <Play aria-hidden="true" fill="currentColor" strokeWidth={0} />
               Watch online
             </a>
           </div>
-          <p>
-            <a href={mapsUrl(SITE_CONFIG.address)} className="text-emblem-sky-700 underline underline-offset-4">
-              {formatAddress(SITE_CONFIG.address)}
-            </a>
-          </p>
-          <p className="max-w-prose">
-            <strong className="font-serif text-xl text-navy-900">{hero.title}.</strong> {hero.subtitle}
-          </p>
-          <p>
-            <Link href="/about#beliefs" className="font-semibold text-emblem-sky-700 underline underline-offset-4">
-              What we believe
-            </Link>
-          </p>
-        </div>
-        <div className="relative aspect-4/3 overflow-hidden rounded-2xl">
-          <Image
-            src={congregation}
-            alt="Members of the congregation together for a group photo"
-            fill
-            priority
-            placeholder="blur"
-            sizes="(min-width: 1024px) 50vw, 100vw"
-            className="object-cover"
-          />
         </div>
       </div>
     </section>

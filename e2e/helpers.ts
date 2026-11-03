@@ -1,9 +1,9 @@
 import { expect, type Page } from '@playwright/test'
 import AxeBuilder from '@axe-core/playwright'
 
-/** The `lg:` breakpoint is 1024px; below it the header links live in a drawer */
+/** The `nav:` breakpoint is 1100px; below it the header links live in a drawer */
 export function isMobileViewport(page: Page): boolean {
-  return (page.viewportSize()?.width ?? 1280) < 1024
+  return (page.viewportSize()?.width ?? 1280) < 1100
 }
 
 /** Zero serious or critical axe violations (DESIGN-SYSTEM.md accessibility checklist) */

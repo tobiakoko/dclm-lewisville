@@ -1,10 +1,4 @@
-import type { ServiceMode, ServiceTime } from '@/lib/constants'
-
-export const MODE_LABEL: Record<ServiceMode, string> = {
-  'in-person': 'In person',
-  online: 'Online',
-  both: 'In person and online',
-}
+import type { ServiceTime } from '@/lib/constants'
 
 function parseClock(value: string): { hour: number; minute: number } {
   const match = /^([01]\d|2[0-3]):([0-5]\d)$/.exec(value)
@@ -43,4 +37,23 @@ export function formatTimeRange(start: string, end: string | null): string {
 
 export function formatServiceTime(service: Pick<ServiceTime, 'start' | 'end'>): string {
   return formatTimeRange(service.start, service.end)
+}
+
+/** Key of the main weekly service in siteSettings (RUNBOOK: "Don't change the Key") */
+export const MAIN_SERVICE_ID = 'sunday-worship'
+
+/** The main service, whose time the hero, info bar, header drawer and footer show */
+export function mainService(schedule: ServiceTime[]): ServiceTime | null {
+  return schedule.find((service) => service.id === MAIN_SERVICE_ID) ?? null
+}
+
+/** "Sunday 9:30 AM", the start only */
+export function serviceStart(service: Pick<ServiceTime, 'day' | 'start'>): string {
+  return `${service.day} ${formatClock(service.start)}`
+}
+
+/** "Next live: Sunday, 9:30 AM CT", from the main service; null without one */
+export function nextLiveText(schedule: ServiceTime[]): string | null {
+  const main = mainService(schedule)
+  return main ? `Next live: ${main.day}, ${formatClock(main.start)} CT` : null
 }

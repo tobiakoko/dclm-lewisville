@@ -1,7 +1,13 @@
 import type { Metadata } from 'next'
+import { Mail, MapPin, Phone } from 'lucide-react'
 import { PageHero } from '@/components/site/PageHero'
 import { Section } from '@/components/site/Section'
-import ContactForm from '@/components/ContactForm'
+import { ContactSection } from '@/components/ContactSection'
+import { ArrowLink } from '@/components/ui/arrow-link'
+import { Eyebrow } from '@/components/ui/eyebrow'
+import { IconTile } from '@/components/ui/icon-tile'
+import { Card, Panel } from '@/components/ui/surface'
+import { CONTACT } from '@/lib/content/interface'
 import { formatAddress, mapsUrl, telHref } from '@/lib/constants'
 import { getSiteData } from '@/lib/data'
 import { MINISTRY_NAMES } from '@/lib/validations/contact'
@@ -15,7 +21,7 @@ export async function generateMetadata(): Promise<Metadata> {
   }
 }
 
-const linkClass = 'font-semibold text-emblem-sky-700 underline underline-offset-4'
+const linkClass = 'font-bold text-navy-900 no-underline hover:underline hover:underline-offset-4'
 
 export default async function ContactPage({
   searchParams,
@@ -23,84 +29,88 @@ export default async function ContactPage({
   searchParams: Promise<{ topic?: string | string[] }>
 }) {
   const [{ topic }, { config, otherLocations }] = await Promise.all([searchParams, getSiteData()])
-  // "Send us a message" links from Ministries pass ?topic=<ministry name>
+  // ?topic=prayer opens the prayer form; Ministries' "Send us a message" links pass the ministry name
   const ministry = typeof topic === 'string' && MINISTRY_NAMES.includes(topic) ? topic : undefined
+  const map = (
+    <div className="aspect-[4/3] overflow-hidden rounded-panel bg-paper-2 shadow-[inset_0_0_0_1px_var(--color-line)]">
+      <iframe
+        src={`https://www.google.com/maps?q=${encodeURIComponent(formatAddress(config.address))}&output=embed`}
+        className="size-full border-0"
+        loading="lazy"
+        referrerPolicy="no-referrer-when-downgrade"
+        title={`Map showing ${formatAddress(config.address)}`}
+      />
+    </div>
+  )
 
   return (
     <>
-      <PageHero title="Contact and Prayer" sentence="Call, email or send us a message. Prayer requests go to our pastor." />
-
       {/* Lewisville's details come first (SITE-CONTENT.md §8) */}
-      <Section id="details" title={config.name}>
-        <div className="grid gap-8 lg:grid-cols-2">
-          <dl className="space-y-5">
+      <PageHero eyebrow={CONTACT.eyebrow} title={CONTACT.title} lead={CONTACT.lead} media={map}>
+        <h2 className="sr-only">{config.name}</h2>
+        <ul className="flex list-none flex-col gap-5">
+          <li className="flex items-center gap-4">
+            <IconTile tone="warm">
+              <Phone />
+            </IconTile>
+            <a href={telHref(config.phone)} className={`tabular ${linkClass}`}>
+              {config.phone}
+            </a>
+          </li>
+          <li className="flex items-center gap-4">
+            <IconTile tone="warm">
+              <Mail />
+            </IconTile>
+            <a href={`mailto:${config.email}`} className={`${linkClass} break-all`}>
+              {config.email}
+            </a>
+          </li>
+          <li className="flex items-start gap-4">
+            <IconTile tone="warm">
+              <MapPin />
+            </IconTile>
             <div>
-              <dt className="font-semibold text-navy-900">Phone</dt>
-              <dd>
-                <a href={telHref(config.phone)} className={linkClass}>
-                  {config.phone}
-                </a>
-              </dd>
+              <address className="font-bold not-italic text-navy-900">{formatAddress(config.address)}</address>
+              <ArrowLink href={mapsUrl(config.address)}>Get directions</ArrowLink>
             </div>
-            <div>
-              <dt className="font-semibold text-navy-900">Email</dt>
-              <dd>
-                <a href={`mailto:${config.email}`} className={`${linkClass} break-all`}>
-                  {config.email}
-                </a>
-              </dd>
-            </div>
-            <div>
-              <dt className="font-semibold text-navy-900">Address</dt>
-              <dd className="space-y-1">
-                <address className="not-italic">{formatAddress(config.address)}</address>
-                <a href={mapsUrl(config.address)} className={linkClass}>
-                  Get directions
-                </a>
-              </dd>
-            </div>
-            <div>
-              <dt className="font-semibold text-navy-900">Office hours</dt>
-              <dd className="max-w-prose">{config.officeHours}</dd>
-            </div>
-          </dl>
-          <div className="h-80 overflow-hidden rounded-2xl border border-border-input/40">
-            <iframe
-              src={`https://www.google.com/maps?q=${encodeURIComponent(formatAddress(config.address))}&output=embed`}
-              className="size-full border-0"
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-              title={`Map showing ${formatAddress(config.address)}`}
-            />
+          </li>
+        </ul>
+      </PageHero>
+
+      <Section id="contact-form" titleId="contact-form-heading">
+        <div id="prayer" className="grid scroll-mt-24 items-start gap-12 wide:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] wide:gap-16">
+          <div>
+            <Eyebrow className="mb-4">{CONTACT.eyebrow}</Eyebrow>
+            <h2 id="contact-form-heading">Send us a message</h2>
+            <Panel className="mt-8 p-7">
+              <h3 className="type-h4">Office hours</h3>
+              <p className="mt-2 text-ink-muted">{config.officeHours}</p>
+            </Panel>
           </div>
+          <Card className="p-6 sm:p-10">
+            <ContactSection
+              phone={config.phone}
+              email={config.email}
+              initialTopic={topic === 'prayer' ? 'prayer' : 'contact'}
+              ministry={ministry}
+              prayerHubUrl={config.dclm.prayerRequestHub}
+            />
+          </Card>
         </div>
       </Section>
 
-      <Section id="contact-form" tone="paper" title="Send us a message">
-        <ContactForm phone={config.phone} email={config.email} topic={ministry ? 'ministry' : 'contact'} ministry={ministry} />
-      </Section>
-
-      <Section id="prayer" title="Prayer requests" intro={<p>Prayer requests are read by our pastor.</p>}>
-        <ContactForm phone={config.phone} email={config.email} topic="prayer" submitLabel="Send prayer request" />
-        <p className="mt-8">
-          You can also use the{' '}
-          <a href={config.dclm.prayerRequestHub} className={linkClass}>
-            DCLM Prayer Request Hub
-          </a>
-          .
-        </p>
-      </Section>
-
-      <Section id="other-locations" tone="paper" title="Our other locations">
-        <ul className="grid list-none gap-6 md:grid-cols-2">
+      <Section id="other-locations" tone="paper" size="md" title="Our other locations">
+        <ul className="grid list-none gap-5 sm:grid-cols-2">
           {otherLocations.map((location) => (
-            <li key={location.name} className="space-y-2 rounded-2xl border border-border-input/40 bg-white p-6">
-              <h3>{location.name}</h3>
-              <address className="not-italic">{formatAddress(location.address)}</address>
-              <p className="text-ink-muted">{location.serviceTimes}</p>
-              <a href={mapsUrl(location.address)} className={linkClass}>
-                Get directions<span className="sr-only"> to {location.name}</span>
-              </a>
+            <li key={location.name}>
+              <Card className="flex h-full flex-col gap-2 p-7">
+                <h3 className="type-h4">{location.name}</h3>
+                <address className="not-italic">{formatAddress(location.address)}</address>
+                <p className="text-ink-muted">{location.serviceTimes}</p>
+                <ArrowLink href={mapsUrl(location.address)} className="mt-auto">
+                  Get directions<span className="sr-only"> to {location.name}</span>
+                </ArrowLink>
+              </Card>
             </li>
           ))}
         </ul>

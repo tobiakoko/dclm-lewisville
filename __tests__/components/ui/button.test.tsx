@@ -31,17 +31,23 @@ describe('Button', () => {
 
   it.each([
     ['primary', 'bg-heaven-600'],
-    ['secondary', 'border-navy-700'],
-    ['onDark', 'bg-white'],
+    ['secondary', 'border-line-strong'],
+    ['ghost', 'border-white/50'],
+    ['light', 'bg-white'],
     ['link', 'underline'],
   ] as const)('applies the %s style from the design tokens', (variant, className) => {
     render(<Button variant={variant}>Label</Button>)
     expect(screen.getByRole('button')).toHaveClass(className)
   })
 
-  it('defaults to primary and keeps a 44px+ tap target', () => {
+  it('defaults to a primary pill with a 52px tap target', () => {
     render(<Button>Plan your visit</Button>)
-    expect(screen.getByRole('button')).toHaveClass('bg-heaven-600', 'min-h-12')
+    expect(screen.getByRole('button')).toHaveClass('bg-heaven-600', 'rounded-pill', 'min-h-[52px]')
+  })
+
+  it('keeps a 44px tap target at the small size', () => {
+    render(<Button size="sm">Give</Button>)
+    expect(screen.getByRole('button')).toHaveClass('min-h-11')
   })
 
   it('renders its child as the element with asChild', () => {

@@ -25,6 +25,7 @@ import {
 import * as content from '@/lib/content/site'
 import { DOCTRINES, DOCTRINES_INTRO, type Doctrine, type DoctrinesIntro } from '@/lib/content/doctrines'
 import { TESTIMONY, WAYS_TO_GIVE } from '@/lib/content/extra'
+import { ABOUT, GIVE, HOME, VISIT } from '@/lib/content/interface'
 import { upcomingEvents, type ChurchEvent } from '@/lib/events'
 
 /**
@@ -116,6 +117,24 @@ export const getSiteData = cache(async (): Promise<SiteData> => {
 
 // --- Pages -----------------------------------------------------------------
 
+/** Inner-page header text; Studio fields are optional and fall back to the approved defaults */
+export interface PageHeader {
+  eyebrow: string
+  title: string
+  /** Undefined when neither the Studio nor the defaults give one (the page then builds its own) */
+  lead?: string
+}
+
+type RawHeader = { heroEyebrow?: string | null; heroTitle?: string | null; heroLead?: string | null } | null
+
+function pageHeader(page: RawHeader, defaults: PageHeader): PageHeader {
+  return {
+    eyebrow: page?.heroEyebrow || defaults.eyebrow,
+    title: page?.heroTitle || defaults.title,
+    lead: page?.heroLead || defaults.lead,
+  }
+}
+
 export interface HomeContent {
   hero: { title: string; subtitle: string }
   whatToExpect: content.TitledText[]
@@ -128,7 +147,7 @@ export const getHomeContent = cache(async (): Promise<HomeContent> => {
   const data = await sanityFetch({ query: HOME_PAGE_QUERY, tags: ['homePage', 'testimonial'] })
   if (!data.page) {
     return fallback('Home page', () => ({
-      hero: content.HOME_HERO,
+      hero: HOME.hero,
       whatToExpect: content.WHAT_TO_EXPECT,
       welcome: content.PASTORS_WELCOME,
       verse: content.BIBLE_VERSE,
@@ -146,14 +165,22 @@ export const getHomeContent = cache(async (): Promise<HomeContent> => {
 })
 
 export interface VisitContent {
+  header: PageHeader
   serviceLines: Paragraph[]
   sections: content.TitledText[]
 }
 
 export const getVisitContent = cache(async (): Promise<VisitContent> => {
   const page = await sanityFetch({ query: VISIT_PAGE_QUERY, tags: ['visitPage'] })
-  if (!page) return fallback('Plan Your Visit page', () => ({ serviceLines: content.VISIT_SERVICE_LINES, sections: content.VISIT_SECTIONS }))
+  if (!page) {
+    return fallback('Plan Your Visit page', () => ({
+      header: pageHeader(null, VISIT),
+      serviceLines: content.VISIT_SERVICE_LINES,
+      sections: content.VISIT_SECTIONS,
+    }))
+  }
   return {
+    header: pageHeader(page, VISIT),
     serviceLines: fromPortableText(page.serviceLines),
     sections: page.sections.map((section) => ({ title: section.title, body: fromPortableText(section.body)[0] ?? [] })),
   }
@@ -162,6 +189,7 @@ export const getVisitContent = cache(async (): Promise<VisitContent> => {
 export type LeaderWithPhoto = Omit<content.Leader, 'id'> & { id: string; photo?: Photo }
 
 export interface AboutContent {
+  header: PageHeader
   whoWeAre: { title: string; paragraphs: Paragraph[] }
   story: content.AboutSection[]
   doctrinesIntro: DoctrinesIntro
@@ -173,6 +201,7 @@ export const getAboutContent = cache(async (): Promise<AboutContent> => {
   const data = await sanityFetch({ query: ABOUT_PAGE_QUERY, tags: ['aboutPage', 'doctrine', 'person'] })
   if (!data.page || data.doctrines.length === 0 || data.leaders.length === 0) {
     return fallback('About page, doctrines or leaders', () => ({
+      header: pageHeader(null, ABOUT),
       whoWeAre: content.WHO_WE_ARE,
       story: content.OUR_STORY,
       doctrinesIntro: DOCTRINES_INTRO,
@@ -181,6 +210,7 @@ export const getAboutContent = cache(async (): Promise<AboutContent> => {
     }))
   }
   return {
+    header: pageHeader(data.page, ABOUT),
     whoWeAre: { title: data.page.whoWeAre.title, paragraphs: fromPortableText(data.page.whoWeAre.body) },
     story: data.page.story.map((part) => ({
       title: part.title,
@@ -244,10 +274,15 @@ export async function getMinistry(slug: string): Promise<MinistryWithDetails | n
   return [...ministries, ...outreach].find((ministry) => ministry.slug === slug) ?? null
 }
 
-export const getWaysToGive = cache(async (): Promise<{ title: string; detail: string }[]> => {
+export interface GiveContent {
+  header: PageHeader
+  ways: { title: string; detail: string }[]
+}
+
+export const getGiveContent = cache(async (): Promise<GiveContent> => {
   const page = await sanityFetch({ query: GIVE_PAGE_QUERY, tags: ['givePage'] })
-  if (!page) return fallback('Give page', () => [...WAYS_TO_GIVE])
-  return page.ways
+  if (!page) return fallback('Give page', () => ({ header: pageHeader(null, GIVE), ways: [...WAYS_TO_GIVE] }))
+  return { header: pageHeader(page, GIVE), ways: page.ways }
 })
 
 export interface LegalContent {

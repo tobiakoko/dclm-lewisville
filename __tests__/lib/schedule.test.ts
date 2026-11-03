@@ -1,4 +1,5 @@
-import { MODE_LABEL, formatClock, formatTimeRange, formatServiceTime } from '@/lib/schedule'
+import { formatClock, formatTimeRange, formatServiceTime, mainService, serviceStart } from '@/lib/schedule'
+import { SERVICE_TIMES } from '@/lib/constants'
 
 describe('schedule formatting', () => {
   it.each([
@@ -24,7 +25,16 @@ describe('schedule formatting', () => {
     expect(() => formatClock('25:00')).toThrow()
   })
 
-  it('labels every mode', () => {
-    expect(MODE_LABEL).toEqual({ 'in-person': 'In person', online: 'Online', both: 'In person and online' })
+})
+
+describe('main service', () => {
+  it('finds Sunday worship by its key and formats its start', () => {
+    const main = mainService(SERVICE_TIMES)
+    expect(main?.id).toBe('sunday-worship')
+    expect(serviceStart(main!)).toBe('Sunday 9:30 AM')
+  })
+
+  it('is null when the schedule has no main service', () => {
+    expect(mainService(SERVICE_TIMES.filter((service) => service.id !== 'sunday-worship'))).toBeNull()
   })
 })

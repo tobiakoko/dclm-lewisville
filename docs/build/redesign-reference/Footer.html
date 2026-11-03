@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Site footer</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="/_blob/e2227b12e35ecea2ad2b01efb10f4063">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&amp;family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400;1,8..60,500&amp;display=swap">
+<style>
+body{margin:0;background:#0F2542}
+a{color:#9ADAF0}a:hover{color:#ffffff}
+</style>
+</helmet>
+<footer class="site-ftr" style="font-family: 'Source Sans 3', system-ui, sans-serif; color: rgba(255,255,255,.76)">
+  <div class="wrap">
+    <div class="ftr-cta">
+      <div class="stack" style="gap: 10px; max-width: 620px">
+        <p style="font: 600 clamp(28px, 3vw, 38px)/1.15 'Source Serif 4', Georgia, serif; color: #ffffff; margin: 0">We’d love to meet you this Sunday.</p>
+        <p style="margin: 0">Worship with us at 9:30 AM — in person on West Main Street, or online.</p>
+      </div>
+      <div class="row wrapx" style="gap: 12px">
+        <a class="btn btn-primary" href="{{visitHref}}">Plan your visit</a>
+        <a class="btn btn-ghost" href="https://www.youtube.com/@DeeperLifeBibleChurchLewisvill/streams">
+          <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z" fill="currentColor" stroke="none"></path></svg>
+          Watch online
+        </a>
+      </div>
+    </div>
+
+    <div class="ftr-top">
+      <div class="stack" style="gap: 18px">
+        <a class="brand" href="Main.dc.html" style="color: #ffffff">
+          <img src="/_blob/e6bf17c1f3316074423d00752b4b5196" alt="" width="46" height="46">
+          <span>
+            <span class="brand-name">Deeper Life Bible Church</span>
+            <span class="brand-sub" style="color: rgba(255,255,255,.7)">Lewisville, Texas</span>
+          </span>
+        </a>
+        <address class="stack" style="font-style: normal; gap: 4px">
+          <span>1368 W Main St, Lewisville, TX 75067</span>
+          <a class="ftr-link" href="tel:+14699396994">(469) 939-6994</a>
+          <a class="ftr-link" href="mailto:info@deeperlifelewisville.org">info@deeperlifelewisville.org</a>
+        </address>
+        <a class="social" href="https://www.youtube.com/@DeeperLifeBibleChurchLewisvill" aria-label="YouTube">
+          <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="5.5" width="19" height="13" rx="4"></rect><path d="M10 9.2v5.6l4.8-2.8z"></path></svg>
+        </a>
+      </div>
+
+      <div>
+        <p class="ftr-h">When we meet</p>
+        <dl class="ftr-sched">
+          <dt>Sun</dt><dd>Prayer 9:00 AM · Worship 9:30 AM–12:00 PM</dd>
+          <dt>Mon</dt><dd>Prayer Meeting 7:00–8:00 PM</dd>
+          <dt>Tue</dt><dd>Bible Study 7:00–9:00 PM</dd>
+          <dt>Fri</dt><dd>Revival Hour 7:00–9:00 PM</dd>
+        </dl>
+        <p class="xs" style="margin-top: 14px; color: rgba(255,255,255,.6)">All times Central</p>
+      </div>
+
+      <div>
+        <p class="ftr-h">Get in touch</p>
+        <ul class="stack" style="gap: 2px">
+          <li><a class="ftr-link" href="{{visitHref}}">Plan your visit</a></li>
+          <li><a class="ftr-link" href="{{contactHref}}">Contact us</a></li>
+          <li><a class="ftr-link" href="{{contactHref}}">Prayer requests</a></li>
+          <li><a class="ftr-link" href="{{giveHref}}">Give</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <p class="ftr-h">DCLM resources</p>
+        <ul class="stack" style="gap: 2px">
+          <li><a class="ftr-link" href="https://dclm.org">DCLM Blog</a></li>
+          <li><a class="ftr-link" href="https://dclm.org">DCLM Radio</a></li>
+          <li><a class="ftr-link" href="https://dclm.org">DCLM Tracts</a></li>
+          <li><a class="ftr-link" href="https://dclm.org">Daily Manna</a></li>
+          <li><a class="ftr-link" href="https://dclm.org">Higher Everyday</a></li>
+          <li><a class="ftr-link" href="https://dclm.org">Sincere Milk</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="ftr-bottom">
+      <p style="margin: 0">© 2026 Deeper Life Bible Church Lewisville</p>
+      <ul class="row wrapx" style="gap: 24px">
+        <li><a class="ftr-link" href="#">Privacy Policy</a></li>
+        <li><a class="ftr-link" href="#">Terms of Use</a></li>
+        <li><a class="ftr-link" href="#">Sitemap</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"set":{"editor":"enum","options":["A","B"],"default":"A"},"$preview":{"width":1440,"height":700}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const set = this.props.set ?? 'A';
+    return {
+      visitHref: set + '-Visit.dc.html',
+      contactHref: set + '-Contact.dc.html',
+      giveHref: set + '-Give.dc.html'
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,15 +1,13 @@
 'use client'
 
 import { useEffect } from 'react'
+import './globals.css'
 import { SITE_CONFIG, telHref } from '@/lib/constants'
+import { BrandBar, StatusCard } from '@/components/site/StatusCard'
 
-export default function GlobalError({
-  error,
-  reset,
-}: {
-  error: Error & { digest?: string }
-  reset: () => void
-}) {
+// The root layout failed: render the whole document with the brand bar, and only plain links,
+// since client navigation can't be trusted
+export default function GlobalError({ error, reset }: { error: Error & { digest?: string }; reset: () => void }) {
   useEffect(() => {
     console.error('Global application error:', error)
   }, [error])
@@ -17,60 +15,40 @@ export default function GlobalError({
   return (
     <html lang="en">
       <body>
-        <div style={{
-          minHeight: '100vh',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          fontFamily: 'system-ui, -apple-system, sans-serif',
-          padding: '1rem',
-        }}>
-          <div style={{ maxWidth: '500px', textAlign: 'center' }}>
-            <h1 style={{ fontSize: '3rem', marginBottom: '1rem' }}>
-              Something went wrong!
-            </h1>
-            <p style={{ marginBottom: '2rem', color: '#666' }}>
+        <BrandBar name={SITE_CONFIG.name} />
+        <main id="main-content">
+          <StatusCard
+            icon={<span className="text-2xl font-bold">!</span>}
+            title="Something went wrong"
+            actions={
+              <div className="flex flex-wrap justify-center gap-3">
+                <button
+                  type="button"
+                  onClick={() => reset()}
+                  className="inline-flex min-h-[52px] items-center rounded-pill bg-heaven-600 px-[26px] font-bold text-white shadow-primary hover:bg-heaven-700"
+                >
+                  Try again
+                </button>
+                {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
+                <a
+                  href="/"
+                  className="inline-flex min-h-[52px] items-center rounded-pill border-[1.5px] border-line-strong bg-white px-[26px] font-bold text-navy-900 no-underline hover:border-navy-900"
+                >
+                  Go home
+                </a>
+              </div>
+            }
+          >
+            <p>
               The site didn&apos;t load. Please try again, or call us at{' '}
-              <a href={telHref(SITE_CONFIG.phone)}>{SITE_CONFIG.phone}</a>.
+              <a href={telHref(SITE_CONFIG.phone)} className="font-semibold text-emblem-sky-700 underline underline-offset-4">
+                {SITE_CONFIG.phone}
+              </a>
+              .
             </p>
-            {error.digest && (
-              <p style={{ fontSize: '0.875rem', color: '#999', marginBottom: '2rem' }}>
-                Error ID: {error.digest}
-              </p>
-            )}
-            <button
-              onClick={() => reset()}
-              style={{
-                padding: '0.75rem 1.5rem',
-                fontSize: '1rem',
-                backgroundColor: '#000',
-                color: '#fff',
-                border: 'none',
-                borderRadius: '0.5rem',
-                cursor: 'pointer',
-                marginRight: '1rem',
-              }}
-            >
-              Try again
-            </button>
-            {/* A full page load: the root layout itself failed, so client navigation can't be trusted */}
-            {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
-            <a
-              href="/"
-              style={{
-                padding: '0.75rem 1.5rem',
-                fontSize: '1rem',
-                backgroundColor: '#fff',
-                color: '#000',
-                border: '1px solid #000',
-                borderRadius: '0.5rem',
-                cursor: 'pointer',
-              }}
-            >
-              Go home
-            </a>
-          </div>
-        </div>
+            {error.digest && <p className="text-sm text-ink-muted">Error ID: {error.digest}</p>}
+          </StatusCard>
+        </main>
       </body>
     </html>
   )

@@ -5,6 +5,13 @@ import { DocumentsIcon } from '@sanity/icons/Documents'
 
 const VERBATIM_NOTE = 'VERBATIM: supplied by the church. Change only with the pastor’s approval, word for word.'
 
+// Optional page-header text (REDESIGN.md §6); an empty field shows the approved default
+const heroFields = [
+  defineField({ name: 'heroEyebrow', title: 'Page header: small label', type: 'string', description: 'Leave empty to use the default.' }),
+  defineField({ name: 'heroTitle', title: 'Page header: heading', type: 'string', description: 'Leave empty to use the default.' }),
+  defineField({ name: 'heroLead', title: 'Page header: sentence', type: 'text', rows: 2, description: 'Leave empty to use the default.' }),
+]
+
 export const homePage = defineType({
   name: 'homePage',
   title: 'Home page',
@@ -35,6 +42,7 @@ export const visitPage = defineType({
   type: 'document',
   icon: DocumentTextIcon,
   fields: [
+    ...heroFields,
     defineField({
       name: 'serviceLines',
       title: 'Service times in plain English',
@@ -53,6 +61,7 @@ export const aboutPage = defineType({
   type: 'document',
   icon: DocumentTextIcon,
   fields: [
+    ...heroFields,
     defineField({ name: 'whoWeAre', title: 'Who we are', type: 'titledText', validation: (r) => r.required() }),
     defineField({ name: 'story', title: 'Mission and vision', type: 'array', of: [{ type: 'storySection' }], validation: (r) => r.required() }),
     defineField({
@@ -77,6 +86,7 @@ export const givePage = defineType({
   type: 'document',
   icon: DocumentTextIcon,
   fields: [
+    ...heroFields,
     defineField({
       name: 'ways',
       title: 'Ways to give',

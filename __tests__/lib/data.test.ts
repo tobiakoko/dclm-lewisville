@@ -98,3 +98,18 @@ describe('data layer', () => {
     expect(events.map((e) => e.id)).toEqual(['next'])
   })
 })
+
+describe('page headers (REDESIGN.md §6)', () => {
+  it('uses the Studio’s header text when it is set', async () => {
+    sanityFetch.mockResolvedValue({ heroEyebrow: 'Give', heroTitle: 'Studio title', heroLead: 'Studio lead', ways: [] })
+    const { getGiveContent } = await load()
+    expect((await getGiveContent()).header).toEqual({ eyebrow: 'Give', title: 'Studio title', lead: 'Studio lead' })
+  })
+
+  it('falls back to the approved defaults for empty fields', async () => {
+    const { GIVE } = jest.requireActual('@/lib/content/interface')
+    sanityFetch.mockResolvedValue({ heroEyebrow: null, heroTitle: '', heroLead: null, ways: [] })
+    const { getGiveContent } = await load()
+    expect((await getGiveContent()).header).toEqual({ eyebrow: GIVE.eyebrow, title: GIVE.title, lead: GIVE.lead })
+  })
+})

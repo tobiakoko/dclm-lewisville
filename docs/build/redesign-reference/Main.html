@@ -1,0 +1,440 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Home — Deeper Life Bible Church Lewisville</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="/_blob/e2227b12e35ecea2ad2b01efb10f4063">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&amp;family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400;1,8..60,500&amp;display=swap">
+<style>
+body{margin:0;background:#0F2542}
+a{color:#0A6A8F}a:hover{color:#16365E}
+</style>
+</helmet>
+<div class="site">
+
+  <!-- HERO · full-bleed -->
+  <sc-if value="{{fullBleed}}" hint-placeholder-val="{{true}}">
+    <section class="hero" aria-label="Welcome">
+      <img class="hero-bg" src="/_blob/127d43ba003c310c273a16e73672769f" alt="">
+      <div class="hero-scrim"></div>
+      <dc-import name="Header" tone="overlay" set="A" hint-size="100%,88px"></dc-import>
+      <div class="wrap" style="padding-top: 96px; padding-bottom: 176px">
+        <div class="stack" style="max-width: 700px; gap: 28px">
+          <span class="hero-pill" style="align-self: flex-start"><span class="live-dot"></span>Sundays at 9:30 AM · In person &amp; online</span>
+          <h1 class="display" style="color: #ffffff">God still changes lives.</h1>
+          <p style="font-size: 21px; line-height: 1.55; color: rgba(255,255,255,.86); max-width: 580px">Deeper Life Bible Church Lewisville is a Bible-centered church family on West Main Street. Come as you are — we’d love to worship with you this Sunday.</p>
+          <div class="row wrapx" style="gap: 12px; margin-top: 4px">
+            <a class="btn btn-primary" href="A-Visit.dc.html">Plan your visit</a>
+            <a class="btn btn-ghost" href="https://www.youtube.com/@DeeperLifeBibleChurchLewisvill/streams">
+              <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z" fill="currentColor" stroke="none"></path></svg>
+              Watch online
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </sc-if>
+
+  <!-- HERO · photo collage (Tweak: heroLayout) -->
+  <sc-if value="{{collage}}" hint-placeholder-val="{{false}}">
+    <section class="hero" aria-label="Welcome">
+      <dc-import name="Header" tone="overlay" set="A" hint-size="100%,88px"></dc-import>
+      <div class="wrap stack-md" style="display: grid; grid-template-columns: minmax(0,5fr) minmax(0,7fr); gap: 56px; align-items: center; padding-top: 56px; padding-bottom: 168px">
+        <div class="stack" style="gap: 28px">
+          <span class="hero-pill" style="align-self: flex-start"><span class="live-dot"></span>Sundays at 9:30 AM · In person &amp; online</span>
+          <h1 class="display" style="color: #ffffff; font-size: clamp(46px, 5.4vw, 76px)">God still changes lives.</h1>
+          <p style="font-size: 20px; line-height: 1.55; color: rgba(255,255,255,.86)">Deeper Life Bible Church Lewisville is a Bible-centered church family on West Main Street. Come as you are — we’d love to worship with you this Sunday.</p>
+          <div class="row wrapx" style="gap: 12px">
+            <a class="btn btn-primary" href="A-Visit.dc.html">Plan your visit</a>
+            <a class="btn btn-ghost" href="https://www.youtube.com/@DeeperLifeBibleChurchLewisvill/streams">Watch online</a>
+          </div>
+        </div>
+        <div class="collage">
+          <img class="photo" src="/_blob/127d43ba003c310c273a16e73672769f" alt="The congregation gathered after a Sunday service" style="grid-column: 1 / 5; grid-row: 1 / 3">
+          <img class="photo" src="/_blob/3e8cc5e66a1ef5ecd70e138cbc51e543" alt="A musician at the piano during worship" style="grid-column: 5 / 7; grid-row: 1 / 2">
+          <img class="photo" src="/_blob/161d39ae53b2004c02e6d26f5d4884f0" alt="A child reading Scripture at the pulpit" style="grid-column: 5 / 7; grid-row: 2 / 4">
+          <img class="photo" src="/_blob/9bea69721637011a51621a7ea1940405" alt="Members of the Women’s Ministry" style="grid-column: 1 / 3; grid-row: 3 / 4">
+          <img class="photo" src="/_blob/8f5ee955712ab87a1e5b23b1f7adca9f" alt="Young people standing in prayer" style="grid-column: 3 / 5; grid-row: 3 / 4">
+        </div>
+      </div>
+    </section>
+  </sc-if>
+
+  <!-- INFO BAR -->
+  <div class="wrap" style="position: relative; z-index: 5; margin-top: -96px">
+    <div class="card infobar">
+      <div>
+        <span class="icon-tile"><svg class="ic ic-lg" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg></span>
+        <div class="stack" style="gap: 4px">
+          <p class="eyebrow" style="color: #55606E">Sunday worship</p>
+          <p class="time" style="font-size: 20px">9:30 AM – 12:00 PM</p>
+          <p class="small muted">Prayer online from 9:00 AM</p>
+        </div>
+      </div>
+      <div>
+        <span class="icon-tile"><svg class="ic ic-lg" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"></path><circle cx="12" cy="9.5" r="2.5"></circle></svg></span>
+        <div class="stack" style="gap: 4px">
+          <p class="eyebrow" style="color: #55606E">Find us</p>
+          <p class="time" style="font-size: 20px">1368 W Main St</p>
+          <p class="small muted">Lewisville, TX 75067 · <a class="link" href="https://maps.google.com/?q=1368+W+Main+St+Lewisville+TX+75067">Directions</a></p>
+        </div>
+      </div>
+      <div>
+        <span class="icon-tile"><svg class="ic ic-lg" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="12" rx="2"></rect><path d="M8 21h8M10.5 8.5v5l4-2.5z"></path></svg></span>
+        <div class="stack" style="gap: 4px">
+          <p class="eyebrow" style="color: #55606E">Can’t make it?</p>
+          <p class="time" style="font-size: 20px">Watch live on YouTube</p>
+          <p class="small muted">Sundays, 9:30 AM CT · <a class="link" href="https://www.youtube.com/@DeeperLifeBibleChurchLewisvill/streams">Open stream</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WHEN WE MEET -->
+  <section class="sec bg-white" aria-labelledby="meet-h" style="padding-top: 112px">
+    <div class="wrap">
+      <div class="row wrapx" style="justify-content: space-between; align-items: flex-end; gap: 24px; margin-bottom: 48px">
+        <div class="stack" style="gap: 12px">
+          <span class="eyebrow">Weekly gatherings</span>
+          <h2 id="meet-h" class="h2">When we meet</h2>
+        </div>
+        <p class="small muted row" style="gap: 8px"><svg class="ic ic-sm" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg>All times are Central Time</p>
+      </div>
+
+      <div class="stack-md" style="display: grid; grid-template-columns: minmax(0,5fr) minmax(0,7fr); gap: 32px; align-items: stretch">
+        <!-- Featured: Sunday -->
+        <article class="card-dark" style="padding: 40px; display: flex; flex-direction: column; gap: 22px">
+          <div class="row wrapx" style="gap: 8px">
+            <span class="chip chip-dark">Sunday</span>
+            <span class="chip" style="background: #3EB6DF; color: #0F2542">Main service</span>
+          </div>
+          <div class="stack" style="gap: 10px">
+            <h3 style="font: 600 38px/1.1 'Source Serif 4', Georgia, serif; color: #ffffff">Sunday Worship Service</h3>
+            <p style="font: 700 28px/1.2 'Source Sans 3', sans-serif; color: #ffffff">9:30 AM – 12:00 PM</p>
+          </div>
+          <div class="row wrapx" style="gap: 20px; font-weight: 600; color: #ffffff">
+            <span class="row" style="gap: 8px"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 11l8-6.5 8 6.5M6 9.5V20h12V9.5"></path><path d="M10 20v-5h4v5"></path></svg>In person</span>
+            <span class="row" style="gap: 8px"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="12" rx="2"></rect><path d="M8 21h8"></path></svg>Online</span>
+          </div>
+          <p style="color: rgba(255,255,255,.8)">Our main service — an awesome and refreshing time in God’s presence. It includes Search The Scriptures, our Bible class, with separate classes for children, youth and adults.</p>
+          <hr class="rule" style="margin-top: auto; background: rgba(255,255,255,.16)">
+          <div class="row wrapx" style="gap: 16px; justify-content: space-between">
+            <div class="stack" style="gap: 4px">
+              <p class="xs" style="letter-spacing: .14em; text-transform: uppercase; font-weight: 700; color: #3EB6DF">Before the service</p>
+              <p style="color: #ffffff; font-weight: 700">Sunday Prayer · 9:00 AM · Online</p>
+            </div>
+            <a class="link-arrow" href="#" style="color: #9ADAF0">Join on Zoom
+              <svg class="ic ic-sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+            </a>
+          </div>
+          <div class="row wrapx" style="gap: 12px">
+            <a class="btn btn-primary" href="A-Visit.dc.html">Plan your visit</a>
+            <a class="btn btn-ghost" href="https://www.youtube.com/@DeeperLifeBibleChurchLewisvill/streams">Watch live</a>
+          </div>
+        </article>
+
+        <!-- Weekly list -->
+        <div class="card" style="padding: 8px 36px 16px">
+          <div class="row" style="justify-content: space-between; gap: 16px; padding: 24px 0 20px">
+            <h3 class="h3">Through the week</h3>
+            <a class="link-arrow" href="A-Events.dc.html">All events
+              <svg class="ic ic-sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+            </a>
+          </div>
+          <ul>
+            <li class="sched-row">
+              <div class="day-tile"><b>Mon</b><span>Weekly</span></div>
+              <div class="stack" style="gap: 4px">
+                <h4 class="h4">Monday Prayer Meeting</h4>
+                <p class="small muted">An hour of prayer together.</p>
+                <a class="link small" href="#">Join on Zoom</a>
+              </div>
+              <div class="stack" style="gap: 10px; align-items: flex-end">
+                <p class="time">7:00 – 8:00 PM</p>
+                <span class="chip">Online</span>
+              </div>
+            </li>
+            <li class="sched-row">
+              <div class="day-tile"><b>Tue</b><span>Weekly</span></div>
+              <div class="stack" style="gap: 4px">
+                <h4 class="h4">Tuesday Bible Study</h4>
+                <p class="small muted">Systematic, expository study of God’s Word.</p>
+                <a class="link small" href="#">Join on Zoom</a>
+              </div>
+              <div class="stack" style="gap: 10px; align-items: flex-end">
+                <p class="time">7:00 – 9:00 PM</p>
+                <div class="row" style="gap: 6px"><span class="chip chip-warm">In person</span><span class="chip">Online</span></div>
+              </div>
+            </li>
+            <li class="sched-row">
+              <div class="day-tile"><b>Fri</b><span>Weekly</span></div>
+              <div class="stack" style="gap: 4px">
+                <h4 class="h4">Friday Revival Hour</h4>
+                <p class="small muted">Prayer, spiritual revival and evangelism training.</p>
+                <a class="link small" href="#">Join on Zoom</a>
+              </div>
+              <div class="stack" style="gap: 10px; align-items: flex-end">
+                <p class="time">7:00 – 9:00 PM</p>
+                <div class="row" style="gap: 6px"><span class="chip chip-warm">In person</span><span class="chip">Online</span></div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div><section class="sec bg-white" aria-labelledby="welcome-h">
+    <div class="wrap">
+      <div class="stack-md" style="display: grid; grid-template-columns: minmax(0,5fr) minmax(0,7fr); gap: 80px; align-items: center">
+        <figure style="position: relative">
+          <img class="photo" src="/_blob/2adeabc8c9a0afcc7a693f402049cc8a" alt="Pastor Joseph Agbo" style="aspect-ratio: 4/5; height: auto; border-radius: 24px">
+          <figcaption class="card" style="position: absolute; left: 20px; bottom: 20px; padding: 16px 22px">
+            <p class="h5">Pastor Joseph Agbo</p>
+            <p class="small muted">Local Pastor</p>
+          </figcaption>
+        </figure>
+        <div class="stack" style="gap: 24px">
+          <span class="eyebrow">A word from our pastor</span>
+          <h2 id="welcome-h" class="h2">Welcome to Deeper Life Bible Church Lewisville</h2>
+          <blockquote class="quote-a">“At Deeper Life Bible Church Lewisville, you will never be lost in the crowd.”</blockquote>
+          <p>Thank you for visiting us online. Founded by Pastor (Dr.) W. F. Kumuyi, Deeper Life Bible Church Worldwide is a Bible-believing church whose aim in all things is <em>“achieving heaven’s goal.”</em> Our Lewisville congregation is one of the branches in the Southwest Region, under the leadership of our Regional Overseer, Pastor Thompson Aderemi.</p>
+          <p>Our prayer and purpose are to bring people to Christ and help them grow in Him. Whether you are seeking a church home or have questions about Jesus Christ, we are here to serve you — as a church family where the pastor and members know and care for one another personally.</p>
+          <p class="serif italic" style="font-size: 20px; color: #16365E">We look forward to welcoming you.</p>
+          <div class="row wrapx" style="gap: 12px; margin-top: 4px">
+            <a class="btn btn-secondary" href="A-About.dc.html">Meet our leadership</a>
+            <a class="link-arrow" href="A-About.dc.html" style="padding: 0 12px">What we believe
+              <svg class="ic ic-sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  </section>
+
+  <!-- WHAT TO EXPECT -->
+  <section class="sec bg-cream" aria-labelledby="expect-h">
+    <div class="wrap">
+      <div class="stack-md" style="display: grid; grid-template-columns: minmax(0,5fr) minmax(0,7fr); gap: 72px; align-items: center">
+        <div class="stack" style="gap: 24px">
+          <span class="eyebrow">Your first visit</span>
+          <h2 id="expect-h" class="h2">What to expect on a Sunday</h2>
+          <p class="lead">Visiting a church for the first time can feel like a big step. Here’s what a Sunday looks like, so you can walk in already feeling at home.</p>
+          <div style="position: relative; margin-top: 8px">
+            <img class="photo" src="/_blob/8f5ee955712ab87a1e5b23b1f7adca9f" alt="Worshippers standing in prayer during a service" style="aspect-ratio: 4/3; height: auto">
+            <div class="card row" style="position: absolute; left: 20px; bottom: 20px; right: 20px; padding: 16px 20px; gap: 14px; max-width: 340px">
+              <span class="icon-tile" style="width: 44px; height: 44px; border-radius: 12px"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg></span>
+              <div>
+                <p class="h5">About 2½ hours</p>
+                <p class="xs muted">Singing, prayer, Bible study and teaching</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="stack" style="gap: 48px">
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 44px 48px">
+            <div class="stack" style="gap: 14px">
+              <span class="icon-tile warm"><svg class="ic ic-lg" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="4"></rect><path d="M10 16.5V7.5h3.2a2.6 2.6 0 0 1 0 5.2H10"></path></svg></span>
+              <h3 class="h4">Parking and arrival</h3>
+              <p class="muted">Free parking is in the lot around the plaza where we meet. Look for the large Deeper Life Lewisville sign in front of the building.</p>
+            </div>
+            <div class="stack" style="gap: 14px">
+              <span class="icon-tile warm"><svg class="ic ic-lg" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3"></circle><path d="M3.5 19a5.5 5.5 0 0 1 11 0"></path><circle cx="17" cy="9.5" r="2.2"></circle><path d="M15.6 14.3A4.5 4.5 0 0 1 21 18.6"></path></svg></span>
+              <h3 class="h4">Kids &amp; families</h3>
+              <p class="muted">Children of every age are welcome in worship. During the service we also offer a safe, staffed Children’s Church for infants through 6th grade.</p>
+            </div>
+            <div class="stack" style="gap: 14px">
+              <span class="icon-tile warm"><svg class="ic ic-lg" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.2 4L3.5 7l2 4 2-1v10h9V10l2 1 2-4-4.7-3c-.8 1.4-2.2 2.2-3.8 2.2S9 5.4 8.2 4z"></path></svg></span>
+              <h3 class="h4">What to wear</h3>
+              <p class="muted">Come as you are. You’ll see everything from Sunday best to comfortable clothes — we care far more about you being here than what you’re wearing.</p>
+            </div>
+            <div class="stack" style="gap: 14px">
+              <span class="icon-tile warm"><svg class="ic ic-lg" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4.5A1.5 1.5 0 0 1 6.5 3H19v15H6.5A1.5 1.5 0 0 0 5 19.5z"></path><path d="M5 19.5A1.5 1.5 0 0 0 6.5 21H19M12 7v6M9.5 9.5h5"></path></svg></span>
+              <h3 class="h4">How the service flows</h3>
+              <p class="muted">Singing, prayer, Search The Scriptures and teaching. We pray together online at 9:00 AM before the service — you’re welcome to join us.</p>
+            </div>
+          </div>
+          <div class="row wrapx" style="gap: 12px">
+            <a class="btn btn-primary" href="A-Visit.dc.html">Plan your visit</a>
+            <a class="btn btn-secondary" href="A-Visit.dc.html">More about your first visit</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PASTOR WELCOME -->
+  
+
+  <!-- LATEST MESSAGE -->
+  <section class="sec bg-navy" aria-labelledby="latest-h">
+    <div class="wrap">
+      <div class="row wrapx" style="justify-content: space-between; align-items: flex-end; gap: 24px; margin-bottom: 44px">
+        <div class="stack" style="gap: 12px">
+          <span class="eyebrow">Sermons</span>
+          <h2 id="latest-h" class="h2">Latest message</h2>
+        </div>
+        <div class="row wrapx" style="gap: 12px">
+          <span class="hero-pill"><span class="live-dot"></span>Next live: Sunday, 9:30 AM CT</span>
+          <a class="link-arrow" href="A-Sermons.dc.html" style="padding: 0 8px">All sermons
+            <svg class="ic ic-sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="stack-md" style="display: grid; grid-template-columns: minmax(0,7fr) minmax(0,5fr); gap: 48px; align-items: start">
+        <a class="video" href="A-Sermons.dc.html" aria-label="Play: The Service of Sanctified Levites with the Sacred Ark">
+          <img src="/_blob/f6c0dedd557eb6483594eca9dbeb9ddf" alt="">
+          <span class="play"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" style="width: 30px; height: 30px; margin-left: 4px"><path d="M7 4.5v15l12.5-7.5z" fill="currentColor" stroke="none"></path></svg></span>
+        </a>
+        <div class="stack" style="gap: 18px">
+          <span class="chip chip-dark" style="align-self: flex-start">From DCLM Headquarters, Lagos</span>
+          <h3 style="font: 600 30px/1.2 'Source Serif 4', Georgia, serif; color: #ffffff">The Service of Sanctified Levites with the Sacred Ark</h3>
+          <p class="muted">Worship Service · November 1, 2026</p>
+          <a class="btn btn-light" href="A-Sermons.dc.html" style="align-self: flex-start">
+            <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z" fill="currentColor" stroke="none"></path></svg>
+            Watch message
+          </a>
+          <hr class="rule" style="margin: 10px 0 4px">
+          <p class="xs" style="letter-spacing: .14em; text-transform: uppercase; font-weight: 700; color: #3EB6DF">Recent from Lewisville</p>
+          <ul class="stack" style="gap: 14px">
+            <li><a class="mini" href="A-Sermons.dc.html"><img src="/_blob/15714906fd5124064c6458cf85cfb246" alt=""><span><span class="h5" style="display: block; color: #ffffff">Sunday Worship Service</span><span class="small muted">July 12, 2026</span></span></a></li>
+            <li><a class="mini" href="A-Sermons.dc.html"><img src="/_blob/eaf60fb99c8871c84d673edb187ad472" alt=""><span><span class="h5" style="display: block; color: #ffffff">Praise &amp; Worship Service</span><span class="small muted">July 5, 2026</span></span></a></li>
+            <li><a class="mini" href="A-Sermons.dc.html"><img src="/_blob/6c517769bb92527fa10ded9532381f88" alt=""><span><span class="h5" style="display: block; color: #ffffff">Search the Scripture Sunday Service</span><span class="small muted">May 17, 2026</span></span></a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONY -->
+  <section class="sec bg-white" aria-labelledby="testimony-h">
+    <div class="wrap">
+      <div class="stack-md" style="display: grid; grid-template-columns: minmax(0,4fr) minmax(0,8fr); gap: 72px; align-items: start">
+        <div class="stack" style="gap: 16px">
+          <span class="eyebrow">Testimony</span>
+          <h2 id="testimony-h" class="h3" style="font-size: 30px">From deportation to deliverance</h2>
+          <p class="muted">Jesus miraculously rescues — and turns a mistake into a mercy-filled miracle.</p>
+          <a class="link-arrow" href="A-Contact.dc.html">Share your testimony
+            <svg class="ic ic-sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+          </a>
+        </div>
+        <figure class="stack" style="gap: 28px">
+          <svg viewBox="0 0 48 36" width="56" height="42" aria-hidden="true"><path d="M0 36V22C0 9.6 6.4 2.2 19 0l2 5.4C13.6 7.4 10.4 11.6 10 18h9v18zm27 0V22C27 9.6 33.4 2.2 46 0l2 5.4C40.6 7.4 37.4 11.6 37 18h9v18z" fill="#D3EAF4"></path></svg>
+          <blockquote style="font: 400 clamp(24px, 2.4vw, 31px)/1.42 'Source Serif 4', Georgia, serif; color: #16365E">Jesus is indeed alive! I was on the verge of deportation after my US visa was denied — but our fathers in the Lord prayed for supernatural favor, and Jesus showed up. I was readmitted to the United States the very next day, and multiple souls came to the Lord along the way. All glory to Jesus for turning my mistake into a miracle of mercy.</blockquote>
+          <figcaption class="row" style="gap: 14px">
+            <span style="width: 44px; height: 44px; border-radius: 50%; background: #16365E; color: #ffffff; display: inline-flex; align-items: center; justify-content: center; font-weight: 700">K</span>
+            <span class="strong" style="color: #16365E">Bro K</span>
+          </figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- VERSE -->
+  <section class="sec-md bg-sky" aria-labelledby="verse-h">
+    <div class="wrap wrap-narrow" style="text-align: center">
+      <h2 id="verse-h" class="eyebrow">The verse we live by</h2>
+      <blockquote style="font: italic 400 clamp(22px, 2.4vw, 30px)/1.48 'Source Serif 4', Georgia, serif; color: #16365E; margin-top: 22px">“Beloved, when I gave all diligence to write unto you of the common salvation, it was needful for me to write unto you, and exhort you that ye should earnestly contend for the faith which was once delivered unto the saints.”</blockquote>
+      <p class="strong" style="margin-top: 22px; color: #16365E">Jude 1:3 · KJV</p>
+    </div>
+  </section>
+
+  <!-- MINISTRIES -->
+  <section class="sec bg-white" aria-labelledby="min-h">
+    <div class="wrap">
+      <div class="row wrapx" style="justify-content: space-between; align-items: flex-end; gap: 24px; margin-bottom: 44px">
+        <div class="stack" style="gap: 12px; max-width: 640px">
+          <span class="eyebrow">Get connected</span>
+          <h2 id="min-h" class="h2">Find your place to grow</h2>
+          <p class="lead">Every ministry has a way to get in touch. We’d love to help you take your next step.</p>
+        </div>
+        <a class="btn btn-secondary" href="A-Ministries.dc.html">All ministries &amp; outreach</a>
+      </div>
+
+      <div class="bento">
+        <a class="tile span-2" href="A-Ministries.dc.html">
+          <img src="/_blob/161d39ae53b2004c02e6d26f5d4884f0" alt="" style="object-position: 50% 30%">
+          <span class="tile-scrim"></span>
+          <span class="tile-body">
+            <span><span class="tile-title" style="display: block">Children’s Ministry</span><span class="tile-sub" style="display: block">Infants through 6th grade, during the Sunday service</span></span>
+            <span class="tile-arrow"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></span>
+          </span>
+        </a>
+        <a class="tile" href="A-Ministries.dc.html">
+          <img src="/_blob/8f5ee955712ab87a1e5b23b1f7adca9f" alt="" style="object-position: 60% 40%">
+          <span class="tile-scrim"></span>
+          <span class="tile-body">
+            <span><span class="tile-title" style="display: block">Youth</span><span class="tile-sub" style="display: block">Grades 7–12</span></span>
+            <span class="tile-arrow"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></span>
+          </span>
+        </a>
+        <a class="tile" href="A-Ministries.dc.html">
+          <img src="/_blob/9bea69721637011a51621a7ea1940405" alt="" style="object-position: 50% 25%">
+          <span class="tile-scrim"></span>
+          <span class="tile-body">
+            <span><span class="tile-title" style="display: block">Women</span><span class="tile-sub" style="display: block">Spiritual and family support</span></span>
+            <span class="tile-arrow"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></span>
+          </span>
+        </a>
+        <a class="tile" href="A-Ministries.dc.html" style="background: #183255">
+          <span class="icon-tile dark" style="position: absolute; top: 24px; left: 24px"><svg class="ic ic-lg" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3c1.2 3.3 4.5 4.6 4.5 8.6a4.5 4.5 0 0 1-9 0c0-1.9.9-3.1 1.9-4.1.3 1.6 1.1 2.5 2.1 2.9C11.4 8 11 5.4 12 3z"></path><path d="M9.5 21h5"></path></svg></span>
+          <span class="tile-body">
+            <span><span class="tile-title" style="display: block">Young Adults</span><span class="tile-sub" style="display: block">On fire for God — programs announced through the year</span></span>
+            <span class="tile-arrow"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></span>
+          </span>
+        </a>
+        <a class="tile" href="A-Ministries.dc.html">
+          <img src="/_blob/95cae542582dcaaaff1d0abd8596e9df" alt="" style="object-position: 50% 30%">
+          <span class="tile-scrim"></span>
+          <span class="tile-body">
+            <span><span class="tile-title" style="display: block">Men</span><span class="tile-sub" style="display: block">“I will make you fishers of men”</span></span>
+            <span class="tile-arrow"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></span>
+          </span>
+        </a>
+        <a class="tile span-2" href="A-Ministries.dc.html">
+          <img src="/_blob/3e8cc5e66a1ef5ecd70e138cbc51e543" alt="" style="object-position: 40% 35%">
+          <span class="tile-scrim"></span>
+          <span class="tile-body">
+            <span><span class="tile-title" style="display: block">Music Ministry</span><span class="tile-sub" style="display: block">Choir and musicians — singers and instrumentalists welcome</span></span>
+            <span class="tile-arrow"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></span>
+          </span>
+        </a>
+      </div>
+
+      <div class="panel-sky" style="margin-top: 16px; padding: 28px 32px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px 32px">
+        <div class="stack" style="gap: 4px">
+          <h3 class="h4">Outreach</h3>
+          <p class="small muted">Serving our neighbors beyond Sunday</p>
+        </div>
+        <ul class="row wrapx" style="gap: 10px">
+          <li><a class="pill-link" href="A-Ministries.dc.html">Evangelism</a></li>
+          <li><a class="pill-link" href="A-Ministries.dc.html">Counseling</a></li>
+          <li><a class="pill-link" href="A-Ministries.dc.html">Hospital visitation</a></li>
+          <li><a class="pill-link" href="A-Ministries.dc.html">Community volunteering</a></li>
+          <li><a class="pill-link" href="A-Ministries.dc.html">Prison ministry</a></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <dc-import name="Footer" set="A" hint-size="100%,700px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"heroLayout":{"editor":"enum","options":["Full-bleed photo","Photo collage"],"default":"Full-bleed photo","section":"Hero"},"$preview":{"width":1440,"height":7400}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const layout = this.props.heroLayout ?? 'Full-bleed photo';
+    return {
+      fullBleed: layout !== 'Photo collage',
+      collage: layout === 'Photo collage'
+    };
+  }
+}
+</script>
+</body>
+</html>

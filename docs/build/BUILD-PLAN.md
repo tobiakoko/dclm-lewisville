@@ -74,6 +74,33 @@ Goal: nothing on the site is wrong, fake or dead. No visual redesign yet.
 
 **Gate 3:** a staff member changes a service time in the Studio and sees it on Home, Visit, Contact, Events, the footer and the JSON-LD.
 
+## Phase 4: Visual redesign (branch `rebuild/phase-4-redesign`)
+
+Goal: the layout and component refresh in `REDESIGN.md` for **every route and shared UI state** listed in its Coverage table (home page, shared header, footer and drawer, and Direction A for all other pages) with **no content changes** beyond `REDESIGN.md` §7. Read `REDESIGN.md`, the revised `DESIGN-SYSTEM.md` and `redesign-reference/README.md` first.
+
+- [x] 4.0 **Baseline.** Before changing anything, add a Playwright test that saves the visible `main` text of every page, and screenshot every page at 390 and 1440 px into `docs/build/redesign-before/` (not shipped). Gate 4 diffs against these. *Done: `npm run redesign:capture -- before` (fresh build on port 3100, live Sanity content); the text is in git, the screenshots stay local (gitignored). At Gate 4, run the capture with `after`, then `npm run redesign:diff`.*
+- [x] 4.1 **Tokens.** Add the new color, radius and shadow tokens and the type scale to `app/globals.css` (`DESIGN-SYSTEM.md`). Update the names test page.
+- [x] 4.2 **Primitives.** Restyle Button (pill variants including `ghost` and `light`); add ArrowLink, Chip, IconTile, Eyebrow, Card, CardLine, CardDark, Panel; update the form fields (keeping `border-input`) and Alert. Unit-test the variants.
+- [x] 4.3 **Section and PageHero.** Section tones and sizes with eyebrow, lead and action; the warm PageHero; EditorialRow.
+- [x] 4.4 **Header.** Light and overlay tones, pill nav, watch link with the live state, Give, and the drawer restyle; the home-only switch to the sticky light header. Unit and e2e tests (keyboard, drawer, both tones, axe).
+- [x] 4.5 **Footer.** CTA band, four columns, bottom bar.
+- [x] 4.6 **Home**, in `REDESIGN.md` §3 order: hero, InfoBar (replacing SundayBar), When we meet (featured card plus ScheduleRows), Pastor's Welcome (full verbatim text), What to expect, Latest message (navy), Testimony, Verse, Ministries bento plus outreach panel.
+- [x] 4.7 **Plan Your Visit.**
+- [x] 4.8 **About**, including DoctrineCards and LeaderCards restyles.
+- [x] 4.9 **Ministries.**
+- [x] 4.10 **Sermons.**
+- [x] 4.11 **Events.** WeekStrip and DateCard. The calendar export buttons wait for the owner's yes.
+- [x] 4.12 **Contact.** SegmentedControl as a radio group wired to the existing topic and subject logic.
+- [x] 4.13 **Give.** The scripture card is shown only after church approval; until then, a photo. *Owner, 2 November 2026: the 2 Corinthians 9:7 scripture card is approved.*
+- [x] 4.14 **Sermon detail** (`/sermons/[slug]`), per `REDESIGN.md` §4.
+- [x] 4.15 **Privacy and Terms**, with the “On this page” layout.
+- [x] 4.16 **Not found, error and global error** pages.
+- [x] 4.17 **Shared overlays and states:** mobile drawer, consent banner, skeletons, empty states, form alerts; `/dev/names` on the new type scale. *The site has no loading skeletons (no `loading.tsx`), so there were none to restyle.*
+- [x] 4.18 **CMS (additive only).** Add optional `heroEyebrow`, `heroTitle` and `heroLead` fields where page singletons lack them (plus optional testimonial `title` and `summary` if used), seed the §7 copy, and add “§13 Interface copy (redesign)” and any “Needs approval” items to `SITE-CONTENT.md`. *Done in code, seed and `SITE-CONTENT.md` §13. Existing datasets are updated with `npm run content:redesign -- --dataset <name>` (dry run by default; `--apply` with the write token), which changes only empty or still-seeded values. Waiting for the owner to run it on staging and production.*
+- [x] 4.19 **Cleanup.** Remove components and styles the redesign made unused (for example the navy PageHero variant and SundayBar), confirmed by search. *Removed the navy PageHero, SundayBar, the old ServiceTimesCard, MinistryCard, FeaturedMessage, ModeBadges and MODE_LABEL. `@radix-ui/react-accordion` and `@radix-ui/react-label` have no importers; removing them changes the lockfile, so it is left for the owner to decide.*
+
+**Gate 4:** `REDESIGN.md` §8 holds for every route in the Coverage table. Copy diff shows only §7 changes; axe is clean on every page in both header tones; keyboard walk-through passes; 320 px reflow; Core Web Vitals within budget on the Vercel preview; owner sign-off on screenshots at 390 and 1440 px.
+
 ## Launch checklist (owner and developer)
 
 - [ ] Leadership has approved `SITE-CONTENT.md`, and the Still-missing items are filled or deliberately hidden

@@ -5,7 +5,7 @@ export function LastUpdated({ date }: { date: string }) {
     new Date(`${date}T12:00:00Z`)
   )
   return (
-    <p className="text-ink-muted">
+    <p>
       Last updated: <time dateTime={date}>{formatted}</time>
     </p>
   )

@@ -247,6 +247,9 @@ export type GivePage = {
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
+  heroEyebrow?: string;
+  heroTitle?: string;
+  heroLead?: string;
   ways: Array<{
     title: string;
     detail: string;
@@ -261,6 +264,9 @@ export type AboutPage = {
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
+  heroEyebrow?: string;
+  heroTitle?: string;
+  heroLead?: string;
   whoWeAre: TitledText;
   story: Array<
     {
@@ -281,6 +287,9 @@ export type VisitPage = {
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
+  heroEyebrow?: string;
+  heroTitle?: string;
+  heroLead?: string;
   serviceLines: RichText;
   sections: Array<
     {
@@ -578,8 +587,11 @@ export type HOME_PAGE_QUERY_RESULT = {
 
 // Source: lib/sanity/queries.ts
 // Variable: VISIT_PAGE_QUERY
-// Query: *[_type == "visitPage" && _id == "visitPage"][0]{ serviceLines, sections[]{ title, body } }
+// Query: *[_type == "visitPage" && _id == "visitPage"][0]{ heroEyebrow, heroTitle, heroLead, serviceLines, sections[]{ title, body } }
 export type VISIT_PAGE_QUERY_RESULT = {
+  heroEyebrow: string | null;
+  heroTitle: string | null;
+  heroLead: string | null;
   serviceLines: RichText;
   sections: Array<{
     title: string;
@@ -589,9 +601,12 @@ export type VISIT_PAGE_QUERY_RESULT = {
 
 // Source: lib/sanity/queries.ts
 // Variable: ABOUT_PAGE_QUERY
-// Query: {  "page": *[_type == "aboutPage" && _id == "aboutPage"][0]{ whoWeAre{ title, body }, story[]{ title, body, list, closing }, doctrinesIntro },  "doctrines": *[_type == "doctrine"] | order(order asc){ "id": _id, title, body, references },  "leaders": *[_type == "person"] | order(order asc){ "id": key.current, name, title, subtitle, shortBio, fullBio, photo { alt, asset->{ url, metadata { lqip, dimensions { width, height } } } } }}
+// Query: {  "page": *[_type == "aboutPage" && _id == "aboutPage"][0]{ heroEyebrow, heroTitle, heroLead, whoWeAre{ title, body }, story[]{ title, body, list, closing }, doctrinesIntro },  "doctrines": *[_type == "doctrine"] | order(order asc){ "id": _id, title, body, references },  "leaders": *[_type == "person"] | order(order asc){ "id": key.current, name, title, subtitle, shortBio, fullBio, photo { alt, asset->{ url, metadata { lqip, dimensions { width, height } } } } }}
 export type ABOUT_PAGE_QUERY_RESULT = {
   page: {
+    heroEyebrow: string | null;
+    heroTitle: string | null;
+    heroLead: string | null;
     whoWeAre: {
       title: string;
       body: RichText;
@@ -687,18 +702,6 @@ export type MINISTRIES_QUERY_RESULT = {
 };
 
 // Source: lib/sanity/queries.ts
-// Variable: MINISTRY_QUERY
-// Query: *[_type in ["ministry", "outreachArea"] && slug.current == $slug][0]{  "slug": slug.current, name, body, audience, meetingInfo, contactEmail}
-export type MINISTRY_QUERY_RESULT = {
-  slug: string;
-  name: string;
-  body: RichText;
-  audience: string | null;
-  meetingInfo: string | null;
-  contactEmail: string | null;
-} | null;
-
-// Source: lib/sanity/queries.ts
 // Variable: UPCOMING_EVENTS_QUERY
 // Query: *[_type == "event" && coalesce(end, start) >= $now] | order(start asc){  "id": _id, title, start, end, location, mode, registrationUrl}
 export type UPCOMING_EVENTS_QUERY_RESULT = Array<{
@@ -713,8 +716,11 @@ export type UPCOMING_EVENTS_QUERY_RESULT = Array<{
 
 // Source: lib/sanity/queries.ts
 // Variable: GIVE_PAGE_QUERY
-// Query: *[_type == "givePage" && _id == "givePage"][0]{ ways[]{ title, detail } }
+// Query: *[_type == "givePage" && _id == "givePage"][0]{ heroEyebrow, heroTitle, heroLead, ways[]{ title, detail } }
 export type GIVE_PAGE_QUERY_RESULT = {
+  heroEyebrow: string | null;
+  heroTitle: string | null;
+  heroLead: string | null;
   ways: Array<{
     title: string;
     detail: string;
@@ -757,12 +763,11 @@ declare global {
   interface SanityQueries {
     '*[_type == "siteSettings" && _id == "siteSettings"][0]{\n  name, shortName, affiliation, region, regionalOverseer, localPastor,\n  address, phone, email, officeHours, timeZone,\n  schedule[]{ "id": key.current, name, day, start, end, mode, description, joinUrl },\n  scheduleExceptions[]{ date, meeting, cancelled, note },\n  youtube, socialMedia, dclm,\n  otherLocations[]{ name, address, serviceTimes }\n}': SITE_SETTINGS_QUERY_RESULT;
     '{\n  "page": *[_type == "homePage" && _id == "homePage"][0]{ heroTitle, heroSubtitle, whatToExpect[]{ title, body }, welcomeHeading, welcome, verse },\n  "testimony": *[_type == "testimonial" && featured == true] | order(_updatedAt desc)[0]{ name, title, content }\n}': HOME_PAGE_QUERY_RESULT;
-    '*[_type == "visitPage" && _id == "visitPage"][0]{ serviceLines, sections[]{ title, body } }': VISIT_PAGE_QUERY_RESULT;
-    '{\n  "page": *[_type == "aboutPage" && _id == "aboutPage"][0]{ whoWeAre{ title, body }, story[]{ title, body, list, closing }, doctrinesIntro },\n  "doctrines": *[_type == "doctrine"] | order(order asc){ "id": _id, title, body, references },\n  "leaders": *[_type == "person"] | order(order asc){ "id": key.current, name, title, subtitle, shortBio, fullBio, photo { alt, asset->{ url, metadata { lqip, dimensions { width, height } } } } }\n}': ABOUT_PAGE_QUERY_RESULT;
+    '*[_type == "visitPage" && _id == "visitPage"][0]{ heroEyebrow, heroTitle, heroLead, serviceLines, sections[]{ title, body } }': VISIT_PAGE_QUERY_RESULT;
+    '{\n  "page": *[_type == "aboutPage" && _id == "aboutPage"][0]{ heroEyebrow, heroTitle, heroLead, whoWeAre{ title, body }, story[]{ title, body, list, closing }, doctrinesIntro },\n  "doctrines": *[_type == "doctrine"] | order(order asc){ "id": _id, title, body, references },\n  "leaders": *[_type == "person"] | order(order asc){ "id": key.current, name, title, subtitle, shortBio, fullBio, photo { alt, asset->{ url, metadata { lqip, dimensions { width, height } } } } }\n}': ABOUT_PAGE_QUERY_RESULT;
     '{\n  "ministries": *[_type == "ministry"] | order(order asc){ "slug": slug.current, name, body, audience, meetingInfo, contactEmail, photo { alt, asset->{ url, metadata { lqip, dimensions { width, height } } } } },\n  "outreach": *[_type == "outreachArea"] | order(order asc){ "slug": slug.current, name, body, audience, meetingInfo, contactEmail, photo { alt, asset->{ url, metadata { lqip, dimensions { width, height } } } } }\n}': MINISTRIES_QUERY_RESULT;
-    '*[_type in ["ministry", "outreachArea"] && slug.current == $slug][0]{\n  "slug": slug.current, name, body, audience, meetingInfo, contactEmail\n}': MINISTRY_QUERY_RESULT;
     '*[_type == "event" && coalesce(end, start) >= $now] | order(start asc){\n  "id": _id, title, start, end, location, mode, registrationUrl\n}': UPCOMING_EVENTS_QUERY_RESULT;
-    '*[_type == "givePage" && _id == "givePage"][0]{ ways[]{ title, detail } }': GIVE_PAGE_QUERY_RESULT;
+    '*[_type == "givePage" && _id == "givePage"][0]{ heroEyebrow, heroTitle, heroLead, ways[]{ title, detail } }': GIVE_PAGE_QUERY_RESULT;
     '*[_type == "legalPages" && _id == "legalPages"][0]{ lastUpdated, effectiveDate, privacy, copyright, waiver }': LEGAL_PAGES_QUERY_RESULT;
     '*[_type == "sermon" && slug.current == $slug][0]{\n  title, speaker, date, youtubeId, source, description\n}': SERMON_QUERY_RESULT;
     '*[_type == "sermon" && defined(slug.current)]{ "slug": slug.current, "updatedAt": _updatedAt }': SERMON_SLUGS_QUERY_RESULT;

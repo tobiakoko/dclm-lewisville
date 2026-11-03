@@ -41,3 +41,6 @@ yarn-error.log*
 
 # typescript
 *.tsbuildinfo
+
+# Phase 4 screenshots (BUILD-PLAN.md 4.0), kept locally for review
+/docs/build/redesign-*/screens/

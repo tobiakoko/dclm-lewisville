@@ -89,6 +89,7 @@ Never write or edit a testimony on someone's behalf.
 
 - **Seed a new dataset:** `SANITY_WRITE_TOKEN=… npm run seed -- --dataset <name>`. Add `--dry-run` to preview it. The command never overwrites existing documents unless you pass `--replace`.
 - **After a schema change:** run `npm run typegen`.
+- **Phase 4 content:** `npm run content:redesign -- --dataset <name>` lists what the redesign adds to an existing dataset (page headers, the home hero, the Zoom links); add `--apply` with `SANITY_WRITE_TOKEN` to write it. It only fills empty fields and text still as seeded, so Studio edits are kept.
 - **Webhook:** in Sanity, go to **API → Webhooks** and set:
   - Name: `Refresh website on publish`
   - URL: `https://dclm-lewisville.vercel.app/api/revalidate` until the domain points to Vercel, then `https://www.deeperlifelewisville.org/api/revalidate`. Use `www`, because the bare domain redirects and webhooks shouldn't go through a redirect.

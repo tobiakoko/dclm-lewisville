@@ -6,14 +6,15 @@ import { MINISTRIES } from '../lib/content/site'
 import { PUBLIC_PATHS, type PublicPath } from '../lib/routes'
 
 const HEADINGS: Record<PublicPath, RegExp> = {
-  '/': new RegExp(`${SITE_CONFIG.address.city}, ${SITE_CONFIG.address.state}`),
-  '/visit': /^Plan Your Visit$/,
-  '/about': /^About Us$/,
-  '/ministries': /^Ministries and Outreach$/,
-  '/sermons': /^Sermons$/,
-  '/events': /^Events$/,
-  '/contact': /^Contact and Prayer$/,
-  '/give': /^Give$/,
+  // The home H1 is the hero title from the CMS (REDESIGN.md §3.1)
+  '/': /\S/,
+  '/visit': /^We’d love to meet you this Sunday\.$/,
+  '/about': /^A Bible-centered church family in Lewisville\.$/,
+  '/ministries': /^Find your place to grow and serve\.$/,
+  '/sermons': /^Hear the Word, wherever you are\.$/,
+  '/events': /^This week at Deeper Life$/,
+  '/contact': /^We’re here for you\.$/,
+  '/give': /^Give with a cheerful heart\.$/,
   '/privacy': /^Privacy Policy$/,
   '/terms': /^Terms of Use$/,
 }
@@ -114,12 +115,22 @@ test.describe('facts agree everywhere', () => {
 test.describe('events', () => {
   test('lists the weekly meetings and the honest empty state, never past events', async ({ page }) => {
     await page.goto('/events')
+    const weekly = page.locator('#weekly')
     for (const service of SERVICE_TIMES) {
-      await expect(page.getByRole('heading', { name: service.name, level: 3 })).toBeVisible()
+      await expect(weekly.getByRole('heading', { name: new RegExp(service.name), level: 3 })).toBeVisible()
     }
     await expect(page.getByText(EVENTS_EMPTY_STATE)).toBeVisible()
-    // No dated special events are listed (the footer copyright year is outside main)
-    await expect(page.getByRole('main').getByText(/20\d\d/)).toHaveCount(0)
+  })
+
+  test('the week strip marks today and moves a week with the keyboard', async ({ page }) => {
+    await page.goto('/events')
+    const strip = page.getByRole('region', { name: /This week/ })
+    await expect(strip.locator('[aria-current="date"]')).toHaveCount(1)
+    const next = page.getByRole('button', { name: 'Next week' })
+    await next.focus()
+    await page.keyboard.press('Enter')
+    await expect(page.getByRole('heading', { name: /^Week of/ })).toBeVisible()
+    await expect(page.locator('[aria-current="date"]')).toHaveCount(0)
   })
 })
 
@@ -137,20 +148,21 @@ test.describe('about', () => {
 test.describe('home on a phone', () => {
   test.use({ viewport: { width: 390, height: 844 } })
 
-  test('shows the name, city, Sunday time and Plan your visit without scrolling (2.5)', async ({ page }) => {
+  test('shows the name and city, the Sunday time and Plan your visit without scrolling (REDESIGN.md §8)', async ({ page }) => {
     await page.goto('/')
-    const hero = page.locator('section[aria-labelledby="hero-heading"]')
+    const hero = page.locator('#home-hero')
+    const brand = page.getByRole('banner').getByRole('link', { name: /home page/ })
     for (const locator of [
-      hero.getByRole('heading', { level: 1 }),
-      hero.getByText(/Sundays, 9:30 AM/),
+      brand.getByText('Deeper Life Bible Church'),
+      brand.getByText(`${SITE_CONFIG.address.city}, Texas`),
+      hero.getByText(/Sundays at 9:30 AM/),
       hero.getByRole('link', { name: 'Plan your visit' }),
     ]) {
       await expect(locator).toBeInViewport({ ratio: 1 })
     }
-    await expect(hero.getByRole('heading', { level: 1 })).toContainText(SITE_CONFIG.address.city)
   })
 
-  test('shows the Sunday bar with directions under the hero', async ({ page }) => {
+  test('shows the info bar with directions under the hero', async ({ page }) => {
     await page.goto('/')
     await expect(page.getByRole('link', { name: 'Directions' })).toBeVisible()
   })
@@ -183,9 +195,10 @@ test.describe('visit', () => {
 test.describe('sermons', () => {
   test('the top slot shows a real video or an honest message, never a placeholder', async ({ page }) => {
     await page.goto('/sermons')
-    const latest = page.locator('#latest')
-    await expect(latest.getByRole('button', { name: /^Play/ }).or(latest.getByText('We couldn’t load the latest videos right now.'))).toBeVisible()
-    await expect(latest.getByText(/Next live: Sunday 9:30 AM CT/)).toBeVisible()
+    const header = page.locator('main header').first()
+    await expect(header.getByRole('button', { name: /^Play video/ }).or(header.getByText('We couldn’t load the latest videos right now.'))).toBeVisible()
+    // The next stream shows whether or not YouTube can be read
+    await expect(header.getByText('Next live: Sunday, 9:30 AM CT')).toBeVisible()
   })
 
   test('loads the player only after Play is pressed', async ({ page }) => {

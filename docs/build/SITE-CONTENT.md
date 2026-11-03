@@ -25,7 +25,7 @@ Source of truth for every word on the site until content moves into Sanity (Phas
 | Office hours | Service hours (the church is run by volunteers): Sunday 9:30 AM–12:00 PM; Tuesday and Friday 7:00–9:00 PM |
 | YouTube | https://www.youtube.com/@DeeperLifeBibleChurchLewisvill (live streams: https://www.youtube.com/@DeeperLifeBibleChurchLewisvill/streams) |
 | Facebook, Instagram | Official accounts exist; links to come. Hide the icons until the links are provided |
-| Zoom (online prayer and midweek services) | `[Zoom link to come]` |
+| Zoom (online prayer and midweek services) | https://deeperlifedallas.zoom.us/j/8965682345?pwd=QStScStCRWN5a3hMd1hXSmJrTDJiQT09 (Sunday prayer, Monday prayer, Tuesday Bible Study, Friday Revival Hour) |
 | DCLM Prayer Request Hub | https://dclm.org/?p=89 |
 | DCLM livestream (headquarters) | https://webcast.dclm.org/ and the YouTube channel listed at https://dclm.org/followus/ |
 | Time zone | Central Time (America/Chicago) |
@@ -39,7 +39,7 @@ Friday, Revival Hour, 7:00 PM to 9:00 PM (in person and online)
 
 Additional details:
 
-- Sunday prayer meeting online at 9:00 AM, before the service: `[Zoom link to come]`.
+- Sunday prayer meeting online at 9:00 AM, before the service, on Zoom (link in §1).
 - Search The Scriptures (our Sunday Bible class) runs 9:40–10:05 AM inside the Sunday service, in separate classes for children, youth and adults.
 - Children's Church runs during the Sunday service for infants through 6th grade. Youth Ministry covers grades 7–12.
 - *Dev note:* Use the name “Revival Hour” for Friday everywhere.
@@ -65,7 +65,7 @@ What to wear
 Come as you are. You'll see everything from Sunday best to comfortable clothes. We care far more about you being here than what you're wearing.
 
 Our gathering  
-Our Sunday service lasts about two and a half hours and blends singing, prayer, Bible study (Search The Scriptures), and teaching. Before the service, we pray together online at 9:00 AM ([Zoom link to come]), and you’re welcome to join us.
+Our Sunday service lasts about two and a half hours and blends singing, prayer, Bible study (Search The Scriptures), and teaching. Before the service, we pray together online at 9:00 AM (on Zoom), and you’re welcome to join us.
 
 ### Pastor's Welcome
 
@@ -105,7 +105,7 @@ We look forward to welcoming you.
 Service times in plain English –  
 Sunday Worship Service, 9:30 AM–12:00 PM: our main service, an awesome and refreshing time in God’s presence. “*I will worship toward thy holy temple, and praise thy name for thy lovingkindness and for thy truth: for thou hast magnified thy word above all thy name.*” (Psalm 138:2)  
 Search The Scriptures (our Sunday Bible class), 9:40–10:05 AM, as part of the Sunday service, with separate classes for children, youth, and adults.  
-Monday Prayer Meeting, 7:00–8:00 PM, online: an hour of prayer together ([Zoom link to come]).  
+Monday Prayer Meeting, 7:00–8:00 PM, online: an hour of prayer together (on Zoom).  
 Tuesday Bible Study, 7:00–9:00 PM, in person and online ([online link to come]): a midweek Bible teaching service with systematic, expository study of God’s Word. “*The entrance of thy words giveth light; it giveth understanding unto the simple.*” (Psalm 119:130)  
 Friday Revival Hour, 7:00–9:00 PM, in person and online ([online link to come]): a midweek service of prayer, spiritual revival, and evangelism training. “*Fear not, O land; be glad and rejoice: for the LORD will do great things.*” (Joel 2:21)
 
@@ -113,7 +113,7 @@ Getting here and parking – Free parking is available in the lot around the pla
 
 When you arrive – Information not included, skip
 
-What happens in a service – Our Sunday service lasts about two and a half hours and blends singing, prayer, Bible study, and teaching. Search The Scriptures, our Bible class, meets in separate classes for children, youth, and adults. Before the service, we pray together online at 9:00 AM ([Zoom link to come]), and you’re welcome to join us.
+What happens in a service – Our Sunday service lasts about two and a half hours and blends singing, prayer, Bible study, and teaching. Search The Scriptures, our Bible class, meets in separate classes for children, youth, and adults. Before the service, we pray together online at 9:00 AM (on Zoom), and you’re welcome to join us.
 
 What to wear – Come as you are. You'll see everything from Sunday best to comfortable clothes. We care far more about you being here than what you're wearing.
 
@@ -544,7 +544,6 @@ This website exists to offer biblical counsel for life’s various challenges, q
 
 ## 12. Still missing (do not invent)
 
-- Zoom links (Sunday prayer, Monday prayer, Tuesday, Friday)
 - Facebook and Instagram links
 - Year Lewisville began and its local story
 - Suite or unit number at 1368 W Main St, if any
@@ -554,3 +553,33 @@ This website exists to offer biblical counsel for life’s various challenges, q
 - Denton and Dallas service times; other DFW locations
 - Privacy and terms legal review; effective date
 - Newsletter (optional, later): sender, sign-up and confirmation flow
+
+## 13. Interface copy (redesign)
+
+Short headings, leads and labels introduced by the Phase 4 redesign (`REDESIGN.md` §7). They frame approved content and add no new claims. Times and addresses inside them come from Church details. The page headings are editable in the Studio (Plan Your Visit, About page and Give page: "Page header" fields; Home page: hero title and sentence); the rest live in `lib/content/interface.ts`. Items marked "church to review" are in use until the church asks for a change.
+
+| Where | Copy | Status |
+| --- | --- | --- |
+| Home hero | “God still changes lives.” / “Deeper Life Bible Church Lewisville is a Bible-centered church family on West Main Street. Come as you are — we’d love to worship with you this Sunday.” | Heading approved (from About); sentence: church to review |
+| Home info bar | Sunday worship · Find us · Can’t make it? · Prayer online from 9:00 AM · Watch live on YouTube · Open stream · Directions | In use |
+| Home section labels | Weekly gatherings · A word from our pastor · Your first visit · Sermons · Testimony · Get connected | In use |
+| Home “When we meet” | Main service · Before the service · Through the week · Weekly · All events | In use |
+| Home “What to expect” | Lead: “Visiting a church for the first time can feel like a big step. Here’s what a Sunday looks like, so you can walk in already feeling at home.” Photo card: “About 2½ hours” / “Singing, prayer, Bible study and teaching” | Church to review |
+| Home “Latest message” | Next live: Sunday, 9:30 AM CT · Watch message · Recent from Lewisville | In use |
+| Home ministries | “Find your place to grow” / “Every ministry has a way to get in touch. We’d love to help you take your next step.” | Church to review |
+| Home pull-quote | “At Deeper Life Bible Church Lewisville, you will never be “lost in the crowd.”” (lifted from the Pastor’s Welcome, which also appears in full) | Verbatim |
+| Footer | “We’d love to meet you this Sunday.” / “Worship with us at 9:30 AM — in person on West Main Street, or online.” · All times Central | Church to review |
+| Header | Watch online · Watch live (only while the stream is live) | In use |
+| Plan Your Visit | “We’d love to meet you this Sunday.” / “Here’s everything you need to know before you arrive — so you can walk in feeling at home.” Facts: When · Where · How long. Page links: Service times · Getting here · Your Sunday · Kids & what to wear · Let us know. Section headings: Getting here & parking · Your Sunday, step by step · For the whole family · Get to know us first. Checklist: “An usher will welcome you and walk you through the next steps” · “A church card for first-time guests” (from “After your visit”) | Church to review |
+| Forms | “Fields without ‘optional’ are required.” · (optional) | In use |
+| About | “A Bible-centered church family in Lewisville.” Headings: Changed from the inside out · Grace that transforms, truth that clarifies · Shaped by Scripture since 1973 · The church we’re committed to being · A life that thrives now and forever · The people who shepherd us. Figures: “1973 · DCLM founded as a Bible study of 15 students at the University of Lagos” · “14 · States in our Southwest Region, under Pastor Thompson Aderemi” (from the approved bios). Read full bio | Church to review |
+| Ministries | “Find your place to grow and serve.” / “Every ministry has a way to get in touch. Tell us where you’d like to start and we’ll help you take the next step.” · “Serving beyond our walls” · Young Adults panel: “On fire for the things of God — no matter the cost.” (restates the approved text) | Church to review |
+| Sermons | “Hear the Word, wherever you are.” / “Watch our services live on Sundays, or catch up on recent messages from Lewisville and DCLM Headquarters.” · Watch · More messages | Church to review |
+| Events | “This week at Deeper Life” / “Our weekly meetings and any special events. All times are Central.” · This week · Week of · Previous week · Next week · Today · No meetings | In use |
+| Contact | “We’re here for you.” / “Call, email or send us a message. Prayer requests go straight to our pastor.” · General message · Prayer request | Approved by the owner, 2 November 2026 |
+| Give | “Give with a cheerful heart.” / “Thank you for supporting the work of the Gospel through Deeper Life Bible Church Lewisville. Choose the way that’s easiest for you.” · See ways to give · Questions about giving? · Copy details | Church to review |
+| Give scripture card | “Every man according as he purposeth in his heart, so let him give; not grudgingly, or of necessity: for God loveth a cheerful giver.” 2 Corinthians 9:7 (KJV) | Approved by the owner, 2 November 2026 |
+| Privacy and Terms | Legal · On this page | In use |
+| Not-found page | Popular pages: Visit · Sermons · Events | In use |
+
+Needs approval: none at present. The “Add to Google Calendar” and .ics buttons on Events are a new feature and wait for the owner’s yes (`BUILD-PLAN.md` 4.11).

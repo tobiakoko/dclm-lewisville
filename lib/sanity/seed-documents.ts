@@ -7,7 +7,6 @@ import { DOCTRINES, DOCTRINES_INTRO } from '../content/doctrines'
 import {
   BIBLE_VERSE,
   COPYRIGHT_POLICY,
-  HOME_HERO,
   LEADERS,
   LEGAL_LAST_UPDATED,
   MINISTRIES,
@@ -22,6 +21,7 @@ import {
   WHO_WE_ARE,
 } from '../content/site'
 import { TESTIMONY, WAYS_TO_GIVE } from '../content/extra'
+import { ABOUT, GIVE, HOME, VISIT } from '../content/interface'
 
 export interface SeedDocument {
   _id: string
@@ -80,8 +80,8 @@ export function buildSeedDocuments(): SeedDocument[] {
   const homePage: SeedDocument = {
     _id: 'homePage',
     _type: 'homePage',
-    heroTitle: HOME_HERO.title,
-    heroSubtitle: HOME_HERO.subtitle,
+    heroTitle: HOME.hero.title,
+    heroSubtitle: HOME.hero.subtitle,
     whatToExpect: keyed(
       WHAT_TO_EXPECT.map((item, index) => ({ _type: 'titledText', title: item.title, body: toPortableText([item.body], `e${index}p`) })),
       'expect'
@@ -94,6 +94,9 @@ export function buildSeedDocuments(): SeedDocument[] {
   const visitPage: SeedDocument = {
     _id: 'visitPage',
     _type: 'visitPage',
+    heroEyebrow: VISIT.eyebrow,
+    heroTitle: VISIT.title,
+    heroLead: VISIT.lead,
     serviceLines: toPortableText(VISIT_SERVICE_LINES, 'line'),
     sections: keyed(
       VISIT_SECTIONS.map((section, index) => ({ _type: 'titledText', title: section.title, body: toPortableText([section.body], `v${index}p`) })),
@@ -104,6 +107,8 @@ export function buildSeedDocuments(): SeedDocument[] {
   const aboutPage: SeedDocument = {
     _id: 'aboutPage',
     _type: 'aboutPage',
+    heroEyebrow: ABOUT.eyebrow,
+    heroTitle: ABOUT.title,
     whoWeAre: { _type: 'titledText', title: WHO_WE_ARE.title, body: toPortableText(WHO_WE_ARE.paragraphs, 'who') },
     story: keyed(
       OUR_STORY.map((part, index) => ({
@@ -121,6 +126,9 @@ export function buildSeedDocuments(): SeedDocument[] {
   const givePage: SeedDocument = {
     _id: 'givePage',
     _type: 'givePage',
+    heroEyebrow: GIVE.eyebrow,
+    heroTitle: GIVE.title,
+    heroLead: GIVE.lead,
     ways: keyed(WAYS_TO_GIVE.map((way) => ({ _type: 'wayToGive', ...way })), 'way'),
   }
 

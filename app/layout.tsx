@@ -36,7 +36,9 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
           dangerouslySetInnerHTML={{ __html: JSON.stringify(churchJsonLd(config)).replace(/</g, '\\u003c') }}
         />
       </head>
-      <body className="antialiased">
+      {/* Browser extensions (e.g. ColorZilla's cz-shortcut-listen) add attributes to <body> before
+          React loads; this ignores attribute differences on <body> only, not inside the page */}
+      <body className="antialiased" suppressHydrationWarning>
         {/* Google Analytics only in production with a real ID, and only after consent (BUILD-PLAN 2.16) */}
         {gaId && <GoogleAnalytics ga_id={gaId} />}
         {children}
