@@ -83,7 +83,7 @@ Goal: the layout and component refresh in `REDESIGN.md` for **every route and sh
 - [x] 4.2 **Primitives.** Restyle Button (pill variants including `ghost` and `light`); add ArrowLink, Chip, IconTile, Eyebrow, Card, CardLine, CardDark, Panel; update the form fields (keeping `border-input`) and Alert. Unit-test the variants.
 - [x] 4.3 **Section and PageHero.** Section tones and sizes with eyebrow, lead and action; the warm PageHero; EditorialRow.
 - [ ] 4.4 **Header.** Light and overlay tones, pill nav, watch link with the live state, Give, and the drawer restyle; the home-only switch to the sticky light header. Unit and e2e tests (keyboard, drawer, both tones, axe).
-- [ ] 4.5 **Footer.** CTA band, four columns, bottom bar.
+- [x] 4.5 **Footer.** CTA band, four columns, bottom bar.
 - [ ] 4.6 **Home**, in `REDESIGN.md` §3 order: hero, InfoBar (replacing SundayBar), When we meet (featured card plus ScheduleRows), Pastor's Welcome (full verbatim text), What to expect, Latest message (navy), Testimony, Verse, Ministries bento plus outreach panel.
 - [ ] 4.7 **Plan Your Visit.**
 - [ ] 4.8 **About**, including DoctrineCards and LeaderCards restyles.

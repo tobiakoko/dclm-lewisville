@@ -21,11 +21,24 @@ describe('Footer', () => {
     expect(within(footer).getByText(formatAddress(SITE_CONFIG.address))).toBeInTheDocument()
   })
 
-  it('lists every weekly meeting with its day and time', () => {
+  it('opens with the Sunday call to action, its time from the schedule', () => {
+    expect(screen.getByText('We’d love to meet you this Sunday.')).toBeInTheDocument()
+    expect(screen.getByText('Worship with us at 9:30 AM — in person on West Main Street, or online.')).toBeInTheDocument()
+    const footer = screen.getByRole('contentinfo')
+    expect(within(footer).getAllByRole('link', { name: 'Plan your visit' })[0]).toHaveAttribute('href', '/visit')
+    expect(within(footer).getByRole('link', { name: 'Watch online' })).toHaveAttribute('href', SITE_CONFIG.youtube.streams)
+  })
+
+  it('lists every weekly meeting under its day with its time', () => {
     for (const service of SERVICE_TIMES) {
-      const name = screen.getByText(service.name)
-      expect(name.closest('li')).toHaveTextContent(`${service.day}, ${formatServiceTime(service)}`)
+      const day = screen.getByText(service.day, { selector: 'dt' })
+      expect(day.nextElementSibling).toHaveTextContent(formatServiceTime(service))
     }
+    expect(screen.getByText('All times Central')).toBeInTheDocument()
+  })
+
+  it('has no Sitemap link, because /sitemap is not a page', () => {
+    expect(screen.queryByRole('link', { name: 'Sitemap' })).not.toBeInTheDocument()
   })
 
   it('shows social icons only for configured links', () => {
