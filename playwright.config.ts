@@ -5,6 +5,8 @@ import { defineConfig, devices } from '@playwright/test'
  */
 export default defineConfig({
   testDir: './e2e',
+  /* Phase 4 snapshots run on their own (playwright.redesign.config.ts) */
+  testIgnore: '**/redesign/**',
   /* Timeout for each test, generous for slow CI runners. */
   timeout: 60 * 1000,
   /* Run tests in files in parallel */

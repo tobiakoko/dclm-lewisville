@@ -78,7 +78,7 @@ Goal: nothing on the site is wrong, fake or dead. No visual redesign yet.
 
 Goal: the layout and component refresh in `REDESIGN.md` for **every route and shared UI state** listed in its Coverage table (home page, shared header, footer and drawer, and Direction A for all other pages) with **no content changes** beyond `REDESIGN.md` §7. Read `REDESIGN.md`, the revised `DESIGN-SYSTEM.md` and `redesign-reference/README.md` first.
 
-- [ ] 4.0 **Baseline.** Before changing anything, add a Playwright test that saves the visible `main` text of every page, and screenshot every page at 390 and 1440 px into `docs/build/redesign-before/` (not shipped). Gate 4 diffs against these.
+- [x] 4.0 **Baseline.** Before changing anything, add a Playwright test that saves the visible `main` text of every page, and screenshot every page at 390 and 1440 px into `docs/build/redesign-before/` (not shipped). Gate 4 diffs against these. *Done: `npm run redesign:capture -- before` (fresh build on port 3100, live Sanity content); the text is in git, the screenshots stay local (gitignored). At Gate 4, run the capture with `after`, then `npm run redesign:diff`.*
 - [ ] 4.1 **Tokens.** Add the new color, radius and shadow tokens and the type scale to `app/globals.css` (`DESIGN-SYSTEM.md`). Update the names test page.
 - [ ] 4.2 **Primitives.** Restyle Button (pill variants including `ghost` and `light`); add ArrowLink, Chip, IconTile, Eyebrow, Card, CardLine, CardDark, Panel; update the form fields (keeping `border-input`) and Alert. Unit-test the variants.
 - [ ] 4.3 **Section and PageHero.** Section tones and sizes with eyebrow, lead and action; the warm PageHero; EditorialRow.
