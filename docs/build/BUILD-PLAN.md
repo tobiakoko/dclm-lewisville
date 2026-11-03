@@ -87,7 +87,7 @@ Goal: the layout and component refresh in `REDESIGN.md` for **every route and sh
 - [x] 4.6 **Home**, in `REDESIGN.md` §3 order: hero, InfoBar (replacing SundayBar), When we meet (featured card plus ScheduleRows), Pastor's Welcome (full verbatim text), What to expect, Latest message (navy), Testimony, Verse, Ministries bento plus outreach panel.
 - [x] 4.7 **Plan Your Visit.**
 - [x] 4.8 **About**, including DoctrineCards and LeaderCards restyles.
-- [ ] 4.9 **Ministries.**
+- [x] 4.9 **Ministries.**
 - [ ] 4.10 **Sermons.**
 - [ ] 4.11 **Events.** WeekStrip and DateCard. The calendar export buttons wait for the owner's yes.
 - [ ] 4.12 **Contact.** SegmentedControl as a radio group wired to the existing topic and subject logic.

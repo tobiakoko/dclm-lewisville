@@ -81,3 +81,12 @@ export const ABOUT = {
   ],
   leadershipTitle: 'The people who shepherd us',
 }
+
+export const MINISTRIES_PAGE = {
+  eyebrow: 'Ministries & outreach',
+  title: 'Find your place to grow and serve.',
+  lead: 'Every ministry has a way to get in touch. Tell us where you’d like to start and we’ll help you take the next step.',
+  outreachTitle: 'Serving beyond our walls',
+  /** Restates the approved Young Adults text ("on fire for the things of God … no matter the cost") */
+  youngAdultsLine: 'On fire for the things of God — no matter the cost.',
+}
