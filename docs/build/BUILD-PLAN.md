@@ -95,7 +95,7 @@ Goal: the layout and component refresh in `REDESIGN.md` for **every route and sh
 - [x] 4.14 **Sermon detail** (`/sermons/[slug]`), per `REDESIGN.md` §4.
 - [x] 4.15 **Privacy and Terms**, with the “On this page” layout.
 - [x] 4.16 **Not found, error and global error** pages.
-- [ ] 4.17 **Shared overlays and states:** mobile drawer, consent banner, skeletons, empty states, form alerts; `/dev/names` on the new type scale.
+- [x] 4.17 **Shared overlays and states:** mobile drawer, consent banner, skeletons, empty states, form alerts; `/dev/names` on the new type scale. *The site has no loading skeletons (no `loading.tsx`), so there were none to restyle.*
 - [ ] 4.18 **CMS (additive only).** Add optional `heroEyebrow`, `heroTitle` and `heroLead` fields where page singletons lack them (plus optional testimonial `title` and `summary` if used), seed the §7 copy, and add “§13 Interface copy (redesign)” and any “Needs approval” items to `SITE-CONTENT.md`.
 - [ ] 4.19 **Cleanup.** Remove components and styles the redesign made unused (for example the navy PageHero variant and SundayBar), confirmed by search.
 
