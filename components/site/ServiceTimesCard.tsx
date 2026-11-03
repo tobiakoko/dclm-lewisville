@@ -127,7 +127,7 @@ export function ScheduleRow({
     <div
       className={cn(
         'grid grid-cols-[64px_minmax(0,1fr)] items-start gap-x-5 gap-y-3 sm:grid-cols-[76px_minmax(0,1fr)_auto] sm:items-center',
-        highlight ? 'rounded-panel bg-emblem-sky-50 p-6 sm:p-8' : 'py-6 shadow-[inset_0_1px_0_var(--color-line)]'
+        highlight ? 'rounded-panel bg-emblem-sky-50 p-6 sm:p-8' : 'py-6 shadow-[inset_0_1px_0_var(--color-line)] first:shadow-none'
       )}
     >
       <span aria-hidden="true">

@@ -36,10 +36,12 @@ export function PageHero({
   return (
     <header className="bg-paper pb-14 pt-12 sm:pb-[88px] sm:pt-[72px]">
       <Container className={aside ? 'grid items-center gap-10 wide:grid-cols-2 wide:gap-16' : undefined}>
-        <div className={aside ? 'min-w-0' : 'max-w-[52rem]'}>
-          {eyebrow && <Eyebrow className="mb-5">{eyebrow}</Eyebrow>}
-          <h1>{title}</h1>
-          {lead && <div className="type-lead mt-6 max-w-prose">{lead}</div>}
+        <div className="min-w-0">
+          <div className={aside ? undefined : 'max-w-[52rem]'}>
+            {eyebrow && <Eyebrow className="mb-5">{eyebrow}</Eyebrow>}
+            <h1>{title}</h1>
+            {lead && <div className="type-lead mt-6 max-w-prose">{lead}</div>}
+          </div>
           {children && <div className="mt-8">{children}</div>}
         </div>
         {aside && <div className="min-w-0">{aside}</div>}

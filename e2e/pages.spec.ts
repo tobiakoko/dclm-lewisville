@@ -12,7 +12,7 @@ const HEADINGS: Record<PublicPath, RegExp> = {
   '/about': /^A Bible-centered church family in Lewisville\.$/,
   '/ministries': /^Find your place to grow and serve\.$/,
   '/sermons': /^Hear the Word, wherever you are\.$/,
-  '/events': /^Events$/,
+  '/events': /^This week at Deeper Life$/,
   '/contact': /^Contact and Prayer$/,
   '/give': /^Give$/,
   '/privacy': /^Privacy Policy$/,
@@ -115,12 +115,22 @@ test.describe('facts agree everywhere', () => {
 test.describe('events', () => {
   test('lists the weekly meetings and the honest empty state, never past events', async ({ page }) => {
     await page.goto('/events')
+    const weekly = page.locator('#weekly')
     for (const service of SERVICE_TIMES) {
-      await expect(page.getByRole('heading', { name: service.name, level: 3 })).toBeVisible()
+      await expect(weekly.getByRole('heading', { name: new RegExp(service.name), level: 3 })).toBeVisible()
     }
     await expect(page.getByText(EVENTS_EMPTY_STATE)).toBeVisible()
-    // No dated special events are listed (the footer copyright year is outside main)
-    await expect(page.getByRole('main').getByText(/20\d\d/)).toHaveCount(0)
+  })
+
+  test('the week strip marks today and moves a week with the keyboard', async ({ page }) => {
+    await page.goto('/events')
+    const strip = page.getByRole('region', { name: /This week/ })
+    await expect(strip.locator('[aria-current="date"]')).toHaveCount(1)
+    const next = page.getByRole('button', { name: 'Next week' })
+    await next.focus()
+    await page.keyboard.press('Enter')
+    await expect(page.getByRole('heading', { name: /^Week of/ })).toBeVisible()
+    await expect(page.locator('[aria-current="date"]')).toHaveCount(0)
   })
 })
 

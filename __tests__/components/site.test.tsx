@@ -58,6 +58,16 @@ describe('EventCard', () => {
     )
     expect(screen.getByText(/Sunday, December 6, 2026, 9:30 AM/)).toBeInTheDocument()
     expect(screen.getByRole('list', { name: 'How to attend' })).toBeInTheDocument()
+    expect(screen.queryByRole('link')).not.toBeInTheDocument()
+  })
+
+  it('links registration only when there is a link', () => {
+    render(
+      <EventCard
+        event={{ id: 'e', title: 'Special service', start: '2026-12-06T15:30:00Z', location: 'At the church', mode: 'both', registrationUrl: 'https://example.org/register' }}
+      />
+    )
+    expect(screen.getByRole('link', { name: /Register.*Special service/ })).toHaveAttribute('href', 'https://example.org/register')
   })
 })
 

@@ -96,3 +96,9 @@ export const SERMONS = {
   title: 'Hear the Word, wherever you are.',
   lead: 'Watch our services live on Sundays, or catch up on recent messages from Lewisville and DCLM Headquarters.',
 }
+
+export const EVENTS = {
+  eyebrow: 'Events',
+  title: 'This week at Deeper Life',
+  lead: 'Our weekly meetings and any special events. All times are Central.',
+}
