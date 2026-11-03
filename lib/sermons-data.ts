@@ -36,6 +36,11 @@ async function readLive(channelId: string) {
   }
 }
 
+/** Whether the channel is streaming right now; false when YouTube can't be read */
+export async function isLiveNow(channelId: string): Promise<boolean> {
+  return (await readLive(channelId)) !== null
+}
+
 export interface MessagesData {
   featured: FeaturedMessage
   /** Recent Lewisville uploads, or null when the feed could not be read */

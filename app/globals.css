@@ -60,6 +60,20 @@
   --shadow-md: 0 2px 4px -1px rgb(15 37 66 / 0.06), 0 10px 24px -6px rgb(15 37 66 / 0.12);
   --shadow-lg: 0 30px 60px -16px rgb(15 37 66 / 0.32), 0 8px 18px -8px rgb(15 37 66 / 0.18);
   --shadow-primary: 0 1px 2px rgb(120 10 15 / 0.25), 0 6px 16px -6px rgb(200 30 38 / 0.55);
+
+  /* Motion: 200ms or less, used only under motion-safe (DESIGN-SYSTEM.md) */
+  --animate-drawer-in: drawer-in 200ms ease-out;
+  --animate-header-in: header-in 200ms ease-out;
+  @keyframes drawer-in {
+    from {
+      transform: translateX(100%);
+    }
+  }
+  @keyframes header-in {
+    from {
+      transform: translateY(-100%);
+    }
+  }
 }
 
 @layer base {

@@ -44,3 +44,16 @@ export function formatTimeRange(start: string, end: string | null): string {
 export function formatServiceTime(service: Pick<ServiceTime, 'start' | 'end'>): string {
   return formatTimeRange(service.start, service.end)
 }
+
+/** Key of the main weekly service in siteSettings (RUNBOOK: "Don't change the Key") */
+export const MAIN_SERVICE_ID = 'sunday-worship'
+
+/** The main service, whose time the hero, info bar, header drawer and footer show */
+export function mainService(schedule: ServiceTime[]): ServiceTime | null {
+  return schedule.find((service) => service.id === MAIN_SERVICE_ID) ?? null
+}
+
+/** "Sunday 9:30 AM", the start only */
+export function serviceStart(service: Pick<ServiceTime, 'day' | 'start'>): string {
+  return `${service.day} ${formatClock(service.start)}`
+}
