@@ -56,7 +56,7 @@ describe('Input', () => {
     const input = screen.getByPlaceholderText('Custom')
 
     expect(input).toHaveClass('custom-class')
-    expect(input).toHaveClass('rounded-lg', 'border-border-input')
+    expect(input).toHaveClass('rounded-field', 'border-border-input', 'h-[52px]')
   })
 
   it('should handle defaultValue', () => {

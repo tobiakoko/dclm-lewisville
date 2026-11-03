@@ -5,28 +5,30 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
 /**
- * The only button styles on the site (DESIGN-SYSTEM.md, Components):
- * - primary: heaven-600 with white text; one per screen (Plan your visit, Give)
- * - secondary: navy outline
- * - onDark: white with navy text, for navy sections (red never sits on navy)
+ * The only button styles on the site (DESIGN-SYSTEM.md, Components), all pill-shaped:
+ * - primary: heaven-600 with white text; one per view (Plan your visit, Give)
+ * - secondary: white with navy text and a line-strong border
+ * - ghost: on navy or photo scrims, translucent white with a white border
+ * - light: white with navy text, for navy bands
  * - link: text link
  */
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 rounded-full font-semibold text-base leading-tight no-underline transition-colors duration-200 disabled:pointer-events-none disabled:opacity-60 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:pointer-events-none",
+  "inline-flex items-center justify-center gap-2.5 whitespace-nowrap rounded-pill border-[1.5px] border-transparent font-bold leading-none no-underline transition-colors duration-150 disabled:pointer-events-none disabled:opacity-60 [&_svg]:size-5 [&_svg]:shrink-0 [&_svg]:pointer-events-none",
   {
     variants: {
       variant: {
-        primary: "bg-heaven-600 text-white hover:bg-heaven-700 active:bg-heaven-700",
-        secondary: "border-2 border-navy-700 text-navy-700 bg-transparent hover:bg-navy-900 hover:text-white hover:border-navy-900",
-        onDark: "bg-white text-navy-900 hover:bg-emblem-sky-50",
-        link: "rounded-none px-0 text-emblem-sky-700 underline underline-offset-4 hover:text-navy-900",
+        primary: "bg-heaven-600 text-white shadow-primary hover:bg-heaven-700 active:bg-heaven-700",
+        secondary: "border-line-strong bg-white text-navy-900 hover:border-navy-900",
+        ghost: "border-white/50 bg-white/6 text-white hover:border-white hover:bg-white/14",
+        light: "bg-white text-navy-900 hover:bg-emblem-sky-50",
+        link: "rounded-none border-0 text-emblem-sky-700 underline decoration-[1.5px] underline-offset-4 hover:text-navy-900",
       },
       size: {
-        default: "min-h-12 px-6 py-3",
-        sm: "min-h-11 px-5 py-2.5",
+        default: "min-h-[52px] px-[26px] text-base",
+        sm: "min-h-11 px-5 text-[0.9375rem]",
       },
     },
-    compoundVariants: [{ variant: "link", className: "min-h-11 px-0 py-0" }],
+    compoundVariants: [{ variant: "link", className: "min-h-11 px-0" }],
     defaultVariants: {
       variant: "primary",
       size: "default",

@@ -39,7 +39,7 @@ export default async function EventsPage() {
 
       <Section id="special" tone="paper" title="Special events">
         {upcoming.length === 0 ? (
-          <EmptyState>{EVENTS_EMPTY_STATE}</EmptyState>
+          <EmptyState title={EVENTS_EMPTY_STATE} />
         ) : (
           <ul className="grid list-none gap-6 md:grid-cols-2">
             {upcoming.map((event) => (

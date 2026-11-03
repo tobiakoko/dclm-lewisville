@@ -80,7 +80,7 @@ Goal: the layout and component refresh in `REDESIGN.md` for **every route and sh
 
 - [x] 4.0 **Baseline.** Before changing anything, add a Playwright test that saves the visible `main` text of every page, and screenshot every page at 390 and 1440 px into `docs/build/redesign-before/` (not shipped). Gate 4 diffs against these. *Done: `npm run redesign:capture -- before` (fresh build on port 3100, live Sanity content); the text is in git, the screenshots stay local (gitignored). At Gate 4, run the capture with `after`, then `npm run redesign:diff`.*
 - [x] 4.1 **Tokens.** Add the new color, radius and shadow tokens and the type scale to `app/globals.css` (`DESIGN-SYSTEM.md`). Update the names test page.
-- [ ] 4.2 **Primitives.** Restyle Button (pill variants including `ghost` and `light`); add ArrowLink, Chip, IconTile, Eyebrow, Card, CardLine, CardDark, Panel; update the form fields (keeping `border-input`) and Alert. Unit-test the variants.
+- [x] 4.2 **Primitives.** Restyle Button (pill variants including `ghost` and `light`); add ArrowLink, Chip, IconTile, Eyebrow, Card, CardLine, CardDark, Panel; update the form fields (keeping `border-input`) and Alert. Unit-test the variants.
 - [ ] 4.3 **Section and PageHero.** Section tones and sizes with eyebrow, lead and action; the warm PageHero; EditorialRow.
 - [ ] 4.4 **Header.** Light and overlay tones, pill nav, watch link with the live state, Give, and the drawer restyle; the home-only switch to the sticky light header. Unit and e2e tests (keyboard, drawer, both tones, axe).
 - [ ] 4.5 **Footer.** CTA band, four columns, bottom bar.

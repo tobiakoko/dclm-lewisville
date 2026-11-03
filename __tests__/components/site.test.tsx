@@ -70,7 +70,7 @@ describe('Alert and EmptyState', () => {
   })
 
   it('renders the honest empty state text', () => {
-    render(<EmptyState>No special events right now.</EmptyState>)
+    render(<EmptyState title="No special events right now." />)
     expect(screen.getByText('No special events right now.')).toBeInTheDocument()
   })
 })
