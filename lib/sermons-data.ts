@@ -1,5 +1,5 @@
 import 'server-only'
-import { SITE_CONFIG } from '@/lib/constants'
+import type { SiteConfig } from '@/lib/constants'
 import {
   FEED_REVALIDATE_SECONDS,
   LIVE_REVALIDATE_SECONDS,
@@ -42,11 +42,11 @@ export interface MessagesData {
   lewisville: Video[] | null
 }
 
-export async function getMessages(now = new Date()): Promise<MessagesData> {
+export async function getMessages(config: Pick<SiteConfig, 'youtube' | 'dclm'>, now = new Date()): Promise<MessagesData> {
   const [live, lewisville, hq] = await Promise.all([
-    readLive(SITE_CONFIG.youtube.channelId),
-    readFeed(SITE_CONFIG.youtube.channelId, 'lewisville'),
-    readFeed(SITE_CONFIG.dclm.youtubeChannelId, 'hq'),
+    readLive(config.youtube.channelId),
+    readFeed(config.youtube.channelId, 'lewisville'),
+    readFeed(config.dclm.youtubeChannelId, 'hq'),
   ])
   return { featured: chooseFeatured({ live, lewisville, hq, now }), lewisville }
 }

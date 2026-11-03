@@ -36,7 +36,7 @@ describe('ContactForm', () => {
       })
     )
     const user = userEvent.setup()
-    render(<ContactForm />)
+    render(<ContactForm phone={SITE_CONFIG.phone} email={SITE_CONFIG.email} />)
     await fillAndSubmit(user)
 
     expect(await screen.findByText('Thank you. Your message has been sent to the church.')).toBeInTheDocument()
@@ -51,7 +51,7 @@ describe('ContactForm', () => {
   ])('says the message was not sent and shows the phone number when %s', async (_case, status) => {
     respondWith(status, { ok: false })
     const user = userEvent.setup()
-    render(<ContactForm />)
+    render(<ContactForm phone={SITE_CONFIG.phone} email={SITE_CONFIG.email} />)
     await fillAndSubmit(user)
 
     expect(await screen.findByText('Sorry, your message was not sent.')).toBeInTheDocument()
@@ -62,7 +62,7 @@ describe('ContactForm', () => {
   it('shows the phone number on a network error', async () => {
     server.use(http.post('/api/contact', () => HttpResponse.error()))
     const user = userEvent.setup()
-    render(<ContactForm />)
+    render(<ContactForm phone={SITE_CONFIG.phone} email={SITE_CONFIG.email} />)
     await fillAndSubmit(user)
     expect(await screen.findByText('Sorry, your message was not sent.')).toBeInTheDocument()
     expect(screen.getByRole('link', { name: SITE_CONFIG.phone })).toBeInTheDocument()
@@ -71,7 +71,7 @@ describe('ContactForm', () => {
   it('explains rate limiting', async () => {
     respondWith(429, { ok: false, error: 'rate-limited' })
     const user = userEvent.setup()
-    render(<ContactForm />)
+    render(<ContactForm phone={SITE_CONFIG.phone} email={SITE_CONFIG.email} />)
     await fillAndSubmit(user)
     expect(await screen.findByText('Too many messages in a short time.')).toBeInTheDocument()
   })
@@ -80,7 +80,7 @@ describe('ContactForm', () => {
     const onRequest = jest.fn()
     server.use(http.post('/api/contact', () => (onRequest(), HttpResponse.json({ ok: true }))))
     const user = userEvent.setup()
-    render(<ContactForm />)
+    render(<ContactForm phone={SITE_CONFIG.phone} email={SITE_CONFIG.email} />)
     await user.click(screen.getByRole('button', { name: 'Send message' }))
 
     const name = screen.getByLabelText(/^Name/)
@@ -98,7 +98,7 @@ describe('ContactForm', () => {
       })
     )
     const user = userEvent.setup()
-    render(<ContactForm topic="prayer" submitLabel="Send prayer request" />)
+    render(<ContactForm phone={SITE_CONFIG.phone} email={SITE_CONFIG.email} topic="prayer" submitLabel="Send prayer request" />)
     await user.type(screen.getByLabelText(/^Name/), 'Test Visitor')
     await user.type(screen.getByLabelText(/^Email/), 'visitor@example.com')
     await user.type(screen.getByLabelText(/^Prayer request/), 'Please pray for my mother.')
@@ -116,7 +116,7 @@ describe('ContactForm', () => {
       })
     )
     const user = userEvent.setup()
-    render(<ContactForm topic="ministry" ministry="Youth Ministry" />)
+    render(<ContactForm phone={SITE_CONFIG.phone} email={SITE_CONFIG.email} topic="ministry" ministry="Youth Ministry" />)
     expect(screen.getByText('Youth Ministry')).toBeInTheDocument()
     await fillAndSubmit(user)
     await screen.findByText('Thank you. Your message has been sent to the church.')
@@ -134,7 +134,7 @@ describe('Plan Your Visit form', () => {
       })
     )
     const user = userEvent.setup()
-    render(<ContactForm topic="visit" submitLabel="Let us know" />)
+    render(<ContactForm phone={SITE_CONFIG.phone} email={SITE_CONFIG.email} topic="visit" submitLabel="Let us know" />)
     await user.type(screen.getByLabelText(/^Name/), 'Test Visitor')
     await user.type(screen.getByLabelText(/^Email/), 'visitor@example.com')
     await user.click(screen.getByRole('button', { name: 'Let us know' }))

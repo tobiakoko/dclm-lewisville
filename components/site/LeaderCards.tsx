@@ -1,30 +1,36 @@
 import Image, { type StaticImageData } from 'next/image'
-import { LEADERS, type Leader } from '@/lib/content/site'
+import type { LeaderWithPhoto } from '@/lib/data'
+import { pickPhoto } from '@/components/site/photo'
 import { Paragraphs, InlineText } from '@/components/content/RichText'
 import { Disclosure } from '@/components/ui/disclosure'
 import PastorKumuyi from '@/app/assets/Pastor_Kumuyi.jpg'
 import PastorAderemi from '@/app/assets/Pastor_Aderemi.png'
 import PastorJoseph from '@/app/assets/Pastor_Joseph.jpeg'
 
-const PHOTOS: Record<Leader['id'], StaticImageData> = {
+// Real portraits bundled in app/assets, used until a photo is uploaded in Sanity
+const PHOTOS: Record<string, StaticImageData> = {
   kumuyi: PastorKumuyi,
   aderemi: PastorAderemi,
   agbo: PastorJoseph,
 }
 
 /** Photo, name, title, short bio and the full bio behind "Read more" */
-export function LeaderCard({ leader }: { leader: Leader }) {
+export function LeaderCard({ leader }: { leader: LeaderWithPhoto }) {
+  const bundled = PHOTOS[leader.id]
+  const photo = pickPhoto(leader.photo, bundled ? { src: bundled, alt: `Portrait of ${leader.name}` } : undefined)
   return (
     <article className="flex h-full flex-col overflow-hidden rounded-2xl border border-border-input/40 bg-white">
-      <div className="relative aspect-4/5 bg-paper">
-        <Image
-          src={PHOTOS[leader.id]}
-          alt={`Portrait of ${leader.name}`}
-          fill
-          sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-          className="object-cover object-top"
-        />
-      </div>
+      {photo && (
+        <div className="relative aspect-4/5 bg-paper">
+          <Image
+            src={photo.src}
+            alt={photo.alt}
+            fill
+            sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+            className="object-cover object-top"
+          />
+        </div>
+      )}
       <div className="flex flex-1 flex-col gap-4 p-6">
         <header>
           <p className="font-semibold text-ink-muted">{leader.title}</p>
@@ -48,10 +54,10 @@ export function LeaderCard({ leader }: { leader: Leader }) {
 }
 
 /** The three leaders in the approved order (SITE-CONTENT.md §5, Leadership) */
-export default function LeaderCards() {
+export default function LeaderCards({ leaders }: { leaders: LeaderWithPhoto[] }) {
   return (
     <ul className="grid list-none gap-8 sm:grid-cols-2 lg:grid-cols-3">
-      {LEADERS.map((leader) => (
+      {leaders.map((leader) => (
         <li key={leader.id}>
           <LeaderCard leader={leader} />
         </li>

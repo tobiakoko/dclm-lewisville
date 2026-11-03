@@ -31,6 +31,8 @@ npm run dev
 | `npm run lint` | ESLint |
 | `npm test` | Jest unit and integration tests (`__tests__/`) |
 | `npm run test:e2e` | Playwright end-to-end and axe checks (`e2e/`); run `npm run playwright:install` once first |
+| `npm run typegen` | Regenerate `sanity/types.generated.ts` after a schema or query change |
+| `npm run seed -- --dataset <name>` | Seed a Sanity dataset with the church's content (needs `SANITY_WRITE_TOKEN`; `--dry-run` to preview) |
 
 Before every commit: `npm run type-check && npm run lint && npm test`. Before finishing a phase, also run `npm run build` and `npm run test:e2e`.
 
@@ -45,7 +47,9 @@ Set them in `.env.local` locally and in the Vercel project settings for Preview 
 | `NEXT_PUBLIC_SANITY_DATASET` | Yes | Usually `production` |
 | `NEXT_PUBLIC_SANITY_API_VERSION` | No | Pinned API date; defaults to the one in `lib/env.ts` |
 | `SANITY_API_TOKEN` | No | Read-only token (never a write token) |
-| `SANITY_REVALIDATE_SECRET` | For the webhook | Shared secret for `/api/revalidate`, 16+ characters |
+| `SANITY_REVALIDATE_SECRET` | For the webhook | Secret the Sanity webhook signs with; `/api/revalidate` verifies the signature |
+| `SANITY_WRITE_TOKEN` | Seeding only | Editor token for `npm run seed`, set in your shell for that command; never in Vercel or the repo |
+| `SANITY_DEV_FALLBACK` | CI and e2e only | `true` builds from the seed content when the dataset is empty; refused on Vercel Production |
 | `RESEND_API_KEY` | For forms | Without it, forms show an error and the church phone number |
 | `CONTACT_INBOX` | For forms | Where form email goes. Production: `info@deeperlifelewisville.org`. Outside production it must be a different, test inbox |
 | `CONTACT_FROM` | For forms | Sender address on a domain verified in Resend |
@@ -56,9 +60,10 @@ Set them in `.env.local` locally and in the Vercel project settings for Preview 
 
 - `app/(site)/` pages; `app/api/` contact, health and revalidation routes; `app/studio/` Sanity Studio
 - `components/layout/` header and footer; `components/sections/` page sections; `components/ui/` primitives
-- `lib/constants.ts` branch facts, schedule and navigation (the single source for facts until Phase 3)
-- `lib/sanity/` client, queries and image helper; `sanity/schemas/` content types
-- `docs/build/` the build plan, approved site content and design system; `docs/archive/` superseded documents
+- Content lives in Sanity (Studio at `/studio`); `lib/data.ts` reads it with cache tags, and `/api/revalidate` refreshes pages on publish
+- `lib/constants.ts` and `lib/content/` are the seed data and the development fallback; production shows an error, never fallback content
+- `lib/sanity/` client, queries and seed documents; `sanity/schemas/` content types; `sanity/types.generated.ts` from TypeGen
+- `docs/build/` the build plan, approved site content and design system; `docs/RUNBOOK.md` and `docs/TRAINING.md` for staff; `docs/archive/` superseded documents
 
 ## Deployment
 

@@ -2,13 +2,17 @@ import type { Metadata } from 'next'
 import { PageHero } from '@/components/site/PageHero'
 import { Section } from '@/components/site/Section'
 import ContactForm from '@/components/ContactForm'
-import { OTHER_LOCATIONS, SITE_CONFIG, formatAddress, mapsUrl, telHref } from '@/lib/constants'
+import { formatAddress, mapsUrl, telHref } from '@/lib/constants'
+import { getSiteData } from '@/lib/data'
 import { MINISTRY_NAMES } from '@/lib/validations/contact'
 
-export const metadata: Metadata = {
-  title: 'Contact and Prayer',
-  description: `Phone, email, address and office hours for ${SITE_CONFIG.name}, and how to send a prayer request.`,
-  alternates: { canonical: '/contact' },
+export async function generateMetadata(): Promise<Metadata> {
+  const { config } = await getSiteData()
+  return {
+    title: 'Contact and Prayer',
+    description: `Phone, email, address and office hours for ${config.name}, and how to send a prayer request.`,
+    alternates: { canonical: '/contact' },
+  }
 }
 
 const linkClass = 'font-semibold text-emblem-sky-700 underline underline-offset-4'
@@ -18,7 +22,7 @@ export default async function ContactPage({
 }: {
   searchParams: Promise<{ topic?: string | string[] }>
 }) {
-  const { topic } = await searchParams
+  const [{ topic }, { config, otherLocations }] = await Promise.all([searchParams, getSiteData()])
   // "Send us a message" links from Ministries pass ?topic=<ministry name>
   const ministry = typeof topic === 'string' && MINISTRY_NAMES.includes(topic) ? topic : undefined
 
@@ -27,60 +31,60 @@ export default async function ContactPage({
       <PageHero title="Contact and Prayer" sentence="Call, email or send us a message. Prayer requests go to our pastor." />
 
       {/* Lewisville's details come first (SITE-CONTENT.md §8) */}
-      <Section id="details" title={SITE_CONFIG.name}>
+      <Section id="details" title={config.name}>
         <div className="grid gap-8 lg:grid-cols-2">
           <dl className="space-y-5">
             <div>
               <dt className="font-semibold text-navy-900">Phone</dt>
               <dd>
-                <a href={telHref(SITE_CONFIG.phone)} className={linkClass}>
-                  {SITE_CONFIG.phone}
+                <a href={telHref(config.phone)} className={linkClass}>
+                  {config.phone}
                 </a>
               </dd>
             </div>
             <div>
               <dt className="font-semibold text-navy-900">Email</dt>
               <dd>
-                <a href={`mailto:${SITE_CONFIG.email}`} className={`${linkClass} break-all`}>
-                  {SITE_CONFIG.email}
+                <a href={`mailto:${config.email}`} className={`${linkClass} break-all`}>
+                  {config.email}
                 </a>
               </dd>
             </div>
             <div>
               <dt className="font-semibold text-navy-900">Address</dt>
               <dd className="space-y-1">
-                <address className="not-italic">{formatAddress(SITE_CONFIG.address)}</address>
-                <a href={mapsUrl(SITE_CONFIG.address)} className={linkClass}>
+                <address className="not-italic">{formatAddress(config.address)}</address>
+                <a href={mapsUrl(config.address)} className={linkClass}>
                   Get directions
                 </a>
               </dd>
             </div>
             <div>
               <dt className="font-semibold text-navy-900">Office hours</dt>
-              <dd className="max-w-prose">{SITE_CONFIG.officeHours}</dd>
+              <dd className="max-w-prose">{config.officeHours}</dd>
             </div>
           </dl>
           <div className="h-80 overflow-hidden rounded-2xl border border-border-input/40">
             <iframe
-              src={`https://www.google.com/maps?q=${encodeURIComponent(formatAddress(SITE_CONFIG.address))}&output=embed`}
+              src={`https://www.google.com/maps?q=${encodeURIComponent(formatAddress(config.address))}&output=embed`}
               className="size-full border-0"
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
-              title={`Map showing ${formatAddress(SITE_CONFIG.address)}`}
+              title={`Map showing ${formatAddress(config.address)}`}
             />
           </div>
         </div>
       </Section>
 
       <Section id="contact-form" tone="paper" title="Send us a message">
-        <ContactForm topic={ministry ? 'ministry' : 'contact'} ministry={ministry} />
+        <ContactForm phone={config.phone} email={config.email} topic={ministry ? 'ministry' : 'contact'} ministry={ministry} />
       </Section>
 
       <Section id="prayer" title="Prayer requests" intro={<p>Prayer requests are read by our pastor.</p>}>
-        <ContactForm topic="prayer" submitLabel="Send prayer request" />
+        <ContactForm phone={config.phone} email={config.email} topic="prayer" submitLabel="Send prayer request" />
         <p className="mt-8">
           You can also use the{' '}
-          <a href={SITE_CONFIG.dclm.prayerRequestHub} className={linkClass}>
+          <a href={config.dclm.prayerRequestHub} className={linkClass}>
             DCLM Prayer Request Hub
           </a>
           .
@@ -89,7 +93,7 @@ export default async function ContactPage({
 
       <Section id="other-locations" tone="paper" title="Our other locations">
         <ul className="grid list-none gap-6 md:grid-cols-2">
-          {OTHER_LOCATIONS.map((location) => (
+          {otherLocations.map((location) => (
             <li key={location.name} className="space-y-2 rounded-2xl border border-border-input/40 bg-white p-6">
               <h3>{location.name}</h3>
               <address className="not-italic">{formatAddress(location.address)}</address>

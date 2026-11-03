@@ -6,17 +6,21 @@ import { SermonCard } from '@/components/site/SermonCard'
 import { Alert } from '@/components/site/Alert'
 import { buttonVariants } from '@/components/ui/button'
 import { getMessages } from '@/lib/sermons-data'
-import { SITE_CONFIG } from '@/lib/constants'
+import { getSiteData } from '@/lib/data'
 import congregationPrayer from '@/app/assets/CongregationPrayer.jpeg'
 
-export const metadata: Metadata = {
-  title: 'Sermons',
-  description: `Watch ${SITE_CONFIG.name} services live on YouTube on Sundays at 9:30 AM, and catch up on recent messages.`,
-  alternates: { canonical: '/sermons' },
+export async function generateMetadata(): Promise<Metadata> {
+  const { config } = await getSiteData()
+  return {
+    title: 'Sermons',
+    description: `Watch ${config.name} services live on YouTube on Sundays, and catch up on recent messages.`,
+    alternates: { canonical: '/sermons' },
+  }
 }
 
 export default async function SermonsPage() {
-  const { featured, lewisville } = await getMessages()
+  const { config, schedule } = await getSiteData()
+  const { featured, lewisville } = await getMessages(config)
   const featuredId = featured.kind === 'unavailable' ? null : featured.video.id
   const recent = (lewisville ?? []).filter((video) => video.id !== featuredId).slice(0, 6)
 
@@ -25,7 +29,7 @@ export default async function SermonsPage() {
       <PageHero title="Sermons" sentence="Watch our services live on Sundays, or catch up on recent messages." photo={congregationPrayer} />
 
       <Section id="latest" title="Latest message">
-        <FeaturedMessage featured={featured} />
+        <FeaturedMessage featured={featured} config={config} schedule={schedule} />
       </Section>
 
       <Section id="recent" tone="paper" title="Recent services from Lewisville">
@@ -33,7 +37,7 @@ export default async function SermonsPage() {
           <Alert tone="info" title="We couldn’t load our recent services right now.">
             <p>
               They are all on{' '}
-              <a href={SITE_CONFIG.youtube.channel} className="font-semibold underline underline-offset-4">
+              <a href={config.youtube.channel} className="font-semibold underline underline-offset-4">
                 our YouTube channel
               </a>
               .
@@ -49,7 +53,7 @@ export default async function SermonsPage() {
           </ul>
         )}
         <p className="mt-8">
-          <a href={SITE_CONFIG.youtube.channel} className={buttonVariants({ variant: 'secondary' })}>
+          <a href={config.youtube.channel} className={buttonVariants({ variant: 'secondary' })}>
             All videos on YouTube
           </a>
         </p>
@@ -58,12 +62,12 @@ export default async function SermonsPage() {
       <Section id="headquarters" title="From DCLM Headquarters, Lagos">
         <ul className="list-disc space-y-2 pl-6">
           <li>
-            <a href={SITE_CONFIG.dclm.webcast} className="font-semibold text-emblem-sky-700 underline underline-offset-4">
+            <a href={config.dclm.webcast} className="font-semibold text-emblem-sky-700 underline underline-offset-4">
               webcast.dclm.org
             </a>
           </li>
           <li>
-            <a href={SITE_CONFIG.dclm.followUs} className="font-semibold text-emblem-sky-700 underline underline-offset-4">
+            <a href={config.dclm.followUs} className="font-semibold text-emblem-sky-700 underline underline-offset-4">
               dclm.org/followus
             </a>
           </li>

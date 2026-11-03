@@ -54,7 +54,7 @@ export interface SiteConfig {
 }
 
 export type ServiceMode = 'in-person' | 'online' | 'both'
-export type ServiceDay = 'Sunday' | 'Monday' | 'Tuesday' | 'Friday'
+export type ServiceDay = 'Sunday' | 'Monday' | 'Tuesday' | 'Wednesday' | 'Thursday' | 'Friday' | 'Saturday'
 
 export interface ServiceTime {
   id: string

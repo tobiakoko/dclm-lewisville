@@ -1,20 +1,19 @@
-import { SERVICE_TIMES, SITE_CONFIG } from '@/lib/constants'
+import type { ServiceTime, SiteConfig } from '@/lib/constants'
 import { formatClock } from '@/lib/schedule'
 import type { FeaturedMessage as Featured } from '@/lib/sermons'
 import { LiteYouTube } from '@/components/site/LiteYouTube'
 import { SourceBadge, formatVideoDate } from '@/components/site/SermonCard'
 import { Alert } from '@/components/site/Alert'
 
-const sundayWorship = SERVICE_TIMES.find((service) => service.id === 'sunday-worship')
-
 /** "Next live: Sunday 9:30 AM CT on <streams link>" (SITE-CONTENT.md §7) */
-export function NextLiveLine() {
+export function NextLiveLine({ config, schedule }: { config: SiteConfig; schedule: ServiceTime[] }) {
+  const sundayWorship = schedule.find((service) => service.day === 'Sunday' && service.mode !== 'online')
   if (!sundayWorship) return null
   return (
     <p>
       Next live: {sundayWorship.day} {formatClock(sundayWorship.start)} CT on{' '}
-      <a href={SITE_CONFIG.youtube.streams} className="break-all font-semibold text-emblem-sky-700 underline underline-offset-4">
-        {SITE_CONFIG.youtube.streams.replace('https://www.', '')}
+      <a href={config.youtube.streams} className="break-all font-semibold text-emblem-sky-700 underline underline-offset-4">
+        {config.youtube.streams.replace('https://www.', '')}
       </a>
     </p>
   )
@@ -24,7 +23,17 @@ export function NextLiveLine() {
  * The top slot: live now; otherwise the latest real Lewisville service; otherwise the latest
  * headquarters message, clearly labeled. Never a placeholder sermon or speaker.
  */
-export function FeaturedMessage({ featured, headingLevel = 3 }: { featured: Featured; headingLevel?: 2 | 3 }) {
+export function FeaturedMessage({
+  featured,
+  config,
+  schedule,
+  headingLevel = 3,
+}: {
+  featured: Featured
+  config: SiteConfig
+  schedule: ServiceTime[]
+  headingLevel?: 2 | 3
+}) {
   const Heading = headingLevel === 2 ? 'h2' : 'h3'
 
   if (featured.kind === 'unavailable') {
@@ -32,7 +41,7 @@ export function FeaturedMessage({ featured, headingLevel = 3 }: { featured: Feat
       <Alert tone="info" title="We couldn’t load the latest videos right now.">
         <p>
           Watch on{' '}
-          <a href={SITE_CONFIG.youtube.channel} className="font-semibold underline underline-offset-4">
+          <a href={config.youtube.channel} className="font-semibold underline underline-offset-4">
             our YouTube channel
           </a>{' '}
           instead.
@@ -66,7 +75,7 @@ export function FeaturedMessage({ featured, headingLevel = 3 }: { featured: Feat
             </p>
           </>
         )}
-        <NextLiveLine />
+        <NextLiveLine config={config} schedule={schedule} />
       </div>
     </div>
   )

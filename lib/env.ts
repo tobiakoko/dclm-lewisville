@@ -73,3 +73,9 @@ const inboxProblem = process.env.SKIP_ENV_VALIDATION
   ? null
   : contactInboxProblem(env.CONTACT_INBOX, deploymentEnv(env.VERCEL_ENV))
 if (inboxProblem) throw new Error(`❌ Invalid environment variables: ${inboxProblem}`)
+
+// The seed-content fallback is for CI and local test builds only; the live site must render an
+// error rather than fallback content if Sanity fails (CLAUDE.md rule 5)
+if (process.env.SANITY_DEV_FALLBACK === 'true' && env.VERCEL_ENV === 'production') {
+  throw new Error('❌ Invalid environment variables: SANITY_DEV_FALLBACK must not be set in production.')
+}

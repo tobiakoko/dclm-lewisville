@@ -6,7 +6,7 @@ import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import * as Dialog from '@radix-ui/react-dialog'
 import { Menu, X } from 'lucide-react'
-import { GIVE_LINK, NAV_LINKS, SITE_CONFIG } from '@/lib/constants'
+import { GIVE_LINK, NAV_LINKS } from '@/lib/constants'
 import { trackGiveClick, trackNavigation } from '@/lib/analytics'
 import { buttonVariants } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
@@ -15,8 +15,8 @@ function isCurrent(pathname: string, href: string) {
   return pathname === href || pathname.startsWith(`${href}/`)
 }
 
-function Brand() {
-  const [church, city] = SITE_CONFIG.shortName.split(' · ')
+function Brand({ shortName }: { shortName: string }) {
+  const [church, city] = shortName.split(' · ')
   return (
     <Link href="/" className="flex min-h-11 items-center gap-3 no-underline" onClick={() => trackNavigation('/', 'header_logo')}>
       <Image src="/dclm_logo.png" alt="" width={44} height={40} priority className="h-10 w-auto" />
@@ -34,7 +34,7 @@ function Brand() {
  * with a focus trap, Esc to close and a visible close button; it closes on navigation and is
  * removed from the page (and the tab order) while closed.
  */
-export default function Header() {
+export default function Header({ shortName }: { shortName: string }) {
   const pathname = usePathname()
   const [menu, setMenu] = useState<{ open: boolean; path: string }>({ open: false, path: pathname })
   // Close on route change without an effect: the open state belongs to the path it was opened on
@@ -50,7 +50,7 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-40 border-b border-border-input/40 bg-white">
       <div className="mx-auto flex max-w-content items-center justify-between gap-4 px-4 py-2 sm:px-6 lg:px-8">
-        <Brand />
+        <Brand shortName={shortName} />
 
         <nav aria-label="Main" className="hidden lg:block">
           <ul className="flex list-none items-center gap-5">

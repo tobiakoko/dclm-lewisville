@@ -1,15 +1,16 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { MINISTRIES } from '@/lib/content/site'
+import type { MinistryWithDetails } from '@/lib/data'
 import { MINISTRY_PHOTOS } from '@/components/site/ministry-photos'
+import { pickPhoto } from '@/components/site/photo'
 import { Section } from '@/components/site/Section'
 
 const PREVIEW = ['women', 'children', 'youth']
 
-export default function MinistriesPreview() {
+export default function MinistriesPreview({ ministries }: { ministries: MinistryWithDetails[] }) {
   const items = PREVIEW.flatMap((slug) => {
-    const ministry = MINISTRIES.find((m) => m.slug === slug)
-    const photo = MINISTRY_PHOTOS[slug]
+    const ministry = ministries.find((m) => m.slug === slug)
+    const photo = pickPhoto(ministry?.photo, MINISTRY_PHOTOS[slug])
     return ministry && photo ? [{ ministry, photo }] : []
   })
 

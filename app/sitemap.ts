@@ -1,7 +1,7 @@
 import type { MetadataRoute } from 'next'
-import { groq } from 'next-sanity'
 import { SITE_CONFIG } from '@/lib/constants'
-import { client } from '@/lib/sanity/client'
+import { sanityFetch } from '@/lib/sanity/fetch'
+import { SERMON_SLUGS_QUERY } from '@/lib/sanity/queries'
 import { PUBLIC_PATHS } from '@/lib/routes'
 
 const PRIORITY: Record<string, number> = { '/': 1, '/visit': 0.9, '/about': 0.8, '/sermons': 0.8 }
@@ -18,9 +18,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Sermon pages exist only for real Sanity documents. Ministry URLs redirect to /ministries
   // until a ministry has its own document (BUILD-PLAN 2.8), so they aren't listed.
   // A Sanity error fails the sitemap rather than publishing a partial one (CLAUDE.md rule 5).
-  const sermons = await client.fetch<{ slug: string; updatedAt: string }[]>(
-    groq`*[_type == "sermon" && defined(slug.current)]{ "slug": slug.current, "updatedAt": _updatedAt }`
-  )
+  const sermons = await sanityFetch({ query: SERMON_SLUGS_QUERY, tags: ['sermon'] })
 
   return [
     ...pages,

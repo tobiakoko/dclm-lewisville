@@ -2,21 +2,21 @@ import { readFile } from 'node:fs/promises'
 import path from 'node:path'
 import { ImageResponse } from 'next/og'
 import { SITE_CONFIG, formatAddress } from '@/lib/constants'
+import { getSiteData } from '@/lib/data'
 
 export const alt = `${SITE_CONFIG.name}: members of the congregation together for a group photo`
 export const size = { width: 1200, height: 630 }
 export const contentType = 'image/png'
 
-async function dataUrl(file: string, mime: string) {
-  const bytes = await readFile(path.join(process.cwd(), file))
-  return `data:${mime};base64,${bytes.toString('base64')}`
-}
+// Paths are written out in full so the build traces only these two files, not the whole project
+const toDataUrl = (bytes: Buffer, mime: string) => `data:${mime};base64,${bytes.toString('base64')}`
 
 /** Share image (BUILD-PLAN 2.14): a real congregation photo, the emblem and the church's name */
 export default async function OpenGraphImage() {
-  const [photo, emblem] = await Promise.all([
-    dataUrl('app/_og/congregation-1200.jpg', 'image/jpeg'),
-    dataUrl('public/dclm_logo.png', 'image/png'),
+  const [{ config }, photo, emblem] = await Promise.all([
+    getSiteData(),
+    readFile(path.join(process.cwd(), 'app', '_og', 'congregation-1200.jpg')).then((b) => toDataUrl(b, 'image/jpeg')),
+    readFile(path.join(process.cwd(), 'public', 'dclm_logo.png')).then((b) => toDataUrl(b, 'image/png')),
   ])
 
   return new ImageResponse(
@@ -40,8 +40,8 @@ export default async function OpenGraphImage() {
         >
           <img src={emblem} alt="" width={150} height={135} />
           <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-            <div style={{ fontSize: 56, fontWeight: 700, lineHeight: 1.1 }}>{SITE_CONFIG.name}</div>
-            <div style={{ fontSize: 30 }}>{formatAddress(SITE_CONFIG.address)}</div>
+            <div style={{ fontSize: 56, fontWeight: 700, lineHeight: 1.1 }}>{config.name}</div>
+            <div style={{ fontSize: 30 }}>{formatAddress(config.address)}</div>
           </div>
         </div>
       </div>

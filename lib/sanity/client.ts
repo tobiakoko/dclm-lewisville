@@ -16,6 +16,8 @@ export const client = createClient({
   apiVersion: SANITY_API_VERSION,
   // Only published documents reach the public site, never drafts
   perspective: 'published',
-  useCdn: process.env.NODE_ENV === 'production', // Use CDN in production with webhook revalidation
+  // Next.js caches every page and the webhook refreshes it on publish, so read the live API:
+  // the Sanity CDN can still hold the old answer right after a publish
+  useCdn: false,
   token: process.env.SANITY_API_TOKEN,
 })

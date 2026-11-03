@@ -4,21 +4,24 @@ import { Section } from '@/components/site/Section'
 import { ServiceTimesCard } from '@/components/site/ServiceTimesCard'
 import { EventCard } from '@/components/site/EventCard'
 import { EmptyState } from '@/components/site/Alert'
-import { SERVICE_TIMES, SITE_CONFIG } from '@/lib/constants'
-import { EVENTS_EMPTY_STATE, upcomingEvents, type ChurchEvent } from '@/lib/events'
+import { EVENTS_EMPTY_STATE } from '@/lib/events'
+import { getSiteData, getUpcomingEvents } from '@/lib/data'
 
-export const metadata: Metadata = {
-  title: 'Events',
-  description: `Weekly services and special events at ${SITE_CONFIG.name}. All times Central.`,
-  alternates: { canonical: '/events' },
+export async function generateMetadata(): Promise<Metadata> {
+  const { config } = await getSiteData()
+  return {
+    title: 'Events',
+    description: `Weekly services and special events at ${config.name}. All times Central.`,
+    alternates: { canonical: '/events' },
+  }
 }
 
-// Special events come from Sanity in Phase 3. Until then there are none to show,
-// and past events must never appear as upcoming (SITE-CONTENT.md §9).
-const SPECIAL_EVENTS: ChurchEvent[] = []
+// Special events come from Sanity; past events never appear as upcoming (SITE-CONTENT.md §9).
+// Cached pages refresh when an event is published, and at least hourly so a finished event drops off.
+export const revalidate = 3600
 
-export default function EventsPage() {
-  const upcoming = upcomingEvents(SPECIAL_EVENTS, new Date())
+export default async function EventsPage() {
+  const [{ schedule }, upcoming] = await Promise.all([getSiteData(), getUpcomingEvents(new Date())])
 
   return (
     <>
@@ -26,7 +29,7 @@ export default function EventsPage() {
 
       <Section id="weekly" title="Every week">
         <ul className="grid list-none gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {SERVICE_TIMES.map((service) => (
+          {schedule.map((service) => (
             <li key={service.id}>
               <ServiceTimesCard service={service} />
             </li>
