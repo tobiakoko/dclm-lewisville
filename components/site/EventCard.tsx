@@ -1,6 +1,6 @@
 import { SITE_CONFIG } from '@/lib/constants'
 import { formatEventStart, type ChurchEvent } from '@/lib/events'
-import { ModeChips } from '@/components/site/ServiceTimesCard'
+import { ModeChips } from '@/components/site/Schedule'
 import { ArrowLink } from '@/components/ui/arrow-link'
 
 function dateBox(start: string) {

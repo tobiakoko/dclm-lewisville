@@ -1,10 +1,4 @@
-import type { ServiceMode, ServiceTime } from '@/lib/constants'
-
-export const MODE_LABEL: Record<ServiceMode, string> = {
-  'in-person': 'In person',
-  online: 'Online',
-  both: 'In person and online',
-}
+import type { ServiceTime } from '@/lib/constants'
 
 function parseClock(value: string): { hour: number; minute: number } {
   const match = /^([01]\d|2[0-3]):([0-5]\d)$/.exec(value)

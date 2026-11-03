@@ -1,5 +1,5 @@
 import { render, screen } from '@/__tests__/utils/test-utils'
-import { MinistryRow, splitCrisisNotice } from '@/components/site/MinistryCard'
+import { MinistryRow, splitCrisisNotice } from '@/components/site/Ministry'
 import { MINISTRIES, OUTREACH } from '@/lib/content/site'
 import { plainText } from '@/lib/content/inline'
 

@@ -1,4 +1,4 @@
-import type { MinistryPhoto } from '@/components/site/MinistryCard'
+import type { MinistryPhoto } from '@/components/site/Ministry'
 import Women from '@/app/assets/women_ministry.jpeg'
 import Children from '@/app/assets/ChildrenMinistry.jpeg'
 import Youth from '@/app/assets/YouthMinistry.jpeg'

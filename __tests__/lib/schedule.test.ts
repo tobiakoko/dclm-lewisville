@@ -1,4 +1,4 @@
-import { MODE_LABEL, formatClock, formatTimeRange, formatServiceTime, mainService, serviceStart } from '@/lib/schedule'
+import { formatClock, formatTimeRange, formatServiceTime, mainService, serviceStart } from '@/lib/schedule'
 import { SERVICE_TIMES } from '@/lib/constants'
 
 describe('schedule formatting', () => {
@@ -25,9 +25,6 @@ describe('schedule formatting', () => {
     expect(() => formatClock('25:00')).toThrow()
   })
 
-  it('labels every mode', () => {
-    expect(MODE_LABEL).toEqual({ 'in-person': 'In person', online: 'Online', both: 'In person and online' })
-  })
 })
 
 describe('main service', () => {

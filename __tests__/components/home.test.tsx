@@ -8,7 +8,7 @@ import { QuickInfo } from '@/components/sections/home/QuickInfo'
 import { PastorsWelcome } from '@/components/sections/home/PastorsWelcome'
 import { LatestMessage } from '@/components/sections/home/LatestMessage'
 import MinistriesPreview from '@/components/sections/home/MinistriesPreview'
-import { DayTile, ScheduleRow } from '@/components/site/ServiceTimesCard'
+import { DayTile, ScheduleRow } from '@/components/site/Schedule'
 import type { Video } from '@/lib/sermons'
 
 jest.mock('next/image', () => ({
