@@ -57,3 +57,9 @@ export function mainService(schedule: ServiceTime[]): ServiceTime | null {
 export function serviceStart(service: Pick<ServiceTime, 'day' | 'start'>): string {
   return `${service.day} ${formatClock(service.start)}`
 }
+
+/** "Next live: Sunday, 9:30 AM CT", from the main service; null without one */
+export function nextLiveText(schedule: ServiceTime[]): string | null {
+  const main = mainService(schedule)
+  return main ? `Next live: ${main.day}, ${formatClock(main.start)} CT` : null
+}

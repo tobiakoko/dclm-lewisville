@@ -90,3 +90,9 @@ export const MINISTRIES_PAGE = {
   /** Restates the approved Young Adults text ("on fire for the things of God … no matter the cost") */
   youngAdultsLine: 'On fire for the things of God — no matter the cost.',
 }
+
+export const SERMONS = {
+  eyebrow: 'Sermons',
+  title: 'Hear the Word, wherever you are.',
+  lead: 'Watch our services live on Sundays, or catch up on recent messages from Lewisville and DCLM Headquarters.',
+}

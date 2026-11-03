@@ -11,7 +11,7 @@ const HEADINGS: Record<PublicPath, RegExp> = {
   '/visit': /^We’d love to meet you this Sunday\.$/,
   '/about': /^A Bible-centered church family in Lewisville\.$/,
   '/ministries': /^Find your place to grow and serve\.$/,
-  '/sermons': /^Sermons$/,
+  '/sermons': /^Hear the Word, wherever you are\.$/,
   '/events': /^Events$/,
   '/contact': /^Contact and Prayer$/,
   '/give': /^Give$/,
@@ -185,9 +185,10 @@ test.describe('visit', () => {
 test.describe('sermons', () => {
   test('the top slot shows a real video or an honest message, never a placeholder', async ({ page }) => {
     await page.goto('/sermons')
-    const latest = page.locator('#latest')
-    await expect(latest.getByRole('button', { name: /^Play/ }).or(latest.getByText('We couldn’t load the latest videos right now.'))).toBeVisible()
-    await expect(latest.getByText(/Next live: Sunday 9:30 AM CT/)).toBeVisible()
+    const header = page.locator('main header').first()
+    await expect(header.getByRole('button', { name: /^Play video/ }).or(header.getByText('We couldn’t load the latest videos right now.'))).toBeVisible()
+    // The next stream shows whether or not YouTube can be read
+    await expect(header.getByText('Next live: Sunday, 9:30 AM CT')).toBeVisible()
   })
 
   test('loads the player only after Play is pressed', async ({ page }) => {

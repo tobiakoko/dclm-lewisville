@@ -1,41 +1,57 @@
 import Image from 'next/image'
 import { SITE_CONFIG } from '@/lib/constants'
 import { thumbnailUrl, videoUrl, type SermonSource, type Video } from '@/lib/sermons'
+import { ArrowLink } from '@/components/ui/arrow-link'
+import { Chip } from '@/components/ui/chip'
 
 export const SOURCE_LABEL: Record<SermonSource, string> = {
   lewisville: 'Lewisville',
   hq: 'DCLM Headquarters',
 }
 
-export function SourceBadge({ source }: { source: SermonSource }) {
-  return (
-    <span className="inline-block rounded-full border border-navy-700 px-3 py-0.5 text-[0.9375rem] font-semibold text-navy-900">
-      {SOURCE_LABEL[source]}
-    </span>
-  )
+/** The source label on featured messages and sermon pages (REDESIGN.md §3.6) */
+export const SOURCE_CHIP: Record<SermonSource, string> = {
+  lewisville: 'Lewisville',
+  hq: 'From DCLM Headquarters, Lagos',
+}
+
+export function SourceChip({ source, tone }: { source: SermonSource; tone?: 'default' | 'dark' }) {
+  return <Chip tone={tone}>{SOURCE_CHIP[source]}</Chip>
 }
 
 export function formatVideoDate(published: string): string {
   return new Intl.DateTimeFormat('en-US', { timeZone: SITE_CONFIG.timeZone, dateStyle: 'long' }).format(new Date(published))
 }
 
-/** Title, date and source badge. YouTube feeds carry no speaker, so none is shown or guessed. */
-export function SermonCard({ video }: { video: Video }) {
+function dateParts(published: string) {
+  const format = (options: Intl.DateTimeFormatOptions) =>
+    new Intl.DateTimeFormat('en-US', { timeZone: SITE_CONFIG.timeZone, ...options }).format(new Date(published))
+  return { month: format({ month: 'short' }), day: format({ day: 'numeric' }) }
+}
+
+/**
+ * Thumbnail with a date tile, title, "<church> · date" and a Watch link. YouTube feeds carry no
+ * speaker, so none is shown or guessed.
+ */
+export function SermonCard({ video, churchName }: { video: Video; churchName: string }) {
+  const { month, day } = dateParts(video.published)
   return (
-    <article className="flex h-full flex-col overflow-hidden rounded-2xl border border-border-input/40 bg-white">
+    <article className="flex h-full flex-col overflow-hidden rounded-card bg-white shadow-md">
       <div className="relative aspect-video bg-navy-950">
-        <Image src={thumbnailUrl(video.id)} alt="" fill sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw" className="object-cover" />
+        <Image src={thumbnailUrl(video.id)} alt="" fill sizes="(min-width: 960px) 380px, (min-width: 640px) 50vw, 100vw" className="object-cover" />
+        <span aria-hidden="true" className="absolute left-3 top-3 flex size-14 flex-col items-center justify-center rounded-field bg-navy-900 text-white">
+          <span className="text-sm font-bold uppercase leading-none tracking-[0.08em] text-emblem-sky-400">{month}</span>
+          <span className="mt-1 font-serif text-xl font-semibold leading-none">{day}</span>
+        </span>
       </div>
-      <div className="flex flex-1 flex-col gap-2 p-5">
-        <SourceBadge source={video.source} />
-        <h3 className="text-lg">
-          <a href={videoUrl(video.id)} className="no-underline hover:underline">
-            {video.title}
-          </a>
-        </h3>
-        <p className="mt-auto text-[0.9375rem] text-ink-muted">
-          <time dateTime={video.published}>{formatVideoDate(video.published)}</time>
+      <div className="flex flex-1 flex-col gap-2 p-6">
+        <h3 className="type-h4">{video.title}</h3>
+        <p className="text-[0.9375rem] text-ink-muted">
+          {video.source === 'lewisville' ? churchName : SOURCE_LABEL.hq} · <time dateTime={video.published}>{formatVideoDate(video.published)}</time>
         </p>
+        <ArrowLink href={videoUrl(video.id)} className="mt-auto">
+          Watch<span className="sr-only">: {video.title}</span>
+        </ArrowLink>
       </div>
     </article>
   )

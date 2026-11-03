@@ -1,22 +1,14 @@
-import { mainService, formatClock } from '@/lib/schedule'
+import { nextLiveText } from '@/lib/schedule'
 import type { ServiceTime, SiteConfig } from '@/lib/constants'
 import { videoUrl, type FeaturedMessage, type Video } from '@/lib/sermons'
 import { HOME } from '@/lib/content/interface'
 import { Section } from '@/components/site/Section'
 import { LiteYouTube } from '@/components/site/LiteYouTube'
-import { MiniSermonRow, formatVideoDate } from '@/components/site/SermonCard'
+import { MiniSermonRow, SOURCE_CHIP, formatVideoDate } from '@/components/site/SermonCard'
 import { Alert } from '@/components/site/Alert'
 import { ArrowLink } from '@/components/ui/arrow-link'
 import { Chip } from '@/components/ui/chip'
 import { buttonVariants } from '@/components/ui/button'
-
-const SOURCE_CHIP = { lewisville: 'Lewisville', hq: 'From DCLM Headquarters, Lagos' } as const
-
-/** "Next live: Sunday, 9:30 AM CT", from the main service */
-export function nextLiveText(schedule: ServiceTime[]): string | null {
-  const main = mainService(schedule)
-  return main ? `Next live: ${main.day}, ${formatClock(main.start)} CT` : null
-}
 
 /**
  * The page's one navy band (REDESIGN.md §3.6): the live, latest or headquarters message, and up to

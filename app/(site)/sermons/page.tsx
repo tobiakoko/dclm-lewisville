@@ -1,13 +1,16 @@
 import type { Metadata } from 'next'
 import { PageHero } from '@/components/site/PageHero'
 import { Section } from '@/components/site/Section'
-import { FeaturedMessage } from '@/components/site/FeaturedMessage'
-import { SermonCard } from '@/components/site/SermonCard'
+import { LiteYouTube } from '@/components/site/LiteYouTube'
+import { NextLiveCard } from '@/components/site/NextLiveCard'
+import { SermonCard, SourceChip, formatVideoDate } from '@/components/site/SermonCard'
 import { Alert } from '@/components/site/Alert'
+import { ArrowLink } from '@/components/ui/arrow-link'
+import { Chip } from '@/components/ui/chip'
 import { buttonVariants } from '@/components/ui/button'
+import { SERMONS } from '@/lib/content/interface'
 import { getMessages } from '@/lib/sermons-data'
 import { getSiteData } from '@/lib/data'
-import congregationPrayer from '@/app/assets/CongregationPrayer.jpeg'
 
 export async function generateMetadata(): Promise<Metadata> {
   const { config } = await getSiteData()
@@ -24,15 +27,53 @@ export default async function SermonsPage() {
   const featuredId = featured.kind === 'unavailable' ? null : featured.video.id
   const recent = (lewisville ?? []).filter((video) => video.id !== featuredId).slice(0, 6)
 
+  // The top slot: live now, the latest Lewisville service, or the latest headquarters message;
+  // never a placeholder video
+  const media =
+    featured.kind === 'unavailable' ? (
+      <Alert tone="info" title="We couldn’t load the latest videos right now.">
+        <p>
+          Watch on{' '}
+          <a href={config.youtube.channel} className="font-semibold underline underline-offset-4">
+            our YouTube channel
+          </a>{' '}
+          instead.
+        </p>
+      </Alert>
+    ) : (
+      <figure id="latest">
+        <LiteYouTube id={featured.video.id} title={featured.video.title ?? 'Live service'} sizes="(min-width: 960px) 560px, 100vw" />
+        <figcaption className="mt-4 flex flex-col items-start gap-2">
+          {featured.kind === 'live' ? (
+            <Chip tone="red">Live now</Chip>
+          ) : (
+            <SourceChip source={featured.video.source} />
+          )}
+          <span className="type-h4 text-navy-900">{featured.video.title ?? 'Live service'}</span>
+          {featured.kind !== 'live' && (
+            <time dateTime={featured.video.published} className="text-base text-ink-muted">
+              {formatVideoDate(featured.video.published)}
+            </time>
+          )}
+        </figcaption>
+      </figure>
+    )
+
   return (
     <>
-      <PageHero title="Sermons" lead="Watch our services live on Sundays, or catch up on recent messages." photo={congregationPrayer} />
+      <PageHero eyebrow={SERMONS.eyebrow} title={SERMONS.title} lead={SERMONS.lead} media={media}>
+        <NextLiveCard schedule={schedule} streamsUrl={config.youtube.streams} />
+      </PageHero>
 
-      <Section id="latest" title="Latest message">
-        <FeaturedMessage featured={featured} config={config} schedule={schedule} />
-      </Section>
-
-      <Section id="recent" tone="paper" title="Recent services from Lewisville">
+      <Section
+        id="recent"
+        title="Recent services from Lewisville"
+        action={
+          <a href={config.youtube.channel} className={buttonVariants({ variant: 'secondary' })}>
+            All videos on YouTube
+          </a>
+        }
+      >
         {lewisville === null ? (
           <Alert tone="info" title="We couldn’t load our recent services right now.">
             <p>
@@ -44,32 +85,23 @@ export default async function SermonsPage() {
             </p>
           </Alert>
         ) : (
-          <ul className="grid list-none gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <ul className="grid list-none gap-6 sm:grid-cols-2 wide:grid-cols-3">
             {recent.map((video) => (
               <li key={video.id}>
-                <SermonCard video={video} />
+                <SermonCard video={video} churchName={config.name} />
               </li>
             ))}
           </ul>
         )}
-        <p className="mt-8">
-          <a href={config.youtube.channel} className={buttonVariants({ variant: 'secondary' })}>
-            All videos on YouTube
-          </a>
-        </p>
       </Section>
 
-      <Section id="headquarters" title="From DCLM Headquarters, Lagos">
-        <ul className="list-disc space-y-2 pl-6">
+      <Section id="headquarters" tone="sky" size="md" title="From DCLM Headquarters, Lagos">
+        <ul className="flex list-none flex-wrap gap-x-8 gap-y-2">
           <li>
-            <a href={config.dclm.webcast} className="font-semibold text-emblem-sky-700 underline underline-offset-4">
-              webcast.dclm.org
-            </a>
+            <ArrowLink href={config.dclm.webcast}>webcast.dclm.org</ArrowLink>
           </li>
           <li>
-            <a href={config.dclm.followUs} className="font-semibold text-emblem-sky-700 underline underline-offset-4">
-              dclm.org/followus
-            </a>
+            <ArrowLink href={config.dclm.followUs}>dclm.org/followus</ArrowLink>
           </li>
         </ul>
       </Section>
