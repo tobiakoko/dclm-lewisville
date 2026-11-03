@@ -30,3 +30,25 @@ export const HOME = {
 
 /** The pull-quote the welcome may lift, exactly as written in the verbatim text (REDESIGN.md §3.4) */
 export const WELCOME_PULL_QUOTE = 'At Deeper Life Bible Church Lewisville, you will never be “lost in the crowd.”'
+
+export const VISIT = {
+  eyebrow: 'Plan your visit',
+  title: 'We’d love to meet you this Sunday.',
+  lead: 'Here’s everything you need to know before you arrive — so you can walk in feeling at home.',
+  facts: { when: 'When', where: 'Where', howLong: 'How long' },
+  nav: {
+    times: 'Service times',
+    gettingHere: 'Getting here',
+    sunday: 'Your Sunday',
+    family: 'Kids & what to wear',
+    letUsKnow: 'Let us know',
+  },
+  rows: {
+    gettingHere: 'Getting here & parking',
+    sunday: 'Your Sunday, step by step',
+    family: 'For the whole family',
+    first: 'Get to know us first',
+  },
+  /** Restates the approved "After your visit" text (REDESIGN.md §4, Visit 06) */
+  checklist: ['An usher will welcome you and walk you through the next steps', 'A church card for first-time guests'],
+}

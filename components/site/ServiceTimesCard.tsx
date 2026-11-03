@@ -107,13 +107,29 @@ export function DayTile({ day }: { day: string }) {
 }
 
 /**
- * A weekly meeting as a row: day tile, name, one-line description and join line, then the time
- * and mode chips (under the text on phones).
+ * A weekly meeting as a row: day tile, name, one-line description (or longer approved details)
+ * and join line, then the time and mode chips (under the text on phones). `highlight` sets it in
+ * an emblem-sky-50 panel, for the main service.
  */
-export function ScheduleRow({ service, headingLevel = 3 }: { service: ServiceTime; headingLevel?: 3 | 4 }) {
+export function ScheduleRow({
+  service,
+  headingLevel = 3,
+  details,
+  highlight,
+}: {
+  service: ServiceTime
+  headingLevel?: 3 | 4
+  details?: ReactNode
+  highlight?: boolean
+}) {
   const Heading = headingLevel === 3 ? 'h3' : 'h4'
   return (
-    <div className="grid grid-cols-[64px_minmax(0,1fr)] items-start gap-x-5 gap-y-3 py-6 shadow-[inset_0_1px_0_var(--color-line)] sm:grid-cols-[76px_minmax(0,1fr)_auto] sm:items-center">
+    <div
+      className={cn(
+        'grid grid-cols-[64px_minmax(0,1fr)] items-start gap-x-5 gap-y-3 sm:grid-cols-[76px_minmax(0,1fr)_auto] sm:items-center',
+        highlight ? 'rounded-panel bg-emblem-sky-50 p-6 sm:p-8' : 'py-6 shadow-[inset_0_1px_0_var(--color-line)]'
+      )}
+    >
       <span aria-hidden="true">
         <DayTile day={service.day} />
       </span>
@@ -122,7 +138,7 @@ export function ScheduleRow({ service, headingLevel = 3 }: { service: ServiceTim
           <span className="sr-only">{service.day}: </span>
           {service.name}
         </Heading>
-        <p className="mt-1 text-base text-ink-muted">{service.description}</p>
+        <div className="mt-1 text-base text-ink-muted">{details ?? <p>{service.description}</p>}</div>
         <JoinLine service={service} className="mt-1 text-base" />
       </div>
       <div className="col-start-2 flex flex-col gap-2 sm:col-start-3 sm:items-end">

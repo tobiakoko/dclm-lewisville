@@ -8,7 +8,7 @@ import { PUBLIC_PATHS, type PublicPath } from '../lib/routes'
 const HEADINGS: Record<PublicPath, RegExp> = {
   // The home H1 is the hero title from the CMS (REDESIGN.md §3.1)
   '/': /\S/,
-  '/visit': /^Plan Your Visit$/,
+  '/visit': /^We’d love to meet you this Sunday\.$/,
   '/about': /^About Us$/,
   '/ministries': /^Ministries and Outreach$/,
   '/sermons': /^Sermons$/,
