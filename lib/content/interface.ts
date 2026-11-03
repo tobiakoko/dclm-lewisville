@@ -8,6 +8,12 @@ export const FOOTER_CTA = {
 }
 
 export const HOME = {
+  /** The hero H1 (approved, from About) and its sentence; seeded into homePage.heroTitle and heroSubtitle */
+  hero: {
+    title: 'God still changes lives.',
+    subtitle:
+      'Deeper Life Bible Church Lewisville is a Bible-centered church family on West Main Street. Come as you are — we’d love to worship with you this Sunday.',
+  },
   infoBar: { worship: 'Sunday worship', findUs: 'Find us', cantMakeIt: 'Can’t make it?' },
   eyebrows: {
     meet: 'Weekly gatherings',

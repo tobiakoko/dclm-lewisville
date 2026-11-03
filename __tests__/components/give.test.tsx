@@ -7,7 +7,10 @@ jest.mock('@/lib/data', () => {
   const constants = jest.requireActual('@/lib/constants')
   return {
     getSiteData: async () => ({ config: constants.SITE_CONFIG }),
-    getWaysToGive: async () => mockWays,
+    getGiveContent: async () => {
+      const { GIVE } = jest.requireActual('@/lib/content/interface')
+      return { header: GIVE, ways: mockWays }
+    },
   }
 })
 

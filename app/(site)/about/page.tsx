@@ -96,9 +96,9 @@ export default async function AboutPage() {
   return (
     <>
       <PageHero
-        eyebrow={ABOUT.eyebrow}
-        title={ABOUT.title}
-        lead={`${config.name} is a local congregation of ${config.affiliation}.`}
+        eyebrow={about.header.eyebrow}
+        title={about.header.title}
+        lead={about.header.lead ?? `${config.name} is a local congregation of ${config.affiliation}.`}
         photo={congregation}
         photoAlt="Members of the congregation together for a group photo"
       >

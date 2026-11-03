@@ -9,7 +9,7 @@ import { IconTile } from '@/components/ui/icon-tile'
 import { CardDark } from '@/components/ui/surface'
 import { GIVE_PLACEHOLDER } from '@/lib/content/extra'
 import { GIVE } from '@/lib/content/interface'
-import { getSiteData, getWaysToGive } from '@/lib/data'
+import { getGiveContent, getSiteData } from '@/lib/data'
 
 export async function generateMetadata(): Promise<Metadata> {
   const { config } = await getSiteData()
@@ -26,7 +26,7 @@ const ICONS: LucideIcon[] = [Smartphone, Landmark, Globe]
 // Ways to give come from the Give page in Sanity (SITE-CONTENT.md §10). No FAQ, security or tax
 // claims, and no action until a way has real details.
 export default async function GivePage() {
-  const ways = await getWaysToGive()
+  const { header, ways } = await getGiveContent()
   const scripture = (
     <CardDark className="p-8 sm:p-12">
       <figure>
@@ -40,7 +40,7 @@ export default async function GivePage() {
 
   return (
     <>
-      <PageHero eyebrow={GIVE.eyebrow} title={GIVE.title} lead={GIVE.lead} media={scripture}>
+      <PageHero eyebrow={header.eyebrow} title={header.title} lead={header.lead} media={scripture}>
         <div className="flex flex-wrap gap-3">
           <a href="#ways" className={buttonVariants()}>
             See ways to give

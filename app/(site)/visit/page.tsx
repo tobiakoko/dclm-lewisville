@@ -65,7 +65,7 @@ export default async function VisitPage() {
 
   return (
     <>
-      <PageHero eyebrow={VISIT.eyebrow} title={VISIT.title} lead={VISIT.lead} photo={visit} photoAlt="Worshippers seated in the sanctuary, watching a message on the large screen">
+      <PageHero eyebrow={visitContent.header.eyebrow} title={visitContent.header.title} lead={visitContent.header.lead} photo={visit} photoAlt="Worshippers seated in the sanctuary, watching a message on the large screen">
         <dl className="grid gap-x-8 gap-y-4 sm:grid-cols-3">
           {main && (
             <div>

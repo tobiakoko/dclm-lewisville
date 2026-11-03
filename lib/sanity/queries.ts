@@ -19,10 +19,10 @@ export const HOME_PAGE_QUERY = defineQuery(`{
   "testimony": *[_type == "testimonial" && featured == true] | order(_updatedAt desc)[0]{ name, title, content }
 }`)
 
-export const VISIT_PAGE_QUERY = defineQuery(`*[_type == "visitPage" && _id == "visitPage"][0]{ serviceLines, sections[]{ title, body } }`)
+export const VISIT_PAGE_QUERY = defineQuery(`*[_type == "visitPage" && _id == "visitPage"][0]{ heroEyebrow, heroTitle, heroLead, serviceLines, sections[]{ title, body } }`)
 
 export const ABOUT_PAGE_QUERY = defineQuery(`{
-  "page": *[_type == "aboutPage" && _id == "aboutPage"][0]{ whoWeAre{ title, body }, story[]{ title, body, list, closing }, doctrinesIntro },
+  "page": *[_type == "aboutPage" && _id == "aboutPage"][0]{ heroEyebrow, heroTitle, heroLead, whoWeAre{ title, body }, story[]{ title, body, list, closing }, doctrinesIntro },
   "doctrines": *[_type == "doctrine"] | order(order asc){ "id": _id, title, body, references },
   "leaders": *[_type == "person"] | order(order asc){ "id": key.current, name, title, subtitle, shortBio, fullBio, photo ${IMAGE} }
 }`)
@@ -36,7 +36,7 @@ export const UPCOMING_EVENTS_QUERY = defineQuery(`*[_type == "event" && coalesce
   "id": _id, title, start, end, location, mode, registrationUrl
 }`)
 
-export const GIVE_PAGE_QUERY = defineQuery(`*[_type == "givePage" && _id == "givePage"][0]{ ways[]{ title, detail } }`)
+export const GIVE_PAGE_QUERY = defineQuery(`*[_type == "givePage" && _id == "givePage"][0]{ heroEyebrow, heroTitle, heroLead, ways[]{ title, detail } }`)
 
 export const LEGAL_PAGES_QUERY = defineQuery(`*[_type == "legalPages" && _id == "legalPages"][0]{ lastUpdated, effectiveDate, privacy, copyright, waiver }`)
 
