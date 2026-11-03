@@ -90,8 +90,12 @@ Never write or edit a testimony on someone's behalf.
 - **Seed a new dataset:** `SANITY_WRITE_TOKEN=… npm run seed -- --dataset <name>`. Add `--dry-run` to preview it. The command never overwrites existing documents unless you pass `--replace`.
 - **After a schema change:** run `npm run typegen`.
 - **Webhook:** in Sanity, go to **API → Webhooks** and set:
-  - URL: `https://deeperlifelewisville.org/api/revalidate`
+  - Name: `Refresh website on publish`
+  - URL: `https://dclm-lewisville.vercel.app/api/revalidate` until the domain points to Vercel, then `https://www.deeperlifelewisville.org/api/revalidate`. Use `www`, because the bare domain redirects and webhooks shouldn't go through a redirect.
+  - Dataset: `production`
   - Trigger: create, update and delete
   - Filter: `!(_id in path("drafts.**"))`
   - Projection: `{ _type }`
-  - Secret: the same value as `SANITY_REVALIDATE_SECRET` in Vercel.
+  - Method: `POST`, no extra headers; drafts and versions off
+  - Secret: the same value as `SANITY_REVALIDATE_SECRET` in Vercel (Production, marked Sensitive). Generate it with `openssl rand -base64 32`.
+  - Check the webhook's **Attempts** tab after publishing: each attempt should return `200`.
