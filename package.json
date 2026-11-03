@@ -13,7 +13,7 @@
     "sanity": "cd sanity && npm run dev",
     "sanity:deploy": "cd sanity && npm run build && npx sanity deploy",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md}\"",
-    "type-check": "tsc --noEmit",
+    "type-check": "node node_modules/typescript/bin/tsc --noEmit",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
