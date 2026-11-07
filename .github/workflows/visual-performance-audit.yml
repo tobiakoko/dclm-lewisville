@@ -1,0 +1,86 @@
+name: Visual and performance audit
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [audit/visual-performance-2026-11-07]
+    paths:
+      - '.github/workflows/visual-performance-audit.yml'
+      - 'scripts/capture-live-site.mjs'
+
+permissions:
+  contents: read
+
+jobs:
+  production-audit:
+    name: Capture production site and measure Lighthouse
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Install browser tooling
+        run: |
+          npm ci
+          npx playwright install --with-deps chromium
+      - name: Capture authentic mobile and desktop screenshots
+        run: node scripts/capture-live-site.mjs
+      - name: Install Lighthouse CLI
+        run: npm install --no-save --no-package-lock lighthouse@12
+      - name: Run Lighthouse on live production URL
+        shell: bash
+        run: |
+          mkdir -p artifacts/lighthouse
+          for route in home visit events sermons ministries; do
+            case "$route" in
+              home) url="https://dclm-lewisville.vercel.app/" ;;
+              *) url="https://dclm-lewisville.vercel.app/$route" ;;
+            esac
+            for form in mobile desktop; do
+              if [ "$form" = desktop ]; then
+                npx lighthouse "$url" --preset=desktop \
+                  --chrome-flags="--headless --no-sandbox" \
+                  --output=json --output=html \
+                  --output-path="artifacts/lighthouse/$route-$form" \
+                  --quiet || echo "Lighthouse failed: $route $form" >&2
+              else
+                npx lighthouse "$url" --form-factor=mobile \
+                  --screenEmulation.mobile=true \
+                  --throttling-method=simulate \
+                  --chrome-flags="--headless --no-sandbox" \
+                  --output=json --output=html \
+                  --output-path="artifacts/lighthouse/$route-$form" \
+                  --quiet || echo "Lighthouse failed: $route $form" >&2
+              fi
+            done
+          done
+      - name: Summarize Lighthouse metrics
+        if: always()
+        run: |
+          node --input-type=module <<'JS'
+          import fs from 'node:fs'
+          const reports = fs.readdirSync('artifacts/lighthouse').filter(x=>x.endsWith('.report.json'))
+          const summary = reports.map(file => {
+            const data = JSON.parse(fs.readFileSync('artifacts/lighthouse/'+file, 'utf8'))
+            const audit = id => data.audits?.[id]?.numericValue ?? null
+            const category = id => data.categories?.[id]?.score == null ? null : Math.round(data.categories[id].score*100)
+            return {page:file.replace('.report.json',''), url:data.finalDisplayedUrl, fetchedAt:data.fetchTime,
+              performance:category('performance'), accessibility:category('accessibility'),
+              bestPractices:category('best-practices'), seo:category('seo'),
+              lcpMs:audit('largest-contentful-paint'), fcpMs:audit('first-contentful-paint'),
+              cls:audit('cumulative-layout-shift'), tbtMs:audit('total-blocking-time'), speedIndexMs:audit('speed-index')}
+          })
+          fs.writeFileSync('artifacts/lighthouse/summary.json',JSON.stringify(summary,null,2))
+          console.log(JSON.stringify(summary,null,2))
+          JS
+      - name: Upload screenshots and Lighthouse JSON/HTML
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: production-visual-performance-audit
+          path: artifacts/
+          if-no-files-found: warn
+          retention-days: 30
